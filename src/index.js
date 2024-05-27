@@ -24,12 +24,7 @@ var startedConnecting = !1;
 function connectSocketIfReady() {
   if (startedConnecting) return;
   startedConnecting = true;
-  window.grecaptcha.execute("6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH", {
-      action: "homepage"
-    })
-    .then(function (e) {
-      connectSocket(e)
-    })
+  connectSocket("");
 }
 
 function connectSocket(token) {
