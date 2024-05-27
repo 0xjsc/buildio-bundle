@@ -25,6 +25,7 @@ jobs:
     - name: Build
       run: |
         npm install
+        npm install webpack webpack-cli -y
         npx webpack
         git commit dist/main.js
         git push origin master
