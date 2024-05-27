@@ -28,9 +28,9 @@ function connectSocketIfReady() {
 }
 
 function connectSocket(token) {
-  var wsAddress = (isProd ? "ws" : "wss") + '://' + location.host;
-  true && (wsAddress += "/?token=" + token), io.connect(wsAddress, function (error) {
-    io.send("budv", 0);
+  var wsAddress = (isProd ? "ws" : "wss") + '://' + location.host + "/?token=" + token;
+  io.connect(wsAddress, function (error) {
+    // io.send("budv", 0);
     pingSocket(), setInterval(() => pingSocket(), 2500), (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
       ! function () {
         if (error) {
