@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name            New script mohmoh.eu
-// @namespace   Violentmonkey Scripts
+// @namespace       Violentmonkey Scripts
 // @match           *://www.mohmoh.eu/*
-// @grant             none
-// @version          1.0
-// @author            -
-// @description    27.05.2024, 08:40:33
-// @require          https://update.greasyfork.org/scripts/423602/1005014/msgpack.js
+// @grant           none
+// @version         1.0
+// @author           -
+// @description     27.05.2024, 08:40:33
+// @require         https://update.greasyfork.org/scripts/423602/1005014/msgpack.js
 // ==/UserScript==
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
