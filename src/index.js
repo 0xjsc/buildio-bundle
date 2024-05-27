@@ -1,5 +1,5 @@
-window.loadedScript = !0;
-var isProd = location.origin.includes("http://")
+window.loadedScript = true;
+var isProd = /http/g.test(location.origin);
 require("./libs/msgpack.js");
 require("./libs/modernizr.js");
 var io = require("./libs/io-client.js"),
@@ -32,13 +32,11 @@ function connectSocket(token) {
   io.connect(wsAddress, function (error) {
     // io.send("budv", 0);
     pingSocket(), setInterval(() => pingSocket(), 2500), (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
-      ! function () {
-        if (error) {
-          disconnect(error)
-        } else {
-          enterGame();
-        }
-      }();
+      if (error) {
+        disconnect(error)
+      } else {
+        enterGame();
+      }
     }), UTILS.hookTouchEvents(enterGameButton), joinPartyButton.onclick = UTILS.checkTrusted(function () {
       setTimeout(function () {
         ! function () {
@@ -369,9 +367,6 @@ function showItemInfo(item, isWeapon, isStoreItem) {
   } else
     itemInfoHolder.classList.remove('visible');
 }
-window.adsbygoogle && adsbygoogle.push({
-  preloadAdBreaks: 'on'
-}), window.showPreAd = showPreAd;
 var lastDeath, minimapData, mapMarker, allianceNotifications = [],
   alliancePlayers = [];
 
@@ -654,10 +649,7 @@ var chatBox = document.getElementById('chatBox'),
   chatHolder = document.getElementById('chatHolder');
 
 function toggleChat() {
-  usingTouch ? setTimeout(function () {
-    var chatMessage = prompt('chat message');
-    chatMessage && sendChat(chatMessage);
-  }, 1) : 'block' == chatHolder.style.display ? (chatBox.value && sendChat(chatBox.value), closeChat()) : (storeMenu.style.display = 'none', allianceMenu.style.display = 'none', chatHolder.style.display = 'block', chatBox.focus(), resetMoveDir()), chatBox.value = '';
+  'block' == chatHolder.style.display ? (chatBox.value && sendChat(chatBox.value), closeChat()) : (storeMenu.style.display = 'none', allianceMenu.style.display = 'none', chatHolder.style.display = 'block', chatBox.focus(), resetMoveDir()), chatBox.value = '';
 }
 
 function sendChat(message) {
