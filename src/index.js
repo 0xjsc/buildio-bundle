@@ -1,5 +1,6 @@
 window.loadedScript = !0;
 var isProd = location.origin.includes("http://")
+require("./libs/msgpack.js");
 require("./libs/modernizr.js");
 var io = require("./libs/io-client.js"),
   UTILS = require("./libs/utils.js"),

@@ -1,7 +1,4 @@
-const {
-  Encoder: Encoder,
-  Decoder: Decoder
-} = require("msgpack-lite"), encoder = new Encoder(), decoder = new Decoder();
+
 require("../config.js"), module.exports = {
   socket: null,
   connected: !1,
@@ -14,7 +11,7 @@ require("../config.js"), module.exports = {
           socketAddress = address;
         this.socket = new WebSocket(socketAddress), this.socket.binaryType = 'arraybuffer', this.socket.onmessage = function (message) {
           var data = new Uint8Array(message.data),
-            parsed = decoder.decode(data),
+            parsed = msgpack.decode(data),
             type = parsed[0];
           data = parsed[1], 'io-init' == type ? _this.socketId = data[0] : events[type].apply(void 0, data);
         }, this.socket.onopen = function () {
@@ -31,7 +28,7 @@ require("../config.js"), module.exports = {
   },
   send: function (type) {
     var data = Array.prototype.slice.call(arguments, 1),
-      binary = encoder.encode([
+      binary = msgpack.encode([
         type,
         data
       ]);
