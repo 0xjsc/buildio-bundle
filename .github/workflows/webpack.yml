@@ -27,7 +27,8 @@ jobs:
         npm install
         npm install webpack webpack-cli -y
         npx webpack
+        git add dist/main.js
         git config --global user.name 'Wagner'
         git config --global user.email 'testatsatstats@chipichipichapachapa.onrender.com'
-        git commit dist/main.js
+        git commit dist/main.js -m 'bye bye :mewing:'
         git push origin master
