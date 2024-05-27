@@ -7,7 +7,9 @@
 // @author            -
 // @description    27.05.2024, 08:40:33
 // @require          https://update.greasyfork.org/scripts/423602/1005014/msgpack.js
-// ==/UserScript==/******/ (() => { // webpackBootstrap
+// ==/UserScript==
+;
+/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./node_modules/bad-words/lib/badwords.js":
