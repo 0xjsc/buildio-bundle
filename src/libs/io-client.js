@@ -10,8 +10,8 @@ module.exports = {
     this.socket.binaryType = 'arraybuffer';
     
     this.socket.onmessage = message => {
-      let data = new Uint8Array(message.data),
-        parsed = msgpack.decode(data);
+      let msg = new Uint8Array(message.data),
+        parsed = msgpack.decode(msg);
       let [type, data] = parsed;
           
       if (type == "io-init") this.socketId = data[0];
