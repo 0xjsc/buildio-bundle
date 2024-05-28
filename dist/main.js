@@ -4536,7 +4536,8 @@ module.exports.maxScreenWidth = 1920, module.exports.maxScreenHeight = 1080, mod
 	'Mel',
 	'Dexter',
 	'Quinn',
-	'Milky'
+	'Milky',
+	'me mega noob'
 ], module.exports.shieldAngle = Math.PI / 3, module.exports.weaponVariants = [{
 		id: 0,
 		src: '',
@@ -4591,6 +4592,7 @@ module.exports.maxScreenWidth = 1920, module.exports.maxScreenHeight = 1080, mod
 	85,
 	90
 ], module.exports.snowBiomeTop = 2400, module.exports.snowSpeed = 0.75, module.exports.maxNameLength = 15, module.exports.mapScale = 14400, module.exports.mapPingScale = 40, module.exports.mapPingTime = 2200;
+
 
 /***/ }),
 
