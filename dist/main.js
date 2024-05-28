@@ -8045,6 +8045,7 @@ var __webpack_exports__ = {};
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
+try {
 window.loadedScript = !0;
 var isProd = location.origin.includes("http://")
 __webpack_require__(/*! ./libs/msgpack.js */ /*! ./libs/msgpack.js */ "./src/libs/msgpack.js");
@@ -9625,6 +9626,8 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
   }, window.changeStoreIndex = function (index) {
     currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
   }, window.config = config;
+
+} catch(e) {alert(e)}
 
 })();
 
