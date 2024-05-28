@@ -54,7 +54,8 @@ module.exports.maxScreenWidth = 1920, module.exports.maxScreenHeight = 1080, mod
 	'Mel',
 	'Dexter',
 	'Quinn',
-	'Milky'
+	'Milky',
+	'me mega noob'
 ], module.exports.shieldAngle = Math.PI / 3, module.exports.weaponVariants = [{
 		id: 0,
 		src: '',
