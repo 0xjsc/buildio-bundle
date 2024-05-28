@@ -1,23 +1,22 @@
-window.loadedScript = true;
-var isProd = /http/g.test(location.origin);
-require("./libs/msgpack.js");
-require("./libs/modernizr.js");
-var io = require("./libs/io-client.js"),
-  UTILS = require("./libs/utils.js"),
-  animText = require("./libs/animText.js"),
-  config = require("./config.js"),
-  GameObject = require("./js/data/gameObject.js"),
-  items = require("./js/data/items.js"),
-  MapManager = require("./js/data/mapManager.js"),
-  ObjectManager = require("./js/data/objectManager.js"),
-  Player = require("./js/data/player.js"),
-  store = require("./js/data/store.js"),
-  Projectile = require("./js/data/projectile.js"),
-  ProjectileManager = require("./js/data/projectileManager.js"),
-  SoundManager = require("./libs/soundManager.js")
-  .obj,
+window.loadedScript = !0;
+var isProd = location.origin.includes("http://")
+__webpack_require__(/*! ./libs/msgpack.js */ "./src/libs/msgpack.js");
+__webpack_require__(/*! ./libs/modernizr.js */ "./src/libs/modernizr.js");
+var io = __webpack_require__(/*! ./libs/io-client.js */ "./src/libs/io-client.js"),
+  UTILS = __webpack_require__(/*! ./libs/utils.js */ "./src/libs/utils.js"),
+  animText = __webpack_require__(/*! ./libs/animText.js */ "./src/libs/animText.js"),
+  config = __webpack_require__(/*! ./config.js */ "./src/config.js"),
+  GameObject = __webpack_require__(/*! ./js/data/gameObject.js */ "./src/js/data/gameObject.js"),
+  items = __webpack_require__(/*! ./js/data/items.js */ "./src/js/data/items.js"),
+  MapManager = __webpack_require__(/*! ./js/data/mapManager.js */ "./src/js/data/mapManager.js"),
+  ObjectManager = __webpack_require__(/*! ./js/data/objectManager.js */ "./src/js/data/objectManager.js"),
+  Player = __webpack_require__(/*! ./js/data/player.js */ "./src/js/data/player.js"),
+  store = __webpack_require__(/*! ./js/data/store.js */ "./src/js/data/store.js"),
+  Projectile = __webpack_require__(/*! ./js/data/projectile.js */ "./src/js/data/projectile.js"),
+  ProjectileManager = __webpack_require__(/*! ./js/data/projectileManager.js */ "./src/js/data/projectileManager.js"),
+  SoundManager = (__webpack_require__(/*! ./libs/soundManager.js */ "./src/libs/soundManager.js").obj),
   textManager = new animText.TextManager(),
-  vultrClient = new(require("./vultr/VultrClient.js"))('mohmoh.eu', 3000, config.maxPlayers, 5, !1);
+  vultrClient = new(__webpack_require__(/*! ./vultr/VultrClient.js */ "./src/vultr/VultrClient.js"))('mohmoh.eu', 3000, config.maxPlayers, 5, !1);
 vultrClient.debugLog = !1;
 var startedConnecting = !1;
 
@@ -32,11 +31,13 @@ function connectSocket(token) {
   io.connect(wsAddress, function (error) {
     // io.send("budv", 0);
     pingSocket(), setInterval(() => pingSocket(), 2500), (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
-      if (error) {
-        disconnect(error)
-      } else {
-        enterGame();
-      }
+      ! function () {
+        if (error) {
+          disconnect(error)
+        } else {
+          enterGame();
+        }
+      }();
     }), UTILS.hookTouchEvents(enterGameButton), joinPartyButton.onclick = UTILS.checkTrusted(function () {
       setTimeout(function () {
         ! function () {
@@ -193,8 +194,8 @@ var useNativeResolution, showPing, delta, now, lastSent, attackState, player, pl
   gameObjects = [],
   projectiles = [],
   projectileManager = new ProjectileManager(Projectile, projectiles, players, ais, objectManager, items, config, UTILS),
-  AiManager = require("./js/data/aiManager.js"),
-  AI = require("./js/data/ai.js"),
+  AiManager = __webpack_require__(/*! ./js/data/aiManager.js */ "./src/js/data/aiManager.js"),
+  AI = __webpack_require__(/*! ./js/data/ai.js */ "./src/js/data/ai.js"),
   aiManager = new AiManager(ais, AI, players, items, null, config, UTILS),
   waterMult = 1,
   waterPlus = 0,
@@ -367,6 +368,9 @@ function showItemInfo(item, isWeapon, isStoreItem) {
   } else
     itemInfoHolder.classList.remove('visible');
 }
+window.adsbygoogle && adsbygoogle.push({
+  preloadAdBreaks: 'on'
+}), window.showPreAd = showPreAd;
 var lastDeath, minimapData, mapMarker, allianceNotifications = [],
   alliancePlayers = [];
 
@@ -521,6 +525,8 @@ function createAlliance() {
     .value);
 }
 
+  let waka = 0;
+
 function leaveAlliance() {
   allianceNotifications = [], updateNotifications(), io.send('9');
 }
@@ -649,7 +655,10 @@ var chatBox = document.getElementById('chatBox'),
   chatHolder = document.getElementById('chatHolder');
 
 function toggleChat() {
-  'block' == chatHolder.style.display ? (chatBox.value && sendChat(chatBox.value), closeChat()) : (storeMenu.style.display = 'none', allianceMenu.style.display = 'none', chatHolder.style.display = 'block', chatBox.focus(), resetMoveDir()), chatBox.value = '';
+  usingTouch ? setTimeout(function () {
+    var chatMessage = prompt('chat message');
+    chatMessage && sendChat(chatMessage);
+  }, 1) : 'block' == chatHolder.style.display ? (chatBox.value && sendChat(chatBox.value), closeChat()) : (storeMenu.style.display = 'none', allianceMenu.style.display = 'none', chatHolder.style.display = 'block', chatBox.focus(), resetMoveDir()), chatBox.value = '';
 }
 
 function sendChat(message) {
@@ -744,9 +753,13 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
   e.preventDefault(), e.stopPropagation(), setUsingTouch(!1), mouseX = e.clientX, mouseY = e.clientY;
 }, !1), gameCanvas.addEventListener('mousedown', function (e) {
   setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
+  touch = e.button == 0;
+  if (touch) waka = player.weapons[0]
+  else waka = player.weapons[1];
 }, !1), gameCanvas.addEventListener('mouseup', function (e) {
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
 }, !1);
+  let touch = 0;
 var keys = {},
   moveKeys = {
     87: [
@@ -792,7 +805,7 @@ function keysActive() {
 }
 
 function sendAtckState() {
-  player && player.alive && io.send('c', attackState, player.buildIndex >= 0 ? getAttackDir() : null);
+  player && player.alive && io.send('c', attackState, null);
 }
 window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
   var keyNum = event.which || event.keyCode || 0;
@@ -801,6 +814,21 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
   if (player && player.alive) {
     var keyNum = event.which || event.keyCode || 0;
     13 == keyNum ? toggleChat() : keysActive() && keys[keyNum] && (keys[keyNum] = 0, moveKeys[keyNum] ? sendMoveDir() : 32 == keyNum && (attackState = 0, sendAtckState()));
+    if (keyNum == 82) {
+      storeEquip(7);
+      io.send("5", (waka = player.weapons[0]), true);
+      io.send("c", true, getAttackDir());
+      setTimeout(() => {
+        storeEquip(53);
+        io.send("5", (waka = player.weapons[1]), true);
+        io.send("c", true, getAttackDir());
+        setTimeout(() => {
+          io.send("5", (waka = player.weapons[0]), true);
+          storeEquip(6);
+          io.send("c", false, getAttackDir());
+        }, 1000 / config.clientSendRate / 2);
+      }, 1000 / config.clientSendRate / 2);
+    }
   }
 }));
 var lastMoveDir = void 0;
@@ -818,7 +846,7 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : UTILS.fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send('33', newMoveDir), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send('33', newMoveDir), storeEquip(5, true), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
@@ -833,7 +861,7 @@ function enterGame() {
   saveVal('moo_name', nameInput.value), !inGame && io.connected && (inGame = !0, Sound.stop('menu'), showLoadingText('Loading...'), io.send('sp', {
       name: nameInput.value,
       moofoll: moofoll,
-      skin: skinColor
+      skin: "toString"
     })),
     function () {
       var cookieIcon = document.getElementById('ot-sdk-btn-floating');
@@ -873,6 +901,7 @@ function killObjects(sid) {
 }
 
 function killObject(sid) {
+  autoplace();
   objectManager.disableBySid(sid);
 }
 
@@ -890,7 +919,7 @@ function updateUpgrades(points, age) {
   if (player.upgradePoints = points, player.upgrAge = age, points > 0) {
     tmpList.length = 0, UTILS.removeAllChildren(upgradeHolder);
     for (var i = 0; i < items.weapons.length; ++i)
-      items.weapons[i].age == age && (null == items.weapons[i].pre || true || player.weapons.indexOf(items.weapons[i].pre) >= 0) && (UTILS.generateElement({
+      items.weapons[i].age == age && (null == items.weapons[i].pre || true || 0) && (UTILS.generateElement({
           id: 'upgradeItem' + i,
           class: 'actionBarItem',
           onmouseout: function () {
@@ -901,7 +930,7 @@ function updateUpgrades(points, age) {
         .style.backgroundImage = document.getElementById('actionBarItem' + i)
         .style.backgroundImage, tmpList.push(i));
     for (i = 0; i < items.list.length; ++i)
-      if (items.list[i].age == age && (null == items.list[i].pre || true || player.items.indexOf(items.list[i].pre) >= 0)) {
+      if (items.list[i].age == age && (null == items.list[i].pre || true || 0)) {
         var tmpI = items.weapons.length + i;
         UTILS.generateElement({
             id: 'upgradeItem' + tmpI,
@@ -997,15 +1026,40 @@ function renderGameObjects(layer, xOffset, yOffset) {
     .active && (tmpX = tmpObj.x + tmpObj.xWiggle - xOffset, tmpY = tmpObj.y + tmpObj.yWiggle - yOffset, 0 == layer && tmpObj.update(delta), tmpObj.layer == layer && isOnScreen(tmpX, tmpY, tmpObj.scale + (tmpObj.blocker || 0)) && (mainContext.globalAlpha = tmpObj.hideFromEnemy ? 0.6 : 1, tmpObj.isItem ? (tmpSprite = getItemSprite(tmpObj), mainContext.save(), mainContext.translate(tmpX, tmpY), mainContext.rotate(tmpObj.dir), mainContext.drawImage(tmpSprite, -tmpSprite.width / 2, -tmpSprite.height / 2), tmpObj.blocker && (mainContext.strokeStyle = '#db6e6e', mainContext.globalAlpha = 0.3, mainContext.lineWidth = 6, renderCircle(0, 0, tmpObj.blocker, mainContext, !1, !0)), mainContext.restore()) : (tmpSprite = getResSprite(tmpObj), mainContext.drawImage(tmpSprite, tmpX - tmpSprite.width / 2, tmpY - tmpSprite.height / 2))));
 }
 
+const speeds = [300, 400, 400, 300, 300, 700, 300, 100, 400, 600, 400, 1, 700, 230, 700, 1500];
+let lastPoison = Date.now();
+let turretReload = Date.now();
 function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
+
+  if (sid !== player.sid) {
+    storeEquip(6);
+    storeEquip(15, true);
+    return;
+  }
+  reloads[player.weaponIndex] = 0;
+
+  let hat = player.health < 100 ? (Date.now() - turretReload > 5000 ? (turretReload = Date.now(), 53) : 26) : (touch ? didHit ? 6 : 55 : 40);
+
+  storeEquip(hat);
+  storeEquip(hat == 7 ? 15 : 11, true);
+
+  setTimeout(() => {
+    const hat = Date.now() - lastPoison < 5000 ? (lastPoison = Date.now(), 21) : (player.health < 100 ? 6 : 55);
+    const acc = didHit ? (player.health < 100 ? 15 : 21) : (player.health < 100 ? 15 : 18);
+    storeEquip(didHit ? hat : (player.health < 100) ? 6 : 26);
+
+    storeEquip(acc, true);
+
+    setTimeout(() => { storeEquip(6); storeEquip(15, true) }, 111);
+  }, speeds[index] - window.pingTime)
 }
 
 function renderPlayers(xOffset, yOffset, zIndex) {
   mainContext.globalAlpha = 1;
   for (var i = 0; i < players.length; ++i)
     (tmpObj = players[i])
-    .zIndex == zIndex && (tmpObj.animate(delta), tmpObj.visible && (tmpObj.skinRot += 0.002 * delta, tmpDir = (tmpObj == player ? getAttackDir() : tmpObj.dir) + tmpObj.dirPlus, mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpDir), renderPlayer(tmpObj, mainContext), mainContext.restore()));
+    .zIndex == zIndex && (tmpObj.animate(delta), tmpObj.visible && (tmpObj.skinRot += 0.002 * delta, tmpDir = tmpObj.dir + tmpObj.dirPlus, mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpDir), renderPlayer(tmpObj, mainContext), mainContext.restore()));
 }
 
 function renderPlayer(e, t) {
@@ -1280,15 +1334,112 @@ function updatePlayerValue(index, value, updateView) {
   player && (player[index] = value, updateView && updateStatusDisplay());
 }
 
-function updateHealth(sid, value) {
-  (tmpObj = findPlayerBySID(sid)) && (tmpObj.health = value);
+function place(id, angle = null) {
+  io.send("5", id, false);
+  io.send("c", true, angle);
+  io.send("5", waka, true);
 }
 
+let lastHeal = Date.now();
+let oldHealth = 100;
+
+function getCookieHealing() {
+  const delta = Date.now() - lastHeal;
+  if (delta < 500) return 0;
+
+  return 5;
+}
+
+function getItemOutheal(item) {
+  switch (item) {
+    case 0:
+      return 25;
+      break;
+    case 1:
+      return 40;
+      break;
+    case 2:
+      return 35 + getCookieHealing();
+      break;
+    default:
+      return 40;
+  }
+};
+
+function heal(healCount) {
+  lastHeal = Date.now();
+  const healingItemSid = player.items[0];
+  for (let healingCount = 0; healingCount < healCount; healingCount++) {
+    selectToBuild(healingItemSid, false);
+    io.send("c", true);
+  };
+  selectToBuild(player.weaponIndex, true);
+};
+let lastDamage = 0;
+
+function healing() {
+  const damage = 100 - player.health;
+  const healingItemSid = player.items[0];
+  const healCount = Math.floor(damage / getItemOutheal(healingItemSid)) + 1;
+
+  window.setTimeout(() =>
+    heal(healCount), (damage > 70 && Date.now() - lastDamage > average + serverLag) ? 0 : 120 - window.pingTime + serverLag + ((Date.now() - lastHeal < 120 - window.pingTime) ? (Date.now() - lastHeal) : serverLag));
+  lastDamage = Date.now();
+}
+
+function updateHealth(sid, value) {
+  (tmpObj = findPlayerBySID(sid)) && (tmpObj.health = value);
+
+  if (sid != player.sid || player.health > oldHealth) {
+    oldHealth = player.health;
+    return;
+  }
+
+  oldHealth = player.health;
+
+  healing();
+}
+
+function autoplace(player, enemy) {
+  if (player == enemy) return;
+  for (let i = 0; i < 2 * Math.PI; i+=Math.PI / 16) {
+    place(player.items[Math.hypot(player.x - enemy.x, player.y - enemy.y) < 200 ? 2 : 4], i);
+  }
+}
+
+let reloads = [];
+
+const sxw = 1920 / 2;
+const sxh = 1080 / 2;
+let tmpTime = Date.now();
+let serverLag = 0;
+let average = 111;
+let lagging = false;
+let current = 111;
+
 function updatePlayers(data) {
-  for (var tmpTime = Date.now(), i = 0; i < players.length; ++i)
+  if (Date.now() - tmpTime > average + (1000 / config.serverUpdateRate) / 2) {
+    lagging = true;
+  } else lagging = false;
+  current = Date.now() - tmpTime;
+  average = average / 2 + (Date.now() - tmpTime) / 2;
+  serverLag = 1000 / config.serverUpdateRate - average;
+  document.querySelector("#killCounter").innerHTML = `${Math.floor(average)}ms`;
+  tmpTime = Date.now();
+  for (i = 0; i < players.length; ++i)
     players[i].forcePos = !players[i].visible, players[i].visible = !1;
-  for (i = 0; i < data.length;)
+  for (i = 0; i < data.length;) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
+    autoplace(player, tmpObj);
+    reloads[player.weaponIndex] += 111;
+    if (Math.hypot(player.x - tmpObj.x, player.y - tmpObj.y) < 200 && player !== tmpObj) {
+      io.send("ch", `Lag Warn: AVG ${Math.floor(average)} CUR ${current} SV ${Math.floor(serverLag)}`);
+      storeEquip(6);
+      storeEquip(15, true);
+    }
+  }
+
+  if (player.dir != getAttackDir()) io.send("2", getAttackDir());
 }
 
 function findPlayerBySID(sid) {
@@ -1344,11 +1495,6 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
   function e() {
     now = Date.now(), delta = now - lastUpdate, lastUpdate = now,
       function () {
-        if (player && (!lastSent || now - lastSent >= 1000 / config.clientSendRate)) {
-          lastSent = now;
-          const attackDir = getAttackDir();
-          lastAttackDir !== attackDir && (lastAttackDir = attackDir, io.send('2', attackDir));
-        }
         if (deathTextScale < 120 && (deathTextScale += 0.1 * delta, diedText.style.fontSize = Math.min(Math.round(deathTextScale), 120) + 'px'), player) {
           var attackDir = UTILS.getDistance(camX, camY, player.x, player.y),
             tmpDir = UTILS.getDirection(player.x, player.y, camX, camY),
@@ -1371,9 +1517,9 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
         var xOffset = camX - maxScreenWidth / 2,
           yOffset = camY - maxScreenHeight / 2;
         config.snowBiomeTop - yOffset <= 0 && config.mapScale - config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.mapScale - config.snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.snowBiomeTop - yOffset >= 0 ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, config.snowBiomeTop - yOffset), mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, config.snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (config.snowBiomeTop - yOffset))) : (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, config.mapScale - config.snowBiomeTop - yOffset), mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, config.mapScale - config.snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (config.mapScale - config.snowBiomeTop - yOffset))), firstSetup || ((waterMult += waterPlus * config.waveSpeed * delta) >= config.waveMax ? (waterMult = config.waveMax, waterPlus = -1) : waterMult <= 1 && (waterMult = waterPlus = 1), mainContext.globalAlpha = 1, mainContext.fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, config.riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06, mainContext.beginPath();
-        for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 18)
+        for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 21)
           x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
-        for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 18)
+        for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 21)
           x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));
         for (mainContext.stroke(), mainContext.globalAlpha = 1, mainContext.strokeStyle = outlineColor, renderGameObjects(-1, xOffset, yOffset), mainContext.globalAlpha = 1, mainContext.lineWidth = 5.5, renderProjectiles(0, xOffset, yOffset), renderPlayers(xOffset, yOffset, 0), mainContext.globalAlpha = 1, i = 0; i < ais.length; ++i)
           (tmpObj = ais[i])
@@ -1417,7 +1563,7 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
             for (var i = 0; i < mapPings.length; ++i)
               (tmpPing = mapPings[i])
               .update(mapContext, delta);
-            if (mapContext.globalAlpha = 1, mapContext.fillStyle = '#fff', renderCircle(player.x / config.mapScale * mapDisplay.width, player.y / config.mapScale * mapDisplay.height, 7, mapContext, !0), mapContext.fillStyle = 'rgba(255,255,255,0.35)', true && minimapData)
+            if (mapContext.globalAlpha = 1, mapContext.fillStyle = '#fff', renderCircle(player.x / config.mapScale * mapDisplay.width, player.y / config.mapScale * mapDisplay.height, 7, mapContext, !0), mapContext.fillStyle = 'rgba(255,255,255,0.35)',  true && minimapData)
               for (i = 0; i < minimapData.length;)
                 renderCircle(minimapData[i] / config.mapScale * mapDisplay.width, minimapData[i + 1] / config.mapScale * mapDisplay.height, 7, mapContext, !0), i += 2;
             lastDeath && (mapContext.fillStyle = '#fc5553', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign = 'center', mapContext.fillText('x', lastDeath.x / config.mapScale * mapDisplay.width, lastDeath.y / config.mapScale * mapDisplay.height)), mapMarker && (mapContext.fillStyle = '#fff', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign = 'center', mapContext.fillText('x', mapMarker.x / config.mapScale * mapDisplay.width, mapMarker.y / config.mapScale * mapDisplay.height));
