@@ -1,22 +1,22 @@
 window.loadedScript = !0;
 var isProd = location.origin.includes("http://")
-require(/*! ./libs/msgpack.js */ "./src/libs/msgpack.js");
-require(/*! ./libs/modernizr.js */ "./src/libs/modernizr.js");
-var io = require(/*! ./libs/io-client.js */ "./src/libs/io-client.js"),
-  UTILS = require(/*! ./libs/utils.js */ "./src/libs/utils.js"),
-  animText = require(/*! ./libs/animText.js */ "./src/libs/animText.js"),
-  config = require(/*! ./config.js */ "./src/config.js"),
-  GameObject = require(/*! ./js/data/gameObject.js */ "./src/js/data/gameObject.js"),
-  items = require(/*! ./js/data/items.js */ "./src/js/data/items.js"),
-  MapManager = require(/*! ./js/data/mapManager.js */ "./src/js/data/mapManager.js"),
-  ObjectManager = require(/*! ./js/data/objectManager.js */ "./src/js/data/objectManager.js"),
-  Player = require(/*! ./js/data/player.js */ "./src/js/data/player.js"),
-  store = require(/*! ./js/data/store.js */ "./src/js/data/store.js"),
-  Projectile = require(/*! ./js/data/projectile.js */ "./src/js/data/projectile.js"),
-  ProjectileManager = require(/*! ./js/data/projectileManager.js */ "./src/js/data/projectileManager.js"),
-  SoundManager = (require(/*! ./libs/soundManager.js */ "./src/libs/soundManager.js").obj),
+require(/*! ./libs/msgpack.js */ "./libs/msgpack.js");
+require(/*! ./libs/modernizr.js */ "./libs/modernizr.js");
+var io = require(/*! ./libs/io-client.js */ "./libs/io-client.js"),
+  UTILS = require(/*! ./libs/utils.js */ "./libs/utils.js"),
+  animText = require(/*! ./libs/animText.js */ "./libs/animText.js"),
+  config = require(/*! ./config.js */ "./config.js"),
+  GameObject = require(/*! ./js/data/gameObject.js */ "./js/data/gameObject.js"),
+  items = require(/*! ./js/data/items.js */ "./js/data/items.js"),
+  MapManager = require(/*! ./js/data/mapManager.js */ "./js/data/mapManager.js"),
+  ObjectManager = require(/*! ./js/data/objectManager.js */ "./js/data/objectManager.js"),
+  Player = require(/*! ./js/data/player.js */ "./js/data/player.js"),
+  store = require(/*! ./js/data/store.js */ "./js/data/store.js"),
+  Projectile = require(/*! ./js/data/projectile.js */ "./js/data/projectile.js"),
+  ProjectileManager = require(/*! ./js/data/projectileManager.js */ "./js/data/projectileManager.js"),
+  SoundManager = (require(/*! ./libs/soundManager.js */ "./libs/soundManager.js").obj),
   textManager = new animText.TextManager(),
-  vultrClient = new(require(/*! ./vultr/VultrClient.js */ "./src/vultr/VultrClient.js"))('mohmoh.eu', 3000, config.maxPlayers, 5, !1);
+  vultrClient = new(require(/*! ./vultr/VultrClient.js */ "./vultr/VultrClient.js"))('mohmoh.eu', 3000, config.maxPlayers, 5, !1);
 vultrClient.debugLog = !1;
 var startedConnecting = !1;
 
@@ -194,8 +194,8 @@ var useNativeResolution, showPing, delta, now, lastSent, attackState, player, pl
   gameObjects = [],
   projectiles = [],
   projectileManager = new ProjectileManager(Projectile, projectiles, players, ais, objectManager, items, config, UTILS),
-  AiManager = require(/*! ./js/data/aiManager.js */ "./src/js/data/aiManager.js"),
-  AI = require(/*! ./js/data/ai.js */ "./src/js/data/ai.js"),
+  AiManager = require(/*! ./js/data/aiManager.js */ "./js/data/aiManager.js"),
+  AI = require(/*! ./js/data/ai.js */ "./js/data/ai.js"),
   aiManager = new AiManager(ais, AI, players, items, null, config, UTILS),
   waterMult = 1,
   waterPlus = 0,
