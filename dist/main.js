@@ -12083,8 +12083,8 @@ var __webpack_exports__ = {};
   \**********************/
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.3-eta";
-const changelog = "Currently testing 360-hit";
+const versionHash = "1.3-omicron";
+const changelog = "Tweaking the visuals";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 
 const testing = `Me, drink from me, drink from me
@@ -13221,7 +13221,7 @@ function gatherAnimation(sid, didHit, index) {
   storeEquip(acc, true);
 
   setTimeout(() => {
-    let hat = player.health < 100 ? (Date.now() - turretReload > 2500 ? (turretReload = Date.now(), 53) : 26) : (touch ? didHit ? 6 : power : 40);
+    let hat = player.health < 100 ? (Date.now() - turretReload > 2500 ? (player.visible = false, setTimeout(() => player.visible = true, 111), turretReload = Date.now(), 53) : 26) : (touch ? didHit ? 6 : power : 40);
     storeEquip(hat);
     storeEquip(hat == 7 ? 15 : 11, true);
 
@@ -13233,7 +13233,7 @@ function renderPlayers(xOffset, yOffset, zIndex) {
   mainContext.globalAlpha = 1;
   for (var i = 0; i < players.length; ++i)
     (tmpObj = players[i])
-    .zIndex == zIndex && (tmpObj.animate(delta), tmpObj.visible && (tmpObj.skinRot += 0.002 * delta, tmpDir = (player == tmpObj ? (attackState ? tmpObj.dir : getAttackDir()) : tmpObj.dir) + tmpObj.dirPlus, mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpDir), renderPlayer(tmpObj, mainContext), mainContext.restore()));
+    .zIndex == zIndex && (tmpObj.animate(delta), tmpObj.visible && (tmpObj.skinRot += 0.002 * delta, tmpDir = ((player == tmpObj) ? getAttackDir() : tmpObj.dir) + tmpObj.dirPlus, mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpDir), renderPlayer(tmpObj, mainContext), mainContext.restore()));
 }
 
 function renderPlayer(e, t) {
