@@ -12992,7 +12992,7 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
     if (keyNum == 82) {
       storeEquip(7);
       io.send("5", waka = player.weapons[0], true);
-      io.send("c", true, getAttackDir());
+      io.send("c", true, 9e307);
       setTimeout(() => {
         storeEquip(53);
         io.send("5", waka = player.weapons[1], true);
@@ -13000,7 +13000,7 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
         setTimeout(() => {
           io.send("5", waka = player.weapons[0], true);
           storeEquip(6);
-          io.send("c", false, getAttackDir());
+          io.send("c", false, 9e307);
         }, 1000 / config.clientSendRate / 2);
       }, 1000 / config.clientSendRate / 2);
     }
@@ -13600,7 +13600,7 @@ function autoplace(player, enemy) {
   for (let i = 0; i < Math.PI; i += cspam) {
     place(player.items[itemId], getMoveDir() + i);
   }
-  io.send("2", getAttackDir());
+  //io.send("2", getAttackDir());
 }
 
 let reloads = [];
@@ -13641,7 +13641,7 @@ function updatePlayers(data) {
     io.send("c", false, getAttackDir());
   }
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
-    io.send("c", true, getAttackDir());
+    io.send("c", true, 9e307);
   }
 
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]]) io.send("5", (waka = player.weapons[0]), true);
