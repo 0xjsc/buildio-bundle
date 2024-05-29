@@ -1437,7 +1437,10 @@ let lagging = false;
 let current = 111;
 
 function updatePlayers(data) {
-  if (attackState) io.send("c", true, getAttackDir());
+  if (attackState) {
+    io.send("c", true, getAttackDir());
+    io.send("2", getAttackDir());
+  }
   if (Date.now() - tmpTime > average + (1000 / config.serverUpdateRate) / 2) {
     lagging = true;
   } else lagging = false;
