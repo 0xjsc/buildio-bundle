@@ -1,5 +1,5 @@
-const versionHash = "1.3-alpha";
-const changelog = "Fixed autoreplace bug, when it replaces objects out of your range";
+const versionHash = "1.3-beta";
+const changelog = "Now autoplace is based on your movement direction";
 const Swal = require("sweetalert2");
 
 const testing = `Me, drink from me, drink from me
@@ -1496,10 +1496,26 @@ function updateHealth(sid, value) {
 
 const cspam = Math.PI / 4;
 
+function getMoveDir() {
+  var newMoveDir = function () {
+    var dx = 0,
+      dy = 0;
+    if (-1 != controllingTouch.id)
+      dx += controllingTouch.currentX - controllingTouch.startX, dy += controllingTouch.currentY - controllingTouch.startY;
+    else
+      for (var key in moveKeys) {
+        var tmpDir = moveKeys[key];
+        dx += !!keys[key] * tmpDir[0], dy += !!keys[key] * tmpDir[1];
+      }
+    return 0 == dx && 0 == dy ? void 0 : UTILS.fixTo(Math.atan2(dy, dx), 2);
+  }();
+  return newMoveDir;
+}
+
 function autoplace(player, enemy) {
   const itemId = (Math.hypot(player?.x - enemy?.x, player?.y - enemy?.y) || 199) < 200 ? 2 : 4;
   for (let i = 0; i < Math.PI; i += cspam) {
-    place(player.items[itemId], getAttackDir() + i);
+    place(player.items[itemId], getMoveDir() + i);
   }
   io.send("2", getAttackDir());
 }
