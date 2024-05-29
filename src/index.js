@@ -1061,13 +1061,6 @@ function gatherAnimation(sid, didHit, index) {
   storeEquip(hat);
   storeEquip(hat == 7 ? 15 : 11, true);
 
-  if (reloads[player.weapons[1]] == speeds[player.weapons[1]]) {
-    io.send("5", player.weapons[1], true);
-    io.send("c", true, getAttackDir());
-    io.send("c", false, getAttackDir());
-    io.send("5", player.weapons[0], true);
-  }
-
   setTimeout(() => {
     const hat = Date.now() - lastPoison < 5000 ? (lastPoison = Date.now(), 21) : (player.health < 100 ? 6 : 7);
     const acc = didHit ? (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 21)) : (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 18));
@@ -1473,9 +1466,18 @@ function updatePlayers(data) {
   if (tt.skinIndex == 26 || tt.skinIndex == 11) {
     io.send("c", false, getAttackDir());
   }
+  if (reloads[player.weapons[1]] == speeds[player.weapons[1]]) {
+    io.send("5", player.weapons[1], true);
+    io.send("c", true, getAttackDir());
+    io.send("c", false, getAttackDir());
+    io.send("5", player.weapons[0], true);
+  }
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
     io.send("c", true, getAttackDir());
   }
+
+  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]]) io.send("5", player.weapons[0], true);
+  else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]]) io.send("5", player.weapons[1], true);
   
   tt && autoplace(player, tt);
 }
