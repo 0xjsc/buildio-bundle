@@ -13525,9 +13525,6 @@ let lagging = false;
 let current = 111;
 
 function updatePlayers(data) {
-  if (attackState) {
-    io.send("c", true, getAttackDir());
-  }
   if (Date.now() - tmpTime > average + (1000 / config.serverUpdateRate) / 2) {
     lagging = true;
   } else lagging = false;
@@ -13548,6 +13545,13 @@ function updatePlayers(data) {
     }
     if (player != tmpObj) tt = tmpObj;
   }
+  if (tt.skinIndex == 26 || tt.skinIndex == 11) {
+    io.send("c", false, getAttackDir());
+  }
+  if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
+    io.send("c", true, getAttackDir());
+  }
+  
   tt && autoplace(player, tt);
 }
 
