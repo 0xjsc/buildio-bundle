@@ -38,35 +38,14 @@ if (localStorage.version !== versionHash) {
 async function connectSocketIfReady() {
   if (startedConnecting) return;
   startedConnecting = true;
-  Swal.fire({
-    position: "top-end",
-    icon: "warning",
-    title: "Generating token",
-    showConfirmButton: false,
-    timer: 300
-  });
   const token = await grecaptcha.execute("6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH");
   connectSocket(token);
 }
 
 function connectSocket(token) {
   var wsAddress = (isProd ? "ws" : "wss") + '://' + location.host + "/?token=" + token;
-  Swal.fire({
-    position: "top-end",
-    icon: "warning",
-    title: "Connecting to websocket...",
-    showConfirmButton: false,
-    timer: 300
-  });
   io.connect(wsAddress, function (error) {
     io.send("budv", 0);
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Here am I",
-      showConfirmButton: false,
-      timer: 300
-    });
     pingSocket(), setInterval(() => pingSocket(), 2500), (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
       ! function () {
         if (error) {
