@@ -1,5 +1,6 @@
 const versionHash = "1.0";
 const changelog = "Many bugs has been fixed";
+const Swal = require("sweetalert2");
 
 window.loadedScript = true;
 var isProd = location.origin.includes("http://")
