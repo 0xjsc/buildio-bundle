@@ -1387,7 +1387,7 @@ function heal(healCount) {
   const healingItemSid = player.items[0];
   for (let healingCount = 0; healingCount < healCount; healingCount++) {
     selectToBuild(healingItemSid, false);
-    io.send("c", true);
+    io.send("c", true, getAttackDir());
   };
   selectToBuild(player.weaponIndex, true);
 };
@@ -1421,9 +1421,8 @@ const cspam = Math.PI / 8;
 function autoplace(player, enemy) {
   const itemId = Math.hypot(player.x - enemy.x, player.y - enemy.y) < 200 ? 2 : 4;
   for (let i = 0; i < Math.PI; i += cspam) {
-    place(player.items[itemId], getAttackDir() + i, false);
+    place(player.items[itemId], getAttackDir() + i);
   }
-  io.send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
 }
 
 let reloads = [];
@@ -1439,7 +1438,6 @@ let current = 111;
 function updatePlayers(data) {
   if (attackState) {
     io.send("c", true, getAttackDir());
-    io.send("2", getAttackDir());
   }
   if (Date.now() - tmpTime > average + (1000 / config.serverUpdateRate) / 2) {
     lagging = true;
