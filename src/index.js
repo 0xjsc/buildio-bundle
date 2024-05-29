@@ -1477,6 +1477,10 @@ function updatePlayers(data) {
 
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]]) io.send("5", (waka = player.weapons[0]), true);
   else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]]) io.send("5", (waka = player.weapons[1]), true);
+
+  if (reloads[player.weapons[1]] == speeds[player.weapons[1]] && reloads[player.weapons[0]] == speeds[player.weapons[0]]) {
+    waka = player.weapons[0];
+  }
   
   tt && autoplace(player, tt);
 }
