@@ -12081,39 +12081,73 @@ var __webpack_exports__ = {};
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-const versionHash = "1.2-gamma";
-const changelog = "Added 'funny' song (command !fun)";
+const versionHash = "1.2-delta";
+const changelog = "Fixed some bugs related to replacing and optimized overall packets usage ^-^";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 
-const testing = `Eins, zwei, Polizei .
-Drei, vier, Grenadier.
-Das Gut monteleh,
-Hände hoch, hände hoch.
-Ein, zwei, Polizei.
-Drei, vier, grenadir.
-Das Gut monteleh,
-Hände hoch, hände hoch.
-Meine Kleine, ich bin du nicht vergessen.
-Hitler kaput, kaput mein mersedessen.
-Ich glaube nicht dass du bist meine Kleine,
-Schneller zuruck
-zuruck, mein liebe Schweine!
-Ich Fuhte du trahte gut
-- Ya, Ya, Naturlich .
-Ich Fuhte du trahte gut
-- Ya, Das ist Gut!
-Du Zanko meine partisan
-Ich arbeite korefan
-trinken brinken, Yaiko, kurka mleka.
-Gut, bitte dritte Frau Madame
-Я урок вам преподам.
-Guten tag, nicht Schiesse sigaretten!
-Meine Kleine, ich bin du nicht vergessen.
-Hitler kaput, kaput mein mersedessen.
-Ich glaube nicht
-dass du bist meine Kleine,
-Schneller zuruck
-zuruck, mein liebe Schweine!`.split("\n");
+const testing = `Me, drink from me, drink from me
+Shoot across the symphony
+That we shoot across the sky
+Drink from me, drink from me
+That we shoot across the 
+I'm feeling drunk and high
+So high, so high
+That we shoot across the s-
+Oh, angel sent from up above
+You know you make my world light up
+When I was down, when I was hurt
+You came to lift me up
+Life is a drink and love's a drug
+Oh, now I think I must be miles up
+When I was a river, dried up
+You came to rain a flood
+You said
+Drink from me, drink from me
+When I was so thirsty
+Pour on a symphony
+Now I just can't get enough
+Put your wings on me, wings on me
+When I was so heavy
+Pour on a symphony
+When I'm low, low, low, low
+I-, oh I-, oh I-
+Got me feeling drunk and high
+So high, so high
+So high, so high
+Oh I-, oh I-, oh I-
+Now I'm feeling drunk and high
+So high so high,
+So high, so high
+Oh, angel sent from up above
+I feel you coursing through my blood
+Life is a drink, your love's about
+To make the stars come out
+Put your wings on me, wings on me
+When I was so heavy
+Pour on a symphony
+When I'm low, low, low, low
+I-, oh I-, oh I-
+Got me feeling drunk and high
+So high, so high (so high)
+Oh I-, oh I-, oh I-
+Now I'm feeling drunk and high
+So high so high,
+So high, so high
+I-, oh I-, oh I-
+La, la, la, la, la, la, la
+So high, so high
+I-, oh I-, oh I-
+Now I'm feeling drunk and high
+So high so high,
+So high, so high
+That we shoot across the sky
+That we shoot across the
+That we shoot across the sky
+That we shoot across the (that we shoot, yeah)
+That we shoot across the sky
+That we shoot across the
+That we shoot across the sky
+That we shoot across the`.split("\n");
 
 window.loadedScript = true;
 var isProd = location.origin.includes("http://")
@@ -13042,7 +13076,7 @@ function killObjects(sid) {
 }
 
 function killObject(sid) {
-  autoplace(player, findObjectBySid(sid));
+  autoplace();
   objectManager.disableBySid(sid);
 }
 
@@ -13173,16 +13207,8 @@ let turretReload = Date.now();
 let shameCount = 0;
 function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
-
-  if (sid !== player.sid) {
-    storeEquip(6);
-    storeEquip(15, true);
-    return;
-  }
-  io.send("2", getAttackDir());
+  
   reloads[waka] = 0;
-
-
 
   const power = player.skinIndex == 45 ? 55 : 7;
 
@@ -13555,10 +13581,11 @@ function updateHealth(sid, value) {
 const cspam = Math.PI / 4;
 
 function autoplace(player, enemy) {
-  const itemId = Math.hypot(player.x - enemy.x, player.y - enemy.y) < 200 ? 2 : 4;
+  const itemId = (Math.hypot(player?.x - enemy?.x, player?.y - enemy?.y) || 199) < 200 ? 2 : 4;
   for (let i = 0; i < Math.PI; i += cspam) {
     place(player.items[itemId], getAttackDir() + i);
   }
+  io.send("2", getAttackDir());
 }
 
 let reloads = [];
@@ -13606,6 +13633,8 @@ function updatePlayers(data) {
   if (reloads[player.weapons[1]] == speeds[player.weapons[1]] && reloads[player.weapons[0]] == speeds[player.weapons[0]]) {
     waka = player.weapons[0];
   }
+
+  if (!tt) storeEquip(5, true);
   
   tt && autoplace(player, tt);
 }
