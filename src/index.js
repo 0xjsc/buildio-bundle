@@ -1061,6 +1061,13 @@ function gatherAnimation(sid, didHit, index) {
   storeEquip(hat);
   storeEquip(hat == 7 ? 15 : 11, true);
 
+  if (reloads[player.weapons[1]] == speeds[player.weapons[1]]) {
+    io.send("5", player.weapons[1], true);
+    io.send("c", true, getAttackDir());
+    io.send("c", false, getAttackDir());
+    io.send("5", player.weapons[0], true);
+  }
+
   setTimeout(() => {
     const hat = Date.now() - lastPoison < 5000 ? (lastPoison = Date.now(), 21) : (player.health < 100 ? 6 : 7);
     const acc = didHit ? (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 21)) : (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 18));
@@ -1282,6 +1289,7 @@ function shootTurret(sid, dir) {
 function addProjectile(x, y, dir, range, speed, indx, layer, sid) {
   inWindow && (projectileManager.addProjectile(x, y, dir, range, speed, indx, null, null, layer)
     .sid = sid);
+  if (player.weapons[1] == player.weaponIndex || player.weapons[1] == waka) reloads[player.weapons[1]] = 0;
 }
 
 function remProjectile(sid, range) {
