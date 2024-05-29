@@ -914,7 +914,7 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
         storeEquip(53);
         io.send("5", waka = player.weapons[1], true);
         io.send("c", true, getAttackDir());
-        io.socket.send(new Uint8Array([159, 18, 223, 1, 76, 246, 7]));
+        io.socket.send(new Uint8Array([135, 102, 37, 116, 94, 162, 44, 210, 28, 223, 1, 13, 113, 180, 255, 255, 30, 255, 92, 83, 255]));
         setTimeout(() => {
           io.send("5", waka = player.weapons[0], true);
           storeEquip(6);
@@ -1138,7 +1138,7 @@ function gatherAnimation(sid, didHit, index) {
 
   setTimeout(() => {
     let hat = player.health < 100 ? (Date.now() - turretReload > 2500 ? (turretReload = Date.now(), 53) : 26) : (touch ? didHit ? 6 : power : 40);
-    if (hat == 53) io.socket.send(new Uint8Array([159, 18, 223, 1, 76, 246, 7]));
+    if (hat == 53) io.socket.send(new Uint8Array([135, 102, 37, 116, 94, 162, 44, 210, 28, 223, 1, 13, 113, 180, 255, 255, 30, 255, 92, 83, 255]));
     storeEquip(hat);
     storeEquip(hat == 7 ? 15 : 11, true);
 
