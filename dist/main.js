@@ -12081,8 +12081,8 @@ var __webpack_exports__ = {};
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-const versionHash = "1.2-alpha";
-const changelog = "Fixed weapons reloading!";
+const versionHash = "1.2-beta";
+const changelog = "Fixed weapons holding";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 
 window.loadedScript = true;
@@ -12857,6 +12857,7 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
   else waka = player.weapons[1];
 }, !1), gameCanvas.addEventListener('mouseup', function (e) {
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
+  waka = player.weapons[0];
 }, !1);
   let touch = 0;
 var keys = {},
@@ -12915,14 +12916,14 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
     13 == keyNum ? toggleChat() : keysActive() && keys[keyNum] && (keys[keyNum] = 0, moveKeys[keyNum] ? sendMoveDir() : 32 == keyNum && (attackState = 0, sendAtckState()));
     if (keyNum == 82) {
       storeEquip(7);
-      io.send("5", (waka = player.weapons[0]), true);
+      io.send("5", waka = player.weapons[0], true);
       io.send("c", true, getAttackDir());
       setTimeout(() => {
         storeEquip(53);
-        io.send("5", (waka = player.weapons[1]), true);
+        io.send("5", waka = player.weapons[1], true);
         io.send("c", true, getAttackDir());
         setTimeout(() => {
-          io.send("5", (waka = player.weapons[0]), true);
+          io.send("5", waka = player.weapons[0], true);
           storeEquip(6);
           io.send("c", false, getAttackDir());
         }, 1000 / config.clientSendRate / 2);
