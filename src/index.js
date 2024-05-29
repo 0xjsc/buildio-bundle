@@ -1056,20 +1056,24 @@ function gatherAnimation(sid, didHit, index) {
   }
   reloads[player.weaponIndex] = 0;
 
-  let hat = player.health < 100 ? (Date.now() - turretReload > 5000 ? (turretReload = Date.now(), 53) : 26) : (touch ? didHit ? 6 : 7 : 40);
 
-  storeEquip(hat);
-  storeEquip(hat == 7 ? 15 : 11, true);
+
+  const power = player.skinIndex == 45 ? 55 : 7;
+
+  const hat = Date.now() - lastPoison < 5000 ? (lastPoison = Date.now(), 21) : (player.health < 100 ? 6 : power);
+  const acc = didHit ? (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 21)) : (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 18));
+  storeEquip(didHit ? hat : (player.health < 100) ? 6 : 26);
+
+  storeEquip(acc, true);
 
   setTimeout(() => {
-    const hat = Date.now() - lastPoison < 5000 ? (lastPoison = Date.now(), 21) : (player.health < 100 ? 6 : 7);
-    const acc = didHit ? (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 21)) : (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 18));
-    storeEquip(didHit ? hat : (player.health < 100) ? 6 : 26);
+    let hat = player.health < 100 ? (Date.now() - turretReload > 5000 ? (turretReload = Date.now(), 53) : 26) : (touch ? didHit ? 6 : power : 40);
 
-    storeEquip(acc, true);
+    storeEquip(hat);
+    storeEquip(hat == 7 ? 15 : 11, true);
 
-    setTimeout(() => { storeEquip(6); storeEquip(15, true) }, 111);
-  }, speeds[index] - window.pingTime)
+    setTimeout(() => { storeEquip(6); storeEquip(15, true) }, window.pingTime);
+  }, speeds[index] - window.pingTime);
 }
 
 function renderPlayers(xOffset, yOffset, zIndex) {
