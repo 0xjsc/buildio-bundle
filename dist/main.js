@@ -13617,7 +13617,7 @@ function updatePlayers(data) {
       window.danger = true;
       storeEquip(6);
       storeEquip(15, true);
-    } else if (Math.hypot(player.x - tmpObj.x, player.y - tmpObj.y) > 200 && player !== tmpObj) {
+    } else if ((Math.hypot(player.x - tmpObj.x, player.y - tmpObj.y) || Infinity) > 200 && player !== tmpObj) {
       window.danger = false;
     }
     if (player != tmpObj) tt = tmpObj;
