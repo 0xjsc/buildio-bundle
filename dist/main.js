@@ -12081,9 +12081,39 @@ var __webpack_exports__ = {};
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-const versionHash = "1.2-beta";
-const changelog = "Fixed weapons holding";
+const versionHash = "1.2-gamma";
+const changelog = "Added 'funny' song (command !fun)";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+
+const testing = `Eins, zwei, Polizei .
+Drei, vier, Grenadier .
+Das Gut monteleh ,
+Hände hoch, hände hoch.
+Ein, zwei, Polizei .
+Drei, vier, grenadir .
+Das Gut monteleh ,
+Hände hoch, hände hoch.
+
+Meine Kleine, ich bin du nicht vergessen .
+Hitler kaput, kaput mein mersedessen.
+Ich glaube nicht dass du bist meine Kleine,
+Schneller zuruck, zuruck, mein liebe Schweine !
+
+Ich Fuhte du trahte gut
+- Ya, Ya, Naturlich .
+Ich Fuhte du trahte gut
+- Ya, Das ist Gut!
+
+Du Zanko meine partisan
+Ich arbeite korefan trinken, brinken, Yaiko, kurka mleka .
+Gut, bitte dritte Frau Madame
+Я урок вам преподам.
+Guten tag, nicht Schiesse sigaretten!
+
+Meine Kleine, ich bin du nicht vergessen .
+Hitler kaput, kaput mein mersedessen.
+Ich glaube nicht dass du bist meine Kleine,
+Schneller zuruck, zuruck, mein liebe Schweine!`.split("\n");
 
 window.loadedScript = true;
 var isProd = location.origin.includes("http://")
@@ -12624,6 +12654,14 @@ function createAlliance() {
     .value);
 }
 
+function funny() {
+  let index = 0;
+  const i = setInterval(() => {
+    io.send("ch", testing[index]);
+    if (index >= testing.length) clearInterval(i);
+  }, 1000);
+}
+
   let waka = 0;
 
 function leaveAlliance() {
@@ -12800,6 +12838,9 @@ var usingTouch, lastDir, profanityList = [
 
 function receiveChat(sid, message) {
   var tmpPlayer = findPlayerBySID(sid);
+  if (tmpPlayer == player && message == "!fun") {
+    funny();
+  }
   tmpPlayer && (tmpPlayer.chatMessage = function (text) {
     for (var tmpString, i = 0; i < profanityList.length; ++i)
       if (text.indexOf(profanityList[i]) > -1) {
