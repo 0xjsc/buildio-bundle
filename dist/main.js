@@ -12832,7 +12832,7 @@ function touchEnd(ev) {
 }
 
 function getAttackDir() {
-  return player ? (-1 != attackingTouch.id ? lastDir = Math.atan2(attackingTouch.currentY - attackingTouch.startY, attackingTouch.currentX - attackingTouch.startX) : player.lockDir || usingTouch || (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2)), UTILS.fixTo(lastDir || 0, 2)) : 0;
+  return (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2));
 }
 window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsingTouch(!1), window.setUsingTouch = setUsingTouch, gameCanvas.addEventListener('touchmove', UTILS.checkTrusted(function (ev) {
   ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
@@ -13000,7 +13000,7 @@ function killObjects(sid) {
 }
 
 function killObject(sid) {
-  autoplace();
+  autoplace(player, findObjectBySid(sid));
   objectManager.disableBySid(sid);
 }
 
@@ -13433,10 +13433,10 @@ function updatePlayerValue(index, value, updateView) {
   player && (player[index] = value, updateView && updateStatusDisplay());
 }
 
-function place(id, angle = null) {
+function place(id, angle = null, t = true) {
   io.send("5", id, false);
   io.send("c", true, angle);
-  io.send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
+  t && io.send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
 }
 
 let lastHeal = Date.now();
@@ -13506,6 +13506,7 @@ function autoplace(player, enemy) {
   for (let i = 0; i < Math.PI; i += cspam) {
     place(player.items[itemId], getAttackDir() + i, false);
   }
+  io.send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
 }
 
 let reloads = [];
@@ -13538,9 +13539,9 @@ function updatePlayers(data) {
       storeEquip(6);
       storeEquip(15, true);
     }
-    if (player != tmpObj) tt = true;
+    if (player != tmpObj) tt = tmpObj;
   }
-  tt && autoplace(player, tmpObj);
+  tt && autoplace(player, tt);
 }
 
 function findPlayerBySID(sid) {
