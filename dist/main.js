@@ -12086,34 +12086,34 @@ const changelog = "Added 'funny' song (command !fun)";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 
 const testing = `Eins, zwei, Polizei .
-Drei, vier, Grenadier .
-Das Gut monteleh ,
+Drei, vier, Grenadier.
+Das Gut monteleh,
 Hände hoch, hände hoch.
-Ein, zwei, Polizei .
-Drei, vier, grenadir .
-Das Gut monteleh ,
+Ein, zwei, Polizei.
+Drei, vier, grenadir.
+Das Gut monteleh,
 Hände hoch, hände hoch.
-
-Meine Kleine, ich bin du nicht vergessen .
+Meine Kleine, ich bin du nicht vergessen.
 Hitler kaput, kaput mein mersedessen.
 Ich glaube nicht dass du bist meine Kleine,
-Schneller zuruck, zuruck, mein liebe Schweine !
-
+Schneller zuruck
+zuruck, mein liebe Schweine!
 Ich Fuhte du trahte gut
 - Ya, Ya, Naturlich .
 Ich Fuhte du trahte gut
 - Ya, Das ist Gut!
-
 Du Zanko meine partisan
-Ich arbeite korefan trinken, brinken, Yaiko, kurka mleka .
+Ich arbeite korefan
+trinken brinken, Yaiko, kurka mleka.
 Gut, bitte dritte Frau Madame
 Я урок вам преподам.
 Guten tag, nicht Schiesse sigaretten!
-
-Meine Kleine, ich bin du nicht vergessen .
+Meine Kleine, ich bin du nicht vergessen.
 Hitler kaput, kaput mein mersedessen.
-Ich glaube nicht dass du bist meine Kleine,
-Schneller zuruck, zuruck, mein liebe Schweine!`.split("\n");
+Ich glaube nicht
+dass du bist meine Kleine,
+Schneller zuruck
+zuruck, mein liebe Schweine!`.split("\n");
 
 window.loadedScript = true;
 var isProd = location.origin.includes("http://")
@@ -13179,6 +13179,7 @@ function gatherAnimation(sid, didHit, index) {
     storeEquip(15, true);
     return;
   }
+  io.send("2", getAttackDir());
   reloads[waka] = 0;
 
 
@@ -13551,14 +13552,13 @@ function updateHealth(sid, value) {
   healing();
 }
 
-const cspam = Math.PI / 8;
+const cspam = Math.PI / 4;
 
 function autoplace(player, enemy) {
   const itemId = Math.hypot(player.x - enemy.x, player.y - enemy.y) < 200 ? 2 : 4;
   for (let i = 0; i < Math.PI; i += cspam) {
     place(player.items[itemId], getAttackDir() + i);
   }
-  io.send("2", getAttackDir());
 }
 
 let reloads = [];
