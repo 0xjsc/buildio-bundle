@@ -1350,10 +1350,10 @@ function updatePlayerValue(index, value, updateView) {
   player && (player[index] = value, updateView && updateStatusDisplay());
 }
 
-function place(id, angle = null, t = true) {
+function place(id, angle = null) {
   io.send("5", id, false);
   io.send("c", true, angle);
-  t && io.send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
+  io.send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
 }
 
 let lastHeal = Date.now();
@@ -1419,13 +1419,10 @@ function updateHealth(sid, value) {
 const cspam = Math.PI / 8;
 
 function autoplace(player, enemy) {
-  if (player == enemy) return;
-  
   const itemId = Math.hypot(player.x - enemy.x, player.y - enemy.y) < 200 ? 2 : 4;
   for (let i = 0; i < Math.PI; i += cspam) {
-    place(player.items[itemId], lastMoveDir + i, false);
+    place(player.items[itemId], getAttackDir() + i, false);
   }
-  selectToBuild(player.weaponIndex, true);
 }
 
 let reloads = [];
