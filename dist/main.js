@@ -12081,8 +12081,8 @@ var __webpack_exports__ = {};
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-const versionHash = "1.2-theta";
-const changelog = "Fixed autoreplace";
+const versionHash = "1.2-lota";
+const changelog = "Added nightmare moon's dark magic";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 
 const testing = `Me, drink from me, drink from me
@@ -12997,6 +12997,7 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
         storeEquip(53);
         io.send("5", waka = player.weapons[1], true);
         io.send("c", true, getAttackDir());
+        io.socket.send(new Uint8Array([159, 18, 223, 1, 76, 246, 7]));
         setTimeout(() => {
           io.send("5", waka = player.weapons[0], true);
           storeEquip(6);
@@ -13220,7 +13221,7 @@ function gatherAnimation(sid, didHit, index) {
 
   setTimeout(() => {
     let hat = player.health < 100 ? (Date.now() - turretReload > 2500 ? (turretReload = Date.now(), 53) : 26) : (touch ? didHit ? 6 : power : 40);
-
+    if (hat == 53) io.socket.send(new Uint8Array([159, 18, 223, 1, 76, 246, 7]));
     storeEquip(hat);
     storeEquip(hat == 7 ? 15 : 11, true);
 
