@@ -1074,7 +1074,7 @@ function renderPlayers(xOffset, yOffset, zIndex) {
   mainContext.globalAlpha = 1;
   for (var i = 0; i < players.length; ++i)
     (tmpObj = players[i])
-    .zIndex == zIndex && (tmpObj.animate(delta), tmpObj.visible && (tmpObj.skinRot += 0.002 * delta, tmpDir = tmpObj.dir + tmpObj.dirPlus, mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpDir), renderPlayer(tmpObj, mainContext), mainContext.restore()));
+    .zIndex == zIndex && (tmpObj.animate(delta), tmpObj.visible && (tmpObj.skinRot += 0.002 * delta, tmpDir = (player == tmpObj ? (attackState ? tmpObj.dir : getAttackDir()) : tmpObj.dir) + tmpObj.dirPlus, mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpDir), renderPlayer(tmpObj, mainContext), mainContext.restore()));
 }
 
 function renderPlayer(e, t) {
