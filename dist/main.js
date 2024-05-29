@@ -13543,7 +13543,7 @@ function updatePlayers(data) {
     players[i].forcePos = !players[i].visible, players[i].visible = !1;
   for (i = 0; i < data.length;) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
-    reloads[player.weaponIndex] += 111;
+    if (reloads[player.weaponIndex] != speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
     if (Math.hypot(player.x - tmpObj.x, player.y - tmpObj.y) < 200 && player !== tmpObj) {
       storeEquip(6);
       storeEquip(15, true);
