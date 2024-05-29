@@ -12109,10 +12109,11 @@ if (localStorage.version !== versionHash) {
   Swal.fire({
     position: "top-end",
     icon: "success",
-    title: "AutoWASM Has been updated to " + versionHash + "!",
+    title: "AutoWASM has been updated to version " + versionHash + "!",
     text: changelog,
     showConfirmButton: false,
-    timer: 1500
+    timer: 3000,
+    allowOutsideClick: false
   });
 }
 
