@@ -7481,10 +7481,11 @@ var io = __webpack_require__(/*! ./libs/io-client.js */ /*! ./libs/io-client.js 
 vultrClient.debugLog = !1;
 var startedConnecting = !1;
 
-function connectSocketIfReady() {
+async function connectSocketIfReady() {
   if (startedConnecting) return;
   startedConnecting = true;
-  connectSocket("");
+  const token = await grecaptcha.execute("6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH");
+  connectSocket(token);
 }
 
 function connectSocket(token) {
