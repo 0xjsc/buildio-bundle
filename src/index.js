@@ -1,5 +1,5 @@
-const versionHash = "1.3";
-const changelog = "Added nightmare moon's dark magic";
+const versionHash = "1.3-alpha";
+const changelog = "Fixed autoreplace bug, when it replaces objects out of your range";
 const Swal = require("sweetalert2");
 
 const testing = `Me, drink from me, drink from me
@@ -993,7 +993,7 @@ function killObjects(sid) {
 }
 
 function killObject(sid) {
-  autoplace(player);
+  window.danger && autoplace(player);
   objectManager.disableBySid(sid);
 }
 
@@ -1531,8 +1531,11 @@ function updatePlayers(data) {
     if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
     else reloads[player.weaponIndex] = speeds[player.weaponIndex];
     if (Math.hypot(player.x - tmpObj.x, player.y - tmpObj.y) < 200 && player !== tmpObj) {
+      window.danger = true;
       storeEquip(6);
       storeEquip(15, true);
+    } else if (Math.hypot(player.x - tmpObj.x, player.y - tmpObj.y) > 200 && player !== tmpObj) {
+      window.danger = false;
     }
     if (player != tmpObj) tt = tmpObj;
   }
