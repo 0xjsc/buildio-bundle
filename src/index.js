@@ -1,4 +1,4 @@
-const versionHash = "1.3-beta";
+const versionHash = "1.3-gamma";
 const changelog = "Now autoplace is based on your movement direction";
 const Swal = require("sweetalert2");
 
@@ -1550,11 +1550,10 @@ function updatePlayers(data) {
       window.danger = true;
       storeEquip(6);
       storeEquip(15, true);
-    } else if ((Math.hypot(player.x - tmpObj.x, player.y - tmpObj.y) || Infinity) > 200 && player !== tmpObj) {
-      window.danger = false;
-    }
+    } else window.danger = false;
     if (player != tmpObj) tt = tmpObj;
   }
+  
   if (tt.skinIndex == 26 || tt.skinIndex == 11) {
     io.send("c", false, getAttackDir());
   }
