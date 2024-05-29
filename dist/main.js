@@ -8800,7 +8800,6 @@ function place(id, angle = null) {
   io.send("5", id, false);
   io.send("c", true, angle);
   io.send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
-  if (attackState) io.send("c", true, getAttackDir());
 }
 
 let lastHeal = Date.now();
@@ -8885,6 +8884,7 @@ let lagging = false;
 let current = 111;
 
 function updatePlayers(data) {
+  if (attackState) io.send("c", true, getAttackDir());
   if (Date.now() - tmpTime > average + (1000 / config.serverUpdateRate) / 2) {
     lagging = true;
   } else lagging = false;
