@@ -1,4 +1,7 @@
-window.loadedScript = !0;
+const versionHash = "1.0";
+const changelog = "Many bugs has been fixed";
+
+window.loadedScript = true;
 var isProd = location.origin.includes("http://")
 var io = require(/*! ./libs/io-client.js */ "./libs/io-client.js"),
   UTILS = require(/*! ./libs/utils.js */ "./libs/utils.js"),
@@ -15,8 +18,19 @@ var io = require(/*! ./libs/io-client.js */ "./libs/io-client.js"),
   SoundManager = (require(/*! ./libs/soundManager.js */ "./libs/soundManager.js").obj),
   textManager = new animText.TextManager(),
   vultrClient = new(require(/*! ./vultr/VultrClient.js */ "./vultr/VultrClient.js"))('mohmoh.eu', 3000, config.maxPlayers, 5, !1);
-vultrClient.debugLog = !1;
-var startedConnecting = !1;
+vultrClient.debugLog = true;
+var startedConnecting = false;
+
+if (localStorage.version !== versionHash) {
+  Swal.fire({
+    position: "top-end",
+    icon: "success",
+    title: "AutoWASM Has been updated to " + versionHash + "!",
+    text: changelog,
+    showConfirmButton: false,
+    timer: 1500
+  });
+}
 
 async function connectSocketIfReady() {
   if (startedConnecting) return;
