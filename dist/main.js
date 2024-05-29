@@ -12659,7 +12659,7 @@ function funny() {
   const i = setInterval(() => {
     io.send("ch", testing[index++]);
     if (index >= testing.length) clearInterval(i);
-  }, 2300);
+  }, 1000);
 }
 
   let waka = 0;
