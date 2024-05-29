@@ -1442,8 +1442,6 @@ function updatePlayers(data) {
       storeEquip(15, true);
     }
   }
-
-  if (player.dir != getAttackDir()) io.send("2", getAttackDir());
 }
 
 function findPlayerBySID(sid) {
