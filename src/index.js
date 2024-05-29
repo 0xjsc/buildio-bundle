@@ -805,7 +805,6 @@ function keysActive() {
 
 function sendAtckState() {
   player && player.alive && io.send('c', attackState, null);
-  io.send('7', true);
 }
 window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
   var keyNum = event.which || event.keyCode || 0;
@@ -1337,7 +1336,8 @@ function updatePlayerValue(index, value, updateView) {
 function place(id, angle = null) {
   io.send("5", id, false);
   io.send("c", true, angle);
-  io.send("5", waka, true);
+  io.send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
+  if (attackState) io.send("c", true, getAttackDir());
 }
 
 let lastHeal = Date.now();
