@@ -1423,6 +1423,7 @@ function autoplace(player, enemy) {
   for (let i = 0; i < Math.PI; i += cspam) {
     place(player.items[itemId], getAttackDir() + i);
   }
+  io.send("2", getAttackDir());
 }
 
 let reloads = [];
