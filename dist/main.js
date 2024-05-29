@@ -12123,7 +12123,7 @@ async function connectSocketIfReady() {
   startedConnecting = true;
   Swal.fire({
     position: "top-end",
-    icon: "warn",
+    icon: "warning",
     title: "Generating token",
     showConfirmButton: false,
     timer: 300
@@ -12136,7 +12136,7 @@ function connectSocket(token) {
   var wsAddress = (isProd ? "ws" : "wss") + '://' + location.host + "/?token=" + token;
   Swal.fire({
     position: "top-end",
-    icon: "warn",
+    icon: "warning",
     title: "Connecting to websocket...",
     showConfirmButton: false,
     timer: 300
@@ -12145,7 +12145,7 @@ function connectSocket(token) {
     io.send("budv", 0);
     Swal.fire({
       position: "top-end",
-      icon: "warn",
+      icon: "success",
       title: "Here am I",
       showConfirmButton: false,
       timer: 300
