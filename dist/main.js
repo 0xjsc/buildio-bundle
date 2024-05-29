@@ -13554,18 +13554,12 @@ function updatePlayers(data) {
   if (tt.skinIndex == 26 || tt.skinIndex == 11) {
     io.send("c", false, getAttackDir());
   }
-  if (reloads[player.weapons[1]] == speeds[player.weapons[1]]) {
-    io.send("5", player.weapons[1], true);
-    io.send("c", true, getAttackDir());
-    io.send("c", false, getAttackDir());
-    io.send("5", player.weapons[0], true);
-  }
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
     io.send("c", true, getAttackDir());
   }
 
-  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]]) io.send("5", player.weapons[0], true);
-  else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]]) io.send("5", player.weapons[1], true);
+  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]]) io.send("5", (waka = player.weapons[0]), true);
+  else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]]) io.send("5", (waka = player.weapons[1]), true);
   
   tt && autoplace(player, tt);
 }
