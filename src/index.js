@@ -1,8 +1,6 @@
 try {
 window.loadedScript = !0;
 var isProd = location.origin.includes("http://")
-require(/*! ./libs/msgpack.js */ "./libs/msgpack.js");
-require(/*! ./libs/modernizr.js */ "./libs/modernizr.js");
 var io = require(/*! ./libs/io-client.js */ "./libs/io-client.js"),
   UTILS = require(/*! ./libs/utils.js */ "./libs/utils.js"),
   animText = require(/*! ./libs/animText.js */ "./libs/animText.js"),
