@@ -1054,7 +1054,7 @@ function gatherAnimation(sid, didHit, index) {
     storeEquip(15, true);
     return;
   }
-  reloads[player.weaponIndex] = 0;
+  reloads[waka] = 0;
 
 
 
