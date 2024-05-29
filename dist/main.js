@@ -12081,8 +12081,8 @@ var __webpack_exports__ = {};
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-const versionHash = "1.2-delta";
-const changelog = "Fixed some bugs related to replacing and optimized overall packets usage ^-^";
+const versionHash = "1.2-theta";
+const changelog = "Fixed autoreplace";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 
 const testing = `Me, drink from me, drink from me
@@ -13076,7 +13076,7 @@ function killObjects(sid) {
 }
 
 function killObject(sid) {
-  autoplace();
+  autoplace(player);
   objectManager.disableBySid(sid);
 }
 
