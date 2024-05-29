@@ -1,5 +1,5 @@
-const versionHash = "1.1-gamma";
-const changelog = "Probably fixed aiming bug";
+const versionHash = "1.1";
+const changelog = "Fixed every bug reported, added devil tail bulltick";
 const Swal = require("sweetalert2");
 
 window.loadedScript = true;
@@ -1062,7 +1062,7 @@ function gatherAnimation(sid, didHit, index) {
 
   setTimeout(() => {
     const hat = Date.now() - lastPoison < 5000 ? (lastPoison = Date.now(), 21) : (player.health < 100 ? 6 : 55);
-    const acc = didHit ? (player.health < 100 ? 15 : 21) : (player.health < 100 ? 15 : 18);
+    const acc = didHit ? (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 21)) : (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 18));
     storeEquip(didHit ? hat : (player.health < 100) ? 6 : 26);
 
     storeEquip(acc, true);
@@ -1396,10 +1396,14 @@ let lastDamage = 0;
 function healing() {
   const damage = 100 - player.health;
   const healingItemSid = player.items[0];
-  const healCount = Math.floor(damage / getItemOutheal(healingItemSid)) + 1;
+  const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
+  const healTimeout = (damage > 70 && Date.now() - lastDamage > average + serverLag) ? 0 : 120 - window.pingTime + serverLag + ((Date.now() - lastHeal < 120 - window.pingTime) ? (Date.now() - lastHeal) : serverLag);
 
+  if (healTimeout < 120 - window.pingTime) shameCount = Math.min(shameCount + 1, 8);
+  else shameCount = Math.max(0, shameCount - 2)
+  
   window.setTimeout(() =>
-    heal(healCount), (damage > 70 && Date.now() - lastDamage > average + serverLag) ? 0 : 120 - window.pingTime + serverLag + ((Date.now() - lastHeal < 120 - window.pingTime) ? (Date.now() - lastHeal) : serverLag));
+    heal(healCount), healTimeout);
   lastDamage = Date.now();
 }
 
@@ -1557,7 +1561,7 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
         for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext.strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
           if ((tmpObj = players[i] || ais[i - players.length])
             .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
-            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + (tmpObj.name || '');
+            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + (tmpObj.name || '') + " " + (tmpObj == player) ? shameCount : "";
             if ('' != tmpText) {
               if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj.nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown.isLoaded) {
                 var tmpS = config.crownIconScale;
