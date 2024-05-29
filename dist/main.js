@@ -12657,7 +12657,7 @@ function createAlliance() {
 function funny() {
   let index = 0;
   const i = setInterval(() => {
-    io.send("ch", testing[index]);
+    io.send("ch", testing[index++]);
     if (index >= testing.length) clearInterval(i);
   }, 1000);
 }
