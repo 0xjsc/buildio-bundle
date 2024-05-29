@@ -1060,14 +1060,14 @@ function gatherAnimation(sid, didHit, index) {
 
   const power = player.skinIndex == 45 ? 55 : 7;
 
-  const hat = Date.now() - lastPoison < 5000 ? (lastPoison = Date.now(), 21) : (player.health < 100 ? 6 : power);
+  const hat = Date.now() - lastPoison < 2500 ? (lastPoison = Date.now(), 21) : (player.health < 100 ? 6 : power);
   const acc = didHit ? (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 21)) : (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 18));
   storeEquip(didHit ? hat : (player.health < 100) ? 6 : 26);
 
   storeEquip(acc, true);
 
   setTimeout(() => {
-    let hat = player.health < 100 ? (Date.now() - turretReload > 5000 ? (turretReload = Date.now(), 53) : 26) : (touch ? didHit ? 6 : power : 40);
+    let hat = player.health < 100 ? (Date.now() - turretReload > 2500 ? (turretReload = Date.now(), 53) : 26) : (touch ? didHit ? 6 : power : 40);
 
     storeEquip(hat);
     storeEquip(hat == 7 ? 15 : 11, true);
@@ -1580,7 +1580,7 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
         for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext.strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
           if ((tmpObj = players[i] || ais[i - players.length])
             .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
-            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + (tmpObj.name || '') + " " + ((tmpObj == player) ? shameCount : "");
+            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + (tmpObj.name || '') + " " + ((tmpObj == player) ? `${shameCount} {${(reloads[player.weapons[0]] / speeds[player.weapons[0]]).toFixed(2)};${(reloads[player.weapons[1]] / speeds[player.weapons[1]]).toFixed(2)}}` : "");
             if ('' != tmpText) {
               if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj.nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown.isLoaded) {
                 var tmpS = config.crownIconScale;
