@@ -12081,8 +12081,8 @@ var __webpack_exports__ = {};
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-const versionHash = "1.0";
-const changelog = "Many bugs has been fixed";
+const versionHash = "1.1-alpha";
+const changelog = "Patched autoheal issue";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 
 window.loadedScript = true;
@@ -13499,7 +13499,7 @@ function updateHealth(sid, value) {
   healing();
 }
 
-const cspam = Math.PI / 16;
+const cspam = Math.PI / 8;
 
 function autoplace(player, enemy) {
   if (player == enemy) return;
@@ -13531,18 +13531,19 @@ function updatePlayers(data) {
   serverLag = 1000 / config.serverUpdateRate - average;
   document.querySelector("#killCounter").innerHTML = `${Math.floor(average)}ms`;
   tmpTime = Date.now();
+  let tt = false;
   for (i = 0; i < players.length; ++i)
     players[i].forcePos = !players[i].visible, players[i].visible = !1;
   for (i = 0; i < data.length;) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
-    autoplace(player, tmpObj);
     reloads[player.weaponIndex] += 111;
     if (Math.hypot(player.x - tmpObj.x, player.y - tmpObj.y) < 200 && player !== tmpObj) {
-      io.send("ch", `Lag Warn: AVG ${Math.floor(average)} CUR ${current} SV ${Math.floor(serverLag)}`);
       storeEquip(6);
       storeEquip(15, true);
     }
+    if (player != tmpObj) tt = true;
   }
+  tt && autoplace(player, tmpObj);
 }
 
 function findPlayerBySID(sid) {
