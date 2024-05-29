@@ -1,4 +1,3 @@
-try {
 window.loadedScript = !0;
 var isProd = location.origin.includes("http://")
 var io = require(/*! ./libs/io-client.js */ "./libs/io-client.js"),
@@ -1400,10 +1399,14 @@ function updateHealth(sid, value) {
   healing();
 }
 
+const tau = Math.PI * 2;
+const cspam = Math.PI / 32;
+
 function autoplace(player, enemy) {
   if (player == enemy) return;
-  for (let i = 0; i < 2 * Math.PI; i+=Math.PI / 16) {
-    place(player.items[Math.hypot(player.x - enemy.x, player.y - enemy.y) < 200 ? 2 : 4], i);
+  const itemId = Math.hypot(player.x - enemy.x, player.y - enemy.y) < 200 ? 2 : 4;
+  for (let i = 0; i < tau; i += cspam) {
+    place(player.items[itemId], i);
   }
 }
 
@@ -1578,5 +1581,3 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
   }, window.changeStoreIndex = function (index) {
     currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
   }, window.config = config;
-
-} catch(e) {alert(e)}
