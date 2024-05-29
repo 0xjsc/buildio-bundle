@@ -12081,8 +12081,10 @@ var __webpack_exports__ = {};
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-const versionHash = "1.3-gamma";
-const changelog = "Now autoplace is based on your movement direction";
+const hit360 = 90 ** 100;
+
+const versionHash = "1.3-eta";
+const changelog = "Currently testing 360-hit";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 
 const testing = `Me, drink from me, drink from me
@@ -12992,7 +12994,7 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
     if (keyNum == 82) {
       storeEquip(7);
       io.send("5", waka = player.weapons[0], true);
-      io.send("c", true, 9e307);
+      io.send("c", true, hit360);
       setTimeout(() => {
         storeEquip(53);
         io.send("5", waka = player.weapons[1], true);
@@ -13000,7 +13002,7 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
         setTimeout(() => {
           io.send("5", waka = player.weapons[0], true);
           storeEquip(6);
-          io.send("c", false, 9e307);
+          io.send("c", false, hit360);
         }, 1000 / config.clientSendRate / 2);
       }, 1000 / config.clientSendRate / 2);
     }
@@ -13600,7 +13602,7 @@ function autoplace(player, enemy) {
   for (let i = 0; i < Math.PI; i += cspam) {
     place(player.items[itemId], getMoveDir() + i);
   }
-  //io.send("2", getAttackDir());
+  io.send("2", hit360);
 }
 
 let reloads = [];
@@ -13641,7 +13643,7 @@ function updatePlayers(data) {
     io.send("c", false, getAttackDir());
   }
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
-    io.send("c", true, 9e307);
+    io.send("c", true, hit360);
   }
 
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]]) io.send("5", (waka = player.weapons[0]), true);
