@@ -1,4 +1,4 @@
-const hit360 = 90 ** 100;
+const hit360 = 1.998715926535898e+272;
 
 const versionHash = "1.3-eta";
 const changelog = "Currently testing 360-hit";
