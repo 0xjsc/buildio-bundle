@@ -12075,7 +12075,7 @@ var __webpack_exports__ = {};
 const hit360 = 1.998715926535898e+272;
 
 const versionHash = "1.4-Final";
-const changelog = "Added aimbot to instakill. Hold R to enable autoinsta.";
+const changelog = "Buffed autoplace, added aimbot to the instakill";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 const motionBlurLevel = 0.6;
 let instakilling = false;
@@ -13556,7 +13556,7 @@ function getMoveDir() {
 function autoplace(player, enemy) {
   if (instakilling) return;
   const itemId = (Math.hypot(player?.x - enemy?.x, player?.y - enemy?.y) || 199) < 200 ? 2 : 4;
-  for (let i = 0; i < Math.PI; i += cspam) {
+  for (let i = -Math.PI / 2; i < Math.PI / 2; i += cspam) {
     place(player.items[itemId], getMoveDir() + i);
   }
   io.send("2", player.buildIndex ? getAttackDir() : hit360);
