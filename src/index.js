@@ -1405,7 +1405,7 @@ function getMoveDir() {
 function autoplace(player, enemy) {
   if (instakilling) return;
   const itemId = (Math.hypot(player?.x - enemy?.x, player?.y - enemy?.y) || 199) < 200 ? 2 : 4;
-  for (let i = -Math.PI / 2; i < Math.PI / 2; i += cspam) {
+  for (let i = breaking ? 0 : -Math.PI / 2; i < breaking ? Math.PI * 2 : Math.PI / 2; i += cspam) {
     place(player.items[itemId], getMoveDir() + i);
   }
   io.send("2", player.buildIndex ? getAttackDir() : hit360);
