@@ -1129,6 +1129,7 @@ function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
   
   if (sid == player.sid) reloads[waka] = 0;
+  else return storeEquip(6);
 
   const power = player.skinIndex == 45 ? 55 : 7;
 
