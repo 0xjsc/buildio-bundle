@@ -12924,7 +12924,7 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
   setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
   touch = e.button == 0;
   if (touch) waka = player.weapons[0]
-  else waka = player.weapons[1];
+  else if (player.weapons[1] == 10) waka = player.weapons[1];
 }, !1), gameCanvas.addEventListener('mouseup', function (e) {
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
   waka = player.weapons[0];
