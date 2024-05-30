@@ -12073,10 +12073,11 @@ var __webpack_exports__ = {};
   \**********************/
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.4-delta";
-const changelog = "Added autobreak devour";
+const versionHash = "1.4-omicron";
+const changelog = "Now autoplace is compactable with instakill";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 const motionBlurLevel = 0.6;
+let instakilling = false;
 
 const testing = `Me, drink from me, drink from me
 Shoot across the symphony
@@ -12960,6 +12961,7 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
     const keyCode = event.code;
     "Enter" == keyCode ? toggleChat() : keysActive() && keys[keyCode] && (keys[keyCode] = 0, moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 0, sendAtckState()));
     if (keyCode == "KeyR") {
+      instakilling = true;
       storeEquip(7);
       io.send("5", waka = player.weapons[0], true);
       io.send("c", true, hit360);
@@ -12971,9 +12973,11 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
         setTimeout(() => {
           io.send("5", waka = player.weapons[0], true);
           io.send("c", false, hit360);
+          instakilling = false;
         }, 1000 / config.clientSendRate / 2);
       }, 1000 / config.clientSendRate / 2);
     } else if (keyCode == "KeyT") {
+      instakilling = true;
       storeEquip(53);
       turretReload = 0;
       io.send("5", waka = player.weapons[1], true);
@@ -12982,7 +12986,10 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
         storeEquip(7);
         io.send("5", waka = player.weapons[0], true);
         io.send("c", true, getAttackDir());
-        setTimeout(() => io.send("c", false, getAttackDir()), 1000 / config.clientSendRate / 2);
+        setTimeout(() => {
+          io.send("c", false, getAttackDir());
+          instakilling = false;
+        }, 1000 / config.clientSendRate / 2);
       }, 1000 / config.clientSendRate / 2);
     }
 
@@ -13579,6 +13586,7 @@ function getMoveDir() {
 }
 
 function autoplace(player, enemy) {
+  if (instakilling) return;
   const itemId = (Math.hypot(player?.x - enemy?.x, player?.y - enemy?.y) || 199) < 200 ? 2 : 4;
   for (let i = 0; i < Math.PI; i += cspam) {
     place(player.items[itemId], getMoveDir() + i);
@@ -13630,6 +13638,8 @@ function updatePlayers(data) {
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
     io.send("c", true, player.buildIndex ? getAttackDir() : hit360);
   }
+
+  if (instakilling) return;
 
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send("5", (waka = player.weapons[0]), true);
   else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) io.send("5", (waka = player.weapons[1]), true);
