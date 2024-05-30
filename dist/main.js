@@ -10444,14 +10444,12 @@ module.exports = function (GameObject, gameObjects, UTILS, config, players, serv
     } catch (e) {}
     return tmpArray;
   }, this.add = function (sid, x, y, dir, s, type, data, setSID, owner) {
-    tmpObj = gameObjects[sid];
-    if (!tmpObj)
-      for (i = 0; i < gameObjects.length; ++i)
-        if (!gameObjects[i].active) {
-          tmpObj = gameObjects[i];
-          break;
-        }
-    tmpObj || (tmpObj = new GameObject(sid), gameObjects[sid] = (tmpObj)), setSID && (tmpObj.sid = sid), tmpObj.init(x, y, dir, s, type, data, owner), server && (this.setObjectGrids(tmpObj), tmpObj.doUpdate && this.updateObjects.push(tmpObj));
+    tmpObj = new GameObject(sid);
+    gameObjects[sid] = tmpObj;
+    setSID && (tmpObj.sid = sid);
+    tmpObj.init(x, y, dir, s, type, data, owner);
+    server && (this.setObjectGrids(tmpObj));
+    tmpObj.doUpdate && (this.updateObjects[sid] = tmpObj);
   }, this.disableBySid = function (sid) {
     this.disableObj(gameObjects[sid])
   }, this.removeAllItems = function (sid, server) {
