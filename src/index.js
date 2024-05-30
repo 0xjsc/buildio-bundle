@@ -1,10 +1,9 @@
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.4-alpha";
-const changelog = "Replaced deprecated event.keyCode by event.code";
+const versionHash = "1.4-beta";
+const changelog = "Added teleporter on G, added reverse insta on T and fixed 360 hit bug";
 const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
-
 
 const testing = `Me, drink from me, drink from me
 Shoot across the symphony
@@ -890,14 +889,27 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
       io.send("c", true, hit360);
       setTimeout(() => {
         storeEquip(53);
+        turretReload = 0;
         io.send("5", waka = player.weapons[1], true);
         io.send("c", true, getAttackDir());
         setTimeout(() => {
           io.send("5", waka = player.weapons[0], true);
-          storeEquip(6);
           io.send("c", false, hit360);
         }, 1000 / config.clientSendRate / 2);
       }, 1000 / config.clientSendRate / 2);
+    } else if (keyCode == "KeyT") {
+      storeEquip(53);
+      turretReload = 0;
+      io.send("5", waka = player.weapons[1], true);
+      io.send("c", true, getAttackDir());
+      setTimeout(() => {
+        storeEquip(7);
+        io.send("5", waka = player.weapons[0], true);
+        io.send("c", true, getAttackDir());
+        setTimeout(() => io.send("c", false, getAttackDir()), 1000 / config.clientSendRate / 2);
+      }, 1000 / config.clientSendRate / 2);
+    } else if (keyCode == "KeyG") {
+     place(player.items[5], getAttackDir()); 
     }
   }
 }));
@@ -1097,7 +1109,7 @@ function renderGameObjects(layer, xOffset, yOffset) {
 
 const speeds = [300, 400, 400, 300, 300, 700, 300, 100, 400, 600, 400, 1, 700, 230, 700, 1500];
 let lastPoison = Date.now();
-let turretReload = Date.now();
+let turretReload = 0;
 let shameCount = 0;
 function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
@@ -1114,7 +1126,7 @@ function gatherAnimation(sid, didHit, index) {
   storeEquip(acc, true);
 
   setTimeout(() => {
-    let hat = player.health < 100 ? (Date.now() - turretReload > 2500 ? (player.visible = false, setTimeout(() => player.visible = true, 111), turretReload = Date.now(), 53) : 26) : (touch ? didHit ? 6 : power : 40);
+    let hat = player.health < 100 ? (turretReload > 2500 ? (player.visible = false, setTimeout(() => player.visible = true, 111), turretReload = 0, 53) : 26) : (touch ? didHit ? 6 : power : 40);
     storeEquip(hat);
     storeEquip(hat == 7 ? 15 : 11, true);
 
@@ -1495,7 +1507,7 @@ function autoplace(player, enemy) {
   for (let i = 0; i < Math.PI; i += cspam) {
     place(player.items[itemId], getMoveDir() + i);
   }
-  io.send("2", hit360);
+  io.send("2", player.buildIndex ? getAttackDir() : hit360);
 }
 
 let reloads = [];
@@ -1517,12 +1529,12 @@ function updatePlayers(data) {
   serverLag = Math.abs(1000 / config.serverUpdateRate - average);
   tmpTime = Date.now();
   let tt = false;
+  turretReload = Math.min(turretReload + current, 2500);
+  if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
+  else reloads[player.weaponIndex] = speeds[player.weaponIndex];
   
   for (i = 0; i < data.length;) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
-    
-    if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
-    else reloads[player.weaponIndex] = speeds[player.weaponIndex];
     if (player != tmpObj) tt = tmpObj;
   }
   
@@ -1530,7 +1542,7 @@ function updatePlayers(data) {
     io.send("c", false, getAttackDir());
   }
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
-    io.send("c", true, hit360);
+    io.send("c", true, player.buildIndex ? getAttackDir() : hit360);
   }
 
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send("5", (waka = player.weapons[0]), true);
@@ -1621,7 +1633,7 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
           x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
         for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 2)
           x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));
-        for (mainContext.stroke(), mainContext.globalAlpha = 1, mainContext.strokeStyle = outlineColor, renderGameObjects(-1, xOffset, yOffset), mainContext.globalAlpha = 1, mainContext.lineWidth = 5.5, renderPlayers(xOffset, yOffset, 0), mainContext.globalAlpha = 1, i = 0; i < ais.length; ++i)
+        for (mainContext.stroke(), mainContext.globalAlpha = 1, mainContext.strokeStyle = outlineColor, renderGameObjects(-1, xOffset, yOffset), mainContext.globalAlpha = 1, mainContext.lineWidth = 5.5, renderProjectiles(0, xOffset, yOffset), renderPlayers(xOffset, yOffset, 0), mainContext.globalAlpha = 1, i = 0; i < ais.length; ++i)
           (tmpObj = ais[i])
           .active && tmpObj.visible && (tmpObj.animate(delta), mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpObj.dir + tmpObj.dirPlus - Math.PI / 2), renderAI(tmpObj, mainContext), mainContext.restore());
         if (renderGameObjects(0, xOffset, yOffset), renderProjectiles(1, xOffset, yOffset), renderGameObjects(1, xOffset, yOffset), renderPlayers(xOffset, yOffset, 1), renderGameObjects(2, xOffset, yOffset), renderGameObjects(3, xOffset, yOffset), mainContext.fillStyle = '#000', mainContext.globalAlpha = 0.09, xOffset <= 0 && mainContext.fillRect(0, 0, -xOffset, maxScreenHeight), config.mapScale - xOffset <= maxScreenWidth) {
