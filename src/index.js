@@ -879,7 +879,7 @@ function sendAtckState() {
 window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
   var keyNum = event.which || event.keyCode || 0;
   const keyCode = event.code;
-  keyEvents[keyCode] = true;
+  if (event.target.tagName == "CANVAS") keyEvents[keyCode] = true;
   "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? io.send('7', 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, io.send('7', 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
 })), window.addEventListener('keyup', UTILS.checkTrusted(function (event) {
   if (player && player.alive) {
