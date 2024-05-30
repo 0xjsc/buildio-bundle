@@ -12073,8 +12073,8 @@ var __webpack_exports__ = {};
   \**********************/
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.4-prealpha";
-const changelog = "Improved moomoo's native players and objects storing";
+const versionHash = "1.3-omega";
+const changelog = "increased motion blur level";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 const motionBlurLevel = 0.6;
 
@@ -13191,7 +13191,8 @@ function renderWaterBodies(xOffset, yOffset, ctxt, padding) {
 
 function renderGameObjects(layer, xOffset, yOffset) {
   for (var tmpSprite, tmpX, tmpY, i = 0; i < gameObjects.length; ++i)
-    (tmpObj = gameObjects[i])?.active && (tmpX = tmpObj.x + tmpObj.xWiggle - xOffset, tmpY = tmpObj.y + tmpObj.yWiggle - yOffset, 0 == layer && tmpObj.update(delta), tmpObj.layer == layer && isOnScreen(tmpX, tmpY, tmpObj.scale + (tmpObj.blocker || 0)) && (mainContext.globalAlpha = tmpObj.hideFromEnemy ? 0.6 : 1, tmpObj.isItem ? (tmpSprite = getItemSprite(tmpObj), mainContext.save(), mainContext.translate(tmpX, tmpY), mainContext.rotate(tmpObj.dir), mainContext.drawImage(tmpSprite, -tmpSprite.width / 2, -tmpSprite.height / 2), tmpObj.blocker && (mainContext.strokeStyle = '#db6e6e', mainContext.globalAlpha = 0.3, mainContext.lineWidth = 6, renderCircle(0, 0, tmpObj.blocker, mainContext, !1, !0)), mainContext.restore()) : (tmpSprite = getResSprite(tmpObj), mainContext.drawImage(tmpSprite, tmpX - tmpSprite.width / 2, tmpY - tmpSprite.height / 2))));
+    (tmpObj = gameObjects[i])
+    .active && (tmpX = tmpObj.x + tmpObj.xWiggle - xOffset, tmpY = tmpObj.y + tmpObj.yWiggle - yOffset, 0 == layer && tmpObj.update(delta), tmpObj.layer == layer && isOnScreen(tmpX, tmpY, tmpObj.scale + (tmpObj.blocker || 0)) && (mainContext.globalAlpha = tmpObj.hideFromEnemy ? 0.6 : 1, tmpObj.isItem ? (tmpSprite = getItemSprite(tmpObj), mainContext.save(), mainContext.translate(tmpX, tmpY), mainContext.rotate(tmpObj.dir), mainContext.drawImage(tmpSprite, -tmpSprite.width / 2, -tmpSprite.height / 2), tmpObj.blocker && (mainContext.strokeStyle = '#db6e6e', mainContext.globalAlpha = 0.3, mainContext.lineWidth = 6, renderCircle(0, 0, tmpObj.blocker, mainContext, !1, !0)), mainContext.restore()) : (tmpSprite = getResSprite(tmpObj), mainContext.drawImage(tmpSprite, tmpX - tmpSprite.width / 2, tmpY - tmpSprite.height / 2))));
 }
 
 const speeds = [300, 400, 400, 300, 300, 700, 300, 100, 400, 600, 400, 1, 700, 230, 700, 1500];
@@ -13475,14 +13476,21 @@ function isOnScreen(x, y, s) {
 
 function addPlayer(data, isYou) {
   var tmpPlayer = function (id) {
-    return players[id];
+    for (var i = 0; i < players.length; ++i)
+      if (players[i].id == id)
+        return players[i];
+    return null;
   }(data[0]);
-  tmpPlayer || (tmpPlayer = new Player(data[0], data[1], config, UTILS, projectileManager, objectManager, players, ais, items, hats, accessories), (players[data[0]] = tmpPlayer)), tmpPlayer.spawn(isYou ? moofoll : null), tmpPlayer.visible = !1, tmpPlayer.x2 = void 0, tmpPlayer.y2 = void 0, tmpPlayer.setData(data), isYou && (camX = (player = tmpPlayer)
+  tmpPlayer || (tmpPlayer = new Player(data[0], data[1], config, UTILS, projectileManager, objectManager, players, ais, items, hats, accessories), players.push(tmpPlayer)), tmpPlayer.spawn(isYou ? moofoll : null), tmpPlayer.visible = !1, tmpPlayer.x2 = void 0, tmpPlayer.y2 = void 0, tmpPlayer.setData(data), isYou && (camX = (player = tmpPlayer)
     .x, camY = player.y, updateItems(), updateStatusDisplay(), updateAge(), updateUpgrades(0), gameUI.style.display = 'block');
 }
 
 function removePlayer(id) {
-  delete players[id];
+  for (var i = 0; i < players.length; i++)
+    if (players[i].id == id) {
+      players.splice(i, 1);
+      break;
+    }
 }
 
 function updateItemCounts(index, value) {
@@ -13643,7 +13651,10 @@ function updatePlayers(data) {
 }
 
 function findPlayerBySID(sid) {
-  return players[sid];
+  for (var i = 0; i < players.length; ++i)
+    if (players[i].sid == sid)
+      return players[i];
+  return null;
 }
 
 function findAIBySID(sid) {
@@ -13654,7 +13665,10 @@ function findAIBySID(sid) {
 }
 
 function findObjectBySid(sid) {
-  return gameObjects[sid];
+  for (var i = 0; i < gameObjects.length; ++i)
+    if (gameObjects[i].sid == sid)
+      return gameObjects[i];
+  return null;
 }
 var lastPing = -1;
 
