@@ -1,7 +1,7 @@
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.3-omega";
-const changelog = "increased motion blur level";
+const versionHash = "1.4-alpha";
+const changelog = "Improved moomoo's native players and objects storing";
 const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
 
@@ -1403,21 +1403,14 @@ function isOnScreen(x, y, s) {
 
 function addPlayer(data, isYou) {
   var tmpPlayer = function (id) {
-    for (var i = 0; i < players.length; ++i)
-      if (players[i].id == id)
-        return players[i];
-    return null;
+    return players[id];
   }(data[0]);
-  tmpPlayer || (tmpPlayer = new Player(data[0], data[1], config, UTILS, projectileManager, objectManager, players, ais, items, hats, accessories), players.push(tmpPlayer)), tmpPlayer.spawn(isYou ? moofoll : null), tmpPlayer.visible = !1, tmpPlayer.x2 = void 0, tmpPlayer.y2 = void 0, tmpPlayer.setData(data), isYou && (camX = (player = tmpPlayer)
+  tmpPlayer || (tmpPlayer = new Player(data[0], data[1], config, UTILS, projectileManager, objectManager, players, ais, items, hats, accessories), (players[data[0]] = tmpPlayer)), tmpPlayer.spawn(isYou ? moofoll : null), tmpPlayer.visible = !1, tmpPlayer.x2 = void 0, tmpPlayer.y2 = void 0, tmpPlayer.setData(data), isYou && (camX = (player = tmpPlayer)
     .x, camY = player.y, updateItems(), updateStatusDisplay(), updateAge(), updateUpgrades(0), gameUI.style.display = 'block');
 }
 
 function removePlayer(id) {
-  for (var i = 0; i < players.length; i++)
-    if (players[i].id == id) {
-      players.splice(i, 1);
-      break;
-    }
+  delete players[id];
 }
 
 function updateItemCounts(index, value) {
@@ -1578,10 +1571,7 @@ function updatePlayers(data) {
 }
 
 function findPlayerBySID(sid) {
-  for (var i = 0; i < players.length; ++i)
-    if (players[i].sid == sid)
-      return players[i];
-  return null;
+  return players[sid];
 }
 
 function findAIBySID(sid) {
@@ -1592,10 +1582,7 @@ function findAIBySID(sid) {
 }
 
 function findObjectBySid(sid) {
-  for (var i = 0; i < gameObjects.length; ++i)
-    if (gameObjects[i].sid == sid)
-      return gameObjects[i];
-  return null;
+  return gameObjects[sid];
 }
 var lastPing = -1;
 
