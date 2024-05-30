@@ -1,7 +1,7 @@
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.4-beta";
-const changelog = "Added teleporter on G, added reverse insta on T and fixed 360 hit bug";
+const versionHash = "1.4-gamma";
+const changelog = "Added placers (spike - V, trap - F, teleporter - G)";
 const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
 
@@ -863,6 +863,8 @@ var keys = {},
     KeyD: [1, 0]
   };
 
+const keyEvents = {};
+
 function resetMoveDir() {
   keys = {}, io.send('rmd');
 }
@@ -877,6 +879,7 @@ function sendAtckState() {
 window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
   var keyNum = event.which || event.keyCode || 0;
   const keyCode = event.code;
+  keyEvents[keyCode] = true;
   "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? io.send('7', 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, io.send('7', 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
 })), window.addEventListener('keyup', UTILS.checkTrusted(function (event) {
   if (player && player.alive) {
@@ -908,9 +911,9 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
         io.send("c", true, getAttackDir());
         setTimeout(() => io.send("c", false, getAttackDir()), 1000 / config.clientSendRate / 2);
       }, 1000 / config.clientSendRate / 2);
-    } else if (keyCode == "KeyG") {
-     place(player.items[5], getAttackDir()); 
     }
+
+    keyEvents[keyCode] = false;
   }
 }));
 var lastMoveDir = void 0;
@@ -1532,6 +1535,10 @@ function updatePlayers(data) {
   turretReload = Math.min(turretReload + current, 2500);
   if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
   else reloads[player.weaponIndex] = speeds[player.weaponIndex];
+
+  if (keyEvents.KeyG) place(player.items[5], getAttackDir()); 
+  else if (keyEvents.KeyV) place(player.items[2], getAttackDir());
+  else if (keyEvents.KeyF) place(player.items[4], getAttackDir()); 
   
   for (i = 0; i < data.length;) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
