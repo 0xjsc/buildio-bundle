@@ -1530,30 +1530,24 @@ const sxh = 1080 / 2;
 let tmpTime = Date.now();
 let serverLag = 0;
 let average = 111;
-let lagging = false;
 let current = 111;
 
 function updatePlayers(data) {
-  if (Date.now() - tmpTime > average + (1000 / config.serverUpdateRate) / 2) {
-    lagging = true;
-  } else lagging = false;
+  if (Date.now() - tmpTime > average + serverLag) {
+    storeEquip(6);
+    storeEquip(15, true);
+  };
   current = Date.now() - tmpTime;
   average = average / 2 + (Date.now() - tmpTime) / 2;
   serverLag = Math.abs(1000 / config.serverUpdateRate - average);
-  document.querySelector("#killCounter").innerHTML = `${Math.floor(average)}ms`;
   tmpTime = Date.now();
   let tt = false;
-  for (i = 0; i < players.length; ++i)
-    players[i].forcePos = !players[i].visible, players[i].visible = !1;
+  
   for (i = 0; i < data.length;) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
+    
     if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
     else reloads[player.weaponIndex] = speeds[player.weaponIndex];
-    if (Math.hypot(player.x - tmpObj.x, player.y - tmpObj.y) < 200 && player !== tmpObj) {
-      window.danger = true;
-      storeEquip(6);
-      storeEquip(15, true);
-    } else window.danger = false;
     if (player != tmpObj) tt = tmpObj;
   }
   
@@ -1564,16 +1558,15 @@ function updatePlayers(data) {
     io.send("c", true, hit360);
   }
 
-  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]]) io.send("5", (waka = player.weapons[0]), true);
-  else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]]) io.send("5", (waka = player.weapons[1]), true);
+  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send("5", (waka = player.weapons[0]), true);
+  else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) io.send("5", (waka = player.weapons[1]), true);
 
-  if (reloads[player.weapons[1]] == speeds[player.weapons[1]] && reloads[player.weapons[0]] == speeds[player.weapons[0]]) {
-    waka = player.weapons[0];
+  if (reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
+    io.send("5", (waka = player.weapons[0]), true);
   }
 
   if (!tt) storeEquip(5, true);
-  
-  tt && autoplace(player, tt);
+  else autoplace(player, tt);
 }
 
 function findPlayerBySID(sid) {
