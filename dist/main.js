@@ -13610,6 +13610,7 @@ function updatePlayers(data) {
   if (instakilling) return;
 
   if (keyEvents.KeyR) {
+    if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
     const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
     window.sidFocus = enemy?.sid || 69420;
       if (!enemy) return;
@@ -13631,6 +13632,7 @@ function updatePlayers(data) {
         }, 1000 / config.clientSendRate / 2);
       }, 1000 / config.clientSendRate / 2);
   } else if (keyEvents.KeyT) {
+      if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
       const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
       window.sidFocus = enemy?.sid || 69420;
       if (!enemy) return;
