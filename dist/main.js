@@ -13651,7 +13651,7 @@ function updatePlayers(data) {
   if (!tt) storeEquip(5, true);
   else autoplace(player, tt);
 
-  const trap = gameObjects.find(obj => obj.trap && Math.hypot(obj.x - player.x, obj.y - player.y) < obj.scale + config.playerScale && !alliancePlayers.includes(obj.owner.sid));
+  const trap = gameObjects.find(obj => obj?.trap && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale + config.playerScale && !alliancePlayers.includes(obj?.owner?.sid));
 
   if (!trap && breaking) {
     breaking = false;
