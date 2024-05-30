@@ -20,7 +20,7 @@ module.exports = function (GameObject, gameObjects, UTILS, config, players, serv
     if (obj.active = !1, server) {
       obj.owner && obj.pps && (obj.owner.pps -= obj.pps), this.removeObjGrid(obj);
       var tmpIndx = this.updateObjects.indexOf(obj);
-      tmpIndx >= 0 && this.updateObjects.splice(tmpIndx, 1);
+      delete this.updateObjects[tmpIndx];
     }
   }, this.hitObj = function (tmpObj, tmpDir) {
     for (var p = 0; p < players.length; ++p)
@@ -34,25 +34,16 @@ module.exports = function (GameObject, gameObjects, UTILS, config, players, serv
     } catch (e) {}
     return tmpArray;
   }, this.add = function (sid, x, y, dir, s, type, data, setSID, owner) {
-    tmpObj = null;
-    for (var i = 0; i < gameObjects.length; ++i)
-      if (gameObjects[i].sid == sid) {
-        tmpObj = gameObjects[i];
-        break;
-      }
+    tmpObj = gameObjects[sid];
     if (!tmpObj)
       for (i = 0; i < gameObjects.length; ++i)
         if (!gameObjects[i].active) {
           tmpObj = gameObjects[i];
           break;
         }
-    tmpObj || (tmpObj = new GameObject(sid), gameObjects.push(tmpObj)), setSID && (tmpObj.sid = sid), tmpObj.init(x, y, dir, s, type, data, owner), server && (this.setObjectGrids(tmpObj), tmpObj.doUpdate && this.updateObjects.push(tmpObj));
+    tmpObj || (tmpObj = new GameObject(sid), gameObjects[sid] = (tmpObj)), setSID && (tmpObj.sid = sid), tmpObj.init(x, y, dir, s, type, data, owner), server && (this.setObjectGrids(tmpObj), tmpObj.doUpdate && this.updateObjects.push(tmpObj));
   }, this.disableBySid = function (sid) {
-    for (var i = 0; i < gameObjects.length; ++i)
-      if (gameObjects[i].sid == sid) {
-        this.disableObj(gameObjects[i]);
-        break;
-      }
+    this.disableObj(gameObjects[sid])
   }, this.removeAllItems = function (sid, server) {
     for (var i = 0; i < gameObjects.length; ++i)
       gameObjects[i].active && gameObjects[i].owner && gameObjects[i].owner.sid == sid && this.disableObj(gameObjects[i]);
