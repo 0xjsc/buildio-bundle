@@ -13573,8 +13573,14 @@ let current = 111;
 let breaking = false;
 
 function autobreak(trap) {
+  if (instakilling) return;
+  
+  const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
   breaking = true;
   io.send("c", true, hit360);
+  if (player.weaponIndex != correctWeapon) {
+    io.send("5", waka = correctWeapon, true);
+  }
 }
 
 function updatePlayers(data) {
