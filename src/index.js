@@ -887,49 +887,6 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
     var keyNum = event.which || event.keyCode || 0;
     const keyCode = event.code;
     "Enter" == keyCode ? toggleChat() : keysActive() && keys[keyCode] && (keys[keyCode] = 0, moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 0, sendAtckState()));
-    if (keyCode == "KeyR") {
-      const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
-      if (!enemy) return;
-      if (instakilling) return;
-      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
-      
-      instakilling = true;
-      storeEquip(7);
-      io.send("5", waka = player.weapons[0], true);
-      io.send("c", true, angle);
-      setTimeout(() => {
-        storeEquip(53);
-        turretReload = 0;
-        io.send("5", waka = player.weapons[1], true);
-        io.send("c", true, angle);
-        setTimeout(() => {
-          io.send("5", waka = player.weapons[0], true);
-          io.send("c", false, angle);
-          instakilling = false;
-        }, 1000 / config.clientSendRate / 2);
-      }, 1000 / config.clientSendRate / 2);
-    } else if (keyCode == "KeyT") {
-      const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
-      if (!enemy) return;
-      if (instakilling) return;
-      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
-      
-      instakilling = true;
-      storeEquip(53);
-      turretReload = 0;
-      io.send("5", waka = player.weapons[1], true);
-      io.send("c", true, angle);
-      setTimeout(() => {
-        storeEquip(7);
-        io.send("5", waka = player.weapons[0], true);
-        io.send("c", true, angle);
-        setTimeout(() => {
-          io.send("c", false, angle);
-          instakilling = false;
-        }, 1000 / config.clientSendRate / 2);
-      }, 1000 / config.clientSendRate / 2);
-    }
-
     keyEvents[keyCode] = false;
   }
 }));
@@ -1578,6 +1535,49 @@ function updatePlayers(data) {
 
   if (instakilling) return;
 
+  if (keyEvents.KeyR) {
+    const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+    window.sidFocus = enemy?.sid || 69420;
+      if (!enemy) return;
+      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
+      
+      instakilling = true;
+      storeEquip(7);
+      io.send("5", waka = player.weapons[0], true);
+      io.send("c", true, angle);
+      setTimeout(() => {
+        storeEquip(53);
+        turretReload = 0;
+        io.send("5", waka = player.weapons[1], true);
+        io.send("c", true, angle);
+        setTimeout(() => {
+          io.send("5", waka = player.weapons[0], true);
+          io.send("c", false, angle);
+          instakilling = false;
+        }, 1000 / config.clientSendRate / 2);
+      }, 1000 / config.clientSendRate / 2);
+  } else if (keyEvents.KeyT) {
+      const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+      window.sidFocus = enemy?.sid || 69420;
+      if (!enemy) return;
+      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
+      
+      instakilling = true;
+      storeEquip(53);
+      turretReload = 0;
+      io.send("5", waka = player.weapons[1], true);
+      io.send("c", true, angle);
+      setTimeout(() => {
+        storeEquip(7);
+        io.send("5", waka = player.weapons[0], true);
+        io.send("c", true, angle);
+        setTimeout(() => {
+          io.send("c", false, angle);
+          instakilling = false;
+        }, 1000 / config.clientSendRate / 2);
+      }, 1000 / config.clientSendRate / 2);
+  }
+
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send("5", (waka = player.weapons[0]), true);
   else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) io.send("5", (waka = player.weapons[1]), true);
 
@@ -1691,7 +1691,7 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
         for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext.strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
           if ((tmpObj = players[i] || ais[i - players.length])
             .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
-            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + (tmpObj.name || '') + " " + ((tmpObj == player) ? `${shameCount} {${(reloads[player.weapons[0]] / speeds[player.weapons[0]]).toFixed(2)};${(reloads[player.weapons[1]] / speeds[player.weapons[1]]).toFixed(2)}}` : "");
+            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + (tmpObj.name || '') + " " + ((tmpObj == player) ? `${shameCount} {${(reloads[player.weapons[0]] / speeds[player.weapons[0]]).toFixed(2)};${(reloads[player.weapons[1]] / speeds[player.weapons[1]]).toFixed(2)}}` : `${tmpObj?.sid == window?.sidFocus ? "[FOCUS]" : ""}`);
             if ('' != tmpText) {
               if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj.nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown.isLoaded) {
                 var tmpS = config.crownIconScale;
