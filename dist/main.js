@@ -12073,8 +12073,8 @@ var __webpack_exports__ = {};
   \**********************/
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.4-gamma";
-const changelog = "Added placers (spike - V, trap - F, teleporter - G)";
+const versionHash = "1.4-delta";
+const changelog = "Added autobreak devour";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 const motionBlurLevel = 0.6;
 
@@ -12952,7 +12952,7 @@ function sendAtckState() {
 window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
   var keyNum = event.which || event.keyCode || 0;
   const keyCode = event.code;
-  if (event.target.tagName == "CANVAS") keyEvents[keyCode] = true;
+  if (document.activeElement.tagName !== "INPUT") keyEvents[keyCode] = true;
   "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? io.send('7', 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, io.send('7', 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
 })), window.addEventListener('keyup', UTILS.checkTrusted(function (event) {
   if (player && player.alive) {
@@ -13594,6 +13594,12 @@ let tmpTime = Date.now();
 let serverLag = 0;
 let average = 111;
 let current = 111;
+let breaking = false;
+
+function autobreak(trap) {
+  breaking = true;
+  io.send("c", true, hit360);
+}
 
 function updatePlayers(data) {
   if (Date.now() - tmpTime > average + serverLag) {
@@ -13634,6 +13640,16 @@ function updatePlayers(data) {
 
   if (!tt) storeEquip(5, true);
   else autoplace(player, tt);
+
+  const trap = gameObjects.find(obj => obj.trap && Math.hypot(obj.x - player.x, obj.y - player.y) < obj.scale + config.playerScale && !alliancePlayers.includes(obj.owner.sid));
+
+  if (!trap && breaking) {
+    breaking = false;
+    io.send("c", false, getAttackDir());
+  }
+  if (!trap) return;
+
+  autobreak(trap);
 }
 
 function findPlayerBySID(sid) {
