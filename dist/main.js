@@ -12073,8 +12073,8 @@ var __webpack_exports__ = {};
   \**********************/
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.3-omega";
-const changelog = "increased motion blur level";
+const versionHash = "1.3 Final";
+const changelog = "Enemies doesnt disappear after death, fixed instakilling";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 const motionBlurLevel = 0.6;
 
@@ -13201,7 +13201,7 @@ let shameCount = 0;
 function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
   
-  reloads[waka] = 0;
+  if (sid == player.sid) reloads[waka] = 0;
 
   const power = player.skinIndex == 45 ? 55 : 7;
 
