@@ -13662,10 +13662,10 @@ function updatePlayers(data) {
       }, 1000 / config.clientSendRate / 2);
   }
 
-  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send("5", (waka = player.weapons[0]), true);
-  else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) io.send("5", (waka = player.weapons[1]), true);
+  if (!breaking && reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send("5", (waka = player.weapons[0]), true);
+  else if (!breaking && reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) io.send("5", (waka = player.weapons[1]), true);
 
-  if (reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
+  if (!breaking && reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
     io.send("5", (waka = player.weapons[0]), true);
   }
 
