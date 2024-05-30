@@ -1615,9 +1615,6 @@ function serverShutdownNotice(countdown) {
   }
 }
 
-let oldCPX = 100;
-let oldCPY = 100;
-
 function openLink(link) {
   window.open(link, '_blank');
 }
@@ -1635,9 +1632,7 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
           var attackDir = UTILS.getDistance(camX, camY, player.x, player.y),
             tmpDir = UTILS.getDirection(player.x, player.y, camX, camY),
             camSpd = Math.min(0.01 * attackDir * delta, attackDir);
-          attackDir > 0.05 ? (camX = (camX + camSpd * Math.cos(tmpDir)) / 2 + oldCPX / 2, camY = (camY + camSpd * Math.sin(tmpDir)) / 2 + oldCPY / 2) : (camX = player.x, camY = player.y);
-          oldCPX = camX;
-          oldCPY = camY;
+          attackDir > 0.1 ? (camX += camSpd * Math.cos(tmpDir), camY += camSpd * Math.sin(tmpDir)) : (camX = player.x, camY = player.y);
         } else
           camX = 100, camY = 100;
         for (var lastTime = now - 1000 / config.serverUpdateRate, i = 0; i < players.length + ais.length; ++i)
