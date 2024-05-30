@@ -858,38 +858,10 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
   let touch = 0;
 var keys = {},
   moveKeys = {
-    87: [
-      0,
-      -1
-    ],
-    38: [
-      0,
-      -1
-    ],
-    83: [
-      0,
-      1
-    ],
-    40: [
-      0,
-      1
-    ],
-    65: [
-      -1,
-      0
-    ],
-    37: [
-      -1,
-      0
-    ],
-    68: [
-      1,
-      0
-    ],
-    39: [
-      1,
-      0
-    ]
+    KeyW: [0, -1],
+    KeyS: [0, 1],
+    KeyA: [-1, 0],
+    KeyD: [1, 0]
   };
 
 function resetMoveDir() {
@@ -905,12 +877,14 @@ function sendAtckState() {
 }
 window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
   var keyNum = event.which || event.keyCode || 0;
-  27 == keyNum ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyNum] || (keys[keyNum] = 1, 69 == keyNum ? io.send('7', 1) : 67 == keyNum ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : 88 == keyNum ? (player.lockDir = player.lockDir ? 0 : 1, io.send('7', 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : 82 == keyNum ? sendMapPing() : moveKeys[keyNum] ? sendMoveDir() : 32 == keyNum && (attackState = 1, sendAtckState())));
+  const keyCode = event.key;
+  "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? io.send('7', 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, io.send('7', 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
 })), window.addEventListener('keyup', UTILS.checkTrusted(function (event) {
   if (player && player.alive) {
     var keyNum = event.which || event.keyCode || 0;
-    13 == keyNum ? toggleChat() : keysActive() && keys[keyNum] && (keys[keyNum] = 0, moveKeys[keyNum] ? sendMoveDir() : 32 == keyNum && (attackState = 0, sendAtckState()));
-    if (keyNum == 82) {
+    const keyCode = event.key;
+    "Enter" == keyCode ? toggleChat() : keysActive() && keys[keyCode] && (keys[keyCode] = 0, moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 0, sendAtckState()));
+    if (keyCode == "keyR") {
       storeEquip(7);
       io.send("5", waka = player.weapons[0], true);
       io.send("c", true, hit360);
