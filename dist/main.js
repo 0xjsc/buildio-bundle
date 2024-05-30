@@ -13478,16 +13478,10 @@ function getMoveDir() {
 
 function autoplace(player, enemy) {
   if (instakilling) return;
-  const yaw = Math.cos(Date.now());
+
   const itemId = (Math.hypot(player?.x - enemy?.x, player?.y - enemy?.y) || 199) < 200 ? 2 : 4;
-  if (breaking) {
-    for (let i = 0; i < Math.PI * 2; i += cspam * 2 + yaw) {
-      place(player.items[itemId], i);
-    }
-  } else {
-    for (let i = -Math.PI / 2; i < Math.PI / 2; i += cspam) {
-      place(player.items[itemId], getMoveDir() + i);
-    }
+  for (let i = -Math.PI / 2; i < Math.PI / 2; i += cspam) {
+    place(player.items[itemId], getMoveDir() + i);
   }
   io.send("2", player.buildIndex ? getAttackDir() : hit360);
 }
