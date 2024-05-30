@@ -888,33 +888,43 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
     const keyCode = event.code;
     "Enter" == keyCode ? toggleChat() : keysActive() && keys[keyCode] && (keys[keyCode] = 0, moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 0, sendAtckState()));
     if (keyCode == "KeyR") {
+      const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+      if (!enemy) return;
+      if (instakilling) return;
+      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x);
+      
       instakilling = true;
       storeEquip(7);
       io.send("5", waka = player.weapons[0], true);
-      io.send("c", true, hit360);
+      io.send("c", true, angle);
       setTimeout(() => {
         storeEquip(53);
         turretReload = 0;
         io.send("5", waka = player.weapons[1], true);
-        io.send("c", true, getAttackDir());
+        io.send("c", true, angle);
         setTimeout(() => {
           io.send("5", waka = player.weapons[0], true);
-          io.send("c", false, hit360);
+          io.send("c", false, angle);
           instakilling = false;
         }, 1000 / config.clientSendRate / 2);
       }, 1000 / config.clientSendRate / 2);
     } else if (keyCode == "KeyT") {
+      const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+      if (!enemy) return;
+      if (instakilling) return;
+      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x);
+      
       instakilling = true;
       storeEquip(53);
       turretReload = 0;
       io.send("5", waka = player.weapons[1], true);
-      io.send("c", true, getAttackDir());
+      io.send("c", true, angle);
       setTimeout(() => {
         storeEquip(7);
         io.send("5", waka = player.weapons[0], true);
-        io.send("c", true, getAttackDir());
+        io.send("c", true, angle);
         setTimeout(() => {
-          io.send("c", false, getAttackDir());
+          io.send("c", false, angle);
           instakilling = false;
         }, 1000 / config.clientSendRate / 2);
       }, 1000 / config.clientSendRate / 2);
