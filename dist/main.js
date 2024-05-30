@@ -13823,10 +13823,6 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   background: #111111 !important;
   outline: none;
 }
-
-#gameUI {
-  background: rgba(0, 0, 30, 0.3);
-}
 </style>
 `);
 
