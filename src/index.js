@@ -1,7 +1,7 @@
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.3-omicron";
-const changelog = "Tweaking the visuals";
+const versionHash = "1.3-kappa";
+const changelog = "Tweaking the visuals for second day";
 const Swal = require("sweetalert2");
 
 const testing = `Me, drink from me, drink from me
@@ -1615,6 +1615,9 @@ function serverShutdownNotice(countdown) {
   }
 }
 
+let oldCPX = 100;
+let oldCPY = 100;
+
 function openLink(link) {
   window.open(link, '_blank');
 }
@@ -1632,9 +1635,9 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
           var attackDir = UTILS.getDistance(camX, camY, player.x, player.y),
             tmpDir = UTILS.getDirection(player.x, player.y, camX, camY),
             camSpd = Math.min(0.01 * attackDir * delta, attackDir);
-          attackDir > 0.05 ? (camX += camSpd * Math.cos(tmpDir), camY += camSpd * Math.sin(tmpDir)) : (camX = player.x, camY = player.y);
+          attackDir > 0.05 ? (camX = (camX + camSpd * Math.cos(tmpDir)) / 2 + oldCPX / 2, camY = (camY + camSpd * Math.sin(tmpDir)) / 2 + oldCPY / 2) : (camX = player.x, camY = player.y);
         } else
-          camX = config.mapScale / 2, camY = config.mapScale / 2;
+          camX = 100, camY = 100;
         for (var lastTime = now - 1000 / config.serverUpdateRate, i = 0; i < players.length + ais.length; ++i)
           if ((tmpObj = players[i] || ais[i - players.length]) && tmpObj.visible)
             if (tmpObj.forcePos)
@@ -1703,7 +1706,6 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
           }
         }(delta), -1 !== controllingTouch.id && renderControl(controllingTouch.startX, controllingTouch.startY, controllingTouch.currentX, controllingTouch.currentY), -1 !== attackingTouch.id && renderControl(attackingTouch.startX, attackingTouch.startY, attackingTouch.currentX, attackingTouch.currentY);
       }(), requestAnimFrame(e);
-    if (window.doUpdateVisual) window.doUpdateVisual();
   }(), window.openLink = openLink, window.aJoinReq = aJoinReq, window.follmoo = function () {
     moofoll || (moofoll = !0, saveVal('moofoll', 1));
   }, window.kickFromClan = kickFromClan, window.sendJoin = sendJoin, window.leaveAlliance = leaveAlliance, window.createAlliance = createAlliance, window.storeBuy = storeBuy, window.storeEquip = storeEquip, window.showItemInfo = showItemInfo, window.selectSkinColor = function (index) {
@@ -1711,3 +1713,35 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
   }, window.changeStoreIndex = function (index) {
     currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
   }, window.config = config;
+
+document.querySelector("#gameName").innerHTML = "AutoWASM";
+document.querySelector("#gameName").style.color = "black";
+
+document.querySelector("body").insertAdjacentHTML("beforeend", `
+<style>
+.menuCard, .menuText, .menuHeader {
+  background: #222222 !important;
+  color: #aaaaaa;
+  border-radius: 2px;
+  transition: all 1s 0s;
+}
+
+.menuCard {
+  box-shadow: 0px 7px #888888;
+  scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5);
+}
+
+.menuCard:hover {
+  transform: scale(1.05);
+}
+
+#nameInput, #enterGame, #serverBrowser {
+  background: #111111 !important;
+  outline: none;
+}
+
+#gameUI {
+  background: rgba(0, 0, 30, 0.3);
+}
+</style>
+`);
