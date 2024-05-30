@@ -13624,6 +13624,7 @@ function updatePlayers(data) {
         storeEquip(53);
         turretReload = 0;
         io.send("5", waka = player.weapons[1], true);
+        reloads[player.weapons[1]] = 0;
         io.send("c", true, angle);
         setTimeout(() => {
           io.send("5", waka = player.weapons[0], true);
@@ -13643,6 +13644,7 @@ function updatePlayers(data) {
       turretReload = 0;
       io.send("5", waka = player.weapons[1], true);
       io.send("c", true, angle);
+      reloads[player.weapons[1]] = 0;
       setTimeout(() => {
         storeEquip(7);
         io.send("5", waka = player.weapons[0], true);
