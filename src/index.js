@@ -1503,7 +1503,10 @@ function autobreak(trap) {
   
   const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
   breaking = true;
-  io.send("c", true, hit360);
+  io.send("c", true, Math.atan2(
+    trap.y - player.y,
+    trap.x - player.x
+  ));
   if (player.weaponIndex != correctWeapon) {
     io.send("5", waka = correctWeapon, true);
   }
