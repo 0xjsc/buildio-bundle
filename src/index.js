@@ -1,8 +1,10 @@
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.3-kappa";
-const changelog = "Tweaking the visuals for second day";
+const versionHash = "1.3-upsilon";
+const changelog = "Added motion blur, buffed autoplace";
 const Swal = require("sweetalert2");
+const motionBlurLevel = 0.9;
+
 
 const testing = `Me, drink from me, drink from me
 Shoot across the symphony
@@ -1496,7 +1498,7 @@ function updateHealth(sid, value) {
   healing();
 }
 
-const cspam = Math.PI / 4;
+const cspam = Math.PI / 8;
 
 function getMoveDir() {
   var newMoveDir = function () {
@@ -1626,6 +1628,7 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
     objectManager.add(0, tmpMid, tmpMid + 200, 0, config.treeScales[3], 0), objectManager.add(1, tmpMid, tmpMid - 480, 0, config.treeScales[3], 0), objectManager.add(2, tmpMid + 300, tmpMid + 450, 0, config.treeScales[3], 0), objectManager.add(3, tmpMid - 950, tmpMid - 130, 0, config.treeScales[2], 0), objectManager.add(4, tmpMid - 750, tmpMid - 400, 0, config.treeScales[3], 0), objectManager.add(5, tmpMid - 700, tmpMid + 400, 0, config.treeScales[2], 0), objectManager.add(6, tmpMid + 800, tmpMid - 200, 0, config.treeScales[3], 0), objectManager.add(7, tmpMid - 260, tmpMid + 340, 0, config.bushScales[3], 1), objectManager.add(8, tmpMid + 760, tmpMid + 310, 0, config.bushScales[3], 1), objectManager.add(9, tmpMid - 800, tmpMid + 100, 0, config.bushScales[3], 1), objectManager.add(10, tmpMid - 800, tmpMid + 300, 0, items.list[4].scale, items.list[4].id, items.list[10]), objectManager.add(11, tmpMid + 650, tmpMid - 390, 0, items.list[4].scale, items.list[4].id, items.list[10]), objectManager.add(12, tmpMid - 400, tmpMid - 450, 0, config.rockScales[2], 2);
   }(),
   function e() {
+    mainContext.globalCompositeOperation = "source-over";
     now = Date.now(), delta = now - lastUpdate, lastUpdate = now,
       function () {
         if (deathTextScale < 120 && (deathTextScale += 0.1 * delta, diedText.style.fontSize = Math.min(Math.round(deathTextScale), 120) + 'px'), player) {
@@ -1703,6 +1706,8 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
           }
         }(delta), -1 !== controllingTouch.id && renderControl(controllingTouch.startX, controllingTouch.startY, controllingTouch.currentX, controllingTouch.currentY), -1 !== attackingTouch.id && renderControl(attackingTouch.startX, attackingTouch.startY, attackingTouch.currentX, attackingTouch.currentY);
       }(), requestAnimFrame(e);
+    mainContext.globalAlpha = Math.min(Math.max(motionBlurLevel, 0), 1);
+    mainContext.globalCompositeOperation = "source-over";
   }(), window.openLink = openLink, window.aJoinReq = aJoinReq, window.follmoo = function () {
     moofoll || (moofoll = !0, saveVal('moofoll', 1));
   }, window.kickFromClan = kickFromClan, window.sendJoin = sendJoin, window.leaveAlliance = leaveAlliance, window.createAlliance = createAlliance, window.storeBuy = storeBuy, window.storeEquip = storeEquip, window.showItemInfo = showItemInfo, window.selectSkinColor = function (index) {
