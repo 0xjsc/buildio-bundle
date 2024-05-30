@@ -13514,7 +13514,7 @@ function healing() {
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
   const healTimeout = (damage > 70 && Date.now() - lastDamage > average + serverLag) ? 0 : 120 - window.pingTime + serverLag + ((Date.now() - lastHeal < 120 - window.pingTime) ? (Date.now() - lastHeal) : serverLag);
 
-  if (healTimeout <= 120 - window.pingTime) shameCount = Math.min(shameCount + 1, 8);
+  if (healTimeout <= 120 - window.pingTime + serverLag) shameCount = Math.min(shameCount + 1, 8);
   else shameCount = Math.max(0, shameCount - 2)
   
   window.setTimeout(() =>
