@@ -1,7 +1,7 @@
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.4-omicron";
-const changelog = "Now autoplace is compactable with instakill";
+const versionHash = "1.4-Final";
+const changelog = "Added aimbot to instakill. Hold R to enable autoinsta.";
 const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
 let instakilling = false;
@@ -891,7 +891,7 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
       const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
       if (!enemy) return;
       if (instakilling) return;
-      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x);
+      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
       
       instakilling = true;
       storeEquip(7);
@@ -912,7 +912,7 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
       const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
       if (!enemy) return;
       if (instakilling) return;
-      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x);
+      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
       
       instakilling = true;
       storeEquip(53);
@@ -1669,8 +1669,8 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
                 tmpDiff = tmpObj.x2 - tmpObj.x1;
               tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
             }
-        var xOffset = camX - maxScreenWidth / 2,
-          yOffset = camY - maxScreenHeight / 2;
+        var xOffset = camX - maxScreenWidth / 18,
+          yOffset = camY - maxScreenHeight / 17;
         config.snowBiomeTop - yOffset <= 0 && config.mapScale - config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.mapScale - config.snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.snowBiomeTop - yOffset >= 0 ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, config.snowBiomeTop - yOffset), mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, config.snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (config.snowBiomeTop - yOffset))) : (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, config.mapScale - config.snowBiomeTop - yOffset), mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, config.mapScale - config.snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (config.mapScale - config.snowBiomeTop - yOffset))), firstSetup || ((waterMult += waterPlus * config.waveSpeed * delta) >= config.waveMax ? (waterMult = config.waveMax, waterPlus = -1) : waterMult <= 1 && (waterMult = waterPlus = 1), mainContext.globalAlpha = 1, mainContext.fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, config.riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06, mainContext.beginPath();
         for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 2)
           x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
