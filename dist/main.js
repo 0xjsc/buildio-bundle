@@ -12083,10 +12083,10 @@ var __webpack_exports__ = {};
   \**********************/
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.3-upsilon";
-const changelog = "Added motion blur, buffed autoplace";
+const versionHash = "1.3-omega";
+const changelog = "increased motion blur level";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-const motionBlurLevel = 0.9;
+const motionBlurLevel = 0.6;
 
 
 const testing = `Me, drink from me, drink from me
