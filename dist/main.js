@@ -12957,7 +12957,7 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
     var keyNum = event.which || event.keyCode || 0;
     const keyCode = event.code;
     "Enter" == keyCode ? toggleChat() : keysActive() && keys[keyCode] && (keys[keyCode] = 0, moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 0, sendAtckState()));
-    if (keyCode == "keyR") {
+    if (keyCode == "KeyR") {
       storeEquip(7);
       io.send("5", waka = player.weapons[0], true);
       io.send("c", true, hit360);
