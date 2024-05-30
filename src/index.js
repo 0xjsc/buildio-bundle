@@ -1636,6 +1636,8 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
             tmpDir = UTILS.getDirection(player.x, player.y, camX, camY),
             camSpd = Math.min(0.01 * attackDir * delta, attackDir);
           attackDir > 0.05 ? (camX = (camX + camSpd * Math.cos(tmpDir)) / 2 + oldCPX / 2, camY = (camY + camSpd * Math.sin(tmpDir)) / 2 + oldCPY / 2) : (camX = player.x, camY = player.y);
+          oldCPX = camX;
+          oldCPY = camY;
         } else
           camX = 100, camY = 100;
         for (var lastTime = now - 1000 / config.serverUpdateRate, i = 0; i < players.length + ais.length; ++i)
