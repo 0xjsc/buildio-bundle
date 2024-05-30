@@ -12080,70 +12080,6 @@ const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/
 const motionBlurLevel = 0.6;
 let instakilling = false;
 
-const testing = `Me, drink from me, drink from me
-Shoot across the symphony
-That we shoot across the sky
-Drink from me, drink from me
-That we shoot across the 
-I'm feeling drunk and high
-So high, so high
-That we shoot across the s-
-Oh, angel sent from up above
-You know you make my world light up
-When I was down, when I was hurt
-You came to lift me up
-Life is a drink and love's a drug
-Oh, now I think I must be miles up
-When I was a river, dried up
-You came to rain a flood
-You said
-Drink from me, drink from me
-When I was so thirsty
-Pour on a symphony
-Now I just can't get enough
-Put your wings on me, wings on me
-When I was so heavy
-Pour on a symphony
-When I'm low, low, low, low
-I-, oh I-, oh I-
-Got me feeling drunk and high
-So high, so high
-So high, so high
-Oh I-, oh I-, oh I-
-Now I'm feeling drunk and high
-So high so high,
-So high, so high
-Oh, angel sent from up above
-I feel you coursing through my blood
-Life is a drink, your love's about
-To make the stars come out
-Put your wings on me, wings on me
-When I was so heavy
-Pour on a symphony
-When I'm low, low, low, low
-I-, oh I-, oh I-
-Got me feeling drunk and high
-So high, so high (so high)
-Oh I-, oh I-, oh I-
-Now I'm feeling drunk and high
-So high so high,
-So high, so high
-I-, oh I-, oh I-
-La, la, la, la, la, la, la
-So high, so high
-I-, oh I-, oh I-
-Now I'm feeling drunk and high
-So high so high,
-So high, so high
-That we shoot across the sky
-That we shoot across the
-That we shoot across the sky
-That we shoot across the (that we shoot, yeah)
-That we shoot across the sky
-That we shoot across the
-That we shoot across the sky
-That we shoot across the`.split("\n");
-
 window.loadedScript = true;
 var isProd = location.origin.includes("http://")
 var io = __webpack_require__(/*! ./libs/io-client.js */ /*! ./libs/io-client.js */ "./src/libs/io-client.js"),
@@ -12683,15 +12619,7 @@ function createAlliance() {
     .value);
 }
 
-function funny() {
-  let index = 0;
-  const i = setInterval(() => {
-    io.send("ch", testing[index++]);
-    if (index >= testing.length) clearInterval(i);
-  }, 2100);
-}
-
-  let waka = 0;
+let waka = 0; // sorry for bad variable name
 
 function leaveAlliance() {
   allianceNotifications = [], updateNotifications(), io.send('9');
@@ -12867,9 +12795,7 @@ var usingTouch, lastDir, profanityList = [
 
 function receiveChat(sid, message) {
   var tmpPlayer = findPlayerBySID(sid);
-  if (tmpPlayer == player && message == "!fun") {
-    funny();
-  }
+
   tmpPlayer && (tmpPlayer.chatMessage = function (text) {
     for (var tmpString, i = 0; i < profanityList.length; ++i)
       if (text.indexOf(profanityList[i]) > -1) {
@@ -13168,21 +13094,18 @@ function gatherAnimation(sid, didHit, index) {
   if (sid == player.sid) reloads[waka] = 0;
   else return storeEquip(6);
 
-  const power = player.skinIndex == 45 ? 55 : 7;
+  const hitHat = breaking ? 40 : ((player.health < 100 && player.health > 60) ? 55 : 7);
+  const hitAcc = (player.health > 50) ? 15 : 18;
+  const idleHat = breaking ? 26 : (turretReload >= 2500 ? 53 : 6);
+  const idleAcc = player.health < 100 ? 15 : 21;
 
-  const hat = Date.now() - lastPoison < 2500 ? (lastPoison = Date.now(), 21) : (player.health < 100 ? 6 : power);
-  const acc = didHit ? (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 21)) : (player.health < 100 ? 15 : ((shameCount >= 4) ? 20 : 18));
-  storeEquip(didHit ? hat : (player.health < 100) ? 6 : 26);
-
-  storeEquip(acc, true);
+  storeEquip(idleHat);
+  storeEquip(idleAcc, true);
 
   setTimeout(() => {
-    let hat = player.health < 100 ? (turretReload > 2500 ? (player.visible = false, setTimeout(() => player.visible = true, 111), turretReload = 0, 53) : 26) : (touch ? didHit ? 6 : power : 40);
-    storeEquip(hat);
-    storeEquip(hat == 7 ? 15 : 11, true);
-
-    setTimeout(() => { storeEquip(6); storeEquip(15, true) }, window.pingTime);
-  }, speeds[index] - window.pingTime);
+    storeEquip(hitHat);
+    storeEquip(hitAcc, true);
+  }, speeds[waka] - window.pingTime - 1000 / config.serverUpdateRate);
 }
 
 function renderPlayers(xOffset, yOffset, zIndex) {
