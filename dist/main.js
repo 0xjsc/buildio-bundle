@@ -13492,19 +13492,10 @@ function healing() {
   const damage = 100 - player.health;
   const healingItemSid = player.items[0];
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
-  const wasInstakilled = Date.now() - lastDamage < average + serverLag;
-  const safeTime = 120 - window.pingTime;
-  const healT = Date.now() - lastDamage;
-
-  const safe120ms = healT < 120 ? (healT + safeTime) : safeTime;
-  const healTimeout = wasInstakilled ? 0 : safe120ms;
+  const healTime = Date.now() - lastDamage < 120 - window.pingTime ? (Date.now() - lastDamage + 120) : 120 - window.pingTime;
   
-  const hitTime = Date.now() - window.pingTime;
-  const healTime = Date.now() + healTimeout;
-  const timeSinceHit = healTime - hitTime;
-  
-  if (timeSinceHit < 120) shameCount = Math.min(shameCount + 1, 8);
-  else shameCount = Math.max(0, shameCount - 2)
+  if (healTimeout < 120 - window.pingTime) shameCount = Math.min(shameCount + 1, 8);
+  else shameCount = Math.max(0, shameCount - 2);
   
   window.setTimeout(() =>
     heal(healCount), healTimeout);
