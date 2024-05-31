@@ -1,10 +1,23 @@
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.4-Final";
-const changelog = "Buffed autoplace, added aimbot to the instakill";
+const versionHash = "1.5-Alpha";
+const changelog = "Fixed autobeak bugs, added emojis support";
 const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
 let instakilling = false;
+
+const emojis = new Map();
+
+emojis.set(":smile:", "😀");
+emojis.set(":laugh:", "😂");
+emojis.set(":wink:", "😉");
+emojis.set(":moan:", "😫");
+emojis.set(":sob:", "😭");
+emojis.set(":hot:", "🥵");
+emojis.set(":cold:", "🥶");
+emojis.set(":skull:", "💀");
+emojis.set(":skullium:", "☠️");
+emojis.set(":clown:", "🤡");
 
 window.loadedScript = true;
 var isProd = location.origin.includes("http://")
@@ -721,6 +734,10 @@ var usingTouch, lastDir, profanityList = [
 
 function receiveChat(sid, message) {
   var tmpPlayer = findPlayerBySID(sid);
+
+  for (const [key, value] of emojis) {
+    message = message.replaceAll(key, value);
+  }
 
   tmpPlayer && (tmpPlayer.chatMessage = function (text) {
     for (var tmpString, i = 0; i < profanityList.length; ++i)
