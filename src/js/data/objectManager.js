@@ -44,7 +44,7 @@ module.exports = function (GameObject, gameObjects, UTILS, config, players, serv
     this.disableObj(gameObjects[sid])
   }, this.removeAllItems = function (sid, server) {
     for (var i = 0; i < gameObjects.length; ++i)
-      gameObjects[i].active && gameObjects[i].owner && gameObjects[i].owner.sid == sid && this.disableObj(gameObjects[i]);
+      gameObjects[i]?.active && gameObjects[i].owner && gameObjects[i].owner.sid == sid && this.disableObj(gameObjects[i]);
     server && server.broadcast('13', sid);
   }, this.fetchSpawnObj = function (sid) {
     for (var tmpLoc = null, i = 0; i < gameObjects.length; ++i)
