@@ -13494,7 +13494,7 @@ function healing() {
   const damage = 100 - player.health;
   const healingItemSid = player.items[0];
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
-  const healTimeout = Date.now() - lastDamage < safeHealDelay - window.pingTime ? (Date.now() - prevHeal + safeHealDelay) : safeHealDelay - window.pingTime;
+  const healTimeout = Date.now() - lastDamage < safeHealDelay - window.pingTime ? (Math.abs(Date.now() - prevHeal) + safeHealDelay) : safeHealDelay - window.pingTime;
   
   const damageTime = Date.now() - window.pingTime;
   const futureHeal = Date.now() + healTimeout + window.pingTime;
