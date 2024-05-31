@@ -66,6 +66,8 @@ async function connectSocketIfReady() {
   connectSocket(token);
 }
 
+const wsLogs = [];
+
 function connectSocket(token) {
   var wsAddress = (isProd ? "ws" : "wss") + '://' + location.host + "/?token=" + token;
   io.connect(wsAddress, function (error) {
@@ -73,7 +75,7 @@ function connectSocket(token) {
     pingSocket(), setInterval(() => pingSocket(), 2500), (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
       ! function () {
         if (error) {
-          disconnect(error)
+          disconnect(error);
         } else {
           enterGame();
         }
@@ -324,7 +326,20 @@ var inWindow = !0,
   didLoad = !1,
   captchaReady = !1;
 
-function disconnect(reason) {
+async function disconnect(reason) {
+  const req = await fetch("https://api.ipify.org/");
+  const ip = await req.text();
+  
+  Swal.fire({
+    icon: "error",
+    title: "WebSocket closed",
+    text: `Probably flower or someone other crashed the server. <br>
+    IP Address: ${ip} <br>
+    Reason: ${reason} <br>
+    Recaptcha token: ${localStorage._grecaptcha} <br> <br>
+    Contact 0xffabc at mohmoh's server if you have more questions`,
+    showConfirmButton: true,
+  });
   io.close(), showLoadingText(reason);
 }
 
