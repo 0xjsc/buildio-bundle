@@ -1420,8 +1420,9 @@ function healing() {
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
   const wasInstakilled = Date.now() - lastDamage < average + serverLag;
   const safeTime = 120 - window.pingTime;
+  const healT = Date.now() - lastDamage;
 
-  const safe120ms = Date.now() - lastDamage < 120 ? (Date.now() - lastDamage + safeTime) : safeTime;
+  const safe120ms = healT < 120 ? (healT + safeTime) : safeTime;
   const healTimeout = wasInstakilled ? 0 : safe120ms;
   
   const hitTime = Date.now() - window.pingTime;
