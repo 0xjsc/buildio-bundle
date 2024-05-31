@@ -12907,7 +12907,10 @@ function sendAtckState() {
 window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
   var keyNum = event.which || event.keyCode || 0;
   const keyCode = event.code;
-  if (document.activeElement.tagName !== "INPUT") keyEvents[keyCode] = true;
+  if (document.activeElement.tagName !== "INPUT") {
+    keyEvents[keyCode] = true;
+    keyEvents["Switch" + keyCode] = !keyEvents["Switch" + keyCode];
+  }
   "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? io.send('7', 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, io.send('7', 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
 })), window.addEventListener('keyup', UTILS.checkTrusted(function (event) {
   if (player && player.alive) {
@@ -13631,9 +13634,9 @@ function updatePlayers(data) {
 
   if (instakilling) return;
 
-  if (keyEvents.KeyR) {
+  if (keyEvents.SwitchKeyR) {
     normalInsta();
-  } else if (keyEvents.KeyT) {
+  } else if (keyEvents.SwitchKeyT) {
     reverseInsta();
   }
 
@@ -13750,9 +13753,9 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
         for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext.strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
           if ((tmpObj = players[i] || ais[i - players.length])
             .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
-            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + (tmpObj.name || '') + " " + ((tmpObj == player) ? `${shameCount} {${(reloads[player.weapons[0]] / speeds[player.weapons[0]]).toFixed(2)};${(reloads[player.weapons[1]] / speeds[player.weapons[1]]).toFixed(2)}}` : `${tmpObj?.sid == window?.sidFocus ? "[FOCUS]" : ""}`);
+            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + (tmpObj.name || '') + " " + ((tmpObj == player) ? `${shameCount} {${(reloads[player.weapons[0]] / speeds[player.weapons[0]]).toFixed(2)};${(reloads[player.weapons[1]] / speeds[player.weapons[1]]).toFixed(2)}}` : ``);
             if ('' != tmpText) {
-              if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj.nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown.isLoaded) {
+              if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = tmpObj?.sid == window?.sidFocus ? '#f00' : '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj.nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown.isLoaded) {
                 var tmpS = config.crownIconScale;
                 tmpX = tmpObj.x - xOffset - tmpS / 2 - mainContext.measureText(tmpText)
                   .width / 2 - config.crownPad, mainContext.drawImage(iconSprites.crown, tmpX, tmpObj.y - yOffset - tmpObj.scale - config.nameY - tmpS / 2 - 5, tmpS, tmpS);
