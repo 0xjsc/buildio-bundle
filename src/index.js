@@ -732,10 +732,10 @@ var usingTouch, lastDir, profanityList = [
   'bastard'
 ];
 
-const syncChats = new Map(Object.entries([
+const syncChats = new Map(Object.entries({
   "DROP DEAD NO TRACE": "DROP DEAD NO TRACE",
   "!sync": "!op"
-]));
+  }));
 
 function receiveChat(sid, message) {
   var tmpPlayer = findPlayerBySID(sid);
