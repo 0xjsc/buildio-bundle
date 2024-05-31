@@ -12891,7 +12891,7 @@ var keys = {},
     KeyD: [1, 0]
   };
 
-const keyEvents = {};
+window.keyEvents = {};
 
 function resetMoveDir() {
   keys = {}, io.send('rmd');
@@ -12908,8 +12908,8 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
   var keyNum = event.which || event.keyCode || 0;
   const keyCode = event.code;
   if (document.activeElement.tagName !== "INPUT") {
-    keyEvents[keyCode] = true;
-    keyEvents["Switch" + keyCode] = !keyEvents["Switch" + keyCode];
+    window.keyEvents[keyCode] = true;
+    window.keyEvents["Switch" + keyCode] = !window.keyEvents["Switch" + keyCode];
   }
   "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? io.send('7', 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, io.send('7', 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
 })), window.addEventListener('keyup', UTILS.checkTrusted(function (event) {
@@ -12917,7 +12917,7 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
     var keyNum = event.which || event.keyCode || 0;
     const keyCode = event.code;
     "Enter" == keyCode ? toggleChat() : keysActive() && keys[keyCode] && (keys[keyCode] = 0, moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 0, sendAtckState()));
-    keyEvents[keyCode] = false;
+    window.keyEvents[keyCode] = false;
   }
 }));
 var lastMoveDir = void 0;
@@ -13615,9 +13615,9 @@ function updatePlayers(data) {
   if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
   else reloads[player.weaponIndex] = speeds[player.weaponIndex];
 
-  if (keyEvents.KeyG) place(player.items[5], getAttackDir()); 
-  else if (keyEvents.KeyV) place(player.items[2], getAttackDir());
-  else if (keyEvents.KeyF) place(player.items[4], getAttackDir()); 
+  if (window.keyEvents.KeyG) place(player.items[5], getAttackDir()); 
+  else if (window.keyEvents.KeyV) place(player.items[2], getAttackDir());
+  else if (window.keyEvents.KeyF) place(player.items[4], getAttackDir()); 
   
   for (i = 0; i < data.length;) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
@@ -13634,9 +13634,9 @@ function updatePlayers(data) {
 
   if (instakilling) return;
 
-  if (keyEvents.SwitchKeyR) {
+  if (window.keyEvents.SwitchKeyR) {
     normalInsta();
-  } else if (keyEvents.SwitchKeyT) {
+  } else if (window.keyEvents.SwitchKeyT) {
     reverseInsta();
   }
 
@@ -13755,7 +13755,7 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
             .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
             var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + (tmpObj.name || '') + " " + ((tmpObj == player) ? `${shameCount} {${(reloads[player.weapons[0]] / speeds[player.weapons[0]]).toFixed(2)};${(reloads[player.weapons[1]] / speeds[player.weapons[1]]).toFixed(2)}}` : ``);
             if ('' != tmpText) {
-              if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = tmpObj?.sid == window?.sidFocus ? '#f00' : '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj.nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown.isLoaded) {
+              if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = tmpObj?.sid == window?.sidFocus ? (window.keyEvents.SwitchKeyR ? '#f00' : '#ff0') : '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj.nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown.isLoaded) {
                 var tmpS = config.crownIconScale;
                 tmpX = tmpObj.x - xOffset - tmpS / 2 - mainContext.measureText(tmpText)
                   .width / 2 - config.crownPad, mainContext.drawImage(iconSprites.crown, tmpX, tmpObj.y - yOffset - tmpObj.scale - config.nameY - tmpS / 2 - 5, tmpS, tmpS);
