@@ -13562,9 +13562,8 @@ function biomeHats() {
 }
 
 function normalInsta(c) {
-      const enemy = players.find(e => player.sid != e.sid && !alliancePlayers.includes(e.sid));
+      const enemy = players.find(e => Math.hypot(player.x - enemy?.x, player.y - enemy?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
       window.sidFocus = enemy?.sid || 69420;
-      if (Math.hypot(player.x - enemy?.x, player.y - enemy?.y) > 180) return;
       if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
       if (!enemy) return;
       const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
@@ -13590,7 +13589,7 @@ function normalInsta(c) {
 }
 
 function reverseInsta(c) {
-      const enemy = players.find(e => player.sid != e.sid && !alliancePlayers.includes(e.sid));
+      const enemy = players.find(e => Math.hypot(player.x - enemy?.x, player.y - enemy?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
       window.sidFocus = enemy?.sid || 69420;
       if (Math.hypot(player.x - enemy?.x, player.y - enemy?.y) > 180) return;
       if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
