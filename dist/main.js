@@ -13501,6 +13501,7 @@ function autobreak(trap) {
   
   const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
   breaking = true;
+  window.trap = trap;
   io.send("c", true, Math.atan2(
     trap.y - player.y,
     trap.x - player.x
@@ -13599,7 +13600,7 @@ function updatePlayers(data) {
   if (!tt) storeEquip(5, true);
   else autoplace(player, tt);
 
-  const trap = gameObjects.find(obj => obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale + config.playerScale && !alliancePlayers.includes(obj?.owner?.sid));
+  const trap = gameObjects.find(obj => obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
 
   if (!trap && breaking) {
     breaking = false;
