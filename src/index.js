@@ -744,6 +744,12 @@ function receiveChat(sid, message) {
     message = message.replaceAll(key, value);
   }
 
+  if (/what\ mod/g.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
+    io.send("ch", "AutoWASM By 0xffabc.");
+  } else if (/ez|bad|noskill|faggot|gay/gm.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
+    message = "me is retarded homo";
+  }
+
   if (syncChats.has(message) && tmpPlayer && sid != player.sid) {
     if (tmpPlayer.weaponIndex == tmpPlayer.weapons[1]) reverseInsta();
     else normalInsta();
