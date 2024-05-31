@@ -12407,7 +12407,7 @@ async function disconnect(reason) {
   Swal.fire({
     icon: "error",
     title: "WebSocket closed",
-    text: `Probably flower or someone other crashed the server. <br>
+    html: `Probably flower or someone other crashed the server. <br>
     IP Address: ${ip} <br>
     Reason: ${reason} <br>
     Recaptcha token: ${localStorage._grecaptcha} <br> <br>
