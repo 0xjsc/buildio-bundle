@@ -12095,7 +12095,7 @@ emojis.set(":clown:", "🤡");
 
 window.loadedScript = true;
 var isProd = location.origin.includes("http://")
-var io = __webpack_require__(/*! ./libs/io-client.js */ /*! ./libs/io-client.js */ "./src/libs/io-client.js"),
+var io = window.io = __webpack_require__(/*! ./libs/io-client.js */ /*! ./libs/io-client.js */ "./src/libs/io-client.js"),
   UTILS = __webpack_require__(/*! ./libs/utils.js */ /*! ./libs/utils.js */ "./src/libs/utils.js"),
   animText = __webpack_require__(/*! ./libs/animText.js */ /*! ./libs/animText.js */ "./src/libs/animText.js"),
   config = __webpack_require__(/*! ./config.js */ /*! ./config.js */ "./src/config.js"),
