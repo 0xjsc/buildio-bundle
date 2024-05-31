@@ -1421,7 +1421,7 @@ function healing() {
   const healTimeout = Date.now() - lastDamage < 120 - window.pingTime ? (Date.now() - lastDamage + 120) : 120 - window.pingTime;
   
   const damageTime = Date.now() - window.pingTime;
-  const futureheal = Date.now() + healTimeout + window.pingTime;
+  const futureHeal = Date.now() + healTimeout + window.pingTime;
   const timeSinceHit = futureHeal - damageTime;
   
   if (timeSinceHit < 120) shameCount = Math.min(shameCount + 1, 8);
