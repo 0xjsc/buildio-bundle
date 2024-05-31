@@ -1,7 +1,7 @@
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.5-Alpha";
-const changelog = "Fixed autobeak bugs, added emojis support";
+const versionHash = "1.5-Beta";
+const changelog = "Added autosync";
 const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
 let instakilling = false;
@@ -732,12 +732,22 @@ var usingTouch, lastDir, profanityList = [
   'bastard'
 ];
 
+const syncChats = new Map(Object.entries([
+  "DROP DEAD NO TRACE": "DROP DEAD NO TRACE",
+  "!sync": "!op"
+]));
+
 function receiveChat(sid, message) {
   var tmpPlayer = findPlayerBySID(sid);
 
   for (const [key, value] of emojis) {
     message = message.replaceAll(key, value);
   }
+
+  if (syncChats.has(message) && tmpPlayer && sid != player.sid) {
+    if (tmpPlayer.weaponIndex == tmpPlayer.weapons[1]) reverseInsta();
+    else normalInsta();
+  } else if (syncChats.has(message) && sid == player.sid) return;
 
   tmpPlayer && (tmpPlayer.chatMessage = function (text) {
     for (var tmpString, i = 0; i < profanityList.length; ++i)
@@ -1454,6 +1464,63 @@ function autobreak(trap) {
   }
 }
 
+function biomeHats() {
+
+}
+
+function normalInsta(c) {
+      if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
+    const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+    window.sidFocus = enemy?.sid || 69420;
+      if (!enemy) return;
+      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
+      
+      instakilling = true;
+      c();
+      storeEquip(7);
+      io.send("ch", "!sync");
+      io.send("5", waka = player.weapons[0], true);
+      io.send("c", true, angle);
+      setTimeout(() => {
+        storeEquip(53);
+        turretReload = 0;
+        io.send("5", waka = player.weapons[1], true);
+        reloads[player.weapons[1]] = 0;
+        io.send("c", true, angle);
+        setTimeout(() => {
+          io.send("5", waka = player.weapons[0], true);
+          io.send("c", false, angle);
+          instakilling = false;
+        }, 1000 / config.clientSendRate / 2);
+      }, 1000 / config.clientSendRate / 2);
+}
+
+function reverseInsta(c) {
+      if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
+      const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+      window.sidFocus = enemy?.sid || 69420;
+      if (!enemy) return;
+      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
+      
+      instakilling = true;
+      c();
+      storeEquip(53);
+      turretReload = 0;
+      io.send("5", waka = player.weapons[1], true);
+      io.send("c", true, angle);
+      io.send("ch", "!sync");
+      reloads[player.weapons[1]] = 0;
+      setTimeout(() => {
+        storeEquip(7);
+        io.send("5", waka = player.weapons[0], true);
+        io.send("c", true, angle);
+        setTimeout(() => {
+          io.send("c", false, angle);
+          instakilling = false;
+        }, 1000 / config.clientSendRate / 2);
+      }, 1000 / config.clientSendRate / 2);
+}
+
 function updatePlayers(data) {
   if (Date.now() - tmpTime > average + serverLag) {
     storeEquip(6);
@@ -1480,6 +1547,7 @@ function updatePlayers(data) {
   if (tt.skinIndex == 26 || tt.skinIndex == 11) {
     io.send("c", false, getAttackDir());
   }
+  if (!tt) biomeHats();
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
     io.send("c", true, player.buildIndex ? getAttackDir() : hit360);
   }
@@ -1487,50 +1555,9 @@ function updatePlayers(data) {
   if (instakilling) return;
 
   if (keyEvents.KeyR) {
-    if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
-    const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
-    window.sidFocus = enemy?.sid || 69420;
-      if (!enemy) return;
-      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
-      
-      instakilling = true;
-      storeEquip(7);
-      io.send("5", waka = player.weapons[0], true);
-      io.send("c", true, angle);
-      setTimeout(() => {
-        storeEquip(53);
-        turretReload = 0;
-        io.send("5", waka = player.weapons[1], true);
-        reloads[player.weapons[1]] = 0;
-        io.send("c", true, angle);
-        setTimeout(() => {
-          io.send("5", waka = player.weapons[0], true);
-          io.send("c", false, angle);
-          instakilling = false;
-        }, 1000 / config.clientSendRate / 2);
-      }, 1000 / config.clientSendRate / 2);
+    normalInsta();
   } else if (keyEvents.KeyT) {
-      if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
-      const enemy = players.find(e => Math.hypot(player.x - e.x, player.y - e.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
-      window.sidFocus = enemy?.sid || 69420;
-      if (!enemy) return;
-      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
-      
-      instakilling = true;
-      storeEquip(53);
-      turretReload = 0;
-      io.send("5", waka = player.weapons[1], true);
-      io.send("c", true, angle);
-      reloads[player.weapons[1]] = 0;
-      setTimeout(() => {
-        storeEquip(7);
-        io.send("5", waka = player.weapons[0], true);
-        io.send("c", true, angle);
-        setTimeout(() => {
-          io.send("c", false, angle);
-          instakilling = false;
-        }, 1000 / config.clientSendRate / 2);
-      }, 1000 / config.clientSendRate / 2);
+    reverseInsta();
   }
 
   if (!breaking && reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send("5", (waka = player.weapons[0]), true);
