@@ -340,7 +340,7 @@ async function disconnect(reason) {
     Contact 0xffabc at mohmoh's server if you have more questions`,
     showConfirmButton: true,
   });
-  io.close(), showLoadingText(reason);
+  io.close();
 }
 
 function showLoadingText(text) {
