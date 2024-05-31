@@ -1780,8 +1780,14 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   outline: none;
 }
 
-#mainMenu {
+#mainMenu, #linksContainer2, #linksContainer1 {
   background-color: transparent !important;
+}
+
+.menuCard {
+  width: 325px !important;
+  margin: 5px !important;
+  padding: 20px !important;
 }
 </style>
 `);
