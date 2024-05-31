@@ -12075,7 +12075,7 @@ var __webpack_exports__ = {};
 const hit360 = 1.998715926535898e+272;
 
 const versionHash = "1.5-Beta";
-const changelog = "Added autosync";
+const changelog = "Fixed secondary reloading and shame counter";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 const motionBlurLevel = 0.6;
 let instakilling = false;
@@ -13345,7 +13345,6 @@ function shootTurret(sid, dir) {
 function addProjectile(x, y, dir, range, speed, indx, layer, sid) {
   inWindow && (projectileManager.addProjectile(x, y, dir, range, speed, indx, null, null, layer)
     .sid = sid);
-  if (player.weapons[1] == player.weaponIndex || player.weapons[1] == waka) reloads[player.weapons[1]] = 0;
 }
 
 function remProjectile(sid, range) {
@@ -13464,7 +13463,11 @@ function healing() {
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
   const healTimeout = (damage > 70 && Date.now() - lastDamage > average + serverLag) ? 0 : 120 - window.pingTime + serverLag + ((Date.now() - lastHeal < 120 - window.pingTime) ? (Date.now() - lastHeal) : serverLag);
 
-  if (healTimeout <= 120 - window.pingTime + serverLag) shameCount = Math.min(shameCount + 1, 8);
+  const hitTime = Date.now() - window.pingTime;
+  const healTime = Date.now() + healTimeout;
+  const timeSinceHit = healTime - hitTime;
+  
+  if (timeSinceHit < 120) shameCount = Math.min(shameCount + 1, 8);
   else shameCount = Math.max(0, shameCount - 2)
   
   window.setTimeout(() =>
