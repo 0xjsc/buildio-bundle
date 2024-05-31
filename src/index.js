@@ -1,7 +1,7 @@
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.5-Beta";
-const changelog = "Fixed secondary reloading and shame counter";
+const versionHash = "1.5-Gamma";
+const changelog = "Fixed autoheal";
 const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
 let instakilling = false;
@@ -1420,7 +1420,15 @@ function healing() {
   const damage = 100 - player.health;
   const healingItemSid = player.items[0];
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
-  const healTimeout = Date.now() - lastDamage < safeHealDelay - window.pingTime ? (Math.abs(Date.now() - prevHeal) + safeHealDelay) : safeHealDelay - window.pingTime;
+
+  const prevHealEndsIn = Date.now() - (prevHeal + window.pingTime);
+  const prevHealFixed = prevHealEndsIn < 0 ? 0 : prevHealEndsIn;
+  const rawHealTimeout = safeHealDelay - window.pingTime;
+  const healTimeout = (prevHealFixed === 0) ? (
+    rawHealTimeout
+  ) : (
+    prevHealFixed + rawHealTimeout + 1
+  );
   
   const damageTime = Date.now() - window.pingTime;
   const futureHeal = Date.now() + healTimeout + window.pingTime;
