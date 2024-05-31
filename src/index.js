@@ -21,7 +21,7 @@ emojis.set(":clown:", "🤡");
 
 window.loadedScript = true;
 var isProd = location.origin.includes("http://")
-var io = require(/*! ./libs/io-client.js */ "./libs/io-client.js"),
+var io = window.io = require(/*! ./libs/io-client.js */ "./libs/io-client.js"),
   UTILS = require(/*! ./libs/utils.js */ "./libs/utils.js"),
   animText = require(/*! ./libs/animText.js */ "./libs/animText.js"),
   config = require(/*! ./config.js */ "./config.js"),
