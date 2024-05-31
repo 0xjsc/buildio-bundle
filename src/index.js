@@ -1476,7 +1476,7 @@ function normalInsta(c) {
       const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
       
       instakilling = true;
-      c();
+      if (c) c();
       storeEquip(7);
       io.send("ch", "!sync");
       io.send("5", waka = player.weapons[0], true);
@@ -1503,7 +1503,7 @@ function reverseInsta(c) {
       const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
       
       instakilling = true;
-      c();
+      if (c) c();
       storeEquip(53);
       turretReload = 0;
       io.send("5", waka = player.weapons[1], true);
