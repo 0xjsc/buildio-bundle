@@ -1779,5 +1779,9 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   background: #111111 !important;
   outline: none;
 }
+
+#mainMenu {
+  background-color: transparent !important;
+}
 </style>
 `);
