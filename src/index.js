@@ -1427,7 +1427,7 @@ function healing() {
   const healTimeout = (prevHealFixed === 0) ? (
     rawHealTimeout
   ) : (
-    prevHealFixed + rawHealTimeout + 1
+    prevHealFixed + rawHealTimeout
   );
   
   const damageTime = Date.now() - window.pingTime;
