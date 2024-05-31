@@ -13126,7 +13126,7 @@ function gatherAnimation(sid, didHit, index) {
 
   const hitHat = breaking ? 40 : ((player.health < 100 && player.health > 60) ? 55 : 7);
   const hitAcc = (player.health > 50) ? 15 : 18;
-  const idleHat = breaking ? 26 : (turretReload >= 2500 ? 53 : 6);
+  const idleHat = breaking ? 26 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
   const idleAcc = player.health < 100 ? 15 : 21;
 
   storeEquip(idleHat);
