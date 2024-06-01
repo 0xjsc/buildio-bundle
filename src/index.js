@@ -1,7 +1,7 @@
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.5-Theta";
-const changelog = "Fixed shame counter";
+const versionHash = "1.5-Sigma";
+const changelog = "Removed every setInterval";
 const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
 let instakilling = false;
@@ -72,7 +72,7 @@ function connectSocket(token) {
   var wsAddress = (isProd ? "ws" : "wss") + '://' + location.host + "/?token=" + token;
   io.connect(wsAddress, function (error) {
     io.send("budv", 0);
-    pingSocket(), setInterval(() => pingSocket(), 2500), (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
+    pingSocket(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
       ! function () {
         if (error) {
           disconnect(error);
@@ -107,11 +107,7 @@ function connectSocket(token) {
       }
     }(), loadingText.style.display = 'none', menuCardHolder.style.display = 'block', nameInput.value = getSavedVal('moo_name') || '', function () {
       var savedNativeValue = getSavedVal('native_resolution');
-      setUseNativeResolution(savedNativeValue ? 'true' == savedNativeValue : 'undefined' != typeof cordova), showPing = 'true' == getSavedVal('show_ping'), pingDisplay.hidden = !showPing, getSavedVal('moo_moosic'), setInterval(function () {
-        window.cordova && (document.getElementById('downloadButtonContainer')
-          .classList.add('cordova'), document.getElementById('mobileDownloadButtonContainer')
-          .classList.add('cordova'));
-      }, 1000), updateSkinColorPicker(), UTILS.removeAllChildren(actionBar);
+      setUseNativeResolution(savedNativeValue ? 'true' == savedNativeValue : 'undefined' != typeof cordova), showPing = 'true' == getSavedVal('show_ping'), pingDisplay.hidden = !showPing, getSavedVal('moo_moosic'), updateSkinColorPicker(), UTILS.removeAllChildren(actionBar);
       for (var i = 0; i < items.weapons.length + items.list.length; ++i)
         ! function (i) {
           UTILS.generateElement({
@@ -770,6 +766,12 @@ function receiveChat(sid, message) {
     io.send("ch", "AutoWASM By 0xffabc.");
   } else if (/ez|bad|noskill|faggot|gay/gm.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
     message = "me is retarded homo";
+  } else if (message = "!ping") {
+    pingSocket();
+    window.timE = Date.now();
+    setTimeout(() => io.send("ch", "Pong!"), 500);
+  } else if (message == "Pong!" && window.timE) {
+    setTimeout(() => io.send("ch", "Current Ping: " + Date.now() - window.timE), 500);
   }
 
   if (syncChats.has(message) && tmpPlayer && sid != player.sid) {
