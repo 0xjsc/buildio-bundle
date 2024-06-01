@@ -1487,29 +1487,11 @@ function getMoveDir() {
   left (cos -pi/2; sin -pi/2)
 **/
 
-const leftCorner = { x: Math.cos(-Math.PI / 2), y: Math.sin(-Math.PI / 2) };
-const rightCorner = { x: Math.cos(Math.PI / 2), y: Math.sin(Math.PI / 2) };
-const topCorner = { x: Math.cos(0), y: Math.sin(0) };
-const bottomCorner = { x: Math.cos(Math.PI), y: Math.sin(Math.PI) };
+const angleCornerArray = [];
+const delta = Math.PI / 4;
 
-const topleftCorner = { x: Math.cos(-Math.PI / 4), y: Math.sin(-Math.PI / 4) };
-const toprightCorner = { x: Math.cos(Math.PI / 4), y: Math.sin(Math.PI / 4) };
-const bottomleftCorner = { x: Math.cos(7 * Math.PI / 6), y: Math.sin(7 * Math.PI / 6) };
-const bottomrightCorner = { x: Math.cos(11 * Math.PI / 6), y: Math.sin(11 * Math.PI / 6) };
-
-const cornersMap = new Map(Object.entries({
-  left: -Math.PI / 2,
-  right: Math.PI / 2,
-  top: 0,
-  bottom: Math.PI,
-  topleft: -Math.PI / 4,
-  topright: Math.PI / 4,
-  bottomleft: 7 * Math.PI / 6,
-  bottomright: 11 * Math.PI / 6
-}));
-
-function prettifyCorner({ corner }) {
-  return cornersMap.get(corner);
+for (let i = 0; i < Math.PI * 2; i += delta) {
+  angleCornerArray.push({ x: Math.cos(i), y: Math.sin(i), angle: i });
 }
 
 function generateCornerDist(object, corner) {
@@ -1528,28 +1510,23 @@ function getNearestCorner(corners) {
 }
 
 function findReachableCorner(object) {
-  const lcDelta = { corner: "left", dist: generateCornerDist(object, leftCorner) };
-  const rcDelta = { corner: "right", dist: generateCornerDist(object, rightCorner) };
-  const tcDelta = { corner: "top", dist: generateCornerDist(object, topCorner) };
-  const bcDelta = { corner: "bottom", dist: generateCornerDist(object, bottomCorner) };
+  const corners = angleCornerArray.map(obj => {
+    obj.dist = generateCornerDist(object, obj);
+    return obj;
+  });
 
-  const tlcDelta = { corner: "topleft", dist: generateCornerDist(object, topleftCorner) };
-  const trcDelta = { corner: "topright", dist: generateCornerDist(object, toprightCorner) };
-  const blcDelta = { corner: "bottomleft", dist: generateCornerDist(object, bottomleftCorner) };
-  const brcDelta = { corner: "bottomright", dist: generateCornerDist(object, bottomrightCorner) };
-
-  return prettifyCorner(getNearestCorner([lcDelta, rcDelta, tcDelta, bcDelta,
-                                         tlcDelta, trcDelta, blcDelta, brcDelta]));
+  return getNearestCorner(corners).angle;
 }
 
 function findFreeAngles(rangeStart, rangeEnd) {
   const nearestObjects = gameObjects.filter(object => object && Math.hypot(player.x - object.x, player.y - object.y) < 180);
   const freeAngles = [];
-  const delta = (rangeEnd - rangeStart) / 8;
+  const delta = (rangeEnd - rangeStart) / 6;
 
   for (let angle = rangeStart; angle < rangeEnd; angle += delta) {
     let farthestClockwisePointX, farthestClockwisePointY;
     const intersectingObject = nearestObjects.find(object => object && Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - angle) < Math.PI / 2);
+    
     if (intersectingObject?.x && intersectingObject?.y && intersectingObject?.scale) {
       const placeableAngle = findReachableCorner(intersectingObject);
       farthestClockwisePointX = Math.cos(placeableAngle) * intersectingObject.scale + intersectingObject.x;
@@ -1557,7 +1534,8 @@ function findFreeAngles(rangeStart, rangeEnd) {
     } else {
       farthestClockwisePointX = Math.cos(angle) + player.x;
       farthestClockwisePointY = Math.cos(angle) + player.y;
-    }
+    };
+    
     const farthestPoint = {
       x: farthestClockwisePointX,
       y: farthestClockwisePointY,
@@ -1579,7 +1557,7 @@ function autoplace(enemy, replace = false) {
   if (instakilling) return;
 
   const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
-  const angles = findFreeAngles(getMoveDir() - Math.PI / 2, getMoveDir() + Math.PI / 2);
+  const angles = findFreeAngles(0, Math.PI * 2);
 
   angles.forEach(angle => {
     place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
