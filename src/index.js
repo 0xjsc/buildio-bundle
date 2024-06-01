@@ -1569,15 +1569,15 @@ function reverseInsta(c) {
       }, 1000 / config.clientSendRate / 2);
 }
 
-let lastPing = Date.now();
+let lastPing_ = Date.now();
 
 function updatePlayers(data) {
   if (Date.now() - tmpTime > average + serverLag) {
     storeEquip(6);
     storeEquip(15, true);
   };
-  if (Date.now() - lastPing > 3000) {
-    lastPing = Date.now();
+  if (Date.now() - lastPing_ > 3000) {
+    lastPing_ = Date.now();
     pingSocket();
   }
   current = Date.now() - tmpTime;
