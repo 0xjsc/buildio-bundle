@@ -1586,6 +1586,7 @@ function autobreak(trap) {
     trap.y - player.y,
     trap.x - player.x
   ));
+  io.send("c", false, getAttackDir());
   if (player.weaponIndex != correctWeapon) {
     io.send("5", waka = correctWeapon, true);
   }
