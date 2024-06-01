@@ -1729,7 +1729,7 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
         for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext.strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
           if ((tmpObj = players[i] || ais[i - players.length])
             .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
-            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + ([...blacklist.keys()].map(e => new RegExp(e, "gm")).find(e => e.test(tmpObj.name)) ? "me retared homo" : tmpObj.name || '') + " " + tmpObj.shameCount);
+            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + ([...blacklist.keys()].map(e => new RegExp(e, "gm")).find(e => e.test(tmpObj.name)) ? "me retared homo" : tmpObj.name || '') + " " + tmpObj.shameCount;
             if ('' != tmpText) {
               if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = tmpObj?.sid == window?.sidFocus ? (window.keyEvents.SwitchKeyR ? '#f00' : '#ff0') : '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj.nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown.isLoaded) {
                 var tmpS = config.crownIconScale;
