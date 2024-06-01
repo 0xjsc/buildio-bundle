@@ -1502,7 +1502,7 @@ function prettifyCorner({ corner }) {
   return cornersMap.get(corner);
 }
 
-function generateCornerDist(corner) {
+function generateCornerDist(object, corner) {
   const scale = 43;
   return Math.hypot(corner.x * scale + object.x - player.y, corner.y * scale + object.y - player.y);
 }
@@ -1520,10 +1520,10 @@ function getNearestCorner(corners) {
 
 function findReachableCorner(object) {
   const scale = object?.group?.scale || 43;
-  const lcDelta = { corner: "left", dist: generateCornerDist(leftCorner) };
-  const rcDelta = { corner: "right", dist: generateCornerDist(rightCorner) };
-  const tcDelta = { corner: "top", dist: generateCornerDist(topCorner) };
-  const bcDelta = { corner: "bottom", dist: generateCornerDist(bottomCorner) };
+  const lcDelta = { corner: "left", dist: generateCornerDist(object, leftCorner) };
+  const rcDelta = { corner: "right", dist: generateCornerDist(object, rightCorner) };
+  const tcDelta = { corner: "top", dist: generateCornerDist(object, topCorner) };
+  const bcDelta = { corner: "bottom", dist: generateCornerDist(object, bottomCorner) };
 
   return prettifyCorner(getNearestCorner([lcDelta, rcDelta, tcDelta, bcDelta]));
 }
