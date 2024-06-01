@@ -766,12 +766,6 @@ function receiveChat(sid, message) {
     io.send("ch", "AutoWASM By 0xffabc.");
   } else if (/ez|bad|noskill|faggot|gay/gm.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
     message = "me is retarded homo";
-  } else if (message = "!ping") {
-    pingSocket();
-    window.timE = Date.now();
-    setTimeout(() => io.send("ch", "Pong!"), 500);
-  } else if (message == "Pong!" && window.timE) {
-    setTimeout(() => io.send("ch", "Current Ping: " + Date.now() - window.timE), 500);
   }
 
   if (syncChats.has(message) && tmpPlayer && sid != player.sid) {
@@ -1438,16 +1432,12 @@ function healing() {
 
   const prevHealEndsIn = Date.now() - prevHeal - window.pingTime;
   const prevHealFixed = prevHealEndsIn < 0 ? 0 : (prevHealEndsIn > average ? 0 : prevHealEndsIn);
-  const rawHealTimeout = safeHealDelay - window.pingTime;
+  const rawHealTimeout = safeHealDelay - window.pingTime + 1;
   const healTimeout = prevHealFixed ? (
     rawHealTimeout + prevHealFixed
   ) : (
     rawHealTimeout
   );
-  
-  
-  if (healTimeout < safeHealDelay) player.shameCount = Math.min(player.shameCount + 1, 8);
-  else shameCount = Math.max(0, player.shameCount - 2);
   
   window.setTimeout(() =>
     heal(healCount), healTimeout + serverLag);
@@ -1579,11 +1569,17 @@ function reverseInsta(c) {
       }, 1000 / config.clientSendRate / 2);
 }
 
+let lastPing = Date.now();
+
 function updatePlayers(data) {
   if (Date.now() - tmpTime > average + serverLag) {
     storeEquip(6);
     storeEquip(15, true);
   };
+  if (Date.now() - lastPing > 3000) {
+    lastPing = Date.now();
+    pingSocket();
+  }
   current = Date.now() - tmpTime;
   average = average / 2 + (Date.now() - tmpTime) / 2;
   serverLag = Math.abs(1000 / config.serverUpdateRate - average);
