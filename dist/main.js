@@ -13578,6 +13578,7 @@ function prettifyCorner({ corner }) {
 }
 
 function generateCornerDist(corner) {
+  const scale = 43;
   return Math.hypot(corner.x * scale + object.x - player.y, corner.y * scale + object.y - player.y);
 }
 
