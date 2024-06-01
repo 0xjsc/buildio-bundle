@@ -1545,7 +1545,7 @@ function findReachableCorner(object) {
 function findFreeAngles(rangeStart, rangeEnd) {
   const nearestObjects = gameObjects.filter(object => object && Math.hypot(player.x - object.x, player.y - object.y) < 180);
   const freeAngles = [];
-  const delta = (rangeEnd - rangeStart) / 6;
+  const delta = (rangeEnd - rangeStart) / 8;
 
   for (let angle = rangeStart; angle < rangeEnd; angle += delta) {
     let farthestClockwisePointX, farthestClockwisePointY;
@@ -1564,7 +1564,11 @@ function findFreeAngles(rangeStart, rangeEnd) {
       scale: intersectingObject?.scale || 43
     };
 
-    freeAngles.push(Math.atan2(farthestClockwisePointY - player.y, farthestClockwisePointX - player.x));
+    const freeAngle = Math.atan2(farthestClockwisePointY - player.y, farthestClockwisePointX - player.x);
+
+    if (freeAngles.find(e => Math.abs(freeAngle - e) < Math.PI / 2)) continue;
+
+    freeAngles.push(freeAngle);
     nearestObjects.push(farthestPoint);
   }
 
@@ -1575,7 +1579,7 @@ function autoplace(enemy, replace = false) {
   if (instakilling) return;
 
   const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
-  const angles = findFreeAngles(0, Math.PI * 2);
+  const angles = findFreeAngles(getMoveDir() - Math.PI / 2, getMoveDir() + Math.PI / 2);
 
   angles.forEach(angle => {
     place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
