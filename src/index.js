@@ -1,7 +1,7 @@
 const hit360 = 1.998715926535898e+272;
 
 const versionHash = "1.5-Omicron";
-const changelog = "Removed useless visuals";
+const changelog = "Removed multiplication in autoplace angle calculation";
 const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
 let instakilling = false;
@@ -1503,8 +1503,7 @@ function prettifyCorner({ corner }) {
 }
 
 function generateCornerDist(object, corner) {
-  const scale = 43;
-  return Math.hypot(corner.x * scale + object.x - player.y, corner.y * scale + object.y - player.y);
+  return Math.hypot(corner.x + object.x - player.y, corner.y + object.y - player.y);
 }
 
 function getNearestCorner(corners) {
@@ -1519,7 +1518,6 @@ function getNearestCorner(corners) {
 }
 
 function findReachableCorner(object) {
-  const scale = object?.group?.scale || 43;
   const lcDelta = { corner: "left", dist: generateCornerDist(object, leftCorner) };
   const rcDelta = { corner: "right", dist: generateCornerDist(object, rightCorner) };
   const tcDelta = { corner: "top", dist: generateCornerDist(object, topCorner) };
