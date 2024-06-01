@@ -12074,8 +12074,8 @@ var __webpack_exports__ = {};
   \**********************/
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.5-Gamma";
-const changelog = "Fixed autoheal";
+const versionHash = "1.5-Delta";
+const changelog = "Fixed mohmoh's UI update, removed uneccessary ping delay in healing";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 const motionBlurLevel = 0.6;
 let instakilling = false;
@@ -13837,7 +13837,6 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
   }, window.config = config;
 
 document.querySelector("#gameName").innerHTML = "AutoWASM";
-document.querySelector("#gameName").style.color = "black";
 
 document.querySelector("body").insertAdjacentHTML("beforeend", `
 <style>
@@ -13866,10 +13865,16 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   background-color: transparent !important;
 }
 
+#gameName {
+  color: black !important;
+  text-shadow: 5px 9px 0 #1112 !important;
+}
+
 .menuCard {
   width: 325px !important;
   margin: 5px !important;
   padding: 20px !important;
+  border: 0px !important;
 }
 </style>
 `);
