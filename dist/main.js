@@ -13552,6 +13552,7 @@ function getMoveDir() {
   }();
   return newMoveDir;
 }
+
 /**
   FARTHEST POINTS
   top (cos 0; sin 0)
@@ -13559,6 +13560,47 @@ function getMoveDir() {
   right (cos pi/2; sin pi/2)
   left (cos -pi/2; sin -pi/2)
 **/
+
+const leftCorner = { x: Math.cos(-Math.PI / 2), y: Math.sin(-Math.PI / 2) };
+const rightCorner = { x: Math.cos(Math.PI / 2), y: Math.sin(Math.PI / 2) };
+const topCorner = { x: Math.cos(0), y: Math.sin(0) };
+const bottomCorner = { x: Math.cos(Math.PI), y: Math.sin(Math.PI) };
+
+const cornersMap = new Map(Object.entries({
+  left: -Math.PI / 2,
+  right: Math.PI / 2,
+  top: 0,
+  bottom: Math.PI
+}));
+
+function prettifyCorner({ corner }) {
+  return cornersMap.get(corner);
+}
+
+function generateCornerDist(corner) {
+  return Math.hypot(corner.x * scale + object.x - player.y, corner.y * scale + object.y - player.y);
+}
+
+function getNearestCorner(corners) {
+  let nearestCorner = corners[0];
+
+  corners.forEach(corner => {
+    if (corner.dist < nearestCorner.dist)
+      nearestCorner = corner;
+  });
+
+  return corner;
+}
+
+function findReachableCorner(object) {
+  const scale = object?.group?.scale || 43;
+  const lcDelta = { corner: "left", dist: generateCornerDist(leftCorner) };
+  const rcDelta = { corner: "right", dist: generateCornerDist(rightCorner) };
+  const tcDelta = { corner: "top", dist: generateCornerDist(topCorner) };
+  const bcDelta = { corner: "bottom", dist: generateCornerDist(bottomCorner) };
+
+  return prettifyCorner(getNearestCorner([lcDelta, rcDelta, tcDelta, bcDelta]));
+}
 
 function findFreeAngles(rangeStart, rangeEnd) {
   const nearestObjects = gameObjects.filter(object => object && Math.hypot(player.x - object.x, player.y - object.y) < 180);
@@ -13569,8 +13611,9 @@ function findFreeAngles(rangeStart, rangeEnd) {
     let farthestClockwisePointX, farthestClockwisePointY;
     const intersectingObject = nearestObjects.find(object => object && Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - angle) < Math.PI / 2);
     if (intersectingObject?.x && intersectingObject?.y && intersectingObject?.scale) {
-      farthestClockwisePointX = Math.cos(Math.PI / 2) * intersectingObject.scale + intersectingObject.x;
-      farthestClockwisePointY = Math.sin(Math.PI / 2) * intersectingObject.scale + intersectingObject.y;
+      const placeableAngle = findReachableCorner(intersectingObject);
+      farthestClockwisePointX = Math.cos(placeableAngle) * intersectingObject.scale + intersectingObject.x;
+      farthestClockwisePointY = Math.sin(placeableAngle) * intersectingObject.scale + intersectingObject.y;
     } else {
       farthestClockwisePointX = Math.cos(angle) + player.x;
       farthestClockwisePointY = Math.cos(angle) + player.y;
