@@ -13649,10 +13649,11 @@ function findFreeAngles(rangeStart, rangeEnd) {
 function autoplace(enemy, replace = false) {
   if (instakilling) return;
 
+  const distance = Math.hypot(enemy.x - player.x, enemy.y - player.y);
   const angles = findFreeAngles(0, Math.PI * 2);
 
   angles.forEach(angle => {
-    place(player.items[(Math.abs(angle - getMoveDir()) <= Math.PI / 2) ? 4 : 2], angle);
+    place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
   });
 
   io.send("2", player.buildIndex ? getAttackDir() : hit360);
