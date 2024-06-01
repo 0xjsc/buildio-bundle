@@ -17,6 +17,7 @@ module.exports = function (GameObject, gameObjects, UTILS, config, players, serv
     for (var tmpIndx, i = 0; i < obj.gridLocations.length; ++i)
       (tmpIndx = this.grids[obj.gridLocations[i]].indexOf(obj)) >= 0 && this.grids[obj.gridLocations[i]].splice(tmpIndx, 1);
   }, this.disableObj = function (obj) {
+    if (!obj) return;
     if (obj.active = !1, server) {
       obj.owner && obj.pps && (obj.owner.pps -= obj.pps), this.removeObjGrid(obj);
       var tmpIndx = this.updateObjects.indexOf(obj);
