@@ -23,7 +23,8 @@ const blacklist = new Map(Object.entries({
   be3mamn: true,
   SaVeGe: true,
   RaZoshi: true,
-  Travis: true
+  Travis: true,
+  missy: true
 }));
 
 window.loadedScript = true;
