@@ -13496,7 +13496,7 @@ function healing() {
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
 
   const prevHealEndsIn = Date.now() - prevHeal;
-  const prevHealFixed = prevHealEndsIn < 0 ? 0 : prevHealEndsIn;
+  const prevHealFixed = prevHealEndsIn < 0 ? 0 : (prevHealEndsIn > average ? average : prevHealEndsIn);
   const rawHealTimeout = safeHealDelay - window.pingTime;
   const healTimeout = (prevHealFixed === 0) ? (
     rawHealTimeout
@@ -13863,6 +13863,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
 
 #mainMenu, #linksContainer2, #linksContainer1 {
   background-color: transparent !important;
+  border: 0px !important;
 }
 
 #gameName {
