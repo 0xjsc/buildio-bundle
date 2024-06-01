@@ -1580,13 +1580,14 @@ function autobreak(trap) {
   if (instakilling) return;
   
   const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
-  breaking = true;
-  window.trap = trap;
-  io.send("c", true, Math.atan2(
+  const trapAngle = Math.atan2(
     trap.y - player.y,
     trap.x - player.x
-  ));
-  io.send("c", false, getAttackDir());
+  );
+  breaking = true;
+  window.trap = trap;
+  io.send("c", true, trapAngle);
+  io.send("c", false, trapAngle);
   if (player.weaponIndex != correctWeapon) {
     io.send("5", waka = correctWeapon, true);
   }
