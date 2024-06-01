@@ -13015,8 +13015,9 @@ function killObjects(sid) {
 }
 
 function killObject(sid) {
+  const object = gameObjects[sid];
   objectManager.disableBySid(sid);
-  players.find(e => e.sid != player.sid && Math.hypot(player.x - e.x, player.y - e.y) < 180) && autoplace(player);
+  players.find(e => e.sid != player.sid && Math.hypot(player.x - e.x, player.y - e.y) < 180) && autoplace(object, true);
 }
 
 function updateStatusDisplay() {
@@ -13645,7 +13646,7 @@ function findFreeAngles(rangeStart, rangeEnd) {
   return freeAngles;
 }
 
-function autoplace(player, enemy) {
+function autoplace(enemy, replace = false) {
   if (instakilling) return;
 
   const itemId = (Math.hypot(player?.x - enemy?.x, player?.y - enemy?.y) || 199) < 200 ? 2 : 4;
@@ -13653,7 +13654,7 @@ function autoplace(player, enemy) {
   const angles = findFreeAngles(0, Math.PI * 2);
 
   angles.forEach(angle => {
-    place(player.items[itemId], angle);
+    place(player.items[itemId], replace ? ((Math.abs(angle - getMoveDir()) <= Math.PI / 2) ? 4 : 2) : angle);
   });
 
   io.send("2", player.buildIndex ? getAttackDir() : hit360);
@@ -13795,7 +13796,7 @@ function updatePlayers(data) {
   }
 
   if (!tt) storeEquip(5, true);
-  else autoplace(player, tt);
+  else autoplace(tt);
 
   const trap = gameObjects.find(obj => obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
 
