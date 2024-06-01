@@ -1506,7 +1506,7 @@ function findFreeAngles(rangeStart, rangeEnd) {
       scale: intersectingObject?.scale || 43
     };
 
-    freeAngles.push(farthestPoint);
+    freeAngles.push(Math.atan2(farthestClockwisePointY - player.y, farthestClockwisePointX - player.x));
     nearestObjects.push(farthestPoint);
   }
 
@@ -1521,9 +1521,9 @@ function autoplace(player, enemy) {
   const angles = findFreeAngles(0, Math.PI * 2);
 
   angles.forEach(angle => {
-    place(angle, player.items[itemId]);
+    place(player.items[itemId], angle);
   });
-  
+
   io.send("2", player.buildIndex ? getAttackDir() : hit360);
 }
 
