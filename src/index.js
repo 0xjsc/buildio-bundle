@@ -1477,14 +1477,47 @@ function getMoveDir() {
   }();
   return newMoveDir;
 }
+/**
+  FARTHEST POINTS
+  top (cos 0; sin 0)
+  bottom (cos 180; sin 180)
+  right (cos pi/2; sin pi/2)
+  left (cos -pi/2; sin -pi/2)
+**/
+
+function findFreeAngles(rangeStart, rangeEnd) {
+  const nearestObjects = gameObjects.filter(object => object && Math.hypot(player.x - object.x, player.y - object.y) < 180);
+  const freeAngles = [];
+  const delta = (rangeEnd - rangeStart) / 6;
+
+  for (let angle = rangeStart; angle < rangeEnd; angle += delta) {
+    const intersectingObject = nearestObjects.find(object => Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - angle) < Math.PI / 2);
+    const farthestClockwisePointX = Math.cos(Math.PI / 2) * intersectingObject.scale + object.x;
+    const farthestClockwisePointY = Math.sin(Math.PI / 2) * intersectingObject.scale + object.y;
+    const farthestPoint = {
+      x: farthestClockwisePointX,
+      y: farthestClockwisePointY,
+      scale: intersectingObject.scale
+    };
+
+    freeAngles.push(farthestPoint);
+    nearestObjects.push(farthestPoint);
+  }
+
+  return freeAngles;
+}
 
 function autoplace(player, enemy) {
   if (instakilling) return;
 
   const itemId = (Math.hypot(player?.x - enemy?.x, player?.y - enemy?.y) || 199) < 200 ? 2 : 4;
-  for (let i = -Math.PI / 2; i < Math.PI / 2; i += cspam) {
-    place(player.items[itemId], getMoveDir() + i);
-  }
+
+  const angles = findFreeAngles(0, Math.PI * 2);
+
+  angles.forEach(angle => {
+    place(angle, itemId);
+  });
+  
   io.send("2", player.buildIndex ? getAttackDir() : hit360);
 }
 
