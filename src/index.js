@@ -1491,9 +1491,15 @@ function findFreeAngles(rangeStart, rangeEnd) {
   const delta = (rangeEnd - rangeStart) / 6;
 
   for (let angle = rangeStart; angle < rangeEnd; angle += delta) {
-    const intersectingObject = nearestObjects.find(object => Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - angle) < Math.PI / 2);
-    const farthestClockwisePointX = Math.cos(Math.PI / 2) * intersectingObject.scale + object.x;
-    const farthestClockwisePointY = Math.sin(Math.PI / 2) * intersectingObject.scale + object.y;
+    let farthestClockwisePointX, farthestClockwisePointY;
+    const intersectingObject = nearestObjects.find(object => object && Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - angle) < Math.PI / 2);
+    if (intersectingObject) {
+      farthestClockwisePointX = Math.cos(Math.PI / 2) * intersectingObject.scale + object.x;
+      farthestClockwisePointY = Math.sin(Math.PI / 2) * intersectingObject.scale + object.y;
+    } else {
+      farthestClockwisePointX = Math.cos(angle) + player.x;
+      farthestClockwisePointY = Math.cos(angle) + player.y;
+    }
     const farthestPoint = {
       x: farthestClockwisePointX,
       y: farthestClockwisePointY,
