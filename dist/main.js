@@ -13649,7 +13649,7 @@ function findFreeAngles(rangeStart, rangeEnd) {
 function autoplace(enemy, replace = false) {
   if (instakilling) return;
 
-  const distance = Math.hypot(enemy.x - player.x, enemy.y - player.y);
+  const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
   const angles = findFreeAngles(0, Math.PI * 2);
 
   angles.forEach(angle => {
