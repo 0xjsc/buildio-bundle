@@ -13517,7 +13517,7 @@ function healing() {
   ) : (
     rawHealTimeout
   );
-  const healTimeout = (damage > 60 && (Date.now() - lastDamage <= average + serverLag) && player.shameCount < 4) ? 0 : safeHealTimeout;
+  const healTimeout = (damage > 50 && (Date.now() - lastDamage <= average + window.pingTime) && player.shameCount < 4) ? 0 : safeHealTimeout;
   
   window.setTimeout(() =>
     heal(healCount), healTimeout);
