@@ -13474,6 +13474,8 @@ function getItemOutheal(item) {
 };
 
 function heal(healCount) {
+  if (player.health == 100) return;
+  
   lastHeal = Date.now();
   const healingItemSid = player.items[0];
   for (let healingCount = 0; healingCount < healCount; healingCount++) {
@@ -13506,7 +13508,7 @@ function healing() {
 
   const prevHealEndsIn = Date.now() - prevHeal - window.pingTime;
   const prevHealFixed = prevHealEndsIn < 0 ? 0 : (prevHealEndsIn > average ? 0 : prevHealEndsIn);
-  const rawHealTimeout = safeHealDelay - window.pingTime + 1;
+  const rawHealTimeout = safeHealDelay - window.pingTime / 2;
   const healTimeout = prevHealFixed ? (
     rawHealTimeout + prevHealFixed
   ) : (
@@ -13514,7 +13516,7 @@ function healing() {
   );
   
   window.setTimeout(() =>
-    heal(healCount), healTimeout + serverLag);
+    heal(healCount), healTimeout);
   lastDamage = Date.now();
   prevHeal = Date.now() + healTimeout;
 }
