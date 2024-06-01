@@ -12075,7 +12075,7 @@ var __webpack_exports__ = {};
   \**********************/
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.5-Omicron";
+const versionHash = "1.5-PreFinal";
 const changelog = "Removed multiplication in autoplace angle calculation";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 const motionBlurLevel = 0.6;
@@ -13015,8 +13015,8 @@ function killObjects(sid) {
 }
 
 function killObject(sid) {
-  window.danger && autoplace(player);
   objectManager.disableBySid(sid);
+  players.find(e => e.sid != player && Math.hypot(player.x - e.x, player.y - e.y) < 180) && autoplace(player);
 }
 
 function updateStatusDisplay() {
