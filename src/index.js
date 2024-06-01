@@ -1521,7 +1521,7 @@ function autoplace(player, enemy) {
   const angles = findFreeAngles(0, Math.PI * 2);
 
   angles.forEach(angle => {
-    place(angle, itemId);
+    place(angle, player.items[itemId]);
   });
   
   io.send("2", player.buildIndex ? getAttackDir() : hit360);
