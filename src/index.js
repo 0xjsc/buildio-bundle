@@ -1488,9 +1488,9 @@ function getMoveDir() {
 **/
 
 const angleCornerArray = [];
-const delta = Math.PI / 4;
+const deltaLookup = Math.PI / 4;
 
-for (let i = 0; i < Math.PI * 2; i += delta) {
+for (let i = 0; i < Math.PI * 2; i += deltaLookup) {
   angleCornerArray.push({ x: Math.cos(i), y: Math.sin(i), angle: i });
 }
 
