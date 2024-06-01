@@ -12074,8 +12074,8 @@ var __webpack_exports__ = {};
   \**********************/
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.5-Sigma";
-const changelog = "Removed every setInterval";
+const versionHash = "1.5-Omicron";
+const changelog = "Removed useless visuals";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 const motionBlurLevel = 0.6;
 let instakilling = false;
@@ -13141,7 +13141,7 @@ function renderGameObjects(layer, xOffset, yOffset) {
 const speeds = [300, 400, 400, 300, 300, 700, 300, 100, 400, 600, 400, 1, 700, 230, 700, 1500];
 let lastPoison = Date.now();
 let turretReload = 0;
-let shameCount = 0;
+
 function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
   
@@ -13803,7 +13803,7 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
         for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext.strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
           if ((tmpObj = players[i] || ais[i - players.length])
             .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
-            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + ([...blacklist.keys()].map(e => new RegExp(e, "gm")).find(e => e.test(tmpObj.name)) ? "me retared homo" : tmpObj.name || '') + " " + ((tmpObj == player) ? `${player.shameCount} {${(reloads[player.weapons[0]] / speeds[player.weapons[0]]).toFixed(2)};${(reloads[player.weapons[1]] / speeds[player.weapons[1]]).toFixed(2)}}` : ``);
+            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + ([...blacklist.keys()].map(e => new RegExp(e, "gm")).find(e => e.test(tmpObj.name)) ? "me retared homo" : tmpObj.name || '') + " " + tmpObj.shameCount;
             if ('' != tmpText) {
               if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = tmpObj?.sid == window?.sidFocus ? (window.keyEvents.SwitchKeyR ? '#f00' : '#ff0') : '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj.nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown.isLoaded) {
                 var tmpS = config.crownIconScale;
