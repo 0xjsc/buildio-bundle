@@ -13491,7 +13491,12 @@ function heal(healCount) {
     x: player.x,
     y: player.y,
     dir: 0,
-    id: 0
+    id: 0,
+    group: {
+      id: 0,
+      name: 'food',
+      layer: 0
+    }
   });
 };
 let lastDamage = 0;
