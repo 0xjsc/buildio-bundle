@@ -13566,11 +13566,20 @@ const rightCorner = { x: Math.cos(Math.PI / 2), y: Math.sin(Math.PI / 2) };
 const topCorner = { x: Math.cos(0), y: Math.sin(0) };
 const bottomCorner = { x: Math.cos(Math.PI), y: Math.sin(Math.PI) };
 
+const topleftCorner = { x: Math.cos(-Math.PI / 4), y: Math.sin(-Math.PI / 4) };
+const toprightCorner = { x: Math.cos(Math.PI / 4), y: Math.sin(Math.PI / 4) };
+const bottomleftCorner = { x: Math.cos(7 * Math.PI / 6), y: Math.sin(7 * Math.PI / 6) };
+const bottomrightCorner = { x: Math.cos(11 * Math.PI / 6), y: Math.sin(11 * Math.PI / 6) };
+
 const cornersMap = new Map(Object.entries({
   left: -Math.PI / 2,
   right: Math.PI / 2,
   top: 0,
-  bottom: Math.PI
+  bottom: Math.PI,
+  topleft: -Math.PI / 4,
+  topright: Math.PI / 4,
+  bottomleft: 7 * Math.PI / 6,
+  bottomright: 11 * Math.PI / 6
 }));
 
 function prettifyCorner({ corner }) {
@@ -13598,7 +13607,13 @@ function findReachableCorner(object) {
   const tcDelta = { corner: "top", dist: generateCornerDist(object, topCorner) };
   const bcDelta = { corner: "bottom", dist: generateCornerDist(object, bottomCorner) };
 
-  return prettifyCorner(getNearestCorner([lcDelta, rcDelta, tcDelta, bcDelta]));
+  const tlcDelta = { corner: "topleft", dist: generateCornerDist(object, topleftCorner) };
+  const trcDelta = { corner: "topright", dist: generateCornerDist(object, toprightCorner) };
+  const blcDelta = { corner: "bottomleft", dist: generateCornerDist(object, bottomleftCorner) };
+  const brcDelta = { corner: "bottomright", dist: generateCornerDist(object, bottomrightCorner) };
+
+  return prettifyCorner(getNearestCorner([lcDelta, rcDelta, tcDelta, bcDelta,
+                                         tlcDelta, trcDelta, blcDelta, brcDelta]));
 }
 
 function findFreeAngles(rangeStart, rangeEnd) {
