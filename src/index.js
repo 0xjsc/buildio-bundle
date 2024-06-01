@@ -1,7 +1,7 @@
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.5-Sigma";
-const changelog = "Removed every setInterval";
+const versionHash = "1.5-Omicron";
+const changelog = "Removed useless visuals";
 const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
 let instakilling = false;
