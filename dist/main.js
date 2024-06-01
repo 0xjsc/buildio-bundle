@@ -13517,13 +13517,9 @@ function healing() {
     rawHealTimeout
   );
   
-  const damageTime = Date.now() - window.pingTime;
-  const futureHeal = Date.now() + healTimeout + window.pingTime;
-  const timeSinceHit = futureHeal - damageTime;
-  io.send("ch", "[   TSH " + timeSinceHit + " HT " + healTimeout + "  ]");
   
-  if (timeSinceHit < safeHealDelay) shameCount = Math.min(shameCount + 1, 8);
-  else shameCount = Math.max(0, shameCount - 2);
+  if (healTimeout < safeHealDelay) player.shameCount = Math.min(player.shameCount + 1, 8);
+  else shameCount = Math.max(0, player.shameCount - 2);
   
   window.setTimeout(() =>
     heal(healCount), healTimeout + serverLag);
