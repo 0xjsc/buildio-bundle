@@ -12076,7 +12076,7 @@ var __webpack_exports__ = {};
 const hit360 = 1.998715926535898e+272;
 
 const versionHash = "1.5-PreFinal";
-const changelog = "Removed multiplication in autoplace angle calculation";
+const changelog = "Fixed autoreplace not working";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 const motionBlurLevel = 0.6;
 let instakilling = false;
@@ -13016,7 +13016,7 @@ function killObjects(sid) {
 
 function killObject(sid) {
   objectManager.disableBySid(sid);
-  players.find(e => e.sid != player && Math.hypot(player.x - e.x, player.y - e.y) < 180) && autoplace(player);
+  players.find(e => e.sid != player.sid && Math.hypot(player.x - e.x, player.y - e.y) < 180) && autoplace(player);
 }
 
 function updateStatusDisplay() {
