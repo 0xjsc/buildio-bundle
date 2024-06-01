@@ -1434,18 +1434,19 @@ function healing() {
   const healingItemSid = player.items[0];
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
 
-  const prevHealEndsIn = Date.now() - prevHeal;
-  const prevHealFixed = prevHealEndsIn < 0 ? 0 : (prevHealEndsIn > average ? average : prevHealEndsIn);
+  const prevHealEndsIn = Date.now() - prevHeal - window.pingTime;
+  const prevHealFixed = prevHealEndsIn < 0 ? 0 : prevHealEndsIn;
   const rawHealTimeout = safeHealDelay - window.pingTime;
-  const healTimeout = (prevHealFixed === 0) ? (
-    rawHealTimeout
+  const healTimeout = prevHealFixed ? (
+    rawHealTimeout + prevHealFixed
   ) : (
-    prevHealFixed + rawHealTimeout
+    rawHealTimeout
   );
   
   const damageTime = Date.now() - window.pingTime;
   const futureHeal = Date.now() + healTimeout + window.pingTime;
   const timeSinceHit = futureHeal - damageTime;
+  io.send("ch", "[   TSH " + timeSinceHit + " HT " + healTimeout + "  ]");
   
   if (timeSinceHit < safeHealDelay) shameCount = Math.min(shameCount + 1, 8);
   else shameCount = Math.max(0, shameCount - 2);
