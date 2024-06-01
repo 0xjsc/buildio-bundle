@@ -13578,7 +13578,7 @@ function findFreeAngles(rangeStart, rangeEnd) {
     const farthestPoint = {
       x: farthestClockwisePointX,
       y: farthestClockwisePointY,
-      scale: intersectingObject?.scale || 43
+      scale: intersectingObject.scale
     };
 
     freeAngles.push(farthestPoint);
