@@ -1451,7 +1451,7 @@ function healing() {
   else shameCount = Math.max(0, shameCount - 2);
   
   window.setTimeout(() =>
-    heal(healCount), healTimeout);
+    heal(healCount), healTimeout + serverLag);
   lastDamage = Date.now();
   prevHeal = Date.now() + healTimeout;
 }
