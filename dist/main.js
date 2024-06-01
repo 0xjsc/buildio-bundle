@@ -13621,8 +13621,6 @@ function findFreeAngles(rangeStart, rangeEnd) {
 
     const freeAngle = Math.atan2(farthestClockwisePointY - player.y, farthestClockwisePointX - player.x);
 
-    if (freeAngles.find(e => Math.abs(freeAngle - e) < Math.PI / 2)) continue;
-
     freeAngles.push(freeAngle);
     nearestObjects.push(farthestPoint);
   }
