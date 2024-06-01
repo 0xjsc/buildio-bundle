@@ -1435,7 +1435,7 @@ function healing() {
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
 
   const prevHealEndsIn = Date.now() - prevHeal - window.pingTime;
-  const prevHealFixed = prevHealEndsIn < 0 ? 0 : prevHealEndsIn;
+  const prevHealFixed = prevHealEndsIn < 0 ? 0 : (prevHealEndsIn > average ? 0 : prevHealEndsIn);
   const rawHealTimeout = safeHealDelay - window.pingTime;
   const healTimeout = prevHealFixed ? (
     rawHealTimeout + prevHealFixed
