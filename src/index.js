@@ -1515,7 +1515,7 @@ function getNearestCorner(corners) {
       nearestCorner = corner;
   });
 
-  return corner;
+  return nearestCorner;
 }
 
 function findReachableCorner(object) {
