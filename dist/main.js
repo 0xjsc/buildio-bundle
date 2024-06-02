@@ -13447,11 +13447,15 @@ function updatePlayerValue(index, value, updateView) {
 
 let placements = [];
 
-function place(id, angle = null, t = true) {
+function place(id, angle = getAttackDir(), t = true) {
   io.send("5", id, false);
   io.send("c", true, angle);
   t && io.send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
-  placements.push(angle);
+  
+  placements.push({
+    x: player.x + Math.cos(angle) * 90,
+    y: player.y + Math.sin(angle) * 90
+  });
 }
 
 let lastHeal = Date.now();
@@ -13893,8 +13897,8 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
           };
         placements.forEach(placement => {
           mainContext.fillStyle = 'rgba(255, 0, 0, 0.15)';
-          renderCircle(player.x - xOffset + Math.cos(placement) * 90, 
-                      player.y - yOffset + Math.sin(placement) * 90,
+          renderCircle(placement.x - xOffset, 
+                      placement.y - yOffset,
                       45, mainContext, true);
         });
         !function (delta) {
