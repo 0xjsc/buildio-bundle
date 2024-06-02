@@ -1,8 +1,8 @@
 const hit360 = 1.998715926535898e+272;
 let nearestGameObjects = [];
 
-const versionHash = "1.5-AlphaFinal";
-const changelog = "Recoded whole autoplace";
+const versionHash = "1.5-BetaFinal";
+const changelog = "Added preplace";
 const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
 let instakilling = false;
@@ -1529,10 +1529,19 @@ function autoplace(enemy, replace = false) {
 
   const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
   const angles = findFreeAngles();
-
+  const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < config.playerScale + (object?.group?.scale) || 50);
   angles.forEach(angle => {
     place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
   });
+
+  if (preplacableObjects) {
+    preplacableObjects.forEach(object => {
+      if (!object) return;
+      
+      const angle = Math.atan2(object.y - player.y, object.x - player.x);
+      place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
+    });
+  }
 
   io.send("2", player.buildIndex ? getAttackDir() : hit360);
 }
