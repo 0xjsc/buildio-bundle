@@ -1817,10 +1817,10 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
             mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle = '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
           };
         placements.forEach(placement => {
-          mainContext.fillStyle = 'rgba(255,0,0,0.3)';
+          mainContext.fillStyle = 'rgba(255, 0, 0, 0.15)';
           renderCircle(player.x - xOffset + Math.cos(placement) * 90, 
-                      player.y - yOffset + Math.cos(placement) * 90,
-                      90, mainContext, true);
+                      player.y - yOffset + Math.sin(placement) * 90,
+                      45, mainContext, true);
         });
         !function (delta) {
           if (player && player.alive) {
