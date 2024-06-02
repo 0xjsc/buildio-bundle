@@ -12074,6 +12074,7 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 const hit360 = 1.998715926535898e+272;
+let nearestGameObjects = [];
 
 const versionHash = "1.5-AlphaFinal";
 const changelog = "Recoded whole autoplace";
@@ -13585,7 +13586,6 @@ function scanFree(intersectingObject, index, sectors, nearestGameObjects, angle)
 
 function findFreeAngles() {
   const freeAngles = [];
-  const nearestGameObjects = gameObjects.filter( object => object && Math.hypot(object?.x - player.x, object?.y - player.y) <= config.playerScale + (object?.group?.scale || 50) );
   const sectors = [];
 
   for (let i = 0; i < Math.PI * 2; i += Math.PI / 2) {
@@ -13700,6 +13700,8 @@ function reverseInsta(c) {
 let lastPing_ = Date.now();
 
 function updatePlayers(data) {
+  queueMicrotask(() =>
+    nearestGameObjects = gameObjects.filter( object => object && Math.hypot(object?.x - player.x, object?.y - player.y) <= config.playerScale + (object?.group?.scale || 50) ));
   if (Date.now() - tmpTime > average + serverLag) {
     storeEquip(6);
     storeEquip(15, true);
@@ -13752,7 +13754,7 @@ function updatePlayers(data) {
   if (!tt) storeEquip(5, true);
   else autoplace(tt);
 
-  const trap = gameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
+  const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
 
   if (!trap && breaking) {
     breaking = false;
