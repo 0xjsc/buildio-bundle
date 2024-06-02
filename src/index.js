@@ -1481,73 +1481,45 @@ function getMoveDir() {
   return newMoveDir;
 }
 
-/**
-  FARTHEST POINTS
-  top (cos 0; sin 0)
-  bottom (cos 180; sin 180)
-  right (cos pi/2; sin pi/2)
-  left (cos -pi/2; sin -pi/2)
-**/
+function findObjectAngleScale(object) {
+  const angle = Math.atan2(object.y - player.y, object.x - player.x);
+  const boundary = angle - Math.PI / 4;
+  const boundary1 = angle + Math.PI / 4;
+  const angleScale = Math.abs(Math.PI - boundary - boundary1);
 
-const angleCornerArray = [];
-const deltaLookup = Math.PI / 6;
-
-for (let i = 0; i < Math.PI * 2; i += deltaLookup) {
-  angleCornerArray.push({ x: Math.cos(i), y: Math.sin(i), angle: i });
+  return angleScale;
 }
 
-function generateCornerDist(object, corner) {
-  return Math.hypot(corner.x + object.x - player.y, corner.y + object.y - player.y);
+function calculateAngle(previous, next) {
+  const angle = Math.atan2(previous.y - player.y, previous.x - player.x);
+  const angle1 = Math.atan2(next.y - player.y, next.x - player.x);
+
+  return (angle + angle1) / 2;
 }
 
-function getNearestCorner(corners) {
-  let nearestCorner = corners[0];
-
-  corners.forEach(corner => {
-    if (corner.dist < nearestCorner.dist)
-      nearestCorner = corner;
-  });
-
-  return nearestCorner;
+function calculateCenter(angle) {
+  return angle + Math.PI / 2;
 }
 
-function findReachableCorner(object) {
-  const corners = angleCornerArray.map(obj => {
-    obj.dist = generateCornerDist(object, obj);
-    return obj;
-  });
+function scanFree(intersectingObject, index, sectors, nearestGameObjects, angle) {
+  const previousSector = sectors[index - 1];
+  const nextSector = nearestGameObjects.find( object => object && Math.abs(Math.atan2(object?.y - player.y, object?.x - player.x) - angle + Math.PI / 2) <= Math.PI / 2 );
 
-  return getNearestCorner(corners).angle;
+  if (nextSector && previousSector) return calculateAngle(previousSector, nextSector);
+  else return calculateCenter(angle);
 }
 
-function findFreeAngles(rangeStart, rangeEnd) {
-  const nearestObjects = gameObjects.filter(object => object && Math.hypot(player.x - object.x, player.y - object.y) < 180);
+function findFreeAngles() {
   const freeAngles = [];
-  const delta = (rangeEnd - rangeStart) / 6;
+  const nearestGameObjects = gameObjects.filter( object => object && Math.hypot(object?.x - player.x, object?.y - player.y) <= config.playerScale + (object?.group?.scale || 50) );
+  const sectors = [];
 
-  for (let angle = rangeStart; angle < rangeEnd; angle += delta) {
-    let farthestClockwisePointX, farthestClockwisePointY;
-    const intersectingObject = nearestObjects.find(object => object && Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - angle) < Math.PI / 2);
-    
-    if (intersectingObject?.x && intersectingObject?.y && intersectingObject?.scale) {
-      const placeableAngle = findReachableCorner(intersectingObject);
-      farthestClockwisePointX = Math.cos(placeableAngle) * intersectingObject.scale + intersectingObject.x;
-      farthestClockwisePointY = Math.sin(placeableAngle) * intersectingObject.scale + intersectingObject.y;
-    } else {
-      farthestClockwisePointX = Math.cos(angle) + player.x;
-      farthestClockwisePointY = Math.cos(angle) + player.y;
-    };
-    
-    const farthestPoint = {
-      x: farthestClockwisePointX,
-      y: farthestClockwisePointY,
-      scale: intersectingObject?.scale || 43
-    };
+  for (let i = 0; i < Math.PI * 2; i += Math.PI / 2) {
+    const intersectingObject = nearestGameObjects.find( object => 
+      Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - i) <= Math.PI / 2);
 
-    const freeAngle = Math.atan2(farthestClockwisePointY - player.y, farthestClockwisePointX - player.x);
-
-    freeAngles.push(freeAngle);
-    nearestObjects.push(farthestPoint);
+    if (intersectingObject) freeAngles.push(scanFree(intersectingObject, nearestGameObjects.indexOf(intersectingObject), sectors, nearestGameObjects, i));
+    else freeAngles.push(i);
   }
 
   return freeAngles;
@@ -1557,7 +1529,7 @@ function autoplace(enemy, replace = false) {
   if (instakilling) return;
 
   const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
-  const angles = findFreeAngles(0, Math.PI * 2);
+  const angles = findFreeAngles();
 
   angles.forEach(angle => {
     place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
