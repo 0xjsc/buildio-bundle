@@ -12076,7 +12076,7 @@ var __webpack_exports__ = {};
 const hit360 = 1.998715926535898e+272;
 let nearestGameObjects = [];
 
-const versionHash = "1.5-BetaFinal";
+const versionHash = "1.5-GammaFinal";
 const changelog = "Added preplace";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 const motionBlurLevel = 0.6;
@@ -13619,6 +13619,8 @@ function autoplace(enemy, replace = false) {
   if (preplacableObjects) {
     preplacableObjects.forEach(object => {
       if (!object) return;
+
+      console.log("! preplace " + object);
       
       const angle = Math.atan2(object.y - player.y, object.x - player.x);
       place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
