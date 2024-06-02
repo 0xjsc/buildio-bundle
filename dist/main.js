@@ -12075,8 +12075,8 @@ var __webpack_exports__ = {};
   \**********************/
 const hit360 = 1.998715926535898e+272;
 
-const versionHash = "1.5-PreFinal";
-const changelog = "Fixed autoreplace not working";
+const versionHash = "1.5-AlphaFinal";
+const changelog = "Recoded whole autoplace";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 const motionBlurLevel = 0.6;
 let instakilling = false;
@@ -13517,12 +13517,11 @@ function healing() {
   ) : (
     rawHealTimeout
   );
-  const healTimeout = (damage > 50 && (Date.now() - lastDamage <= average + window.pingTime) && player.shameCount < 4) ? 0 : safeHealTimeout;
   
   window.setTimeout(() =>
-    heal(healCount), healTimeout);
+    heal(healCount), safeHealTimeout);
   lastDamage = Date.now();
-  prevHeal = Date.now() + healTimeout;
+  prevHeal = Date.now() + safeHealTimeout;
 }
 
 function updateHealth(sid, value) {
