@@ -13451,11 +13451,12 @@ function place(id, angle = getAttackDir(), t = true) {
   io.send("5", id, false);
   io.send("c", true, angle);
   t && io.send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
-  
-  placements.push({
+
+  const object = {
     x: player.x + Math.cos(angle) * 90,
     y: player.y + Math.sin(angle) * 90
-  });
+  };
+  if (!placements.find(e => Math.hypot(object.x - e.x, object.y - e.x) < 50)) placements.push(object);
 }
 
 let lastHeal = Date.now();
