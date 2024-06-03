@@ -12322,8 +12322,12 @@ if (localStorage.version !== versionHash) {
 async function connectSocketIfReady() {
   if (startedConnecting) return;
   startedConnecting = true;
-  const token = await grecaptcha.execute("6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH");
-  connectSocket(token);
+  try {
+    const token = await grecaptcha.execute("6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH");
+    connectSocket(token);
+  } catch(e) {
+    startedConnecting = false;
+  }
 }
 
 const wsLogs = [];
@@ -12609,7 +12613,8 @@ window.onblur = function () {
 }, gameCanvas.oncontextmenu = function () {
   return !1;
 };
-
+window.onload = () => connectSocketIfReady();
+window.captchaCallback = () => connectSocketIfReady();
 didLoad = true;
 connectSocketIfReady();
 
