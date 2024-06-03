@@ -12,7 +12,7 @@ const clanNames = [
   "wasm"
 ];
 
-const versionHash = "1.5-OmicronFinal";
+const versionHash = "1.5-Final";
 const changelog = "Fixing some bugs until release";
 const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
@@ -1413,7 +1413,7 @@ function renderAI(obj, ctxt) {
 }
 
 function isOnScreen(x, y, s) {
-  return x + s >= 0 && x - s <= maxScreenWidth && y + s >= 0 && y - s <= maxScreenHeight;
+  return x + offsetCamX + s >= 0 && x + offsetCamX - s <= maxScreenWidth && y + offsetCamY + s >= 0 && y + offsetCamY - s <= maxScreenHeight;
 }
 
 function addPlayer(data, isYou) {
