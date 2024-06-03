@@ -1089,6 +1089,12 @@ function gatherAnimation(sid, didHit, index) {
   setTimeout(() => {
     storeEquip(hitHat);
     storeEquip(hitAcc, true);
+    setTimeout(() => {
+      if (!attackState) {
+        storeEquip(idleHat);
+        storeEquip(idleAcc, true);
+      }
+    }, average);
   }, speeds[waka] - window.pingTime);
 }
 
