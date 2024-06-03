@@ -13153,9 +13153,9 @@ function gatherAnimation(sid, didHit, index) {
   else return storeEquip(6);
 
   const hitHat = breaking ? 40 : ((player.health < 100 && player.health > 60) ? 55 : 7);
-  const hitAcc = (player.health > 50) ? 15 : 18;
+  const hitAcc = (player.health > 50) ? 21 : 18;
   const idleHat = breaking ? 26 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
-  const idleAcc = player.health < 100 ? 15 : 21;
+  const idleAcc = players.length >= 2 ? 15 : 11;
 
   storeEquip(idleHat);
   storeEquip(idleAcc, true);
@@ -13163,7 +13163,7 @@ function gatherAnimation(sid, didHit, index) {
   setTimeout(() => {
     storeEquip(hitHat);
     storeEquip(hitAcc, true);
-  }, speeds[waka] - window.pingTime - 1000 / config.serverUpdateRate);
+  }, speeds[waka] - window.pingTime);
 }
 
 function renderPlayers(xOffset, yOffset, zIndex) {
