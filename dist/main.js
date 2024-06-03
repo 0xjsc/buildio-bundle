@@ -13682,18 +13682,11 @@ function updatePlayerValue(index, value, updateView) {
   player && (player[index] = value, updateView && updateStatusDisplay());
 }
 
-let placements = [];
 
 function place(id, angle = getAttackDir(), t = true) {
   io.send("5", id, false);
   io.send("c", true, angle);
   t && io.send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
-
-  const object = {
-    x: player.x + Math.cos(angle) * 90,
-    y: player.y + Math.sin(angle) * 90
-  };
-  if (!placements.find(e => Math.hypot(object.x - e.x, object.y - e.x) < 50)) placements.push(object);
 }
 
 let lastHeal = Date.now();
@@ -13986,7 +13979,6 @@ function botFunctions(tmpPlayer) {
 let lastPing_ = Date.now();
 
 function updatePlayers(data) {
-  placements = [];
   queueMicrotask(() =>
     nearestGameObjects = gameObjects.filter( object => object && Math.hypot(object?.x - player.x, object?.y - player.y) <= config.playerScale + (object?.group?.scale || 50) ));
   if (Date.now() - lastPing_ > 3000) {
@@ -14172,12 +14164,6 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
             var tmpW = tmpSize.width + 17;
             mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle = '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
           };
-        placements.forEach(placement => {
-          mainContext.fillStyle = 'rgba(255, 0, 0, 0.15)';
-          renderCircle(placement.x - xOffset, 
-                      placement.y - yOffset,
-                      45, mainContext, true);
-        });
         !function (delta) {
           if (player && player.alive) {
             mapContext.clearRect(0, 0, mapDisplay.width, mapDisplay.height), mapContext.strokeStyle = '#fff', mapContext.lineWidth = 4;
