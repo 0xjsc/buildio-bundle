@@ -1,3 +1,5 @@
+try { require("./libs/aoe32.js") } catch(e) { }
+
 const hit360 = 1.998715926535898e+272;
 let nearestGameObjects = [];
 
@@ -921,6 +923,11 @@ function showText(x, y, value, type) {
 var deathTextScale = 99999;
 
 function killPlayer() {
+  window.insert_0xffabc && window.insert_0xffabc({
+    shameCount: player.shameCount,
+    reloads: reloads,
+    ping: window.pingTime.toString()
+  });
   inGame = !1,
     function () {
       var cookieIcon = document.getElementById('ot-sdk-btn-floating');
