@@ -828,11 +828,8 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
 }, !1), gameCanvas.addEventListener('mousedown', function (e) {
   setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
   touch = e.button == 0;
-  if (touch) waka = player.weapons[0]
-  else if (player.weapons[1] == 10) waka = player.weapons[1];
 }, !1), gameCanvas.addEventListener('mouseup', function (e) {
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
-  waka = player.weapons[0];
 }, !1);
   let touch = 0;
 var keys = {},
@@ -1072,6 +1069,11 @@ let lastPoison = Date.now();
 let turretReload = 0;
 const othersReloads  = [];
 
+function getBiomeHat() {
+  if (player.y > config.snowBiomeTop) return 15;
+  else return 12;
+}
+
 function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
   
@@ -1091,7 +1093,7 @@ function gatherAnimation(sid, didHit, index) {
     storeEquip(hitAcc, true);
     setTimeout(() => {
       if (!attackState) {
-        storeEquip(idleHat);
+        storeEquip(getBiomeHat());
         storeEquip(idleAcc, true);
       }
     }, average);
@@ -1686,7 +1688,7 @@ function updatePlayers(data) {
     storeEquip(6);
     storeEquip(15, true);
   };
-  if (!tt) biomeHats();
+  if (!tt || tt.sid == player.sid || Math.hypot(tt.x - player.x, tt.y - player.y) > 190) storeEquip(getBiomeHat());
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
     io.send("c", true, player.buildIndex ? getAttackDir() : hit360);
   }
