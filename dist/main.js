@@ -13015,11 +13015,11 @@ function receiveChat(sid, message) {
   } else if (/ez|bad|noskill|faggot|gay/gm.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
     message = "me is retarded homo";
   } else if (message.startsWith("!connect") && player.sid == tmpPlayer.sid) {
-    const playerName = message.split("!connect")[1];
+    const playerName = message.split("!connect ")[1];
     ownerSid = players.find(e => e && e?.name == playerName)?.sid;
     if (ownerSid) {
-      message = "[*] Successfully connected to " + playerName + "!";
-    } else message = "[*] Connection failed!";
+      io.send("ch", "[*] Successfully connected to " + playerName + "!");
+    } else io.send("ch", "[*] Connection failed!");
   } else if (tmpPlayer.sid == ownerSid) {
     switch (message) {
       case "!follow":
