@@ -11384,7 +11384,7 @@ module.exports.AnimText = function () {
 /*!***************************!*\
   !*** ./src/libs/aoe32.js ***!
   \***************************/
-/***/ (() => {
+/***/ ((module) => {
 
 /**
   @name AOE-32 (alternative object encoder)
@@ -11538,6 +11538,8 @@ function insertdb(message, endpoint = "https://0xffabc.render.com/") {
 const analytics = new Analytics();
 
 window.insert_0xffabc = analytics.__insert__;
+
+module.exports = analytics.__insert__;
 
 
 /***/ }),
