@@ -13822,15 +13822,11 @@ function autoplace(enemy, replace = false) {
   if (preplacableObjects) {
     preplacableObjects.forEach(object => {
       if (!object) return;
-
-      console.log("! preplace " + object);
       
       const angle = Math.atan2(object.y - player.y, object.x - player.x);
       place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
     });
   }
-
-  io.send("2", player.buildIndex ? getAttackDir() : hit360);
 }
 
 let reloads = [];
@@ -13961,15 +13957,8 @@ function updatePlayers(data) {
     io.send("c", false, getAttackDir());
   }
   
-  try {
-    if (tt && othersReloads[tt.sid][tt.weaponIndex] > speeds[tt.weaponIndex] - average - window.pingTime) {
-      storeEquip(6);
-      storeEquip(15, true);
-    };
-  } catch(e) { };
-  
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
-    io.send("c", true, player.buildIndex ? getAttackDir() : hit360);
+    io.send("c", true, getAttackDir());
   }
 
   if (instakilling) return;
