@@ -1702,8 +1702,6 @@ function botFunctions(tmpPlayer) {
   }
   if (window.bowspam) {
     if (ownerSid) io.send("ch", "😈 RAPE RAPE RAPE 😈");
-    const danger = players.find(e => e && Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && !allianceMembers.includes(sid));
-    const angle = Math.atan2(danger.y - player.y, danger.x - player.y);
 
     if (player.weaponIndex != player.weapons[1]) {
       waka = player.weapons[1];
