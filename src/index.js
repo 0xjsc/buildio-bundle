@@ -779,8 +779,8 @@ function receiveChat(sid, message) {
     const playerName = message.split("!connect ")[1];
     ownerSid = players.find(e => e && e?.name == playerName)?.sid;
     if (ownerSid) {
-      io.send("ch", "[*] Successfully connected to " + playerName + "!");
-    } else io.send("ch", "[*] Connection failed!");
+      setTimeout(() => io.send("ch", "[*] Successfully connected to " + playerName + "!"), 1000);
+    } else setTimeout(() => io.send("ch", "[*] Connection failed!"), 1000);
   } else if (tmpPlayer.sid == ownerSid) {
     switch (message) {
       case "!follow":
