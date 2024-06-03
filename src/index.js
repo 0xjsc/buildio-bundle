@@ -1070,8 +1070,19 @@ let turretReload = 0;
 const othersReloads  = [];
 
 function getBiomeHat() {
-  if (player.y > config.snowBiomeTop) return 15;
-  else return 12;
+  const biomeID = player.y >= config.mapScale - config.snowBiomeTop ? 2 : player.y <= config.snowBiomeTop ? 1 : 0;
+
+  switch (biomeID) {
+    case 0:
+      return 31;
+      break;
+    case 1:
+      return 12;
+      break;
+    case 2:
+      return 15;
+      break;
+  }
 }
 
 function gatherAnimation(sid, didHit, index) {
