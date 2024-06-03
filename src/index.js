@@ -367,13 +367,12 @@ window.onblur = function () {
   inWindow = !1;
 }, window.onfocus = function () {
   inWindow = !0, player && player.alive && resetMoveDir();
-}, window.onload = function () {
-  didLoad = !0, connectSocketIfReady();
-}, window.captchaCallback = function () {
-  captchaReady = !0, connectSocketIfReady();
 }, gameCanvas.oncontextmenu = function () {
   return !1;
 };
+
+didLoad = true;
+connectSocketIfReady();
 
 function setupServerStatus() {
   var altServerText, altServerURL, tmpHTML = '',
