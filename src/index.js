@@ -1070,12 +1070,13 @@ function renderGameObjects(layer, xOffset, yOffset) {
 const speeds = [300, 400, 400, 300, 300, 700, 300, 100, 400, 600, 400, 1, 700, 230, 700, 1500];
 let lastPoison = Date.now();
 let turretReload = 0;
+const othersReloads  = [];
 
 function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
   
   if (sid == player.sid) reloads[waka] = 0;
-  else return storeEquip(6);
+  else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = 0;
 
   const hitHat = breaking ? 40 : ((player.health < 100 && player.health > 60) ? 55 : 7);
   const hitAcc = (player.health > 50) ? 21 : 18;
@@ -1647,10 +1648,6 @@ function updatePlayers(data) {
   placements = [];
   queueMicrotask(() =>
     nearestGameObjects = gameObjects.filter( object => object && Math.hypot(object?.x - player.x, object?.y - player.y) <= config.playerScale + (object?.group?.scale || 50) ));
-  if (Date.now() - tmpTime > average + serverLag) {
-    storeEquip(6);
-    storeEquip(15, true);
-  };
   if (Date.now() - lastPing_ > 3000) {
     lastPing_ = Date.now();
     pingSocket();
@@ -1671,11 +1668,18 @@ function updatePlayers(data) {
   for (i = 0; i < data.length;) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
     if (player != tmpObj) tt = tmpObj;
+    if ((othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] < speeds[tmpObj.weaponIndex]) {
+      (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] += current;
+    } else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = speeds[tmpObj.weaponIndex];
   }
   
   if (tt.skinIndex == 26 || tt.skinIndex == 11) {
     io.send("c", false, getAttackDir());
   }
+  if (othersReloads[tt.sid][tt.weaponIndex] > speeds[tt.weaponIndex] - average - window.pingTime) {
+    storeEquip(6);
+    storeEquip(15, true);
+  };
   if (!tt) biomeHats();
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
     io.send("c", true, player.buildIndex ? getAttackDir() : hit360);
