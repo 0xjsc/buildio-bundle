@@ -1,8 +1,8 @@
 const hit360 = 1.998715926535898e+272;
 let nearestGameObjects = [];
 
-const versionHash = "1.5-GammaFinal";
-const changelog = "Added preplace";
+const versionHash = "1.5-DeltaFinal";
+const changelog = "Testing biome hats";
 const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
 let instakilling = false;
@@ -1074,13 +1074,13 @@ function getBiomeHat() {
 
   switch (biomeID) {
     case 0:
-      return 31;
+      return 15;
       break;
     case 1:
-      return 12;
+      return 31;
       break;
     case 2:
-      return 15;
+      return 12;
       break;
   }
 }
