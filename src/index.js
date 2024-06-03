@@ -7,6 +7,9 @@ const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
 let instakilling = false;
 
+let offsetCamX = 0;
+let offsetCamY = 0;
+
 const emojis = new Map();
 
 emojis.set(":smile:", "😀");
@@ -1371,7 +1374,7 @@ function addPlayer(data, isYou) {
     return null;
   }(data[0]);
   tmpPlayer || (tmpPlayer = new Player(data[0], data[1], config, UTILS, projectileManager, objectManager, players, ais, items, hats, accessories), players.push(tmpPlayer)), tmpPlayer.spawn(isYou ? moofoll : null), tmpPlayer.visible = !1, tmpPlayer.x2 = void 0, tmpPlayer.y2 = void 0, tmpPlayer.setData(data), isYou && (camX = (player = tmpPlayer)
-    .x, camY = player.y, updateItems(), updateStatusDisplay(), updateAge(), updateUpgrades(0), gameUI.style.display = 'block');
+    .x + offsetCamX, camY = player.y + offsetCamY, updateItems(), updateStatusDisplay(), updateAge(), updateUpgrades(0), gameUI.style.display = 'block');
 }
 
 function removePlayer(id) {
@@ -1786,9 +1789,9 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
           var attackDir = UTILS.getDistance(camX, camY, player.x, player.y),
             tmpDir = UTILS.getDirection(player.x, player.y, camX, camY),
             camSpd = Math.min(0.01 * attackDir * delta, attackDir);
-          attackDir > 0.1 ? (camX += camSpd * Math.cos(tmpDir), camY += camSpd * Math.sin(tmpDir)) : (camX = player.x, camY = player.y);
+          attackDir > 0.1 ? (camX += camSpd * Math.cos(tmpDir), camY += camSpd * Math.sin(tmpDir)) : (camX = player.x + offsetCamX, camY = player.y + offsetCamY);
         } else
-          camX = 100, camY = 100;
+          camX = offsetCamX, camY = offsetCamY;
         for (var lastTime = now - 1000 / config.serverUpdateRate, i = 0; i < players.length + ais.length; ++i)
           if ((tmpObj = players[i] || ais[i - players.length]) && tmpObj.visible)
             if (tmpObj.forcePos)
@@ -1801,8 +1804,8 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
                 tmpDiff = tmpObj.x2 - tmpObj.x1;
               tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
             }
-        var xOffset = camX - maxScreenWidth / 2,
-          yOffset = camY - maxScreenHeight / 2;
+        var xOffset = camX - maxScreenWidth / 2 + offsetCamX,
+          yOffset = camY - maxScreenHeight / 2 + offsetCamY;
         config.snowBiomeTop - yOffset <= 0 && config.mapScale - config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.mapScale - config.snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.snowBiomeTop - yOffset >= 0 ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, config.snowBiomeTop - yOffset), mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, config.snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (config.snowBiomeTop - yOffset))) : (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, config.mapScale - config.snowBiomeTop - yOffset), mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, config.mapScale - config.snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (config.mapScale - config.snowBiomeTop - yOffset))), firstSetup || ((waterMult += waterPlus * config.waveSpeed * delta) >= config.waveMax ? (waterMult = config.waveMax, waterPlus = -1) : waterMult <= 1 && (waterMult = waterPlus = 1), mainContext.globalAlpha = 1, mainContext.fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, config.riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06, mainContext.beginPath();
         for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 18)
           x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
