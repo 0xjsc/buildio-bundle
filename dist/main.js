@@ -13940,14 +13940,17 @@ function botFunctions(tmpPlayer) {
     } else io.send("33", null);
   }
   if (window.bowspam) {
-    const danger = players.find(e => e && Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && !allianceMembers.includes(sid));
-    const angle = Math.atan2(danger.y - player.y, danger.x - player.y);
+    if (ownerSid) io.send("ch", "😈 RAPE RAPE RAPE 😈");
 
     if (player.weaponIndex != player.weapons[1]) {
       waka = player.weapons[1];
       io.send("5", waka, true);
     }
 
+    const lookingX = tmpPlayer.x + Math.cos(tmpPlayer.dir);
+    const lookingY = tmpPlayer.y + Math.sin(tmpPlayer.dir);
+    const angle = Math.atan2(lookingY - player.y, lookingX - player.x);
+    
     io.send("c", true, angle);
   }
 }
