@@ -1074,13 +1074,13 @@ function getBiomeHat() {
 
   switch (biomeID) {
     case 0:
-      return 15;
+      return 12;
       break;
     case 1:
-      return 31;
+      return 15;
       break;
     case 2:
-      return 12;
+      return 31;
       break;
   }
 }
