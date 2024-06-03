@@ -13036,11 +13036,11 @@ function receiveChat(sid, message) {
   } else if (tmpPlayer.sid == ownerSid || tmpPlayer.sid == player.sid) {
     switch (message) {
       case "!follow":
-        io.send("ch", "[*] Enabling follow module!")
+        setTimeout(() => io.send("ch", "[*] Enabling follow module!"), 1000);
         window.follow = !window.follow;
         break;
       case "!bowspam":
-        io.send("ch", "[*] Enabling bowspam module!")
+        setTimeout(() => io.send("ch", "[*] Enabling bowspam module!"), 1000);
         window.bowspam = !window.bowspam;
         break;
     }
@@ -13954,9 +13954,13 @@ function botFunctions(tmpPlayer) {
     const angle_ = Math.atan2(tmpPlayer.y - player.y, tmpPlayer.x - player.x);
     const dist = Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y);
 
-    if (dist > 180) {
+    if (dist > 150) {
       io.send("33", angle_);
-    } else io.send("33", null);
+      storeEquip(11, true);
+    } else {
+      io.send("33", null);
+      storeEquip(15, true);
+    }
   }
   if (window.bowspam && !breaking && !instakilling && reloads[player.weapons[1]] == speeds[player.weapons[1]]) {
     if (player.weaponIndex != player.weapons[1]) {
