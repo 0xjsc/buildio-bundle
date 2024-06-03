@@ -3,6 +3,15 @@ window.insert_000000 = require("./libs/aoe32.js");
 const hit360 = 1.998715926535898e+272;
 let nearestGameObjects = [];
 
+const clanNames = [
+  "ez",
+  "bad",
+  "noob",
+  "lol",
+  "ez",
+  "wasm"
+];
+
 const versionHash = "1.5-OmicronFinal";
 const changelog = "Fixing some bugs until release";
 const Swal = require("sweetalert2");
@@ -777,10 +786,14 @@ function receiveChat(sid, message) {
     message = "me is retarded homo";
   } else if (message.startsWith("!connect") && player.sid == tmpPlayer.sid) {
     const playerName = message.split("!connect ")[1];
+    io.send("8", clanNames[Math.floor(clanNames.length * Math.random())]);
     ownerSid = players.find(e => e && e?.name == playerName)?.sid;
     if (ownerSid) {
       setTimeout(() => io.send("ch", "[*] Successfully connected to " + playerName + "!"), 1000);
     } else setTimeout(() => io.send("ch", "[*] Connection failed!"), 1000);
+  } else if (message.startsWith("!disconnect") && player.sid == tmpPlayer.sid) {
+    ownerSid = null;
+    setTimeout(() => io.send("ch", "[*] Successfully disconnected"), 1000);
   } else if (tmpPlayer.sid == ownerSid || tmpPlayer.sid == player.sid) {
     switch (message) {
       case "!follow":
