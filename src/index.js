@@ -797,11 +797,11 @@ function receiveChat(sid, message) {
   } else if (tmpPlayer.sid == ownerSid || tmpPlayer.sid == player.sid) {
     switch (message) {
       case "!follow":
-        setTimeout(() => io.send("ch", "[*] Enabling follow module!"), 1000);
+        setTimeout(() => io.send("ch", `[*] ${!window.follor ? "Enabling" : "Disabling"} follow module!`), 1000);
         window.follow = !window.follow;
         break;
       case "!bowspam":
-        setTimeout(() => io.send("ch", "[*] Enabling bowspam module!"), 1000);
+        setTimeout(() => io.send("ch", `[*] ${!window.bowspam ? "Enabling" : "Disabling"} bowspam module!`), 1000);
         window.bowspam = !window.bowspam;
         break;
     }
@@ -1712,15 +1712,22 @@ function reverseInsta(c) {
 
 function botFunctions(tmpPlayer) {
   if (window.follow) {
+    const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
     const angle_ = Math.atan2(tmpPlayer.y - player.y, tmpPlayer.x - player.x);
     const dist = Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y);
 
     if (dist > 150) {
       io.send("33", angle_);
+      if (player.weaponIndex != correctWeapon) {
+        waka = correctWeapon;
+        io.send("5", waka, true);
+      }
       storeEquip(11, true);
     } else {
       io.send("33", null);
       storeEquip(15, true);
+      waka = player.weapons[0];
+      io.send("5", player.weapons[0], true);
     }
   }
   if (window.bowspam && !breaking && !instakilling && reloads[player.weapons[1]] == speeds[player.weapons[1]]) {
