@@ -13951,10 +13951,14 @@ function updatePlayers(data) {
   if (tt.skinIndex == 26 || tt.skinIndex == 11) {
     io.send("c", false, getAttackDir());
   }
-  if (othersReloads[tt.sid][tt.weaponIndex] > speeds[tt.weaponIndex] - average - window.pingTime) {
-    storeEquip(6);
-    storeEquip(15, true);
-  };
+  
+  try {
+    if (tt && othersReloads[tt.sid][tt.weaponIndex] > speeds[tt.weaponIndex] - average - window.pingTime) {
+      storeEquip(6);
+      storeEquip(15, true);
+    };
+  } catch(e) { };
+  
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
     io.send("c", true, player.buildIndex ? getAttackDir() : hit360);
   }
