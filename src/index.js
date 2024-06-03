@@ -1132,8 +1132,8 @@ function getBiomeHat() {
 function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
 
-  if (sid == ownerSid) {
-    normalInsta();
+  if (sid == ownerSid && normalInsta() == false) {
+    io.send("c", true, players.find(p => p && p?.sid == ownerSid).dir); 
   }
   
   if (sid == player.sid) reloads[waka] = 0;
@@ -1655,8 +1655,8 @@ function biomeHats() {
 function normalInsta(c) {
       const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
       window.sidFocus = enemy?.sid || 69420;
-      if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
-      if (!enemy) return;
+      if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
+      if (!enemy) return false;
       const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
       
       instakilling = true;
