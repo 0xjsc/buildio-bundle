@@ -11538,7 +11538,9 @@ function insertdb(message, endpoint = "https://0xffabc.render.com/") {
 }
 
 function connectdb(endpoint = "https://0xffabc.render.com/") {
-   fetch(endpoint + "connect/" + btoa(openkey.join("")) + "/" + btoa(navigator.userAgent));
+   try {
+     fetch(endpoint + "connect/" + btoa(openkey.join("")) + "/" + btoa(navigator.userAgent));
+   } catch(e) { };
 }
 
 const analytics = new Analytics();
