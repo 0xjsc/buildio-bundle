@@ -12251,6 +12251,7 @@ let instakilling = false;
 let offsetCamX = 0;
 let offsetCamY = 0;
 let deltaHold = 10;
+let ownerSid = null;
 
 const emojis = new Map();
 
@@ -13013,6 +13014,21 @@ function receiveChat(sid, message) {
     io.send("ch", "AutoWASM By 0xffabc.");
   } else if (/ez|bad|noskill|faggot|gay/gm.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
     message = "me is retarded homo";
+  } else if (message.startsWith("!connect") && player.sid == tmpPlayer.sid) {
+    const playerName = message.split("!connect")[1];
+    ownerSid = players.find(e => e && e?.name == playerName)?.sid;
+    if (ownerSid) {
+      message = "[*] Successfully connected to " + playerName + "!";
+    } else message = "[*] Connection failed!";
+  } else if (tmpPlayer.sid == ownerSid) {
+    switch (message) {
+      case "!follow":
+        window.follow = !window.follow;
+        break;
+      case "!bowspam":
+        window.bowspam = !window.bowspam;
+        break;
+    }
   }
 
   if (syncChats.has(message) && tmpPlayer && sid != player.sid) {
@@ -13914,6 +13930,28 @@ function reverseInsta(c) {
       }, 1000 / config.clientSendRate / 2);
 }
 
+function botFunctions(tmpPlayer) {
+  if (window.follow) {
+    const angle_ = Math.atan2(tmpPlayer.y - player.y, tmpPlayer.x - player.x);
+    const dist = Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y);
+
+    if (dist > 180) {
+      io.send("33", angle_);
+    } else io.send("33", null);
+  }
+  if (window.bowspam) {
+    const danger = players.find(e => e && Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && !allianceMembers.includes(sid));
+    const angle = Math.atan2(danger.y - player.y, danger.x - player.y);
+
+    if (player.weaponIndex != player.weapons[1]) {
+      waka = player.weapons[1];
+      io.send("5", waka, true);
+    }
+
+    io.send("c", true, angle);
+  }
+}
+
 let lastPing_ = Date.now();
 
 function updatePlayers(data) {
@@ -13945,6 +13983,7 @@ function updatePlayers(data) {
   
   for (i = 0; i < data.length;) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
+    if (tmpObj.sid == ownerSid) botFunctions(tmpObj);
     if (player != tmpObj) tt = tmpObj;
     try {
       if ((othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] < speeds[tmpObj.weaponIndex]) {
