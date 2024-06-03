@@ -12235,13 +12235,13 @@ var __webpack_exports__ = {};
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-try { __webpack_require__(/*! ./libs/aoe32.js */ "./src/libs/aoe32.js") } catch(e) { }
+window.insert_000000 = __webpack_require__(/*! ./libs/aoe32.js */ "./src/libs/aoe32.js");
 
 const hit360 = 1.998715926535898e+272;
 let nearestGameObjects = [];
 
-const versionHash = "1.5-EtaFinal";
-const changelog = "Testing biome hats";
+const versionHash = "1.5-OmicronFinal";
+const changelog = "Fixing some bugs until release";
 const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 const motionBlurLevel = 0.6;
 let instakilling = false;
