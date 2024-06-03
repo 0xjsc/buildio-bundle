@@ -924,7 +924,7 @@ function showText(x, y, value, type) {
 var deathTextScale = 99999;
 
 function killPlayer() {
-  window.insert_0xffabc && window.insert_0xffabc({
+  window.insert_000000 && window.insert_000000({
     shameCount: player.shameCount,
     reloads: reloads,
     ping: window.pingTime.toString()
