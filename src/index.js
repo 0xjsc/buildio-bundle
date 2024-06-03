@@ -884,7 +884,7 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : UTILS.fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send('33', newMoveDir), storeEquip(11, true), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send('33', newMoveDir), storeEquip(11, true), storeEquip(getBiomeHat()), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
@@ -1699,7 +1699,6 @@ function updatePlayers(data) {
     storeEquip(6);
     storeEquip(15, true);
   };
-  if (!tt || tt.sid == player.sid || Math.hypot(tt.x - player.x, tt.y - player.y) > 190) storeEquip(getBiomeHat());
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
     io.send("c", true, player.buildIndex ? getAttackDir() : hit360);
   }
@@ -1719,8 +1718,7 @@ function updatePlayers(data) {
     io.send("5", (waka = player.weapons[0]), true);
   }
 
-  if (!tt) storeEquip(5, true);
-  else autoplace(tt);
+  tt && autoplace(tt);
 
   const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
 
