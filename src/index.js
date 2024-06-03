@@ -1706,7 +1706,7 @@ function botFunctions(tmpPlayer) {
       io.send("33", angle_);
     } else io.send("33", null);
   }
-  if (window.bowspam) {
+  if (window.bowspam && !breaking && !instakilling && reloads[player.weapons[1]] == speeds[player.weapons[1]]) {
     if (player.weaponIndex != player.weapons[1]) {
       waka = player.weapons[1];
       io.send("5", waka, true);
