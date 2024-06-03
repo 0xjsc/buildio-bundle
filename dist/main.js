@@ -12248,6 +12248,7 @@ let instakilling = false;
 
 let offsetCamX = 0;
 let offsetCamY = 0;
+let deltaHold = 10;
 
 const emojis = new Map();
 
@@ -13931,10 +13932,11 @@ function updatePlayers(data) {
   else if (window.keyEvents.KeyV) place(player.items[2], getAttackDir());
   else if (window.keyEvents.KeyF) place(player.items[4], getAttackDir()); 
 
-  if (window.keyEvents.ArrowUp) offsetCamY -= 10;
-  else if (window.keyEvents.ArrowDown) offsetCamY += 10;
-  else if (window.keyEvents.ArrowLeft) offsetCamX -= 10;
-  else if (window.keyEvents.ArrowRight) offsetCamX += 10;
+  if (window.keyEvents.ArrowUp) offsetCamY -= (deltaHold += 3);
+  else if (window.keyEvents.ArrowDown) offsetCamY += (deltaHold += 3);
+  else if (window.keyEvents.ArrowLeft) offsetCamX -= (deltaHold += 3);
+  else if (window.keyEvents.ArrowRight) offsetCamX += (deltaHold += 3);
+  else deltaHold = 10;
   
   for (i = 0; i < data.length;) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
