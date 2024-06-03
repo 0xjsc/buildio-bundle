@@ -1332,6 +1332,13 @@ function shootTurret(sid, dir) {
 function addProjectile(x, y, dir, range, speed, indx, layer, sid) {
   inWindow && (projectileManager.addProjectile(x, y, dir, range, speed, indx, null, null, layer)
     .sid = sid);
+  const angle = Math.atan2(y - player.y, x - player.x);
+  if (Math.abs(angle - dir) <= Math.PI / 2) {
+    io.send("33", dir - Math.PI / 2);
+    setTimeout(() => {
+      io.send("33", getMoveDir());
+    }, 222);
+  }
 }
 
 function remProjectile(sid, range) {
