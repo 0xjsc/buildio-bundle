@@ -1982,7 +1982,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
 
 #mainMenu, #linksContainer2, #linksContainer1 {
   background-color: transparent !important;
-  background-image: none !improtant;
+  background-image: none !important;
   backdrop-filter: none !important;
   border: 0px !important;
 }
