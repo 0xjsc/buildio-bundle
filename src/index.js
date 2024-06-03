@@ -781,12 +781,14 @@ function receiveChat(sid, message) {
     if (ownerSid) {
       setTimeout(() => io.send("ch", "[*] Successfully connected to " + playerName + "!"), 1000);
     } else setTimeout(() => io.send("ch", "[*] Connection failed!"), 1000);
-  } else if (tmpPlayer.sid == ownerSid) {
+  } else if (tmpPlayer.sid == ownerSid || tmpPlayer.sid == player.sid) {
     switch (message) {
       case "!follow":
+        io.send("ch", "[*] Enabling follow module!")
         window.follow = !window.follow;
         break;
       case "!bowspam":
+        io.send("ch", "[*] Enabling bowspam module!")
         window.bowspam = !window.bowspam;
         break;
     }
@@ -1114,6 +1116,10 @@ function getBiomeHat() {
 
 function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
+
+  if (sid == ownerSid) {
+    normalInsta();
+  }
   
   if (sid == player.sid) reloads[waka] = 0;
   else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = 0;
@@ -1701,8 +1707,6 @@ function botFunctions(tmpPlayer) {
     } else io.send("33", null);
   }
   if (window.bowspam) {
-    if (ownerSid) io.send("ch", "😈 RAPE RAPE RAPE 😈");
-
     if (player.weaponIndex != player.weapons[1]) {
       waka = player.weapons[1];
       io.send("5", waka, true);
