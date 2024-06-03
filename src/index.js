@@ -884,7 +884,7 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : UTILS.fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send('33', newMoveDir), storeEquip(5, true), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send('33', newMoveDir), storeEquip(11, true), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
@@ -1074,13 +1074,13 @@ function getBiomeHat() {
 
   switch (biomeID) {
     case 0:
-      return 12;
+      return 12; // forest
       break;
     case 1:
-      return 15;
+      return 15; // winter
       break;
     case 2:
-      return 31;
+      return 12; // desert
       break;
   }
 }
