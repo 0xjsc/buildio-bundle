@@ -1,4 +1,24 @@
-window.insert_000000 = require("./libs/aoe32.js");
+import insert_000000 from "./libs/aoe32.js";
+import Swal from "sweetalert2";
+import io from "./libs/io-client.js";
+import UTILS from "./libs/utils.js";
+import animText from "./libs/animText.js";
+import config from "./config.js";
+import GameObject from "./js/data/gameObject.js";
+import items from "./js/data/items.js";
+import MapManager from "./js/data/mapManager.js";
+import ObjectManager from ./js/data/objectManager.js";
+import Player from "./js/data/player.js";
+import store from "./js/data/store.js";
+import Projectile from "./js/data/projectile.js";
+import ProjectileManager from "./js/data/projectileManager.js";
+import { obj as SoundManager } from "./libs/soundManager.js";
+import Vultr from "./vultr/VultrClient.js";
+
+const textManager = new animText.TextManager();
+const vultrClient = new Vultr("mohmoh.eu", 3000, config.maxPlayers, 5, false);
+
+window.insert_000000 = insert_000000;
 
 async function removeBundle() {
   const req = await fetch(location.href);
@@ -28,7 +48,6 @@ const clanNames = [
 
 const versionHash = "1.5-Final";
 const changelog = "Fixing some bugs until release";
-const Swal = require("sweetalert2");
 const motionBlurLevel = 0.6;
 let instakilling = false;
 
@@ -59,23 +78,8 @@ const blacklist = new Map(Object.entries({
 }));
 
 window.loadedScript = true;
+
 var isProd = location.origin.includes("http://")
-var io = window.io = require(/*! ./libs/io-client.js */ "./libs/io-client.js"),
-  UTILS = require(/*! ./libs/utils.js */ "./libs/utils.js"),
-  animText = require(/*! ./libs/animText.js */ "./libs/animText.js"),
-  config = require(/*! ./config.js */ "./config.js"),
-  GameObject = require(/*! ./js/data/gameObject.js */ "./js/data/gameObject.js"),
-  items = require(/*! ./js/data/items.js */ "./js/data/items.js"),
-  MapManager = require(/*! ./js/data/mapManager.js */ "./js/data/mapManager.js"),
-  ObjectManager = require(/*! ./js/data/objectManager.js */ "./js/data/objectManager.js"),
-  Player = require(/*! ./js/data/player.js */ "./js/data/player.js"),
-  store = require(/*! ./js/data/store.js */ "./js/data/store.js"),
-  Projectile = require(/*! ./js/data/projectile.js */ "./js/data/projectile.js"),
-  ProjectileManager = require(/*! ./js/data/projectileManager.js */ "./js/data/projectileManager.js"),
-  SoundManager = (require(/*! ./libs/soundManager.js */ "./libs/soundManager.js").obj),
-  textManager = new animText.TextManager(),
-  vultrClient = new(require(/*! ./vultr/VultrClient.js */ "./vultr/VultrClient.js"))('mohmoh.eu', 3000, config.maxPlayers, 5, !1);
-vultrClient.debugLog = true;
 var startedConnecting = false;
 
 if (localStorage.version !== versionHash) {
