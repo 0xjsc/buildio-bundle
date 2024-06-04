@@ -6,7 +6,7 @@ var mathABS = Math.abs,
   mathSIN = Math.sin,
   mathPOW = Math.pow,
   mathSQRT = Math.sqrt;
-module.exports = function (id, sid, config, UTILS, projectileManager, objectManager, players, ais, items, hats, accessories, server, scoreCallback, iconCallback) {
+export default function (id, sid, config, UTILS, projectileManager, objectManager, players, ais, items, hats, accessories, server, scoreCallback, iconCallback) {
   this.id = id, this.sid = sid, this.tmpScore = 0, this.team = null, this.skinIndex = 0, this.tailIndex = 0, this.hitTime = 0, this.tails = {};
   for (var i = 0; i < accessories.length; ++i)
     accessories[i].price <= 0 && (this.tails[accessories[i].id] = 1);
