@@ -11443,7 +11443,7 @@ function TextManager() {
         tmpText = this.texts[i];
         break;
       }
-    tmpText || (tmpText = new module.exports.AnimText(), this.texts.push(tmpText)), tmpText.init(x, y, scale, speed, life, text, color);
+    tmpText || (tmpText = new AnimText(), this.texts.push(tmpText)), tmpText.init(x, y, scale, speed, life, text, color);
   };
 };
 
