@@ -1,4 +1,4 @@
-module.exports = function (ais, AI, players, items, objectManager, config, UTILS, scoreCallback, server) {
+export default function (ais, AI, players, items, objectManager, config, UTILS, scoreCallback, server) {
   this.aiTypes = [{
       id: 0,
       src: 'cow_1',
