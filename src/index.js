@@ -16,6 +16,27 @@ import Vultr from "./vultr/VultrClient.js";
 import AiManager from "./js/data/aiManager.js";
 import AI from "./js/data/ai.js";
 
+const packets = {
+  PING: "pp",
+  REGISTER: "budv",
+  ACCEPT_CLAN_JOIN: "11",
+  SEND_CLAN_JOIN: "10",
+  CLAN_KICK: "12",
+  CLAN_CREATE: "8",
+  CLAN_LEAVE: "9",
+  STORE_EQUIP: "13c",
+  SEND_CHAT: "ch",
+  ATTACK: "c",
+  AIM: "2",
+  RESET_MOVE_DIR: "rmd",
+  FREEZE: "7",
+  MAP_PING: "14",
+  MOVEMENT: "33",
+  CHANGE_WEAPON: "5",
+  SPAWN: "sp",
+  UPGRADE: "6"
+}
+
 const textManager = new animText.TextManager();
 const vultrClient = new Vultr("mohmoh.eu", 3000, config.maxPlayers, 5, false);
 
