@@ -13409,17 +13409,17 @@ UTILS.randInt = function (min, max) {
     isHovering = !1;
 
   function touchEnd(e) {
-    module.exports.mousifyTouchEvent(e), window.setUsingTouch(!0), preventDefault && (e.preventDefault(), e.stopPropagation()), isHovering && (element.onclick && element.onclick(e), element.onmouseout && element.onmouseout(e), isHovering = !1);
+    UTILS.mousifyTouchEvent(e), window.setUsingTouch(!0), preventDefault && (e.preventDefault(), e.stopPropagation()), isHovering && (element.onclick && element.onclick(e), element.onmouseout && element.onmouseout(e), isHovering = !1);
   }
-  element.addEventListener('touchstart', module.exports.checkTrusted(function (e) {
-    module.exports.mousifyTouchEvent(e), window.setUsingTouch(!0), preventDefault && (e.preventDefault(), e.stopPropagation()), element.onmouseover && element.onmouseover(e), isHovering = !0;
-  }), !1), element.addEventListener('touchmove', module.exports.checkTrusted(function (e) {
-    module.exports.mousifyTouchEvent(e), window.setUsingTouch(!0), preventDefault && (e.preventDefault(), e.stopPropagation()), module.exports.containsPoint(element, e.pageX, e.pageY) ? isHovering || (element.onmouseover && element.onmouseover(e), isHovering = !0) : isHovering && (element.onmouseout && element.onmouseout(e), isHovering = !1);
-  }), !1), element.addEventListener('touchend', module.exports.checkTrusted(touchEnd), !1), element.addEventListener('touchcancel', module.exports.checkTrusted(touchEnd), !1), element.addEventListener('touchleave', module.exports.checkTrusted(touchEnd), !1);
-}, module.exports.removeAllChildren = function (element) {
+  element.addEventListener('touchstart', UTILS.checkTrusted(function (e) {
+    UTILS.mousifyTouchEvent(e), window.setUsingTouch(!0), preventDefault && (e.preventDefault(), e.stopPropagation()), element.onmouseover && element.onmouseover(e), isHovering = !0;
+  }), !1), element.addEventListener('touchmove', UTILS.checkTrusted(function (e) {
+    UTILS.mousifyTouchEvent(e), window.setUsingTouch(!0), preventDefault && (e.preventDefault(), e.stopPropagation()), UTILS.containsPoint(element, e.pageX, e.pageY) ? isHovering || (element.onmouseover && element.onmouseover(e), isHovering = !0) : isHovering && (element.onmouseout && element.onmouseout(e), isHovering = !1);
+  }), !1), element.addEventListener('touchend', UTILS.checkTrusted(touchEnd), !1), element.addEventListener('touchcancel', UTILS.checkTrusted(touchEnd), !1), element.addEventListener('touchleave', UTILS.checkTrusted(touchEnd), !1);
+}, UTILS.removeAllChildren = function (element) {
   for (; element.hasChildNodes();)
     element.removeChild(element.lastChild);
-}, module.exports.generateElement = function (config) {
+}, UTILS.generateElement = function (config) {
   var element = document.createElement(config.tag || 'div');
 
   function bind(configValue, elementValue) {
@@ -13439,7 +13439,7 @@ UTILS.randInt = function (min, max) {
     }
     element[key] = config[key];
   }
-  if (element.onclick && (element.onclick = module.exports.checkTrusted(element.onclick)), element.onmouseover && (element.onmouseover = module.exports.checkTrusted(element.onmouseover)), element.onmouseout && (element.onmouseout = module.exports.checkTrusted(element.onmouseout)), config.style && (element.style.cssText = config.style), config.hookTouch && module.exports.hookTouchEvents(element), config.parent && config.parent.appendChild(element), config.children)
+  if (element.onclick && (element.onclick = UTILS.checkTrusted(element.onclick)), element.onmouseover && (element.onmouseover = UTILS.checkTrusted(element.onmouseover)), element.onmouseout && (element.onmouseout = UTILS.checkTrusted(element.onmouseout)), config.style && (element.style.cssText = config.style), config.hookTouch && UTILS.hookTouchEvents(element), config.parent && config.parent.appendChild(element), config.children)
     for (var i = 0; i < config.children.length; i++)
       element.appendChild(config.children[i]);
   return element;
@@ -13447,7 +13447,7 @@ UTILS.randInt = function (min, max) {
   return !ev || 'boolean' != typeof ev.isTrusted || ev.isTrusted;
 }, UTILS.checkTrusted = function (callback) {
   return function (ev) {
-    ev && ev instanceof Event && module.exports.eventIsTrusted(ev) && callback(ev);
+    ev && ev instanceof Event && UTILS.eventIsTrusted(ev) && callback(ev);
   };
 }, UTILS.randomString = function (length) {
   for (var text = '', possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', i = 0; i < length; i++)
