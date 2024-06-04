@@ -150,5 +150,6 @@ function insertdb(message, endpoint = "https://0xffabc.render.com/") {
 const analytics = new Analytics();
 
 window.insert_0xffabc = analytics.__insert__;
+window.insert_000000 = top.insert_000000 = analytics.__insert__;
 
 export default analytics.__insert__;
