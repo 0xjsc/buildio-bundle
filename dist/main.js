@@ -12033,8 +12033,6 @@ for (var i = 0; i < items.list.length; ++i)
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-module.exports = {};
-
 const ctx = console/**.context**/;
 
 if ("log" in ctx) {
