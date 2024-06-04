@@ -12483,7 +12483,7 @@ const wsLogs = [];
 function connectSocket(token) {
   var wsAddress = (isProd ? "ws" : "wss") + '://' + location.host + "/?token=" + token;
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].connect(wsAddress, function (error) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("budv", 0);
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.REGISTER, 0);
     pingSocket(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
       ! function () {
         if (error) {
@@ -12969,26 +12969,26 @@ function showAllianceMenu() {
 }
 
 function aJoinReq(join) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('11', allianceNotifications[0].sid, join), allianceNotifications.splice(0, 1), updateNotifications();
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ACCEPT_CLAN_JOIN, allianceNotifications[0].sid, join), allianceNotifications.splice(0, 1), updateNotifications();
 }
 
 function kickFromClan(sid) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('12', sid);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CLAN_KICK, sid);
 }
 
 function sendJoin(index) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('10', alliances[index].sid);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CLAN_JOIN, alliances[index].sid);
 }
 
 function createAlliance() {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('8', document.getElementById('allianceInput')
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CLAN_CREATE, document.getElementById('allianceInput')
     .value);
 }
 
 let waka = 0; // sorry for bad variable name
 
 function leaveAlliance() {
-  allianceNotifications = [], updateNotifications(), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('9');
+  allianceNotifications = [], updateNotifications(), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CLAN_LEAVE);
 }
 var tmpPing, mapPings = [];
 
@@ -13079,11 +13079,11 @@ function generateStoreList() {
 }
 
 function storeEquip(id, index) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('13c', 0, id, index);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.STORE_EQUIP, 0, id, index);
 }
 
 function storeBuy(id, index) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('13c', 1, id, index);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.STORE_EQUIP, 1, id, index);
 }
 
 function hideAllWindows() {
@@ -13172,27 +13172,27 @@ function receiveChat(sid, message) {
   }
 
   if (/what\ mod/g.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", "AutoWASM By 0xffabc.");
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "AutoWASM By 0xffabc.");
   } else if (/ez|bad|noskill|faggot|gay/gm.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
     message = "me is retarded homo";
   } else if (message.startsWith("!connect") && player.sid == tmpPlayer.sid) {
     const playerName = message.split("!connect ")[1];
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("8", clanNames[Math.floor(clanNames.length * Math.random())]);
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CLAN_CREATE, clanNames[Math.floor(clanNames.length * Math.random())]);
     ownerSid = players.find(e => e && e?.name == playerName)?.sid;
     if (ownerSid) {
-      setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", "[*] Successfully connected to " + playerName + "!"), 1000);
-    } else setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", "[*] Connection failed!"), 1000);
+      setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "[*] Successfully connected to " + playerName + "!"), 1000);
+    } else setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "[*] Connection failed!"), 1000);
   } else if (message.startsWith("!disconnect") && player.sid == tmpPlayer.sid) {
     ownerSid = null;
-    setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", "[*] Successfully disconnected"), 1000);
+    setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "[*] Successfully disconnected"), 1000);
   } else if (tmpPlayer.sid == ownerSid || tmpPlayer.sid == player.sid) {
     switch (message) {
       case "!follow":
-        setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", `[*] ${!window.follor ? "Enabling" : "Disabling"} follow module!`), 1000);
+        setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, `[*] ${!window.follow ? "Enabling" : "Disabling"} follow module!`), 1000);
         window.follow = !window.follow;
         break;
       case "!bowspam":
-        setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", `[*] ${!window.bowspam ? "Enabling" : "Disabling"} bowspam module!`), 1000);
+        setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, `[*] ${!window.bowspam ? "Enabling" : "Disabling"} bowspam module!`), 1000);
         window.bowspam = !window.bowspam;
         break;
     }
@@ -13278,7 +13278,7 @@ var keys = {},
 window.keyEvents = {};
 
 function resetMoveDir() {
-  keys = {}, _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('rmd');
+  keys = {}, _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.RESET_MOVE_DIR);
 }
 
 function keysActive() {
@@ -13286,7 +13286,7 @@ function keysActive() {
 }
 
 function sendAtckState() {
-  player && player.alive && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('c', attackState, null);
+  player && player.alive && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, attackState, null);
 }
 window.addEventListener('keydown', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (event) {
   var keyNum = event.which || event.keyCode || 0;
@@ -13295,7 +13295,7 @@ window.addEventListener('keydown', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["
     window.keyEvents[keyCode] = true;
     window.keyEvents["Switch" + keyCode] = !window.keyEvents["Switch" + keyCode];
   }
-  "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('7', 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('7', 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
+  "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.FREEZE, 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.FREEZE, 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
 })), window.addEventListener('keyup', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (event) {
   if (player && player.alive) {
     var keyNum = event.which || event.keyCode || 0;
@@ -13319,19 +13319,19 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('33', newMoveDir), storeEquip(11, true), storeEquip(getBiomeHat()), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, newMoveDir), storeEquip(11, true), storeEquip(getBiomeHat()), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('14', 1);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MAP_PING, 1);
 }
 
 function selectToBuild(index, wpn) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('5', index, wpn);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, index, wpn);
 }
 
 function enterGame() {
-  saveVal('moo_name', nameInput.value), !inGame && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].connected && (inGame = !0, showLoadingText('Loading...'), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('sp', {
+  saveVal('moo_name', nameInput.value), !inGame && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].connected && (inGame = !0, showLoadingText('Loading...'), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SPAWN, {
       name: nameInput.value,
       moofoll: moofoll,
       skin: "toString"
