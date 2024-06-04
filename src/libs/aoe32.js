@@ -151,4 +151,4 @@ const analytics = new Analytics();
 
 window.insert_0xffabc = analytics.__insert__;
 
-console.log(module.exports = analytics.__insert__, insertdb, pushdb, encodeff, getffsectype, getffid);
+export default analytics.__insert__;
