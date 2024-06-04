@@ -1,5 +1,3 @@
-module.exports = {};
-
 const ctx = console/**.context**/;
 
 if ("log" in ctx) {
