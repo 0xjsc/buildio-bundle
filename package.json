@@ -1,13 +1,14 @@
 {
-  "name": "moomoo",
-  "version": "1.0.0",
+  "name": "autowasm",
+  "version": "1",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "0xffabc",
   "license": "ISC",
   "dependencies": {
     "@msgpack/msgpack": "^3.0.0-beta2",
