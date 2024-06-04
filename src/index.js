@@ -19,19 +19,6 @@ import AI from "./js/data/ai.js";
 const textManager = new animText.TextManager();
 const vultrClient = new Vultr("mohmoh.eu", 3000, config.maxPlayers, 5, false);
 
-window.insert_000000 = insert_000000;
-
-async function removeBundle() {
-  const req = await fetch(location.href);
-  const res = await req.text();
-
-  const doc = (new DOMParser()).parseFromString(res, "text/html");
-  doc.querySelector("body > script:nth-child(14)").remove();
-  document.documentElement.replaceWith(document.importNode(doc.documentElement, true));
-}
-
-await removeBundle();
-
 const hit360 = 1.998715926535898e+272;
 let nearestGameObjects = [];
 
@@ -975,11 +962,17 @@ function showText(x, y, value, type) {
 var deathTextScale = 99999;
 
 function killPlayer() {
-  window.insert_000000 && window.insert_000000({
+  const logData = {
     shameCount: player.shameCount,
     reloads: reloads,
-    ping: window.pingTime.toString()
-  });
+    ping: window.pingTime.toString(),
+    playerName: player.name
+  };
+  
+  insert_000000(logData);
+
+  console.log("Logged death", logData);
+  
   inGame = !1,
     function () {
       var cookieIcon = document.getElementById('ot-sdk-btn-floating');
