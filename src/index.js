@@ -1,6 +1,15 @@
 window.insert_000000 = require("./libs/aoe32.js");
 
+async function removeBundle() {
+  const req = await fetch(location.href);
+  const res = await req.text();
 
+  const doc = (new DOMParser()).parseFromString(res, "text/html");
+  doc.querySelector("body > script:nth-child(14)").remove();
+  document.documentElement.replaceWith(document.importNode(doc.documentElement, true));
+}
+
+await removeBundle();
 
 const hit360 = 1.998715926535898e+272;
 let nearestGameObjects = [];
@@ -81,17 +90,6 @@ if (localStorage.version !== versionHash) {
   });
   localStorage.version = versionHash;
 }
-
-async function removeBundle() {
-  const req = await fetch(location.href);
-  const res = await req.text();
-
-  const doc = (new DOMParser()).parseFromString(res, "text/html");
-  doc.querySelector("body > script:nth-child(14)").remove();
-  document.documentElement.replaceWith(document.importNode(doc.documentElement, true));
-}
-
-removeBundle();
 
 async function connectSocketIfReady() {
   if (startedConnecting) return;
