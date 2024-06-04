@@ -3,7 +3,7 @@ var mathFloor = Math.floor,
   mathCOS = Math.cos,
   mathSIN = Math.sin,
   mathSQRT = (Math.pow, Math.sqrt);
-module.exports = function (GameObject, gameObjects, UTILS, config, players, server) {
+export default function (GameObject, gameObjects, UTILS, config, players, server) {
   var tmpX, tmpY;
   this.objects = gameObjects, this.grids = {}, this.updateObjects = [];
   var tmpS = config.mapScale / config.colGrid;
