@@ -1701,6 +1701,7 @@ function normalInsta(c) {
       instakilling = true;
       if (c) c();
       storeEquip(7);
+      storeEquip(15, true);
       io.send(packets.SEND_CHAT, "!sync");
       io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
       io.send(packets.ATTACK, true, angle);
@@ -1735,6 +1736,7 @@ function reverseInsta(c) {
       reloads[player.weapons[1]] = 0;
       setTimeout(() => {
         storeEquip(7);
+        storeEquip(15, true);
         io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
         io.send(packets.ATTACK, true, angle);
         setTimeout(() => {
