@@ -7,7 +7,7 @@ import config from "./config.js";
 import GameObject from "./js/data/gameObject.js";
 import items from "./js/data/items.js";
 import MapManager from "./js/data/mapManager.js";
-import ObjectManager from ./js/data/objectManager.js";
+import ObjectManager from "./js/data/objectManager.js";
 import Player from "./js/data/player.js";
 import store from "./js/data/store.js";
 import Projectile from "./js/data/projectile.js";
