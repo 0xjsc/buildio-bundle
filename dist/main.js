@@ -13122,7 +13122,7 @@ function toggleChat() {
 }
 
 function sendChat(message) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('ch', message.slice(0, 30));
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, message.slice(0, 30));
 }
 
 function closeChat() {
@@ -13434,7 +13434,7 @@ function updateUpgrades(points, age) {
         tmpItem.onmouseover = function () {
           _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i] ? showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i], !0) : showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length]);
         }, tmpItem.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('6', i);
+          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.UPGRADE, i);
         }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(tmpItem);
       }(tmpList[i]);
     tmpList.length ? (upgradeHolder.style.display = 'block', upgradeCounter.style.display = 'block', upgradeCounter.innerHTML = 'SELECT ITEMS (' + points + ')') : (upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo());
@@ -13535,7 +13535,7 @@ function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
 
   if (sid == ownerSid && normalInsta() == false) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, players.find(p => p && p?.sid == ownerSid).dir); 
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, players.find(p => p && p?.sid == ownerSid).dir); 
   }
   
   if (sid == player.sid) reloads[waka] = 0;
@@ -13773,9 +13773,9 @@ function addProjectile(x, y, dir, range, speed, indx, layer, sid) {
     .sid = sid);
   const angle = Math.atan2(y - player.y, x - player.x);
   if (Math.abs(angle - dir) <= Math.PI / 2) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("33", dir - Math.PI / 2);
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, dir - Math.PI / 2);
     setTimeout(() => {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("33", getMoveDir());
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, getMoveDir());
     }, 222);
   }
 }
@@ -13849,9 +13849,9 @@ function updatePlayerValue(index, value, updateView) {
 
 
 function place(id, angle = getAttackDir(), t = true) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", id, false);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, angle);
-  t && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, id, false);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
+  t && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
 }
 
 let lastHeal = Date.now();
@@ -13887,7 +13887,7 @@ function heal(healCount) {
   const healingItemSid = player.items[0];
   for (let healingCount = 0; healingCount < healCount; healingCount++) {
     selectToBuild(healingItemSid, false);
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, getAttackDir());
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, getAttackDir());
   };
   selectToBuild(player.weaponIndex, true);
   player.buildItem({
@@ -14042,10 +14042,10 @@ function autobreak(trap) {
   );
   breaking = true;
   window.trap = trap;
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, trapAngle);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", false, trapAngle);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, trapAngle);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, trapAngle);
   if (player.weaponIndex != correctWeapon) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka = correctWeapon, true);
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = correctWeapon, true);
   }
 }
 
@@ -14064,18 +14064,18 @@ function normalInsta(c) {
       instakilling = true;
       if (c) c();
       storeEquip(7);
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", "!sync");
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka = player.weapons[0], true);
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, angle);
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!sync");
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
       setTimeout(() => {
         storeEquip(53);
         turretReload = 0;
-        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka = player.weapons[1], true);
+        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
         reloads[player.weapons[1]] = 0;
-        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, angle);
+        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
         setTimeout(() => {
-          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka = player.weapons[0], true);
-          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", false, angle);
+          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
+          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, angle);
           instakilling = false;
         }, 1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].clientSendRate / 2);
       }, 1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].clientSendRate / 2);
@@ -14092,16 +14092,16 @@ function reverseInsta(c) {
       if (c) c();
       storeEquip(53);
       turretReload = 0;
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka = player.weapons[1], true);
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, angle);
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", "!sync");
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!sync");
       reloads[player.weapons[1]] = 0;
       setTimeout(() => {
         storeEquip(7);
-        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka = player.weapons[0], true);
-        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, angle);
+        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
+        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
         setTimeout(() => {
-          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", false, angle);
+          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, angle);
           instakilling = false;
         }, 1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].clientSendRate / 2);
       }, 1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].clientSendRate / 2);
@@ -14114,30 +14114,30 @@ function botFunctions(tmpPlayer) {
     const dist = Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y);
 
     if (dist > 150) {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("33", angle_);
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, angle_);
       if (player.weaponIndex != correctWeapon) {
         waka = correctWeapon;
-        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka, true);
+        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka, true);
       }
       storeEquip(11, true);
     } else {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("33", null);
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, null);
       storeEquip(15, true);
       waka = player.weapons[0];
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", player.weapons[0], true);
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, player.weapons[0], true);
     }
   }
   if (window.bowspam && !breaking && !instakilling && reloads[player.weapons[1]] == speeds[player.weapons[1]]) {
     if (player.weaponIndex != player.weapons[1]) {
       waka = player.weapons[1];
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka, true);
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka, true);
     }
 
     const lookingX = tmpPlayer.x + Math.cos(tmpPlayer.dir);
     const lookingY = tmpPlayer.y + Math.sin(tmpPlayer.dir);
     const angle = Math.atan2(lookingY - player.y, lookingX - player.x);
     
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, angle);
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
   }
 }
 
@@ -14181,11 +14181,11 @@ function updatePlayers(data) {
   }
   
   if (tt.skinIndex == 26 || tt.skinIndex == 11) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", false, getAttackDir());
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, getAttackDir());
   }
   
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, getAttackDir());
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, getAttackDir());
   }
 
   if (instakilling) return;
@@ -14196,11 +14196,11 @@ function updatePlayers(data) {
     reverseInsta();
   }
 
-  if (!breaking && reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", (waka = player.weapons[0]), true);
-  else if (!breaking && reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", (waka = player.weapons[1]), true);
+  if (!breaking && reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
+  else if (!breaking && reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
 
   if (!breaking && reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", (waka = player.weapons[0]), true);
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
   }
 
   tt && autoplace(tt);
@@ -14209,7 +14209,7 @@ function updatePlayers(data) {
 
   if (!trap && breaking) {
     breaking = false;
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", false, getAttackDir());
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, getAttackDir());
   }
   if (!trap) return;
 
@@ -14241,7 +14241,7 @@ function pingSocketResponse() {
 }
 
 function pingSocket() {
-  lastPing = Date.now(), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('pp');
+  lastPing = Date.now(), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.PING);
 }
 
 function serverShutdownNotice(countdown) {
