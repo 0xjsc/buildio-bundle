@@ -1,37 +1,39 @@
+const UTILS = { };
+
 var mathABS = Math.abs,
   mathSQRT = (Math.cos, Math.sin, Math.pow, Math.sqrt),
   mathATAN2 = (mathABS = Math.abs, Math.atan2),
   mathPI = Math.PI;
-module.exports.randInt = function (min, max) {
+UTILS.randInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}, module.exports.randFloat = function (min, max) {
+}, UTILS.randFloat = function (min, max) {
   return Math.random() * (max - min + 1) + min;
-}, module.exports.lerp = function (value1, value2, amount) {
+}, UTILS.lerp = function (value1, value2, amount) {
   return value1 + (value2 - value1) * amount;
-}, module.exports.decel = function (val, cel) {
+}, UTILS.decel = function (val, cel) {
   return val > 0 ? val = Math.max(0, val - cel) : val < 0 && (val = Math.min(0, val + cel)), val;
-}, module.exports.getDistance = function (x1, y1, x2, y2) {
+}, UTILS.getDistance = function (x1, y1, x2, y2) {
   return mathSQRT((x2 -= x1) * x2 + (y2 -= y1) * y2);
-}, module.exports.getDirection = function (x1, y1, x2, y2) {
+}, UTILS.getDirection = function (x1, y1, x2, y2) {
   return mathATAN2(y1 - y2, x1 - x2);
-}, module.exports.getAngleDist = function (a, b) {
+}, UTILS.getAngleDist = function (a, b) {
   var p = mathABS(b - a) % (2 * mathPI);
   return p > mathPI ? 2 * mathPI - p : p;
-}, module.exports.isNumber = function (n) {
+}, UTILS.isNumber = function (n) {
   return 'number' == typeof n && !isNaN(n) && isFinite(n);
-}, module.exports.isString = function (s) {
+}, UTILS.isString = function (s) {
   return s && 'string' == typeof s;
-}, module.exports.kFormat = function (num) {
+}, UTILS.kFormat = function (num) {
   return num > 999 ? (num / 1000)
     .toFixed(1) + 'k' : num;
-}, module.exports.capitalizeFirst = function (string) {
+}, UTILS.capitalizeFirst = function (string) {
   return string.charAt(0)
     .toUpperCase() + string.slice(1);
-}, module.exports.fixTo = function (n, v) {
+}, UTILS.fixTo = function (n, v) {
   return parseFloat(n.toFixed(v));
-}, module.exports.sortByPoints = function (a, b) {
+}, UTILS.sortByPoints = function (a, b) {
   return parseFloat(b.points) - parseFloat(a.points);
-}, module.exports.lineInRect = function (recX, recY, recX2, recY2, x1, y1, x2, y2) {
+}, UTILS.lineInRect = function (recX, recY, recX2, recY2, x1, y1, x2, y2) {
   var minX = x1,
     maxX = x2;
   if (x1 > x2 && (minX = x2, maxX = x1), maxX > recX2 && (maxX = recX2), minX < recX && (minX = recX), minX > maxX)
@@ -49,17 +51,17 @@ module.exports.randInt = function (min, max) {
     maxY = minY, minY = tmp;
   }
   return maxY > recY2 && (maxY = recY2), minY < recY && (minY = recY), !(minY > maxY);
-}, module.exports.containsPoint = function (element, x, y) {
+}, UTILS.containsPoint = function (element, x, y) {
   var bounds = element.getBoundingClientRect(),
     left = bounds.left + window.scrollX,
     top = bounds.top + window.scrollY,
     width = bounds.width,
     height = bounds.height;
   return x > left && x < left + width && y > top && y < top + height;
-}, module.exports.mousifyTouchEvent = function (event) {
+}, UTILS.mousifyTouchEvent = function (event) {
   var touch = event.changedTouches[0];
   event.screenX = touch.screenX, event.screenY = touch.screenY, event.clientX = touch.clientX, event.clientY = touch.clientY, event.pageX = touch.pageX, event.pageY = touch.pageY;
-}, module.exports.hookTouchEvents = function (element, skipPrevent) {
+}, UTILS.hookTouchEvents = function (element, skipPrevent) {
   var preventDefault = !skipPrevent,
     isHovering = !1;
 
@@ -98,18 +100,20 @@ module.exports.randInt = function (min, max) {
     for (var i = 0; i < config.children.length; i++)
       element.appendChild(config.children[i]);
   return element;
-}, module.exports.eventIsTrusted = function (ev) {
+}, UTILS.eventIsTrusted = function (ev) {
   return !ev || 'boolean' != typeof ev.isTrusted || ev.isTrusted;
-}, module.exports.checkTrusted = function (callback) {
+}, UTILS.checkTrusted = function (callback) {
   return function (ev) {
     ev && ev instanceof Event && module.exports.eventIsTrusted(ev) && callback(ev);
   };
-}, module.exports.randomString = function (length) {
+}, UTILS.randomString = function (length) {
   for (var text = '', possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', i = 0; i < length; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   return text;
-}, module.exports.countInArray = function (array, val) {
+}, UTILS.countInArray = function (array, val) {
   for (var count = 0, i = 0; i < array.length; i++)
     array[i] === val && count++;
   return count;
 };
+
+export default UTILS;
