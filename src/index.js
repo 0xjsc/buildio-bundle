@@ -12,7 +12,7 @@ import Player from "./js/data/player.js";
 import store from "./js/data/store.js";
 import Projectile from "./js/data/projectile.js";
 import ProjectileManager from "./js/data/projectileManager.js";
-import { obj as SoundManager } from "./libs/soundManager.js";
+import SoundManager from "./libs/soundManager.js";
 import Vultr from "./vultr/VultrClient.js";
 
 const textManager = new animText.TextManager();
