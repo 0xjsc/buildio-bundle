@@ -12,147 +12,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./node_modules/bad-words/lib/badwords.js":
-/*!************************************************!*\
-  !*** ./node_modules/bad-words/lib/badwords.js ***!
-  \************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-const localList = (__webpack_require__(/*! ./lang.json */ "./node_modules/bad-words/lib/lang.json").words);
-const baseList = (__webpack_require__(/*! badwords-list */ "./node_modules/badwords-list/lib/index.js").array);
-
-class Filter {
-
-  /**
-   * Filter constructor.
-   * @constructor
-   * @param {object} options - Filter instance options
-   * @param {boolean} options.emptyList - Instantiate filter with no blacklist
-   * @param {array} options.list - Instantiate filter with custom list
-   * @param {string} options.placeHolder - Character used to replace profane words.
-   * @param {string} options.regex - Regular expression used to sanitize words before comparing them to blacklist.
-   * @param {string} options.replaceRegex - Regular expression used to replace profane words with placeHolder.
-   * @param {string} options.splitRegex - Regular expression used to split a string into words.
-   */
-  constructor(options = {}) {
-    Object.assign(this, {
-      list: options.emptyList && [] || Array.prototype.concat.apply(localList, [baseList, options.list || []]),
-      exclude: options.exclude || [],
-      splitRegex: options.splitRegex || /\b/,
-      placeHolder: options.placeHolder || '*',
-      regex: options.regex || /[^a-zA-Z0-9|\$|\@]|\^/g,
-      replaceRegex: options.replaceRegex || /\w/g
-    })
-  }
-
-  /**
-   * Determine if a string contains profane language.
-   * @param {string} string - String to evaluate for profanity.
-   */
-  isProfane(string) {
-    return this.list
-      .filter((word) => {
-        const wordExp = new RegExp(`\\b${word.replace(/(\W)/g, '\\$1')}\\b`, 'gi');
-        return !this.exclude.includes(word.toLowerCase()) && wordExp.test(string);
-      })
-      .length > 0 || false;
-  }
-
-  /**
-   * Replace a word with placeHolder characters;
-   * @param {string} string - String to replace.
-   */
-  replaceWord(string) {
-    return string
-      .replace(this.regex, '')
-      .replace(this.replaceRegex, this.placeHolder);
-  }
-
-  /**
-   * Evaluate a string for profanity and return an edited version.
-   * @param {string} string - Sentence to filter.
-   */
-  clean(string) {
-    return string.split(this.splitRegex).map((word) => {
-      return this.isProfane(word) ? this.replaceWord(word) : word;
-    }).join(this.splitRegex.exec(string)[0]);
-  }
-
-  /**
-   * Add word(s) to blacklist filter / remove words from whitelist filter
-   * @param {...string} word - Word(s) to add to blacklist
-   */
-  addWords() {
-    let words = Array.from(arguments);
-
-    this.list.push(...words);
-
-    words
-      .map(word => word.toLowerCase())
-      .forEach((word) => {
-        if (this.exclude.includes(word)) {
-          this.exclude.splice(this.exclude.indexOf(word), 1);
-        }
-      });
-  }
-
-  /**
-   * Add words to whitelist filter
-   * @param {...string} word - Word(s) to add to whitelist.
-   */
-  removeWords() {
-    this.exclude.push(...Array.from(arguments).map(word => word.toLowerCase()));
-  }
-}
-
-module.exports = Filter;
-
-/***/ }),
-
-/***/ "./node_modules/badwords-list/lib/array.js":
-/*!*************************************************!*\
-  !*** ./node_modules/badwords-list/lib/array.js ***!
-  \*************************************************/
-/***/ ((module) => {
-
-module.exports = ["4r5e", "5h1t", "5hit", "a55", "anal", "anus", "ar5e", "arrse", "arse", "ass", "ass-fucker", "asses", "assfucker", "assfukka", "asshole", "assholes", "asswhole", "a_s_s", "b!tch", "b00bs", "b17ch", "b1tch", "ballbag", "balls", "ballsack", "bastard", "beastial", "beastiality", "bellend", "bestial", "bestiality", "bi+ch", "biatch", "bitch", "bitcher", "bitchers", "bitches", "bitchin", "bitching", "bloody", "blow job", "blowjob", "blowjobs", "boiolas", "bollock", "bollok", "boner", "boob", "boobs", "booobs", "boooobs", "booooobs", "booooooobs", "breasts", "buceta", "bugger", "bum", "bunny fucker", "butt", "butthole", "buttmuch", "buttplug", "c0ck", "c0cksucker", "carpet muncher", "cawk", "chink", "cipa", "cl1t", "clit", "clitoris", "clits", "cnut", "cock", "cock-sucker", "cockface", "cockhead", "cockmunch", "cockmuncher", "cocks", "cocksuck", "cocksucked", "cocksucker", "cocksucking", "cocksucks", "cocksuka", "cocksukka", "cok", "cokmuncher", "coksucka", "coon", "cox", "crap", "cum", "cummer", "cumming", "cums", "cumshot", "cunilingus", "cunillingus", "cunnilingus", "cunt", "cuntlick", "cuntlicker", "cuntlicking", "cunts", "cyalis", "cyberfuc", "cyberfuck", "cyberfucked", "cyberfucker", "cyberfuckers", "cyberfucking", "d1ck", "damn", "dick", "dickhead", "dildo", "dildos", "dink", "dinks", "dirsa", "dlck", "dog-fucker", "doggin", "dogging", "donkeyribber", "doosh", "duche", "dyke", "ejaculate", "ejaculated", "ejaculates", "ejaculating", "ejaculatings", "ejaculation", "ejakulate", "f u c k", "f u c k e r", "f4nny", "fag", "fagging", "faggitt", "faggot", "faggs", "fagot", "fagots", "fags", "fanny", "fannyflaps", "fannyfucker", "fanyy", "fatass", "fcuk", "fcuker", "fcuking", "feck", "fecker", "felching", "fellate", "fellatio", "fingerfuck", "fingerfucked", "fingerfucker", "fingerfuckers", "fingerfucking", "fingerfucks", "fistfuck", "fistfucked", "fistfucker", "fistfuckers", "fistfucking", "fistfuckings", "fistfucks", "flange", "fook", "fooker", "fuck", "fucka", "fucked", "fucker", "fuckers", "fuckhead", "fuckheads", "fuckin", "fucking", "fuckings", "fuckingshitmotherfucker", "fuckme", "fucks", "fuckwhit", "fuckwit", "fudge packer", "fudgepacker", "fuk", "fuker", "fukker", "fukkin", "fuks", "fukwhit", "fukwit", "fux", "fux0r", "f_u_c_k", "gangbang", "gangbanged", "gangbangs", "gaylord", "gaysex", "goatse", "God", "god-dam", "god-damned", "goddamn", "goddamned", "hardcoresex", "hell", "heshe", "hoar", "hoare", "hoer", "homo", "hore", "horniest", "horny", "hotsex", "jack-off", "jackoff", "jap", "jerk-off", "jism", "jiz", "jizm", "jizz", "kawk", "knob", "knobead", "knobed", "knobend", "knobhead", "knobjocky", "knobjokey", "kock", "kondum", "kondums", "kum", "kummer", "kumming", "kums", "kunilingus", "l3i+ch", "l3itch", "labia", "lust", "lusting", "m0f0", "m0fo", "m45terbate", "ma5terb8", "ma5terbate", "masochist", "master-bate", "masterb8", "masterbat*", "masterbat3", "masterbate", "masterbation", "masterbations", "masturbate", "mo-fo", "mof0", "mofo", "mothafuck", "mothafucka", "mothafuckas", "mothafuckaz", "mothafucked", "mothafucker", "mothafuckers", "mothafuckin", "mothafucking", "mothafuckings", "mothafucks", "mother fucker", "motherfuck", "motherfucked", "motherfucker", "motherfuckers", "motherfuckin", "motherfucking", "motherfuckings", "motherfuckka", "motherfucks", "muff", "mutha", "muthafecker", "muthafuckker", "muther", "mutherfucker", "n1gga", "n1gger", "nazi", "nigg3r", "nigg4h", "nigga", "niggah", "niggas", "niggaz", "nigger", "niggers", "nob", "nob jokey", "nobhead", "nobjocky", "nobjokey", "numbnuts", "nutsack", "orgasim", "orgasims", "orgasm", "orgasms", "p0rn", "pawn", "pecker", "penis", "penisfucker", "phonesex", "phuck", "phuk", "phuked", "phuking", "phukked", "phukking", "phuks", "phuq", "pigfucker", "pimpis", "piss", "pissed", "pisser", "pissers", "pisses", "pissflaps", "pissin", "pissing", "pissoff", "poop", "porn", "porno", "pornography", "pornos", "prick", "pricks", "pron", "pube", "pusse", "pussi", "pussies", "pussy", "pussys", "rectum", "retard", "rimjaw", "rimming", "s hit", "s.o.b.", "sadist", "schlong", "screwing", "scroat", "scrote", "scrotum", "semen", "sex", "sh!+", "sh!t", "sh1t", "shag", "shagger", "shaggin", "shagging", "shemale", "shi+", "shit", "shitdick", "shite", "shited", "shitey", "shitfuck", "shitfull", "shithead", "shiting", "shitings", "shits", "shitted", "shitter", "shitters", "shitting", "shittings", "shitty", "skank", "slut", "sluts", "smegma", "smut", "snatch", "son-of-a-bitch", "spac", "spunk", "s_h_i_t", "t1tt1e5", "t1tties", "teets", "teez", "testical", "testicle", "tit", "titfuck", "tits", "titt", "tittie5", "tittiefucker", "titties", "tittyfuck", "tittywank", "titwank", "tosser", "turd", "tw4t", "twat", "twathead", "twatty", "twunt", "twunter", "v14gra", "v1gra", "vagina", "viagra", "vulva", "w00se", "wang", "wank", "wanker", "wanky", "whoar", "whore", "willies", "willy", "xrated", "xxx"];
-
-/***/ }),
-
-/***/ "./node_modules/badwords-list/lib/index.js":
-/*!*************************************************!*\
-  !*** ./node_modules/badwords-list/lib/index.js ***!
-  \*************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = {
-  object: __webpack_require__(/*! ./object */ "./node_modules/badwords-list/lib/object.js"),
-  array: __webpack_require__(/*! ./array */ "./node_modules/badwords-list/lib/array.js"),
-  regex: __webpack_require__(/*! ./regexp */ "./node_modules/badwords-list/lib/regexp.js")
-};
-
-/***/ }),
-
-/***/ "./node_modules/badwords-list/lib/object.js":
-/*!**************************************************!*\
-  !*** ./node_modules/badwords-list/lib/object.js ***!
-  \**************************************************/
-/***/ ((module) => {
-
-module.exports = {"4r5e": 1, "5h1t": 1, "5hit": 1, "a55": 1, "anal": 1, "anus": 1, "ar5e": 1, "arrse": 1, "arse": 1, "ass": 1, "ass-fucker": 1, "asses": 1, "assfucker": 1, "assfukka": 1, "asshole": 1, "assholes": 1, "asswhole": 1, "a_s_s": 1, "b!tch": 1, "b00bs": 1, "b17ch": 1, "b1tch": 1, "ballbag": 1, "balls": 1, "ballsack": 1, "bastard": 1, "beastial": 1, "beastiality": 1, "bellend": 1, "bestial": 1, "bestiality": 1, "bi+ch": 1, "biatch": 1, "bitch": 1, "bitcher": 1, "bitchers": 1, "bitches": 1, "bitchin": 1, "bitching": 1, "bloody": 1, "blow job": 1, "blowjob": 1, "blowjobs": 1, "boiolas": 1, "bollock": 1, "bollok": 1, "boner": 1, "boob": 1, "boobs": 1, "booobs": 1, "boooobs": 1, "booooobs": 1, "booooooobs": 1, "breasts": 1, "buceta": 1, "bugger": 1, "bum": 1, "bunny fucker": 1, "butt": 1, "butthole": 1, "buttmuch": 1, "buttplug": 1, "c0ck": 1, "c0cksucker": 1, "carpet muncher": 1, "cawk": 1, "chink": 1, "cipa": 1, "cl1t": 1, "clit": 1, "clitoris": 1, "clits": 1, "cnut": 1, "cock": 1, "cock-sucker": 1, "cockface": 1, "cockhead": 1, "cockmunch": 1, "cockmuncher": 1, "cocks": 1, "cocksuck": 1, "cocksucked": 1, "cocksucker": 1, "cocksucking": 1, "cocksucks": 1, "cocksuka": 1, "cocksukka": 1, "cok": 1, "cokmuncher": 1, "coksucka": 1, "coon": 1, "cox": 1, "crap": 1, "cum": 1, "cummer": 1, "cumming": 1, "cums": 1, "cumshot": 1, "cunilingus": 1, "cunillingus": 1, "cunnilingus": 1, "cunt": 1, "cuntlick": 1, "cuntlicker": 1, "cuntlicking": 1, "cunts": 1, "cyalis": 1, "cyberfuc": 1, "cyberfuck": 1, "cyberfucked": 1, "cyberfucker": 1, "cyberfuckers": 1, "cyberfucking": 1, "d1ck": 1, "damn": 1, "dick": 1, "dickhead": 1, "dildo": 1, "dildos": 1, "dink": 1, "dinks": 1, "dirsa": 1, "dlck": 1, "dog-fucker": 1, "doggin": 1, "dogging": 1, "donkeyribber": 1, "doosh": 1, "duche": 1, "dyke": 1, "ejaculate": 1, "ejaculated": 1, "ejaculates": 1, "ejaculating": 1, "ejaculatings": 1, "ejaculation": 1, "ejakulate": 1, "f u c k": 1, "f u c k e r": 1, "f4nny": 1, "fag": 1, "fagging": 1, "faggitt": 1, "faggot": 1, "faggs": 1, "fagot": 1, "fagots": 1, "fags": 1, "fanny": 1, "fannyflaps": 1, "fannyfucker": 1, "fanyy": 1, "fatass": 1, "fcuk": 1, "fcuker": 1, "fcuking": 1, "feck": 1, "fecker": 1, "felching": 1, "fellate": 1, "fellatio": 1, "fingerfuck": 1, "fingerfucked": 1, "fingerfucker": 1, "fingerfuckers": 1, "fingerfucking": 1, "fingerfucks": 1, "fistfuck": 1, "fistfucked": 1, "fistfucker": 1, "fistfuckers": 1, "fistfucking": 1, "fistfuckings": 1, "fistfucks": 1, "flange": 1, "fook": 1, "fooker": 1, "fuck": 1, "fucka": 1, "fucked": 1, "fucker": 1, "fuckers": 1, "fuckhead": 1, "fuckheads": 1, "fuckin": 1, "fucking": 1, "fuckings": 1, "fuckingshitmotherfucker": 1, "fuckme": 1, "fucks": 1, "fuckwhit": 1, "fuckwit": 1, "fudge packer": 1, "fudgepacker": 1, "fuk": 1, "fuker": 1, "fukker": 1, "fukkin": 1, "fuks": 1, "fukwhit": 1, "fukwit": 1, "fux": 1, "fux0r": 1, "f_u_c_k": 1, "gangbang": 1, "gangbanged": 1, "gangbangs": 1, "gaylord": 1, "gaysex": 1, "goatse": 1, "God": 1, "god-dam": 1, "god-damned": 1, "goddamn": 1, "goddamned": 1, "hardcoresex": 1, "hell": 1, "heshe": 1, "hoar": 1, "hoare": 1, "hoer": 1, "homo": 1, "hore": 1, "horniest": 1, "horny": 1, "hotsex": 1, "jack-off": 1, "jackoff": 1, "jap": 1, "jerk-off": 1, "jism": 1, "jiz": 1, "jizm": 1, "jizz": 1, "kawk": 1, "knob": 1, "knobead": 1, "knobed": 1, "knobend": 1, "knobhead": 1, "knobjocky": 1, "knobjokey": 1, "kock": 1, "kondum": 1, "kondums": 1, "kum": 1, "kummer": 1, "kumming": 1, "kums": 1, "kunilingus": 1, "l3i+ch": 1, "l3itch": 1, "labia": 1, "lust": 1, "lusting": 1, "m0f0": 1, "m0fo": 1, "m45terbate": 1, "ma5terb8": 1, "ma5terbate": 1, "masochist": 1, "master-bate": 1, "masterb8": 1, "masterbat*": 1, "masterbat3": 1, "masterbate": 1, "masterbation": 1, "masterbations": 1, "masturbate": 1, "mo-fo": 1, "mof0": 1, "mofo": 1, "mothafuck": 1, "mothafucka": 1, "mothafuckas": 1, "mothafuckaz": 1, "mothafucked": 1, "mothafucker": 1, "mothafuckers": 1, "mothafuckin": 1, "mothafucking": 1, "mothafuckings": 1, "mothafucks": 1, "mother fucker": 1, "motherfuck": 1, "motherfucked": 1, "motherfucker": 1, "motherfuckers": 1, "motherfuckin": 1, "motherfucking": 1, "motherfuckings": 1, "motherfuckka": 1, "motherfucks": 1, "muff": 1, "mutha": 1, "muthafecker": 1, "muthafuckker": 1, "muther": 1, "mutherfucker": 1, "n1gga": 1, "n1gger": 1, "nazi": 1, "nigg3r": 1, "nigg4h": 1, "nigga": 1, "niggah": 1, "niggas": 1, "niggaz": 1, "nigger": 1, "niggers": 1, "nob": 1, "nob jokey": 1, "nobhead": 1, "nobjocky": 1, "nobjokey": 1, "numbnuts": 1, "nutsack": 1, "orgasim": 1, "orgasims": 1, "orgasm": 1, "orgasms": 1, "p0rn": 1, "pawn": 1, "pecker": 1, "penis": 1, "penisfucker": 1, "phonesex": 1, "phuck": 1, "phuk": 1, "phuked": 1, "phuking": 1, "phukked": 1, "phukking": 1, "phuks": 1, "phuq": 1, "pigfucker": 1, "pimpis": 1, "piss": 1, "pissed": 1, "pisser": 1, "pissers": 1, "pisses": 1, "pissflaps": 1, "pissin": 1, "pissing": 1, "pissoff": 1, "poop": 1, "porn": 1, "porno": 1, "pornography": 1, "pornos": 1, "prick": 1, "pricks": 1, "pron": 1, "pube": 1, "pusse": 1, "pussi": 1, "pussies": 1, "pussy": 1, "pussys": 1, "rectum": 1, "retard": 1, "rimjaw": 1, "rimming": 1, "s hit": 1, "s.o.b.": 1, "sadist": 1, "schlong": 1, "screwing": 1, "scroat": 1, "scrote": 1, "scrotum": 1, "semen": 1, "sex": 1, "sh!+": 1, "sh!t": 1, "sh1t": 1, "shag": 1, "shagger": 1, "shaggin": 1, "shagging": 1, "shemale": 1, "shi+": 1, "shit": 1, "shitdick": 1, "shite": 1, "shited": 1, "shitey": 1, "shitfuck": 1, "shitfull": 1, "shithead": 1, "shiting": 1, "shitings": 1, "shits": 1, "shitted": 1, "shitter": 1, "shitters": 1, "shitting": 1, "shittings": 1, "shitty": 1, "skank": 1, "slut": 1, "sluts": 1, "smegma": 1, "smut": 1, "snatch": 1, "son-of-a-bitch": 1, "spac": 1, "spunk": 1, "s_h_i_t": 1, "t1tt1e5": 1, "t1tties": 1, "teets": 1, "teez": 1, "testical": 1, "testicle": 1, "tit": 1, "titfuck": 1, "tits": 1, "titt": 1, "tittie5": 1, "tittiefucker": 1, "titties": 1, "tittyfuck": 1, "tittywank": 1, "titwank": 1, "tosser": 1, "turd": 1, "tw4t": 1, "twat": 1, "twathead": 1, "twatty": 1, "twunt": 1, "twunter": 1, "v14gra": 1, "v1gra": 1, "vagina": 1, "viagra": 1, "vulva": 1, "w00se": 1, "wang": 1, "wank": 1, "wanker": 1, "wanky": 1, "whoar": 1, "whore": 1, "willies": 1, "willy": 1, "xrated": 1, "xxx": 1};
-
-/***/ }),
-
-/***/ "./node_modules/badwords-list/lib/regexp.js":
-/*!**************************************************!*\
-  !*** ./node_modules/badwords-list/lib/regexp.js ***!
-  \**************************************************/
-/***/ ((module) => {
-
-module.exports = /\b(4r5e|5h1t|5hit|a55|anal|anus|ar5e|arrse|arse|ass|ass-fucker|asses|assfucker|assfukka|asshole|assholes|asswhole|a_s_s|b!tch|b00bs|b17ch|b1tch|ballbag|balls|ballsack|bastard|beastial|beastiality|bellend|bestial|bestiality|bi\+ch|biatch|bitch|bitcher|bitchers|bitches|bitchin|bitching|bloody|blow job|blowjob|blowjobs|boiolas|bollock|bollok|boner|boob|boobs|booobs|boooobs|booooobs|booooooobs|breasts|buceta|bugger|bum|bunny fucker|butt|butthole|buttmuch|buttplug|c0ck|c0cksucker|carpet muncher|cawk|chink|cipa|cl1t|clit|clitoris|clits|cnut|cock|cock-sucker|cockface|cockhead|cockmunch|cockmuncher|cocks|cocksuck|cocksucked|cocksucker|cocksucking|cocksucks|cocksuka|cocksukka|cok|cokmuncher|coksucka|coon|cox|crap|cum|cummer|cumming|cums|cumshot|cunilingus|cunillingus|cunnilingus|cunt|cuntlick|cuntlicker|cuntlicking|cunts|cyalis|cyberfuc|cyberfuck|cyberfucked|cyberfucker|cyberfuckers|cyberfucking|d1ck|damn|dick|dickhead|dildo|dildos|dink|dinks|dirsa|dlck|dog-fucker|doggin|dogging|donkeyribber|doosh|duche|dyke|ejaculate|ejaculated|ejaculates|ejaculating|ejaculatings|ejaculation|ejakulate|f u c k|f u c k e r|f4nny|fag|fagging|faggitt|faggot|faggs|fagot|fagots|fags|fanny|fannyflaps|fannyfucker|fanyy|fatass|fcuk|fcuker|fcuking|feck|fecker|felching|fellate|fellatio|fingerfuck|fingerfucked|fingerfucker|fingerfuckers|fingerfucking|fingerfucks|fistfuck|fistfucked|fistfucker|fistfuckers|fistfucking|fistfuckings|fistfucks|flange|fook|fooker|fuck|fucka|fucked|fucker|fuckers|fuckhead|fuckheads|fuckin|fucking|fuckings|fuckingshitmotherfucker|fuckme|fucks|fuckwhit|fuckwit|fudge packer|fudgepacker|fuk|fuker|fukker|fukkin|fuks|fukwhit|fukwit|fux|fux0r|f_u_c_k|gangbang|gangbanged|gangbangs|gaylord|gaysex|goatse|God|god-dam|god-damned|goddamn|goddamned|hardcoresex|hell|heshe|hoar|hoare|hoer|homo|hore|horniest|horny|hotsex|jack-off|jackoff|jap|jerk-off|jism|jiz|jizm|jizz|kawk|knob|knobead|knobed|knobend|knobhead|knobjocky|knobjokey|kock|kondum|kondums|kum|kummer|kumming|kums|kunilingus|l3i\+ch|l3itch|labia|lust|lusting|m0f0|m0fo|m45terbate|ma5terb8|ma5terbate|masochist|master-bate|masterb8|masterbat*|masterbat3|masterbate|masterbation|masterbations|masturbate|mo-fo|mof0|mofo|mothafuck|mothafucka|mothafuckas|mothafuckaz|mothafucked|mothafucker|mothafuckers|mothafuckin|mothafucking|mothafuckings|mothafucks|mother fucker|motherfuck|motherfucked|motherfucker|motherfuckers|motherfuckin|motherfucking|motherfuckings|motherfuckka|motherfucks|muff|mutha|muthafecker|muthafuckker|muther|mutherfucker|n1gga|n1gger|nazi|nigg3r|nigg4h|nigga|niggah|niggas|niggaz|nigger|niggers|nob|nob jokey|nobhead|nobjocky|nobjokey|numbnuts|nutsack|orgasim|orgasims|orgasm|orgasms|p0rn|pawn|pecker|penis|penisfucker|phonesex|phuck|phuk|phuked|phuking|phukked|phukking|phuks|phuq|pigfucker|pimpis|piss|pissed|pisser|pissers|pisses|pissflaps|pissin|pissing|pissoff|poop|porn|porno|pornography|pornos|prick|pricks|pron|pube|pusse|pussi|pussies|pussy|pussys|rectum|retard|rimjaw|rimming|s hit|s.o.b.|sadist|schlong|screwing|scroat|scrote|scrotum|semen|sex|sh!\+|sh!t|sh1t|shag|shagger|shaggin|shagging|shemale|shi\+|shit|shitdick|shite|shited|shitey|shitfuck|shitfull|shithead|shiting|shitings|shits|shitted|shitter|shitters|shitting|shittings|shitty|skank|slut|sluts|smegma|smut|snatch|son-of-a-bitch|spac|spunk|s_h_i_t|t1tt1e5|t1tties|teets|teez|testical|testicle|tit|titfuck|tits|titt|tittie5|tittiefucker|titties|tittyfuck|tittywank|titwank|tosser|turd|tw4t|twat|twathead|twatty|twunt|twunter|v14gra|v1gra|vagina|viagra|vulva|w00se|wang|wank|wanker|wanky|whoar|whore|willies|willy|xrated|xxx)\b/gi;
-
-/***/ }),
-
 /***/ "./node_modules/call-bind/callBound.js":
 /*!*********************************************!*\
   !*** ./node_modules/call-bind/callBound.js ***!
@@ -9094,409 +8953,2175 @@ exports.Url = Url;
 
 /***/ }),
 
+/***/ "?4f7e":
+/*!********************************!*\
+  !*** ./util.inspect (ignored) ***!
+  \********************************/
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
 /***/ "./src/config.js":
 /*!***********************!*\
   !*** ./src/config.js ***!
   \***********************/
-/***/ ((module) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-module.exports.maxScreenWidth = 1920, module.exports.maxScreenHeight = 1080, module.exports.serverUpdateRate = 9, module.exports.maxPlayers = 40, module.exports.maxPlayersHard = module.exports.maxPlayers + 10, module.exports.collisionDepth = 6, module.exports.minimapRate = 3000, module.exports.colGrid = 10, module.exports.clientSendRate = 5, module.exports.healthBarWidth = 50, module.exports.healthBarPad = 4.5, module.exports.iconPadding = 15, module.exports.iconPad = 0.9, module.exports.deathFadeout = 3000, module.exports.crownIconScale = 60, module.exports.crownPad = 35, module.exports.chatCountdown = 3000, module.exports.chatCooldown = 500, module.exports.inSandbox = true, module.exports.maxAge = 100, module.exports.gatherAngle = Math.PI / 2.6, module.exports.gatherWiggle = 10, module.exports.hitReturnRatio = 0.25, module.exports.hitAngle = Math.PI / 2, module.exports.playerScale = 35, module.exports.playerSpeed = 0.0016, module.exports.playerDecel = 0.993, module.exports.nameY = 34, module.exports.skinColors = [
-	'#bf8f54',
-	'#cbb091',
-	'#896c4b',
-	'#fadadc',
-	'#ececec',
-	'#c37373',
-	'#4c4c4c',
-	'#ecaff7',
-	'#738cc3',
-	'#8bc373'
-], module.exports.animalCount = 7, module.exports.aiTurnRandom = 0.06, module.exports.cowNames = [
-	'Sid',
-	'Steph',
-	'Bmoe',
-	'Romn',
-	'Jononthecool',
-	'Fiona',
-	'Vince',
-	'Nathan',
-	'Nick',
-	'Flappy',
-	'Ronald',
-	'Otis',
-	'Pepe',
-	'Mc Donald',
-	'Theo',
-	'Fabz',
-	'Oliver',
-	'Jeff',
-	'Jimmy',
-	'Helena',
-	'Reaper',
-	'Ben',
-	'Alan',
-	'Naomi',
-	'XYZ',
-	'Clever',
-	'Jeremy',
-	'Mike',
-	'Destined',
-	'Stallion',
-	'Allison',
-	'Meaty',
-	'Sophia',
-	'Vaja',
-	'Joey',
-	'Pendy',
-	'Murdoch',
-	'Theo',
-	'Jared',
-	'July',
-	'Sonia',
-	'Mel',
-	'Dexter',
-	'Quinn',
-	'Milky',
-	'me mega noob'
-], module.exports.shieldAngle = Math.PI / 3, module.exports.weaponVariants = [{
-		id: 0,
-		src: '',
-		xp: 0,
-		val: 1
-	},
-	{
-		id: 1,
-		src: '_g',
-		xp: 1000,
-		val: 1.1
-	},
-	{
-		id: 2,
-		src: '_d',
-		xp: 1750,
-		val: 1.18
-	},
-	{
-		id: 3,
-		src: '_r',
-		poison: !0,
-		xp: 2500,
-		val: 1.18
-	},
-	{
-		id: 4,
-		src: '_e',
-		xp: 3000,
-		val: 1.25
-	}
-], module.exports.fetchVariant = function(player) {
-	for (var tmpXP = player.weaponXP[player.weaponIndex] || 0, i = module.exports.weaponVariants.length - 1; i >= 0; --i)
-		if (tmpXP >= module.exports.weaponVariants[i].xp)
-			return module.exports.weaponVariants[i];
-}, module.exports.resourceTypes = [
-	'wood',
-	'food',
-	'stone',
-	'points'
-], module.exports.areaCount = 7, module.exports.treesPerArea = 9, module.exports.bushesPerArea = 3, module.exports.totalRocks = 32, module.exports.goldOres = 7, module.exports.riverWidth = 724, module.exports.riverPadding = 114, module.exports.waterCurrent = 0.0011, module.exports.waveSpeed = 0.0001, module.exports.waveMax = 1.3, module.exports.treeScales = [
-	150,
-	160,
-	165,
-	175
-], module.exports.bushScales = [
-	80,
-	85,
-	95
-], module.exports.rockScales = [
-	80,
-	85,
-	90
-], module.exports.snowBiomeTop = 2400, module.exports.snowSpeed = 0.75, module.exports.maxNameLength = 15, module.exports.mapScale = 14400, module.exports.mapPingScale = 40, module.exports.mapPingTime = 2200;
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  "maxScreenWidth": 1920
+  , "maxScreenHeight": 1080
+  , "serverUpdateRate": 9
+  , "maxPlayers": 40
+  , "maxPlayersHard": 50
+  , "collisionDepth": 6
+  , "minimapRate": 3000
+  , "colGrid": 10
+  , "clientSendRate": 5
+  , "healthBarWidth": 50
+  , "healthBarPad": 4.5
+  , "iconPadding": 15
+  , "iconPad": 0.9
+  , "deathFadeout": 3000
+  , "crownIconScale": 60
+  , "crownPad": 35
+  , "chatCountdown": 3000
+  , "chatCooldown": 500
+  , "maxAge": 100
+  , "gatherAngle": 1.208304866765305
+  , "gatherWiggle": 10
+  , "hitReturnRatio": 0.25
+  , "hitAngle": 1.5707963267948966
+  , "playerScale": 35
+  , "playerSpeed": 0.0016
+  , "playerDecel": 0.993
+  , "nameY": 34
+  , "skinColors": ["#bf8f54", "#cbb091", "#896c4b", "#fadadc", "#ececec", "#c37373", "#4c4c4c", "#ecaff7", "#738cc3", "#8bc373"]
+  , "animalCount": 7
+  , "aiTurnRandom": 0.06
+  , "cowNames": ["Sid", "Steph", "Bmoe", "Romn", "Jononthecool", "Fiona", "Vince", "Nathan", "Nick", "Flappy", "Ronald", "Otis", "Pepe", "Mc Donald", "Theo",
+    "Fabz", "Oliver", "Jeff", "Jimmy", "Helena", "Reaper", "Ben", "Alan", "Naomi", "XYZ", "Clever", "Jeremy", "Mike", "Destined", "Stallion", "Allison",
+    "Meaty", "Sophia", "Vaja", "Joey", "Pendy", "Murdoch", "Theo", "Jared", "July", "Sonia", "Mel", "Dexter", "Quinn", "Milky"
+  ]
+  , "shieldAngle": 1.0471975511965976
+  , "weaponVariants": [{
+    "id": 0
+    , "src": ""
+    , "xp": 0
+    , "val": 1
+  }, {
+    "id": 1
+    , "src": "_g"
+    , "xp": 3000
+    , "val": 1.1
+  }, {
+    "id": 2
+    , "src": "_d"
+    , "xp": 7000
+    , "val": 1.18
+  }, {
+    "id": 3
+    , "src": "_r"
+    , "poison": true
+    , "xp": 12000
+    , "val": 1.18
+  }, {
+    "id": 4
+    , "src": "_e"
+    , "poison": true
+    , "xp": 15000
+    , "val": 1.21
+  }]
+  , "resourceTypes": ["wood", "food", "stone", "points"]
+  , "areaCount": 7
+  , "treesPerArea": 9
+  , "bushesPerArea": 3
+  , "totalRocks": 32
+  , "goldOres": 7
+  , "riverWidth": 724
+  , "riverPadding": 114
+  , "waterCurrent": 0.0011
+  , "waveSpeed": 0.0001
+  , "waveMax": 1.3
+  , "treeScales": [150, 160, 165, 175]
+  , "bushScales": [80, 85, 95]
+  , "rockScales": [80, 85, 90]
+  , "snowBiomeTop": 2400
+  , "snowSpeed": 0.75
+  , "maxNameLength": 15
+  , "mapScale": 14400
+  , "mapPingScale": 40
+  , "mapPingTime": 2200
+  , "volcanoScale": 320
+  , "innerVolcanoScale": 100
+  , "volcanoAnimalStrength": 2
+  , "volcanoAnimationDuration": 3200
+  , "volcanoAggressionRadius": 1440
+  , "volcanoAggressionPercentage": 0.2
+  , "volcanoDamagePerSecond": -1
+  , "volcanoLocationX": 13960
+  , "volcanoLocationY": 13960
+  , "MAX_ATTACK": 0.6
+  , "MAX_SPAWN_DELAY": 1
+  , "MAX_SPEED": 0.3
+  , "MAX_TURN_SPEED": 0.3
+  , "DAY_INTERVAL": 1440000
+});
 
 
 /***/ }),
 
-/***/ "./src/js/data/ai.js":
-/*!***************************!*\
-  !*** ./src/js/data/ai.js ***!
-  \***************************/
-/***/ ((module) => {
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-var PI2 = 2 * Math.PI;
-module.exports = function (sid, objectManager, players, items, UTILS, config, scoreCallback, server) {
-  this.sid = sid, this.isAI = !0, this.nameIndex = UTILS.randInt(0, config.cowNames.length - 1), this.init = function (x, y, dir, index, data) {
-    this.x = x, this.y = y, this.startX = data.fixedSpawn ? x : null, this.startY = data.fixedSpawn ? y : null, this.xVel = 0, this.yVel = 0, this.zIndex = 0, this.dir = dir, this.dirPlus = 0, this.index = index, this.src = data.src, data.name && (this.name = data.name), this.weightM = data.weightM, this.speed = data.speed, this.killScore = data.killScore, this.turnSpeed = data.turnSpeed, this.scale = data.scale, this.maxHealth = data.health, this.leapForce = data.leapForce, this.health = this.maxHealth, this.chargePlayer = data.chargePlayer, this.viewRange = data.viewRange, this.drop = data.drop, this.dmg = data.dmg, this.hostile = data.hostile, this.dontRun = data.dontRun, this.hitRange = data.hitRange, this.hitDelay = data.hitDelay, this.hitScare = data.hitScare, this.spriteMlt = data.spriteMlt, this.nameScale = data.nameScale, this.colDmg = data.colDmg, this.noTrap = data.noTrap, this.spawnDelay = data.spawnDelay, this.hitWait = 0, this.waitCount = 1000, this.moveCount = 0, this.targetDir = 0, this.active = !0, this.alive = !0, this.runFrom = null, this.chargeTarget = null, this.dmgOverTime = {};
-  };
-  var timerCount = 0;
-  this.update = function (delta) {
-    if (this.active) {
-      if (this.spawnCounter)
-        return this.spawnCounter -= delta, void(this.spawnCounter <= 0 && (this.spawnCounter = 0, this.x = this.startX || UTILS.randInt(0, config.mapScale), this.y = this.startY || UTILS.randInt(0, config.mapScale)));
-      (timerCount -= delta) <= 0 && (this.dmgOverTime.dmg && (this.changeHealth(-this.dmgOverTime.dmg, this.dmgOverTime.doer), this.dmgOverTime.time -= 1, this.dmgOverTime.time <= 0 && (this.dmgOverTime.dmg = 0)), timerCount = 1000);
-      var charging = !1,
-        slowMlt = 1;
-      if (!this.zIndex && !this.lockMove && this.y >= config.mapScale / 2 - config.riverWidth / 2 && this.y <= config.mapScale / 2 + config.riverWidth / 2 && (slowMlt = 0.33, this.xVel += config.waterCurrent * delta), this.lockMove)
-        this.xVel = 0, this.yVel = 0;
-      else if (this.waitCount > 0) {
-        if (this.waitCount -= delta, this.waitCount <= 0)
-          if (this.chargePlayer) {
-            for (var tmpPlayer, bestDst, tmpDist, i = 0; i < players.length; ++i)
-              !players[i].alive || players[i].skin && players[i].skin.bullRepel || (tmpDist = UTILS.getDistance(this.x, this.y, players[i].x, players[i].y)) <= this.viewRange && (!tmpPlayer || tmpDist < bestDst) && (bestDst = tmpDist, tmpPlayer = players[i]);
-            tmpPlayer ? (this.chargeTarget = tmpPlayer, this.moveCount = UTILS.randInt(8000, 12000)) : (this.moveCount = UTILS.randInt(1000, 2000), this.targetDir = UTILS.randFloat(-Math.PI, Math.PI));
-          } else
-            this.moveCount = UTILS.randInt(4000, 10000), this.targetDir = UTILS.randFloat(-Math.PI, Math.PI);
-      } else if (this.moveCount > 0) {
-        var tmpSpd = this.speed * slowMlt;
-        if (this.runFrom && this.runFrom.active && (!this.runFrom.isPlayer || this.runFrom.alive) ? (this.targetDir = UTILS.getDirection(this.x, this.y, this.runFrom.x, this.runFrom.y), tmpSpd *= 1.42) : this.chargeTarget && this.chargeTarget.alive && (this.targetDir = UTILS.getDirection(this.chargeTarget.x, this.chargeTarget.y, this.x, this.y), tmpSpd *= 1.75, charging = !0), this.hitWait && (tmpSpd *= 0.3), this.dir != this.targetDir) {
-          this.dir %= PI2;
-          var netAngle = (this.dir - this.targetDir + PI2) % PI2,
-            amnt = Math.min(Math.abs(netAngle - PI2), netAngle, this.turnSpeed * delta),
-            sign = netAngle - Math.PI >= 0 ? 1 : -1;
-          this.dir += sign * amnt + PI2;
+"use strict";
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _libs_aoe32_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./libs/aoe32.js */ "./src/libs/aoe32.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./libs/io-client.js */ "./src/libs/io-client.js");
+/* harmony import */ var _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./libs/utils.js */ "./src/libs/utils.js");
+/* harmony import */ var _libs_animText_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./libs/animText.js */ "./src/libs/animText.js");
+/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./config.js */ "./src/config.js");
+/* harmony import */ var _js_data_gameObject_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./js/data/gameObject.js */ "./src/js/data/gameObject.js");
+/* harmony import */ var _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./js/data/items.js */ "./src/js/data/items.js");
+/* harmony import */ var _js_data_mapManager_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./js/data/mapManager.js */ "./src/js/data/mapManager.js");
+/* harmony import */ var _js_data_objectManager_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./js/data/objectManager.js */ "./src/js/data/objectManager.js");
+/* harmony import */ var _js_data_player_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./js/data/player.js */ "./src/js/data/player.js");
+/* harmony import */ var _js_data_store_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./js/data/store.js */ "./src/js/data/store.js");
+/* harmony import */ var _js_data_projectile_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./js/data/projectile.js */ "./src/js/data/projectile.js");
+/* harmony import */ var _js_data_projectileManager_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./js/data/projectileManager.js */ "./src/js/data/projectileManager.js");
+/* harmony import */ var _libs_soundManager_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./libs/soundManager.js */ "./src/libs/soundManager.js");
+/* harmony import */ var _vultr_VultrClient_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./vultr/VultrClient.js */ "./src/vultr/VultrClient.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const textManager = new _libs_animText_js__WEBPACK_IMPORTED_MODULE_4__["default"].TextManager();
+const vultrClient = new _vultr_VultrClient_js__WEBPACK_IMPORTED_MODULE_15__["default"]("mohmoh.eu", 3000, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].maxPlayers, 5, false);
+
+window.insert_000000 = _libs_aoe32_js__WEBPACK_IMPORTED_MODULE_0__["default"];
+
+async function removeBundle() {
+  const req = await fetch(location.href);
+  const res = await req.text();
+
+  const doc = (new DOMParser()).parseFromString(res, "text/html");
+  doc.querySelector("body > script:nth-child(14)").remove();
+  document.documentElement.replaceWith(document.importNode(doc.documentElement, true));
+}
+
+await removeBundle();
+
+const hit360 = 1.998715926535898e+272;
+let nearestGameObjects = [];
+
+const clanNames = [
+  "ez",
+  "eZ",
+  "EZ",
+  "EZZZ",
+  "ez?",
+  "L",
+  "L ez",
+  "urbad",
+  "urez"
+];
+
+const versionHash = "1.5-Final";
+const changelog = "Fixing some bugs until release";
+const motionBlurLevel = 0.6;
+let instakilling = false;
+
+let offsetCamX = 0;
+let offsetCamY = 0;
+let deltaHold = 10;
+let ownerSid = null;
+
+const emojis = new Map();
+
+emojis.set(":smile:", "😀");
+emojis.set(":laugh:", "😂");
+emojis.set(":wink:", "😉");
+emojis.set(":moan:", "😫");
+emojis.set(":sob:", "😭");
+emojis.set(":hot:", "🥵");
+emojis.set(":cold:", "🥶");
+emojis.set(":skull:", "💀");
+emojis.set(":skullium:", "☠️");
+emojis.set(":clown:", "🤡");
+
+const blacklist = new Map(Object.entries({
+  be3mamn: true,
+  SaVeGe: true,
+  RaZoshi: true,
+  Travis: true,
+  missy: true
+}));
+
+window.loadedScript = true;
+
+var isProd = location.origin.includes("http://")
+var startedConnecting = false;
+
+if (localStorage.version !== versionHash) {
+  sweetalert2__WEBPACK_IMPORTED_MODULE_1__.fire({
+    position: "top-end",
+    icon: "success",
+    title: "AutoWASM has been updated to version " + versionHash + "!",
+    text: changelog,
+    showConfirmButton: false,
+    timer: 3000,
+    allowOutsideClick: false
+  });
+  localStorage.version = versionHash;
+}
+
+async function connectSocketIfReady() {
+  if (startedConnecting) return;
+  startedConnecting = true;
+  try {
+    const token = await grecaptcha.execute("6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH");
+    connectSocket(token);
+  } catch(e) {
+    startedConnecting = false;
+  }
+}
+
+const wsLogs = [];
+
+function connectSocket(token) {
+  var wsAddress = (isProd ? "ws" : "wss") + '://' + location.host + "/?token=" + token;
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].connect(wsAddress, function (error) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("budv", 0);
+    pingSocket(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      ! function () {
+        if (error) {
+          disconnect(error);
+        } else {
+          enterGame();
         }
-        this.dir %= PI2, this.xVel += tmpSpd * delta * Math.cos(this.dir), this.yVel += tmpSpd * delta * Math.sin(this.dir), this.moveCount -= delta, this.moveCount <= 0 && (this.runFrom = null, this.chargeTarget = null, this.waitCount = this.hostile ? 1500 : UTILS.randInt(1500, 6000));
+      }();
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(enterGameButton), joinPartyButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      setTimeout(function () {
+        ! function () {
+          var currentKey = serverBrowser.value,
+            key = prompt('party key', currentKey);
+          key && (window.onbeforeunload = void 0, window.location.href = '/?server=' + key);
+        }();
+      }, 10);
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(joinPartyButton), settingsButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      guideCard.classList.contains('showing') ? (guideCard.classList.remove('showing'), settingsButtonTitle.innerText = 'Settings') : (guideCard.classList.add('showing'), settingsButtonTitle.innerText = 'Close');
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(settingsButton), allianceButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      resetMoveDir(), 'block' != allianceMenu.style.display ? showAllianceMenu() : allianceMenu.style.display = 'none';
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(allianceButton), storeButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      'block' != storeMenu.style.display ? (storeMenu.style.display = 'block', allianceMenu.style.display = 'none', closeChat(), generateStoreList()) : storeMenu.style.display = 'none';
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(storeButton), chatButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      toggleChat();
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(chatButton), mapDisplay.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      sendMapPing();
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(mapDisplay), function () {
+      for (var i = 0; i < icons.length; ++i) {
+        var tmpSprite = new Image();
+        tmpSprite.onload = function () {
+          this.isLoaded = !0;
+        }, tmpSprite.src = '.././img/icons/' + icons[i] + '.png', iconSprites[icons[i]] = tmpSprite;
       }
-      this.zIndex = 0, this.lockMove = !1;
-      var tmpSpeed = UTILS.getDistance(0, 0, this.xVel * delta, this.yVel * delta),
-        depth = Math.min(4, Math.max(1, Math.round(tmpSpeed / 40))),
-        tMlt = 1 / depth;
-      for (i = 0; i < depth; ++i) {
-        this.xVel && (this.x += this.xVel * delta * tMlt), this.yVel && (this.y += this.yVel * delta * tMlt), tmpList = objectManager.getGridArrays(this.x, this.y, this.scale);
-        for (var x = 0; x < tmpList.length; ++x)
-          for (var y = 0; y < tmpList[x].length; ++y)
-            tmpList[x][y].active && objectManager.checkCollision(this, tmpList[x][y], tMlt);
-      }
-      var tmpObj, tmpDst, tmpDir, hitting = !1;
-      if (this.hitWait > 0 && (this.hitWait -= delta, this.hitWait <= 0)) {
-        hitting = !0, this.hitWait = 0, this.leapForce && !UTILS.randInt(0, 2) && (this.xVel += this.leapForce * Math.cos(this.dir), this.yVel += this.leapForce * Math.sin(this.dir));
-        for (var tmpList = objectManager.getGridArrays(this.x, this.y, this.hitRange), t = 0; t < tmpList.length; ++t)
-          for (x = 0; x < tmpList[t].length; ++x)
-            (tmpObj = tmpList[t][x])
-            .health && (tmpDst = UTILS.getDistance(this.x, this.y, tmpObj.x, tmpObj.y)) < tmpObj.scale + this.hitRange && (tmpObj.changeHealth(5 * -this.dmg) && objectManager.disableObj(tmpObj), objectManager.hitObj(tmpObj, UTILS.getDirection(this.x, this.y, tmpObj.x, tmpObj.y)));
-        for (x = 0; x < players.length; ++x)
-          players[x].canSee(this) && server.send(players[x].id, 'aa', this.sid);
-      }
-      if (charging || hitting)
-        for (i = 0; i < players.length; ++i)
-          (tmpObj = players[i]) && tmpObj.alive && (tmpDst = UTILS.getDistance(this.x, this.y, tmpObj.x, tmpObj.y), this.hitRange ? !this.hitWait && tmpDst <= this.hitRange + tmpObj.scale && (hitting ? (tmpDir = UTILS.getDirection(tmpObj.x, tmpObj.y, this.x, this.y), tmpObj.changeHealth(-this.dmg), tmpObj.xVel += 0.6 * Math.cos(tmpDir), tmpObj.yVel += 0.6 * Math.sin(tmpDir), this.runFrom = null, this.chargeTarget = null, this.waitCount = 3000, this.hitWait = UTILS.randInt(0, 2) ? 0 : 600) : this.hitWait = this.hitDelay) : tmpDst <= this.scale + tmpObj.scale && (tmpDir = UTILS.getDirection(tmpObj.x, tmpObj.y, this.x, this.y), tmpObj.changeHealth(-this.dmg), tmpObj.xVel += 0.55 * Math.cos(tmpDir), tmpObj.yVel += 0.55 * Math.sin(tmpDir)));
-      this.xVel && (this.xVel *= Math.pow(config.playerDecel, delta)), this.yVel && (this.yVel *= Math.pow(config.playerDecel, delta));
-      var tmpScale = this.scale;
-      this.x - tmpScale < 0 ? (this.x = tmpScale, this.xVel = 0) : this.x + tmpScale > config.mapScale && (this.x = config.mapScale - tmpScale, this.xVel = 0), this.y - tmpScale < 0 ? (this.y = tmpScale, this.yVel = 0) : this.y + tmpScale > config.mapScale && (this.y = config.mapScale - tmpScale, this.yVel = 0);
-    }
-  }, this.canSee = function (other) {
-    if (!other)
-      return !1;
-    if (other.skin && other.skin.invisTimer && other.noMovTimer >= other.skin.invisTimer)
-      return !1;
-    var dx = Math.abs(other.x - this.x) - other.scale,
-      dy = Math.abs(other.y - this.y) - other.scale;
-    return dx <= config.maxScreenWidth / 2 * 1.3 && dy <= config.maxScreenHeight / 2 * 1.3;
-  };
-  var tmpRatio = 0,
-    animIndex = 0;
-  this.animate = function (delta) {
-    this.animTime > 0 && (this.animTime -= delta, this.animTime <= 0 ? (this.animTime = 0, this.dirPlus = 0, tmpRatio = 0, animIndex = 0) : 0 == animIndex ? (tmpRatio += delta / (this.animSpeed * config.hitReturnRatio), this.dirPlus = UTILS.lerp(0, this.targetAngle, Math.min(1, tmpRatio)), tmpRatio >= 1 && (tmpRatio = 1, animIndex = 1)) : (tmpRatio -= delta / (this.animSpeed * (1 - config.hitReturnRatio)), this.dirPlus = UTILS.lerp(0, this.targetAngle, Math.max(0, tmpRatio))));
-  }, this.startAnim = function () {
-    this.animTime = this.animSpeed = 600, this.targetAngle = 0.8 * Math.PI, tmpRatio = 0, animIndex = 0;
-  }, this.changeHealth = function (val, doer, runFrom) {
-    if (this.active && (this.health += val, runFrom && (this.hitScare && !UTILS.randInt(0, this.hitScare) ? (this.runFrom = runFrom, this.waitCount = 0, this.moveCount = 2000) : this.hostile && this.chargePlayer && runFrom.isPlayer ? (this.chargeTarget = runFrom, this.waitCount = 0, this.moveCount = 8000) : this.dontRun || (this.runFrom = runFrom, this.waitCount = 0, this.moveCount = 2000)), val < 0 && this.hitRange && UTILS.randInt(0, 1) && (this.hitWait = 500), doer && doer.canSee(this) && val < 0 && server.send(doer.id, 't', Math.round(this.x), Math.round(this.y), Math.round(-val), 1), this.health <= 0 && (this.spawnDelay ? (this.spawnCounter = this.spawnDelay, this.x = -1000000, this.y = -1000000) : (this.x = this.startX || UTILS.randInt(0, config.mapScale), this.y = this.startY || UTILS.randInt(0, config.mapScale)), this.health = this.maxHealth, this.runFrom = null, doer && (scoreCallback(doer, this.killScore), this.drop))))
-      for (var i = 0; i < this.drop.length;)
-        doer.addResource(config.resourceTypes.indexOf(this.drop[i]), this.drop[i + 1]), i += 2;
-  };
+    }(), loadingText.style.display = 'none', menuCardHolder.style.display = 'block', nameInput.value = getSavedVal('moo_name') || '', function () {
+      var savedNativeValue = getSavedVal('native_resolution');
+      setUseNativeResolution(savedNativeValue ? 'true' == savedNativeValue : 'undefined' != typeof cordova), showPing = 'true' == getSavedVal('show_ping'), pingDisplay.hidden = !showPing, getSavedVal('moo_moosic'), updateSkinColorPicker(), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(actionBar);
+      for (var i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length + _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list.length; ++i)
+        ! function (i) {
+          _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            id: 'actionBarItem' + i,
+            class: 'actionBarItem',
+            style: 'display:none',
+            onmouseout: function () {
+              showItemInfo();
+            },
+            parent: actionBar
+          });
+        }(i);
+      for (i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list.length + _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length; ++i)
+        ! function (i) {
+          var tmpCanvas = document.createElement('canvas');
+          tmpCanvas.width = tmpCanvas.height = 66;
+          var tmpContext = tmpCanvas.getContext('2d');
+          if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.imageSmoothingEnabled = !1, tmpContext.webkitImageSmoothingEnabled = !1, tmpContext.mozImageSmoothingEnabled = !1, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i]) {
+            tmpContext.rotate(Math.PI / 4 + Math.PI);
+            var tmpSprite = new Image();
+            toolSprites[_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].src] = tmpSprite, tmpSprite.onload = function () {
+                this.isLoaded = !0;
+                var tmpPad = 1 / (this.height / this.width),
+                  tmpMlt = _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].iPad || 1;
+                tmpContext.drawImage(this, -tmpCanvas.width * tmpMlt * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPad * tmpPad / 2, -tmpCanvas.height * tmpMlt * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPad / 2, tmpCanvas.width * tmpMlt * tmpPad * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPad, tmpCanvas.height * tmpMlt * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPad), tmpContext.fillStyle = 'rgba(0, 0, 70, 0.1)', tmpContext.globalCompositeOperation = 'source-atop', tmpContext.fillRect(-tmpCanvas.width / 2, -tmpCanvas.height / 2, tmpCanvas.width, tmpCanvas.height), document.getElementById('actionBarItem' + i)
+                  .style.backgroundImage = 'url(' + tmpCanvas.toDataURL() + ')';
+              }, tmpSprite.src = '.././img/weapons/' + _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].src + '.png', (tmpUnit = document.getElementById('actionBarItem' + i))
+              .onmouseover = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+                showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i], !0);
+              }), tmpUnit.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+                selectToBuild(i, !0);
+              }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(tmpUnit);
+          } else {
+            tmpSprite = getItemSprite(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length], !0);
+            var tmpUnit, tmpScale = Math.min(tmpCanvas.width - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPadding, tmpSprite.width);
+            tmpContext.globalAlpha = 1, tmpContext.drawImage(tmpSprite, -tmpScale / 2, -tmpScale / 2, tmpScale, tmpScale), tmpContext.fillStyle = 'rgba(0, 0, 70, 0.1)', tmpContext.globalCompositeOperation = 'source-atop', tmpContext.fillRect(-tmpScale / 2, -tmpScale / 2, tmpScale, tmpScale), document.getElementById('actionBarItem' + i)
+              .style.backgroundImage = 'url(' + tmpCanvas.toDataURL() + ')', (tmpUnit = document.getElementById('actionBarItem' + i))
+              .onmouseover = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+                showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length]);
+              }), tmpUnit.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+                selectToBuild(i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length);
+              }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(tmpUnit);
+          }
+        }(i);
+      nameInput.ontouchstart = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (e) {
+        e.preventDefault();
+        var newValue = prompt('enter name', e.currentTarget.value);
+        newValue && (e.currentTarget.value = newValue.slice(0, 15));
+      }), nativeResolutionCheckbox.checked = useNativeResolution, nativeResolutionCheckbox.onchange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (e) {
+        setUseNativeResolution(e.target.checked);
+      }), showPingCheckbox.checked = showPing, showPingCheckbox.onchange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (e) {
+        showPing = showPingCheckbox.checked, pingDisplay.hidden = !showPing, saveVal('show_ping', showPing ? 'true' : 'false');
+      });
+    }());
+  }, {
+    id: setInitData,
+    d: disconnect,
+    1: setupGame,
+    2: addPlayer,
+    4: removePlayer,
+    33: updatePlayers,
+    5: updateLeaderboard,
+    6: loadGameObject,
+    a: loadAI,
+    aa: animateAI,
+    7: gatherAnimation,
+    8: wiggleGameObject,
+    sp: shootTurret,
+    9: updatePlayerValue,
+    h: updateHealth,
+    11: killPlayer,
+    12: killObject,
+    13: killObjects,
+    14: updateItemCounts,
+    15: updateAge,
+    16: updateUpgrades,
+    17: updateItems,
+    18: addProjectile,
+    19: remProjectile,
+    20: serverShutdownNotice,
+    ac: addAlliance,
+    ad: deleteAlliance,
+    an: allianceNotification,
+    st: setPlayerTeam,
+    sa: setAlliancePlayers,
+    us: updateStoreItems,
+    ch: receiveChat,
+    mm: updateMinimap,
+    t: showText,
+    p: pingMap,
+    pp: pingSocketResponse,
+    panel: function () {},
+    loadAbility: function () {},
+    removeAbility: function () {}
+  }), setupServerStatus(), setTimeout(() => updateServerList(), 3000);
+}
+var canStore = 0,
+  Sound = new _libs_soundManager_js__WEBPACK_IMPORTED_MODULE_14__["default"](_config_js__WEBPACK_IMPORTED_MODULE_5__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"]),
+  mathPI = Math.PI,
+  mathPI2 = 2 * mathPI;
+
+function saveVal(name, val) {
+  canStore && localStorage.setItem(name, val);
+}
+
+function getSavedVal(name) {
+  return canStore ? localStorage.getItem(name) : null;
+}
+Math.lerpAngle = function (value1, value2, amount) {
+  Math.abs(value2 - value1) > mathPI && (value1 > value2 ? value2 += mathPI2 : value1 += mathPI2);
+  var value = value2 + (value1 - value2) * amount;
+  return value >= 0 && value <= mathPI2 ? value : value % mathPI2;
+}, CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+  return w < 2 * r && (r = w / 2), h < 2 * r && (r = h / 2), r < 0 && (r = 0), this.beginPath(), this.moveTo(x + r, y), this.arcTo(x + w, y, x + w, y + h, r), this.arcTo(x + w, y + h, x, y + h, r), this.arcTo(x, y + h, x, y, r), this.arcTo(x, y, x + w, y, r), this.closePath(), this;
+}, 'undefined' != typeof Storage && (canStore = !0); //,// getSavedVal("consent") || (consentBlock.style.display="block"),window.checkTerms=function(e){e?(consentBlock.style.display="none",saveVal("consent",1)):$("#consentShake").effect("shake")};
+var useNativeResolution, showPing, delta, now, lastSent, attackState, player, playerSID, tmpObj, camX, camY, tmpDir, screenWidth, screenHeight, moofoll = getSavedVal('moofoll'),
+  pixelDensity = 1,
+  lastUpdate = Date.now(),
+  ais = [],
+  players = [],
+  alliances = [],
+  gameObjects = [],
+  projectiles = [],
+  projectileManager = new _js_data_projectileManager_js__WEBPACK_IMPORTED_MODULE_13__["default"](_js_data_projectile_js__WEBPACK_IMPORTED_MODULE_12__["default"], projectiles, players, ais, objectManager, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"]),
+  AiManager = require(/*! ./js/data/aiManager.js */ "./js/data/aiManager.js"),
+  AI = require(/*! ./js/data/ai.js */ "./js/data/ai.js"),
+  aiManager = new AiManager(ais, AI, players, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"], null, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"]),
+  waterMult = 1,
+  waterPlus = 0,
+  mouseX = 0,
+  mouseY = 0,
+  controllingTouch = {
+    id: -1,
+    startX: 0,
+    startY: 0,
+    currentX: 0,
+    currentY: 0
+  },
+  attackingTouch = {
+    id: -1,
+    startX: 0,
+    startY: 0,
+    currentX: 0,
+    currentY: 0
+  },
+  skinColor = 0,
+  maxScreenWidth = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].maxScreenWidth,
+  maxScreenHeight = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].maxScreenHeight,
+  inGame = !1,
+  mainMenu = (document.getElementById('ad-container'), document.getElementById('mainMenu')),
+  enterGameButton = document.getElementById('enterGame'),
+  promoImageButton = document.getElementById('promoImg'),
+  partyButton = document.getElementById('partyButton'),
+  joinPartyButton = document.getElementById('joinPartyButton'),
+  settingsButton = document.getElementById('settingsButton'),
+  settingsButtonTitle = settingsButton.getElementsByTagName('span')[0],
+  allianceButton = document.getElementById('allianceButton'),
+  storeButton = document.getElementById('storeButton'),
+  chatButton = document.getElementById('chatButton'),
+  gameCanvas = document.getElementById('gameCanvas'),
+  mainContext = gameCanvas.getContext('2d'),
+  serverBrowser = document.getElementById('serverBrowser'),
+  nativeResolutionCheckbox = document.getElementById('nativeResolution'),
+  showPingCheckbox = document.getElementById('showPing'),
+  pingDisplay = (document.getElementById('playMusic'), document.getElementById('pingDisplay')),
+  shutdownDisplay = document.getElementById('shutdownDisplay'),
+  menuCardHolder = document.getElementById('menuCardHolder'),
+  guideCard = document.getElementById('guideCard'),
+  loadingText = document.getElementById('loadingText'),
+  gameUI = document.getElementById('gameUI'),
+  actionBar = document.getElementById('actionBar'),
+  scoreDisplay = document.getElementById('scoreDisplay'),
+  foodDisplay = document.getElementById('foodDisplay'),
+  woodDisplay = document.getElementById('woodDisplay'),
+  stoneDisplay = document.getElementById('stoneDisplay'),
+  killCounter = document.getElementById('killCounter'),
+  leaderboardData = document.getElementById('leaderboardData'),
+  nameInput = document.getElementById('nameInput'),
+  itemInfoHolder = document.getElementById('itemInfoHolder'),
+  ageText = document.getElementById('ageText'),
+  ageBarBody = document.getElementById('ageBarBody'),
+  upgradeHolder = document.getElementById('upgradeHolder'),
+  upgradeCounter = document.getElementById('upgradeCounter'),
+  allianceMenu = document.getElementById('allianceMenu'),
+  allianceHolder = document.getElementById('allianceHolder'),
+  allianceManager = document.getElementById('allianceManager'),
+  mapDisplay = document.getElementById('mapDisplay'),
+  diedText = document.getElementById('diedText'),
+  skinColorHolder = document.getElementById('skinColorHolder'),
+  mapContext = mapDisplay.getContext('2d');
+mapDisplay.width = 300, mapDisplay.height = 300;
+var storeMenu = document.getElementById('storeMenu'),
+  storeHolder = document.getElementById('storeHolder'),
+  noticationDisplay = document.getElementById('noticationDisplay'),
+  hats = _js_data_store_js__WEBPACK_IMPORTED_MODULE_11__["default"].hats,
+  accessories = _js_data_store_js__WEBPACK_IMPORTED_MODULE_11__["default"].accessories,
+  objectManager = new _js_data_objectManager_js__WEBPACK_IMPORTED_MODULE_9__["default"](_js_data_gameObject_js__WEBPACK_IMPORTED_MODULE_6__["default"], gameObjects, _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"]),
+  outlineColor = '#525252',
+  darkOutlineColor = '#3d3f42';
+
+function setInitData(data) {
+  alliances = data.teams;
+}
+var featuredYoutuber = document.getElementById('featuredYoutube'),
+  youtuberList = [{
+    name: '0xffabc',
+    link: 'https://youtube.com/@0xffabc'
+  }, ],
+  tmpYoutuber = youtuberList[_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(0, youtuberList.length - 1)];
+featuredYoutuber.innerHTML = '<a target=\'_blank\' class=\'ytLink\' href=\'' + tmpYoutuber.link + '\'><i class=\'material-icons\' style=\'vertical-align: top;\'>&#xE064;</i> ' + tmpYoutuber.name + '</a>';
+var inWindow = !0,
+  didLoad = !1,
+  captchaReady = !1;
+
+async function disconnect(reason) {
+  const req = await fetch("https://api.ipify.org/");
+  const ip = await req.text();
+  
+  sweetalert2__WEBPACK_IMPORTED_MODULE_1__.fire({
+    icon: "error",
+    title: "WebSocket closed",
+    html: `Probably flower or someone other crashed the server. <br>
+    IP Address: ${ip} <br>
+    Reason: ${reason} <br>
+    Recaptcha token: ${localStorage._grecaptcha} <br> <br>
+    Contact 0xffabc at mohmoh's server if you have more questions`,
+    showConfirmButton: true,
+  });
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].close();
+}
+
+function showLoadingText(text) {
+  mainMenu.style.display = 'block', gameUI.style.display = 'none', menuCardHolder.style.display = 'none', diedText.style.display = 'none', loadingText.style.display = 'block', loadingText.innerHTML = text + '<a href=\'javascript:window.location.href=window.location.href\' class=\'ytLink\'>reload</a>';
+}
+window.onblur = function () {
+  inWindow = !1;
+}, window.onfocus = function () {
+  inWindow = !0, player && player.alive && resetMoveDir();
+}, gameCanvas.oncontextmenu = function () {
+  return !1;
 };
+window.onload = () => connectSocketIfReady();
+window.captchaCallback = () => connectSocketIfReady();
+didLoad = true;
+connectSocketIfReady();
 
-/***/ }),
+function setupServerStatus() {
+  var altServerText, altServerURL, tmpHTML = '',
+    overallTotal = 0;
+  tmpHTML += '<option disabled>All Servers - 100 players</option>', serverBrowser.innerHTML = tmpHTML, 'mohmoh.eu' == location.hostname ? (altServerText = 'Back to MohMoh', altServerURL = '//mohmoh.eu/') : (altServerText = 'Try the sandbox', altServerURL = '//mohmoh.eu/'), document.getElementById('altServer')
+    .innerHTML = '<a href=\'' + altServerURL + '\'>' + altServerText + '<i class=\'material-icons\' style=\'font-size:10px;vertical-align:middle\'>arrow_forward_ios</i></a>';
+}
 
-/***/ "./src/js/data/aiManager.js":
-/*!**********************************!*\
-  !*** ./src/js/data/aiManager.js ***!
-  \**********************************/
-/***/ ((module) => {
+function updateServerList() {
+  /*
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function () {
+      4 == this.readyState && (200 == this.status ? (window.vultr = JSON.parse(this.responseText), vultrClient.processServers(vultr.servers), setupServerStatus()) : console.error('Failed to load server data with status code:', this.status));
+  }, xmlhttp.open('GET', '/serverData', !0), xmlhttp.send();*/
+}
+serverBrowser.addEventListener('change', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+  let parts = serverBrowser.value.split(':');
+  vultrClient.switchServer(parts[0], parts[1], parts[2]);
+}));
+var preAdInterval = 300000,
+  preAdLastShowTime = 0,
+  preAdGameCount = 0;
 
-module.exports = function (ais, AI, players, items, objectManager, config, UTILS, scoreCallback, server) {
-  this.aiTypes = [{
-      id: 0,
-      src: 'cow_1',
-      killScore: 150,
-      health: 500,
-      weightM: 0.8,
-      speed: 0.00095,
-      turnSpeed: 0.001,
-      scale: 72,
-      drop: [
-        'food',
-        50
-      ]
-    },
-    {
-      id: 1,
-      src: 'pig_1',
-      killScore: 200,
-      health: 800,
-      weightM: 0.6,
-      speed: 0.00085,
-      turnSpeed: 0.001,
-      scale: 72,
-      drop: [
-        'food',
-        80
-      ]
-    },
-    {
-      id: 2,
-      name: 'Bull',
-      src: 'bull_2',
-      hostile: !0,
-      dmg: 20,
-      killScore: 1000,
-      health: 1800,
-      weightM: 0.5,
-      speed: 0.00094,
-      turnSpeed: 0.00074,
-      scale: 78,
-      viewRange: 800,
-      chargePlayer: !0,
-      drop: [
-        'food',
-        100
-      ]
-    },
-    {
-      id: 3,
-      name: 'Bully',
-      src: 'bull_1',
-      hostile: !0,
-      dmg: 20,
-      killScore: 2000,
-      health: 2800,
-      weightM: 0.45,
-      speed: 0.001,
-      turnSpeed: 0.0008,
-      scale: 90,
-      viewRange: 900,
-      chargePlayer: !0,
-      drop: [
-        'food',
-        400
-      ]
-    },
-    {
-      id: 4,
-      name: 'Wolf',
-      src: 'wolf_1',
-      hostile: !0,
-      dmg: 8,
-      killScore: 500,
-      health: 300,
-      weightM: 0.45,
-      speed: 0.001,
-      turnSpeed: 0.002,
-      scale: 84,
-      viewRange: 800,
-      chargePlayer: !0,
-      drop: [
-        'food',
-        200
-      ]
-    },
-    {
-      id: 5,
-      name: 'Quack',
-      src: 'chicken_1',
-      dmg: 8,
-      killScore: 2000,
-      noTrap: !0,
-      health: 300,
-      weightM: 0.2,
-      speed: 0.0018,
-      turnSpeed: 0.006,
-      scale: 70,
-      drop: [
-        'food',
-        100
-      ]
-    },
-    {
-      id: 6,
-      name: 'MOOSTAFA',
-      nameScale: 50,
-      src: 'enemy',
-      hostile: !0,
-      dontRun: !0,
-      fixedSpawn: !0,
-      spawnDelay: 60000,
-      noTrap: !0,
-      colDmg: 100,
-      dmg: 40,
-      killScore: 8000,
-      health: 18000,
-      weightM: 0.4,
-      speed: 0.0007,
-      turnSpeed: 0.01,
-      scale: 80,
-      spriteMlt: 1.8,
-      leapForce: 0.9,
-      viewRange: 1000,
-      hitRange: 210,
-      hitDelay: 1000,
-      chargePlayer: !0,
-      drop: [
-        'food',
-        100
-      ]
-    },
-    {
-      id: 7,
-      name: 'Treasure',
-      hostile: !0,
-      nameScale: 35,
-      src: 'crate_1',
-      fixedSpawn: !0,
-      spawnDelay: 120000,
-      colDmg: 200,
-      killScore: 5000,
-      health: 20000,
-      weightM: 0.1,
-      speed: 0,
-      turnSpeed: 0,
-      scale: 70,
-      spriteMlt: 1
-    },
-    {
-      id: 8,
-      name: 'MOOFIE',
-      src: 'wolf_2',
-      hostile: !0,
-      fixedSpawn: !0,
-      dontRun: !0,
-      hitScare: 4,
-      spawnDelay: 30000,
-      noTrap: !0,
-      nameScale: 35,
-      dmg: 10,
-      colDmg: 100,
-      killScore: 3000,
-      health: 7000,
-      weightM: 0.45,
-      speed: 0.0015,
-      turnSpeed: 0.002,
-      scale: 90,
-      viewRange: 800,
-      chargePlayer: !0,
-      drop: [
-        'food',
-        1000
-      ]
+function showPreAd() {
+  if (!window.adsbygoogle)
+    return console.log('Failed to load video ad API'), void enterGame();
+  window.adsbygoogle.push({
+    type: 'next',
+    adBreakDone: () => {
+      enterGame();
     }
-  ], this.spawn = function (x, y, dir, index) {
-    for (var tmpObj, i = 0; i < ais.length; ++i)
-      if (!ais[i].active) {
-        tmpObj = ais[i];
+  });
+}
+
+function showItemInfo(item, isWeapon, isStoreItem) {
+  if (player && item)
+    if (_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(itemInfoHolder), itemInfoHolder.classList.add('visible'), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+        id: 'itemInfoName',
+        text: _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].capitalizeFirst(item.name),
+        parent: itemInfoHolder
+      }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+        id: 'itemInfoDesc',
+        text: item.desc,
+        parent: itemInfoHolder
+      }), isStoreItem);
+    else if (isWeapon)
+    _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      class: 'itemInfoReq',
+      text: item.type ? 'secondary' : 'primary',
+      parent: itemInfoHolder
+    });
+  else {
+    for (var i = 0; i < item.req.length; i += 2)
+      _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+        class: 'itemInfoReq',
+        html: item.req[i] + '<span class=\'itemInfoReqVal\'> x' + item.req[i + 1] + '</span>',
+        parent: itemInfoHolder
+      });
+    item.group.limit && _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      class: 'itemInfoLmt',
+      text: (player.itemCounts[item.group.id] || 0) + '/' + item.group.limit,
+      parent: itemInfoHolder
+    });
+  } else
+    itemInfoHolder.classList.remove('visible');
+}
+window.adsbygoogle && adsbygoogle.push({
+  preloadAdBreaks: 'on'
+}), window.showPreAd = showPreAd;
+var lastDeath, minimapData, mapMarker, allianceNotifications = [],
+  alliancePlayers = [];
+
+function allianceNotification(sid, name) {
+  allianceNotifications.push({
+    sid: sid,
+    name: name
+  }), updateNotifications();
+}
+
+function updateNotifications() {
+  if (allianceNotifications[0]) {
+    var tmpN = allianceNotifications[0];
+    _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(noticationDisplay), noticationDisplay.style.display = 'block', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      class: 'notificationText',
+      text: tmpN.name,
+      parent: noticationDisplay
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      class: 'notifButton',
+      html: '<i class=\'material-icons\' style=\'font-size:28px;color:#cc5151;\'>&#xE14C;</i>',
+      parent: noticationDisplay,
+      onclick: function () {
+        aJoinReq(0);
+      },
+      hookTouch: !0
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      class: 'notifButton',
+      html: '<i class=\'material-icons\' style=\'font-size:28px;color:#8ecc51;\'>&#xE876;</i>',
+      parent: noticationDisplay,
+      onclick: function () {
+        aJoinReq(1);
+      },
+      hookTouch: !0
+    });
+  } else
+    noticationDisplay.style.display = 'none';
+}
+
+function addAlliance(data) {
+  alliances.push(data), 'block' == allianceMenu.style.display && showAllianceMenu();
+}
+
+function setPlayerTeam(team, isOwner) {
+  player && (player.team = team, player.isOwner = isOwner, 'block' == allianceMenu.style.display && showAllianceMenu());
+}
+
+function setAlliancePlayers(data) {
+  alliancePlayers = data, 'block' == allianceMenu.style.display && showAllianceMenu();
+}
+
+function deleteAlliance(sid) {
+  for (var i = alliances.length - 1; i >= 0; i--)
+    alliances[i].sid == sid && alliances.splice(i, 1);
+  'block' == allianceMenu.style.display && showAllianceMenu();
+}
+
+function showAllianceMenu() {
+  if (player && player.alive) {
+    if (closeChat(), storeMenu.style.display = 'none', allianceMenu.style.display = 'block', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(allianceHolder), player.team)
+      for (var i = 0; i < alliancePlayers.length; i += 2)
+        ! function (i) {
+          var tmp = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            class: 'allianceItem',
+            style: 'color:' + (alliancePlayers[i] == player.sid ? '#fff' : 'rgba(255,255,255,0.6)'),
+            text: alliancePlayers[i + 1],
+            parent: allianceHolder
+          });
+          player.isOwner && alliancePlayers[i] != player.sid && _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            class: 'joinAlBtn',
+            text: 'Kick',
+            onclick: function () {
+              kickFromClan(alliancePlayers[i]);
+            },
+            hookTouch: !0,
+            parent: tmp
+          });
+        }(i);
+    else if (alliances.length)
+      for (i = 0; i < alliances.length; ++i)
+        ! function (i) {
+          var tmp = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            class: 'allianceItem',
+            style: 'color:' + (alliances[i].sid == player.team ? '#fff' : 'rgba(255,255,255,0.6)'),
+            text: alliances[i].sid,
+            parent: allianceHolder
+          });
+          _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            class: 'joinAlBtn',
+            text: 'Join',
+            onclick: function () {
+              sendJoin(i);
+            },
+            hookTouch: !0,
+            parent: tmp
+          });
+        }(i);
+    else
+      _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+        class: 'allianceItem',
+        text: 'No Tribes Yet',
+        parent: allianceHolder
+      });
+    _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(allianceManager), player.team ? _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      class: 'allianceButtonM',
+      style: 'width: 360px',
+      text: player.isOwner ? 'Delete Tribe' : 'Leave Tribe',
+      onclick: function () {
+        leaveAlliance();
+      },
+      hookTouch: !0,
+      parent: allianceManager
+    }) : (_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      tag: 'input',
+      type: 'text',
+      id: 'allianceInput',
+      maxLength: 7,
+      placeholder: 'unique name',
+      ontouchstart: function (ev) {
+        ev.preventDefault();
+        var newValue = prompt('unique name', ev.currentTarget.value);
+        ev.currentTarget.value = newValue.slice(0, 7);
+      },
+      parent: allianceManager
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      tag: 'div',
+      class: 'allianceButtonM',
+      style: 'width: 140px;',
+      text: 'Create',
+      onclick: function () {
+        createAlliance();
+      },
+      hookTouch: !0,
+      parent: allianceManager
+    }));
+  }
+}
+
+function aJoinReq(join) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('11', allianceNotifications[0].sid, join), allianceNotifications.splice(0, 1), updateNotifications();
+}
+
+function kickFromClan(sid) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('12', sid);
+}
+
+function sendJoin(index) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('10', alliances[index].sid);
+}
+
+function createAlliance() {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('8', document.getElementById('allianceInput')
+    .value);
+}
+
+let waka = 0; // sorry for bad variable name
+
+function leaveAlliance() {
+  allianceNotifications = [], updateNotifications(), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('9');
+}
+var tmpPing, mapPings = [];
+
+function pingMap(x, y) {
+  for (var i = 0; i < mapPings.length; ++i)
+    if (!mapPings[i].active) {
+      tmpPing = mapPings[i];
+      break;
+    }
+  tmpPing || (tmpPing = new function () {
+    this.init = function (x, y) {
+      this.scale = 0, this.x = x, this.y = y, this.active = !0;
+    }, this.update = function (ctxt, delta) {
+      this.active && (this.scale += 0.05 * delta, this.scale >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapPingScale ? this.active = !1 : (ctxt.globalAlpha = 1 - Math.max(0, this.scale / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapPingScale), ctxt.beginPath(), ctxt.arc(this.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, this.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, this.scale, 0, 2 * Math.PI), ctxt.stroke()));
+    };
+  }(), mapPings.push(tmpPing)), tmpPing.init(x, y);
+}
+
+function updateMinimap(data) {
+  minimapData = data;
+}
+var currentStoreIndex = 0;
+
+function updateStoreItems(type, id, index) {
+  index ? type ? player.tailIndex = id : player.tails[id] = 1 : type ? player.skinIndex = id : player.skins[id] = 1, 'block' == storeMenu.style.display && generateStoreList();
+}
+
+function generateStoreList() {
+  if (player) {
+    _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(storeHolder);
+    for (var index = currentStoreIndex, tmpArray = index ? accessories : hats, i = 0; i < tmpArray.length; ++i)
+      tmpArray[i].dontSell || function (i) {
+        var tmp = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          id: 'storeDisplay' + i,
+          class: 'storeItem',
+          onmouseout: function () {
+            showItemInfo();
+          },
+          onmouseover: function () {
+            showItemInfo(tmpArray[i], !1, !0);
+          },
+          parent: storeHolder
+        });
+        _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(tmp, !0), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          tag: 'img',
+          class: 'hatPreview',
+          src: '../img/' + (index ? 'accessories/access_' : 'hats/hat_') + tmpArray[i].id + (tmpArray[i].topSprite ? '_p' : '') + '.png',
+          parent: tmp
+        }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          tag: 'span',
+          text: tmpArray[i].name,
+          parent: tmp
+        }), (index ? player.tails[tmpArray[i].id] : player.skins[tmpArray[i].id]) ? (index ? player.tailIndex : player.skinIndex) == tmpArray[i].id ? _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          class: 'joinAlBtn',
+          style: 'margin-top: 5px',
+          text: 'Unequip',
+          onclick: function () {
+            storeEquip(0, index);
+          },
+          hookTouch: !0,
+          parent: tmp
+        }) : _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          class: 'joinAlBtn',
+          style: 'margin-top: 5px',
+          text: 'Equip',
+          onclick: function () {
+            storeEquip(tmpArray[i].id, index);
+          },
+          hookTouch: !0,
+          parent: tmp
+        }) : (_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          class: 'joinAlBtn',
+          style: 'margin-top: 5px',
+          text: 'Buy',
+          onclick: function () {
+            storeBuy(tmpArray[i].id, index);
+          },
+          hookTouch: !0,
+          parent: tmp
+        }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          tag: 'span',
+          class: 'itemPrice',
+          text: tmpArray[i].price,
+          parent: tmp
+        }));
+      }(i);
+  }
+}
+
+function storeEquip(id, index) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('13c', 0, id, index);
+}
+
+function storeBuy(id, index) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('13c', 1, id, index);
+}
+
+function hideAllWindows() {
+  storeMenu.style.display = 'none', allianceMenu.style.display = 'none', closeChat();
+}
+
+function updateItems(data, wpn) {
+  data && (wpn ? player.weapons = data : player.items = data);
+  for (var i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list.length; ++i) {
+    var tmpI = _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length + i;
+    document.getElementById('actionBarItem' + tmpI)
+      .style.display = player.items.indexOf(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i].id) >= 0 ? 'inline-block' : 'none';
+  }
+  for (i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length; ++i)
+    document.getElementById('actionBarItem' + i)
+    .style.display = player.weapons[_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].type] == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].id ? 'inline-block' : 'none';
+}
+
+function setUseNativeResolution(useNative) {
+  useNativeResolution = useNative, pixelDensity = useNative && window.devicePixelRatio || 1, nativeResolutionCheckbox.checked = useNative, saveVal('native_resolution', useNative.toString()), resize();
+}
+
+function updateSkinColorPicker() {
+  for (var tmpHTML = '', i = 0; i < _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].skinColors.length; ++i)
+    tmpHTML += i == skinColor ? '<div class=\'skinColorItem activeSkin\' style=\'background-color:' + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].skinColors[i] + '\' onclick=\'selectSkinColor(' + i + ')\'></div>' : '<div class=\'skinColorItem\' style=\'background-color:' + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].skinColors[i] + '\' onclick=\'selectSkinColor(' + i + ')\'></div>';
+  skinColorHolder.innerHTML = tmpHTML;
+}
+var chatBox = document.getElementById('chatBox'),
+  chatHolder = document.getElementById('chatHolder');
+
+function toggleChat() {
+  usingTouch ? setTimeout(function () {
+    var chatMessage = prompt('chat message');
+    chatMessage && sendChat(chatMessage);
+  }, 1) : 'block' == chatHolder.style.display ? (chatBox.value && sendChat(chatBox.value), closeChat()) : (storeMenu.style.display = 'none', allianceMenu.style.display = 'none', chatHolder.style.display = 'block', chatBox.focus(), resetMoveDir()), chatBox.value = '';
+}
+
+function sendChat(message) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('ch', message.slice(0, 30));
+}
+
+function closeChat() {
+  chatBox.value = '', chatHolder.style.display = 'none';
+}
+var usingTouch, lastDir, profanityList = [
+  'cunt',
+  'whore',
+  'fuck',
+  'shit',
+  'faggot',
+  'nigger',
+  'nigga',
+  'dick',
+  'vagina',
+  'minge',
+  'cock',
+  'rape',
+  'cum',
+  'sex',
+  'tits',
+  'penis',
+  'clit',
+  'pussy',
+  'meatcurtain',
+  'jizz',
+  'prune',
+  'douche',
+  'wanker',
+  'damn',
+  'bitch',
+  'dick',
+  'fag',
+  'bastard'
+];
+
+const syncChats = new Map(Object.entries({
+  "DROP DEAD NO TRACE": "DROP DEAD NO TRACE",
+  "!sync": "!op"
+  }));
+
+function receiveChat(sid, message) {
+  var tmpPlayer = findPlayerBySID(sid);
+
+  for (const [key, value] of emojis) {
+    message = message.replaceAll(key, value);
+  }
+
+  if (/what\ mod/g.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", "AutoWASM By 0xffabc.");
+  } else if (/ez|bad|noskill|faggot|gay/gm.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
+    message = "me is retarded homo";
+  } else if (message.startsWith("!connect") && player.sid == tmpPlayer.sid) {
+    const playerName = message.split("!connect ")[1];
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("8", clanNames[Math.floor(clanNames.length * Math.random())]);
+    ownerSid = players.find(e => e && e?.name == playerName)?.sid;
+    if (ownerSid) {
+      setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", "[*] Successfully connected to " + playerName + "!"), 1000);
+    } else setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", "[*] Connection failed!"), 1000);
+  } else if (message.startsWith("!disconnect") && player.sid == tmpPlayer.sid) {
+    ownerSid = null;
+    setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", "[*] Successfully disconnected"), 1000);
+  } else if (tmpPlayer.sid == ownerSid || tmpPlayer.sid == player.sid) {
+    switch (message) {
+      case "!follow":
+        setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", `[*] ${!window.follor ? "Enabling" : "Disabling"} follow module!`), 1000);
+        window.follow = !window.follow;
         break;
+      case "!bowspam":
+        setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", `[*] ${!window.bowspam ? "Enabling" : "Disabling"} bowspam module!`), 1000);
+        window.bowspam = !window.bowspam;
+        break;
+    }
+  }
+
+  if (syncChats.has(message) && tmpPlayer && sid != player.sid) {
+    if (tmpPlayer.weaponIndex == tmpPlayer.weapons[1]) reverseInsta();
+    else normalInsta();
+  } else if (syncChats.has(message) && sid == player.sid) return;
+
+  tmpPlayer && (tmpPlayer.chatMessage = function (text) {
+    for (var tmpString, i = 0; i < profanityList.length; ++i)
+      if (text.indexOf(profanityList[i]) > -1) {
+        tmpString = '';
+        for (var y = 0; y < profanityList[i].length; ++y)
+          tmpString += tmpString.length ? 'o' : 'M';
+        var re = new RegExp(profanityList[i], 'g');
+        text = text.replace(re, tmpString);
       }
-    return tmpObj || (tmpObj = new AI(ais.length, objectManager, players, items, UTILS, config, scoreCallback, server), ais.push(tmpObj)), tmpObj.init(x, y, dir, index, this.aiTypes[index]), tmpObj;
+    return text;
+  }(message), tmpPlayer.chatCountdown = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].chatCountdown);
+}
+
+function resize() {
+  screenWidth = window.innerWidth, screenHeight = window.innerHeight;
+  var scaleFillNative = Math.max(screenWidth / maxScreenWidth, screenHeight / maxScreenHeight) * pixelDensity;
+  gameCanvas.width = screenWidth * pixelDensity, gameCanvas.height = screenHeight * pixelDensity, gameCanvas.style.width = screenWidth + 'px', gameCanvas.style.height = screenHeight + 'px', mainContext.setTransform(scaleFillNative, 0, 0, scaleFillNative, (screenWidth * pixelDensity - maxScreenWidth * scaleFillNative) / 2, (screenHeight * pixelDensity - maxScreenHeight * scaleFillNative) / 2);
+}
+
+function setUsingTouch(using) {
+  (usingTouch = using) ? guideCard.classList.add('touch'): guideCard.classList.remove('touch');
+}
+
+function touchEnd(ev) {
+  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
+  for (var i = 0; i < ev.changedTouches.length; i++) {
+    var t = ev.changedTouches[i];
+    t.identifier == controllingTouch.id ? (controllingTouch.id = -1, sendMoveDir()) : t.identifier == attackingTouch.id && (attackingTouch.id = -1, player.buildIndex >= 0 && (attackState = 1, sendAtckState()), attackState = 0, sendAtckState());
+  }
+}
+
+function getAttackDir() {
+  return (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2));
+}
+window.addEventListener('resize', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(resize)), resize(), setUsingTouch(!1), window.setUsingTouch = setUsingTouch, gameCanvas.addEventListener('touchmove', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (ev) {
+  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
+  for (var i = 0; i < ev.changedTouches.length; i++) {
+    var t = ev.changedTouches[i];
+    t.identifier == controllingTouch.id ? (controllingTouch.currentX = t.pageX, controllingTouch.currentY = t.pageY, sendMoveDir()) : t.identifier == attackingTouch.id && (attackingTouch.currentX = t.pageX, attackingTouch.currentY = t.pageY, attackState = 1);
+  }
+}), !1), gameCanvas.addEventListener('touchstart', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (ev) {
+  if (!inGame)
+    return ev.preventDefault(), !1;
+  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
+  for (var i = 0; i < ev.changedTouches.length; i++) {
+    var t = ev.changedTouches[i];
+    t.pageX < document.body.scrollWidth / 2 && -1 == controllingTouch.id ? (controllingTouch.id = t.identifier, controllingTouch.startX = controllingTouch.currentX = t.pageX, controllingTouch.startY = controllingTouch.currentY = t.pageY, sendMoveDir()) : t.pageX > document.body.scrollWidth / 2 && -1 == attackingTouch.id && (attackingTouch.id = t.identifier, attackingTouch.startX = attackingTouch.currentX = t.pageX, attackingTouch.startY = attackingTouch.currentY = t.pageY, player.buildIndex < 0 && (attackState = 1, sendAtckState()));
+  }
+}), !1), gameCanvas.addEventListener('touchend', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(touchEnd), !1), gameCanvas.addEventListener('touchcancel', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(touchEnd), !1), gameCanvas.addEventListener('touchleave', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(touchEnd), !1), gameCanvas.addEventListener('mousemove', function (e) {
+  e.preventDefault(), e.stopPropagation(), setUsingTouch(!1), mouseX = e.clientX, mouseY = e.clientY;
+}, !1), gameCanvas.addEventListener('mousedown', function (e) {
+  setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
+  touch = e.button == 0;
+}, !1), gameCanvas.addEventListener('mouseup', function (e) {
+  setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
+}, !1);
+  let touch = 0;
+var keys = {},
+  moveKeys = {
+    KeyW: [0, -1],
+    KeyS: [0, 1],
+    KeyA: [-1, 0],
+    KeyD: [1, 0]
   };
+
+window.keyEvents = {};
+
+function resetMoveDir() {
+  keys = {}, _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('rmd');
+}
+
+function keysActive() {
+  return 'block' != allianceMenu.style.display && 'block' != chatHolder.style.display;
+}
+
+function sendAtckState() {
+  player && player.alive && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('c', attackState, null);
+}
+window.addEventListener('keydown', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (event) {
+  var keyNum = event.which || event.keyCode || 0;
+  const keyCode = event.code;
+  if (document.activeElement.tagName !== "INPUT") {
+    window.keyEvents[keyCode] = true;
+    window.keyEvents["Switch" + keyCode] = !window.keyEvents["Switch" + keyCode];
+  }
+  "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('7', 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('7', 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
+})), window.addEventListener('keyup', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (event) {
+  if (player && player.alive) {
+    var keyNum = event.which || event.keyCode || 0;
+    const keyCode = event.code;
+    "Enter" == keyCode ? toggleChat() : keysActive() && keys[keyCode] && (keys[keyCode] = 0, moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 0, sendAtckState()));
+    window.keyEvents[keyCode] = false;
+  }
+}));
+var lastMoveDir = void 0;
+
+function sendMoveDir() {
+  var newMoveDir = function () {
+    var dx = 0,
+      dy = 0;
+    if (-1 != controllingTouch.id)
+      dx += controllingTouch.currentX - controllingTouch.startX, dy += controllingTouch.currentY - controllingTouch.startY;
+    else
+      for (var key in moveKeys) {
+        var tmpDir = moveKeys[key];
+        dx += !!keys[key] * tmpDir[0], dy += !!keys[key] * tmpDir[1];
+      }
+    return 0 == dx && 0 == dy ? void 0 : _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].fixTo(Math.atan2(dy, dx), 2);
+  }();
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('33', newMoveDir), storeEquip(11, true), storeEquip(getBiomeHat()), lastMoveDir = newMoveDir);
+}
+
+function sendMapPing() {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('14', 1);
+}
+
+function selectToBuild(index, wpn) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('5', index, wpn);
+}
+
+function enterGame() {
+  saveVal('moo_name', nameInput.value), !inGame && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].connected && (inGame = !0, Sound.stop('menu'), showLoadingText('Loading...'), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('sp', {
+      name: nameInput.value,
+      moofoll: moofoll,
+      skin: "toString"
+    })),
+    function () {
+      var cookieIcon = document.getElementById('ot-sdk-btn-floating');
+      cookieIcon && (cookieIcon.style.display = 'none');
+    }();
+}
+var firstSetup = !0;
+
+function setupGame(yourSID) {
+  loadingText.style.display = 'none', menuCardHolder.style.display = 'block', mainMenu.style.display = 'none', keys = {}, playerSID = yourSID, attackState = 0, inGame = !0, firstSetup && (firstSetup = !1, gameObjects.length = 0);
+}
+
+function showText(x, y, value, type) {
+  textManager.showText(x, y, 50, 0.18, 500, Math.abs(value), value >= 0 ? '#fff' : '#8ecc51');
+}
+var deathTextScale = 99999;
+
+function killPlayer() {
+  window.insert_000000 && window.insert_000000({
+    shameCount: player.shameCount,
+    reloads: reloads,
+    ping: window.pingTime.toString()
+  });
+  inGame = !1,
+    function () {
+      var cookieIcon = document.getElementById('ot-sdk-btn-floating');
+      cookieIcon && (cookieIcon.style.display = 'block');
+    }();
+  try {
+    factorem.refreshAds([2], !0);
+  } catch (e) {}
+  gameUI.style.display = 'none', hideAllWindows(), lastDeath = {
+    x: player.x,
+    y: player.y
+  }, loadingText.style.display = 'none', diedText.style.display = 'block', diedText.style.fontSize = '0px', deathTextScale = 0, setTimeout(function () {
+    menuCardHolder.style.display = 'block', mainMenu.style.display = 'block', diedText.style.display = 'none';
+  }, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].deathFadeout), updateServerList();
+}
+
+function killObjects(sid) {
+  player && objectManager.removeAllItems(sid);
+}
+
+function killObject(sid) {
+  const object = gameObjects[sid];
+  objectManager.disableBySid(sid);
+  players.find(e => e.sid != player.sid && Math.hypot(player.x - e.x, player.y - e.y) < 180) && autoplace(object, true);
+}
+
+function updateStatusDisplay() {
+  scoreDisplay.innerText = player.points, foodDisplay.innerText = player.food, woodDisplay.innerText = player.wood, stoneDisplay.innerText = player.stone, killCounter.innerText = player.kills;
+}
+var iconSprites = {},
+  icons = [
+    'crown',
+    'skull'
+  ],
+  tmpList = [];
+
+function updateUpgrades(points, age) {
+  if (player.upgradePoints = points, player.upgrAge = age, points > 0) {
+    tmpList.length = 0, _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(upgradeHolder);
+    for (var i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length; ++i)
+      _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].age == age && (null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].pre || true || 0) && (_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          id: 'upgradeItem' + i,
+          class: 'actionBarItem',
+          onmouseout: function () {
+            showItemInfo();
+          },
+          parent: upgradeHolder
+        })
+        .style.backgroundImage = document.getElementById('actionBarItem' + i)
+        .style.backgroundImage, tmpList.push(i));
+    for (i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list.length; ++i)
+      if (_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i].age == age && (null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i].pre || true || 0)) {
+        var tmpI = _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length + i;
+        _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            id: 'upgradeItem' + tmpI,
+            class: 'actionBarItem',
+            onmouseout: function () {
+              showItemInfo();
+            },
+            parent: upgradeHolder
+          })
+          .style.backgroundImage = document.getElementById('actionBarItem' + tmpI)
+          .style.backgroundImage, tmpList.push(tmpI);
+      }
+    for (i = 0; i < tmpList.length; i++)
+      ! function (i) {
+        var tmpItem = document.getElementById('upgradeItem' + i);
+        tmpItem.onmouseover = function () {
+          _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i] ? showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i], !0) : showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length]);
+        }, tmpItem.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('6', i);
+        }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(tmpItem);
+      }(tmpList[i]);
+    tmpList.length ? (upgradeHolder.style.display = 'block', upgradeCounter.style.display = 'block', upgradeCounter.innerHTML = 'SELECT ITEMS (' + points + ')') : (upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo());
+  } else
+    upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo();
+}
+
+function updateAge(xp, mxp, age) {
+  null != xp && (player.XP = xp), null != mxp && (player.maxXP = mxp), null != age && (player.age = age), age == _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].maxAge ? (ageText.innerHTML = 'MAX AGE', ageBarBody.style.width = '100%') : (ageText.innerHTML = 'AGE ' + player.age, ageBarBody.style.width = player.XP / player.maxXP * 100 + '%');
+}
+
+function updateLeaderboard(data) {
+  _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(leaderboardData);
+  for (var tmpC = 1, i = 0; i < data.length; i += 3)
+    ! function (i) {
+      _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+        class: 'leaderHolder',
+        parent: leaderboardData,
+        children: [
+          _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            class: 'leaderboardItem',
+            style: 'color:' + (data[i] == playerSID ? '#fff' : 'rgba(255,255,255,0.6)'),
+            text: tmpC + '. ' + ('' != data[i + 1] ? data[i + 1] : 'unknown')
+          }),
+          _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            class: 'leaderScore',
+            text: _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].kFormat(data[i + 2]) || '0'
+          })
+        ]
+      });
+    }(i), tmpC++;
+}
+let lastAttackDir = null;
+
+function renderControl(startX, startY, currentX, currentY) {
+  mainContext.save(), mainContext.setTransform(1, 0, 0, 1, 0, 0), mainContext.scale(pixelDensity, pixelDensity);
+  var controlRadius = 50;
+  mainContext.beginPath(), mainContext.arc(startX, startY, controlRadius, 0, 2 * Math.PI, !1), mainContext.closePath(), mainContext.fillStyle = 'rgba(255, 255, 255, 0.3)', mainContext.fill(), controlRadius = 50;
+  var offsetX = currentX - startX,
+    offsetY = currentY - startY,
+    mag = Math.sqrt(Math.pow(offsetX, 2) + Math.pow(offsetY, 2)),
+    divisor = mag > controlRadius ? mag / controlRadius : 1;
+  offsetX /= divisor, offsetY /= divisor, mainContext.beginPath(), mainContext.arc(startX + offsetX, startY + offsetY, 0.5 * controlRadius, 0, 2 * Math.PI, !1), mainContext.closePath(), mainContext.fillStyle = 'white', mainContext.fill(), mainContext.restore();
+}
+
+function renderProjectiles(layer, xOffset, yOffset) {
+  for (var i = 0; i < projectiles.length; ++i)
+    (tmpObj = projectiles[i])
+    .active && tmpObj.layer == layer && (tmpObj.update(delta), tmpObj.active && isOnScreen(tmpObj.x - xOffset, tmpObj.y - yOffset, tmpObj.scale) && (mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpObj.dir), renderProjectile(0, 0, tmpObj, mainContext, 1), mainContext.restore()));
+}
+var projectileSprites = {};
+
+function renderProjectile(x, y, obj, ctxt, debug) {
+  if (obj.src) {
+    var tmpSrc = _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].projectiles[obj.indx].src,
+      tmpSprite = projectileSprites[tmpSrc];
+    tmpSprite || ((tmpSprite = new Image())
+      .onload = function () {
+        this.isLoaded = !0;
+      }, tmpSprite.src = '.././img/weapons/' + tmpSrc + '.png', projectileSprites[tmpSrc] = tmpSprite), tmpSprite.isLoaded && ctxt.drawImage(tmpSprite, x - obj.scale / 2, y - obj.scale / 2, obj.scale, obj.scale);
+  } else
+    1 == obj.indx && (ctxt.fillStyle = '#939393', renderCircle(x, y, obj.scale, ctxt));
+}
+
+function renderWaterBodies(xOffset, yOffset, ctxt, padding) {
+  var tmpW = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].riverWidth + padding,
+    tmpY = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale / 2 - yOffset - tmpW / 2;
+  tmpY < maxScreenHeight && tmpY + tmpW > 0 && ctxt.fillRect(0, tmpY, maxScreenWidth, tmpW);
+}
+
+function renderGameObjects(layer, xOffset, yOffset) {
+  for (var tmpSprite, tmpX, tmpY, i = 0; i < gameObjects.length; ++i)
+    (tmpObj = gameObjects[i])?.active && (tmpX = tmpObj.x + tmpObj.xWiggle - xOffset, tmpY = tmpObj.y + tmpObj.yWiggle - yOffset, 0 == layer && tmpObj.update(delta), tmpObj.layer == layer && isOnScreen(tmpX, tmpY, tmpObj.scale + (tmpObj.blocker || 0)) && (mainContext.globalAlpha = tmpObj.hideFromEnemy ? 0.6 : 1, tmpObj.isItem ? (tmpSprite = getItemSprite(tmpObj), mainContext.save(), mainContext.translate(tmpX, tmpY), mainContext.rotate(tmpObj.dir), mainContext.drawImage(tmpSprite, -tmpSprite.width / 2, -tmpSprite.height / 2), tmpObj.blocker && (mainContext.strokeStyle = '#db6e6e', mainContext.globalAlpha = 0.3, mainContext.lineWidth = 6, renderCircle(0, 0, tmpObj.blocker, mainContext, !1, !0)), mainContext.restore()) : (tmpSprite = getResSprite(tmpObj), mainContext.drawImage(tmpSprite, tmpX - tmpSprite.width / 2, tmpY - tmpSprite.height / 2))));
+}
+
+const speeds = [300, 400, 400, 300, 300, 700, 300, 100, 400, 600, 400, 1, 700, 230, 700, 1500];
+let lastPoison = Date.now();
+let turretReload = 0;
+const othersReloads  = [];
+
+function getBiomeHat() {
+  const biomeID = player.y >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 2 : player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 1 : 0;
+
+  switch (biomeID) {
+    case 0:
+      return 12; // forest
+      break;
+    case 1:
+      return 15; // winter
+      break;
+    case 2:
+      return 12; // desert
+      break;
+  }
+}
+
+function gatherAnimation(sid, didHit, index) {
+  (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
+
+  if (sid == ownerSid && normalInsta() == false) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, players.find(p => p && p?.sid == ownerSid).dir); 
+  }
+  
+  if (sid == player.sid) reloads[waka] = 0;
+  else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = 0;
+
+  const hitHat = breaking ? 40 : ((player.health < 100 && player.health > 60) ? 55 : 7);
+  const hitAcc = (player.health > 50) ? 21 : 18;
+  const idleHat = breaking ? 26 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
+  const idleAcc = players.length >= 2 ? 15 : 11;
+
+  storeEquip(idleHat);
+  storeEquip(idleAcc, true);
+
+  setTimeout(() => {
+    storeEquip(hitHat);
+    storeEquip(hitAcc, true);
+    setTimeout(() => {
+      if (!attackState) {
+        storeEquip(getBiomeHat());
+        storeEquip(idleAcc, true);
+      }
+    }, average);
+  }, speeds[waka] - window.pingTime);
+}
+
+function renderPlayers(xOffset, yOffset, zIndex) {
+  mainContext.globalAlpha = 1;
+  for (var i = 0; i < players.length; ++i)
+    (tmpObj = players[i])
+    .zIndex == zIndex && (tmpObj.animate(delta), tmpObj.visible && (tmpObj.skinRot += 0.002 * delta, tmpDir = ((player == tmpObj) ? getAttackDir() : tmpObj.dir) + tmpObj.dirPlus, mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpDir), renderPlayer(tmpObj, mainContext), mainContext.restore()));
+}
+
+function renderPlayer(e, t) {
+  (t = t || mainContext)
+  .lineWidth = 5.5, t.lineJoin = 'miter';
+  var i = Math.PI / 4 * (_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].armS || 1),
+    n = e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].hndS || 1,
+    s = e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].hndD || 1;
+  if (e.tailIndex > 0 && function (index, ctxt, owner) {
+      if (!(tmpSkin = accessSprites[index])) {
+        var tmpImage = new Image();
+        tmpImage.onload = function () {
+          this.isLoaded = !0, this.onload = null;
+        }, tmpImage.src = '.././img/accessories/access_' + index + '.png', accessSprites[index] = tmpImage, tmpSkin = tmpImage;
+      }
+      var tmpObj = accessPointers[index];
+      if (!tmpObj) {
+        for (var i = 0; i < accessories.length; ++i)
+          if (accessories[i].id == index) {
+            tmpObj = accessories[i];
+            break;
+          }
+        accessPointers[index] = tmpObj;
+      }
+      tmpSkin.isLoaded && (ctxt.save(), ctxt.translate(-20 - (tmpObj.xOff || 0), 0), tmpObj.spin && ctxt.rotate(owner.skinRot), ctxt.drawImage(tmpSkin, -tmpObj.scale / 2, -tmpObj.scale / 2, tmpObj.scale, tmpObj.scale), ctxt.restore());
+    }(e.tailIndex, t, e), e.buildIndex < 0 && !_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].aboveHand && (renderTool(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].projectile || _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].projectiles[_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].projectile], mainContext)), t.fillStyle = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].skinColors[e.skinColor], renderCircle(e.scale * Math.cos(i), e.scale * Math.sin(i), 14), renderCircle(e.scale * s * Math.cos(-i * n), e.scale * s * Math.sin(-i * n), 14), e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].aboveHand && (renderTool(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].projectile || _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].projectiles[_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].projectile], mainContext)), e.buildIndex >= 0) {
+    var o = getItemSprite(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[e.buildIndex]);
+    t.drawImage(o, e.scale - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[e.buildIndex].holdOffset, -o.width / 2);
+  }
+  renderCircle(0, 0, e.scale, t), e.skinIndex > 0 && (t.rotate(Math.PI / 2), function renderSkin(index, ctxt, parentSkin, owner) {
+    if (!(tmpSkin = skinSprites[index])) {
+      var tmpImage = new Image();
+      tmpImage.onload = function () {
+        this.isLoaded = !0, this.onload = null;
+      }, tmpImage.src = '.././img/hats/hat_' + index + '.png', skinSprites[index] = tmpImage, tmpSkin = tmpImage;
+    }
+    var tmpObj = parentSkin || skinPointers[index];
+    if (!tmpObj) {
+      for (var i = 0; i < hats.length; ++i)
+        if (hats[i].id == index) {
+          tmpObj = hats[i];
+          break;
+        }
+      skinPointers[index] = tmpObj;
+    }
+    tmpSkin.isLoaded && ctxt.drawImage(tmpSkin, -tmpObj.scale / 2, -tmpObj.scale / 2, tmpObj.scale, tmpObj.scale), !parentSkin && tmpObj.topSprite && (ctxt.save(), ctxt.rotate(owner.skinRot), renderSkin(index + '_top', ctxt, tmpObj, owner), ctxt.restore());
+  }(e.skinIndex, t, null, e));
+}
+var tmpSkin, skinSprites = {},
+  skinPointers = {},
+  accessSprites = {},
+  accessPointers = {},
+  toolSprites = {};
+
+function renderTool(obj, variant, x, y, ctxt) {
+  var tmpSrc = obj.src + (variant || ''),
+    tmpSprite = toolSprites[tmpSrc];
+  tmpSprite || ((tmpSprite = new Image())
+    .onload = function () {
+      this.isLoaded = !0;
+    }, tmpSprite.src = '.././img/weapons/' + tmpSrc + '.png', toolSprites[tmpSrc] = tmpSprite), tmpSprite.isLoaded && ctxt.drawImage(tmpSprite, x + obj.xOff - obj.length / 2, y + obj.yOff - obj.width / 2, obj.length, obj.width);
+}
+var gameObjectSprites = {};
+
+function getResSprite(obj) {
+  var biomeID = obj.y >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 2 : obj.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 1 : 0,
+    tmpIndex = obj.type + '_' + obj.scale + '_' + biomeID,
+    tmpSprite = gameObjectSprites[tmpIndex];
+  if (!tmpSprite) {
+    var tmpCanvas = document.createElement('canvas');
+    tmpCanvas.width = tmpCanvas.height = 2.1 * obj.scale + 5.5;
+    var tmpContext = tmpCanvas.getContext('2d');
+    if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.rotate(_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randFloat(0, Math.PI)), tmpContext.strokeStyle = outlineColor, tmpContext.lineWidth = 5.5, 0 == obj.type)
+      for (var tmpScale, i = 0; i < 2; ++i)
+        renderStar(tmpContext, 7, tmpScale = tmpObj.scale * (i ? 0.5 : 1), 0.7 * tmpScale), tmpContext.fillStyle = biomeID ? i ? '#fff' : '#e3f1f4' : i ? '#b4db62' : '#9ebf57', tmpContext.fill(), i || tmpContext.stroke();
+    else if (1 == obj.type)
+      if (2 == biomeID)
+        tmpContext.fillStyle = '#606060', renderStar(tmpContext, 6, 0.3 * obj.scale, 0.71 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#89a54c', renderCircle(0, 0, 0.55 * obj.scale, tmpContext), tmpContext.fillStyle = '#a5c65b', renderCircle(0, 0, 0.3 * obj.scale, tmpContext, !0);
+      else {
+        var tmpRange;
+        ! function (ctxt, spikes, outer, inner) {
+          var tmpOuter, rot = Math.PI / 2 * 3,
+            step = Math.PI / 6;
+          ctxt.beginPath(), ctxt.moveTo(0, -inner);
+          for (var i = 0; i < 6; i++)
+            tmpOuter = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(outer + 0.9, 1.2 * outer), ctxt.quadraticCurveTo(Math.cos(rot + step) * tmpOuter, Math.sin(rot + step) * tmpOuter, Math.cos(rot + 2 * step) * inner, Math.sin(rot + 2 * step) * inner), rot += 2 * step;
+          ctxt.lineTo(0, -inner), ctxt.closePath();
+        }(tmpContext, 0, tmpObj.scale, 0.7 * tmpObj.scale), tmpContext.fillStyle = biomeID ? '#e3f1f4' : '#89a54c', tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = biomeID ? '#6a64af' : '#c15555';
+        var rotVal = mathPI2 / 4;
+        for (i = 0; i < 4; ++i)
+          renderCircle((tmpRange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(tmpObj.scale / 3.5, tmpObj.scale / 2.3)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(10, 12), tmpContext);
+      }
+    else
+      2 != obj.type && 3 != obj.type || (tmpContext.fillStyle = 2 == obj.type ? 2 == biomeID ? '#938d77' : '#939393' : '#e0c655', renderStar(tmpContext, 3, obj.scale, obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = 2 == obj.type ? 2 == biomeID ? '#b2ab90' : '#bcbcbc' : '#ebdca3', renderStar(tmpContext, 3, 0.55 * obj.scale, 0.65 * obj.scale), tmpContext.fill());
+    tmpSprite = tmpCanvas, gameObjectSprites[tmpIndex] = tmpSprite;
+  }
+  return tmpSprite;
+}
+var itemSprites = [];
+
+function getItemSprite(obj, asIcon) {
+  var tmpSprite = itemSprites[obj.id];
+  if (!tmpSprite || asIcon) {
+    var tmpCanvas = document.createElement('canvas');
+    tmpCanvas.width = tmpCanvas.height = 2.5 * obj.scale + 5.5 + (_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[obj.id].spritePadding || 0);
+    var tmpContext = tmpCanvas.getContext('2d');
+    if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.rotate(asIcon ? 0 : Math.PI / 2), tmpContext.strokeStyle = outlineColor, tmpContext.lineWidth = 5.5 * (asIcon ? tmpCanvas.width / 81 : 1), 'apple' == obj.name) {
+      tmpContext.fillStyle = '#c15555', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#89a54c';
+      var leafDir = -Math.PI / 2;
+      ! function (x, y, l, r, ctxt) {
+        var endX = x + 25 * Math.cos(r),
+          endY = y + 25 * Math.sin(r);
+        ctxt.moveTo(x, y), ctxt.beginPath(), ctxt.quadraticCurveTo((x + endX) / 2 + 10 * Math.cos(r + Math.PI / 2), (y + endY) / 2 + 10 * Math.sin(r + Math.PI / 2), endX, endY), ctxt.quadraticCurveTo((x + endX) / 2 - 10 * Math.cos(r + Math.PI / 2), (y + endY) / 2 - 10 * Math.sin(r + Math.PI / 2), x, y), ctxt.closePath(), ctxt.fill(), ctxt.stroke();
+      }(obj.scale * Math.cos(leafDir), obj.scale * Math.sin(leafDir), 0, leafDir + Math.PI / 2, tmpContext);
+    } else if ('cookie' == obj.name) {
+      tmpContext.fillStyle = '#cca861', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#937c4b';
+      for (var rotVal = mathPI2 / (chips = 4), i = 0; i < chips; ++i)
+        renderCircle((tmpRange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(obj.scale / 2.5, obj.scale / 1.7)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(4, 5), tmpContext, !0);
+    } else if ('cheese' == obj.name) {
+      var chips, tmpRange;
+      for (tmpContext.fillStyle = '#f4f3ac', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#c3c28b', rotVal = mathPI2 / (chips = 4), i = 0; i < chips; ++i)
+        renderCircle((tmpRange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(obj.scale / 2.5, obj.scale / 1.7)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(4, 5), tmpContext, !0);
+    } else if ('wood wall' == obj.name || 'stone wall' == obj.name || 'castle wall' == obj.name) {
+      tmpContext.fillStyle = 'castle wall' == obj.name ? '#83898e' : 'wood wall' == obj.name ? '#a5974c' : '#939393';
+      var sides = 'castle wall' == obj.name ? 4 : 3;
+      renderStar(tmpContext, sides, 1.1 * obj.scale, 1.1 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = 'castle wall' == obj.name ? '#9da4aa' : 'wood wall' == obj.name ? '#c9b758' : '#bcbcbc', renderStar(tmpContext, sides, 0.65 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
+    } else if ('spikes' == obj.name || 'greater spikes' == obj.name || 'poison spikes' == obj.name || 'spinning spikes' == obj.name) {
+      tmpContext.fillStyle = 'poison spikes' == obj.name ? '#7b935d' : '#939393';
+      var tmpScale = 0.6 * obj.scale;
+      renderStar(tmpContext, 'spikes' == obj.name ? 5 : 6, obj.scale, tmpScale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, tmpScale, tmpContext), tmpContext.fillStyle = '#c9b758', renderCircle(0, 0, tmpScale / 2, tmpContext, !0);
+    } else if ('windmill' == obj.name || 'faster windmill' == obj.name || 'power mill' == obj.name)
+      tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#c9b758', renderRectCircle(0, 0, 1.5 * obj.scale, 29, 4, tmpContext), tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, 0.5 * obj.scale, tmpContext);
+    else if ('mine' == obj.name)
+      tmpContext.fillStyle = '#939393', renderStar(tmpContext, 3, obj.scale, obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#bcbcbc', renderStar(tmpContext, 3, 0.55 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
+    else if ('sapling' == obj.name)
+      for (i = 0; i < 2; ++i)
+        renderStar(tmpContext, 7, tmpScale = obj.scale * (i ? 0.5 : 1), 0.7 * tmpScale), tmpContext.fillStyle = i ? '#b4db62' : '#9ebf57', tmpContext.fill(), i || tmpContext.stroke();
+    else if ('pit trap' == obj.name)
+      tmpContext.fillStyle = '#a5974c', renderStar(tmpContext, 3, 1.1 * obj.scale, 1.1 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = outlineColor, renderStar(tmpContext, 3, 0.65 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
+    else if ('boost pad' == obj.name)
+      tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#dbd97d',
+      function (s, ctx) {
+        ctx = ctx || mainContext;
+        var h = s * (Math.sqrt(3) / 2);
+        ctx.beginPath(), ctx.moveTo(0, -h / 2), ctx.lineTo(-s / 2, h / 2), ctx.lineTo(s / 2, h / 2), ctx.lineTo(0, -h / 2), ctx.fill(), ctx.closePath();
+      }(1 * obj.scale, tmpContext);
+    else if ('turret' == obj.name)
+      tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#939393', renderRect(0, -25, 0.9 * obj.scale, 50, tmpContext), renderCircle(0, 0, 0.6 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke();
+    else if ('platform' == obj.name) {
+      tmpContext.fillStyle = '#cebd5f';
+      var tmpS = 2 * obj.scale,
+        tmpW = tmpS / 4,
+        tmpX = -obj.scale / 2;
+      for (i = 0; i < 4; ++i)
+        renderRect(tmpX - tmpW / 2, 0, tmpW, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpX += tmpS / 4;
+    } else
+      'healing pad' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#db6e6e', renderRectCircle(0, 0, 0.65 * obj.scale, 20, 4, tmpContext, !0)) : 'spawn pad' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#71aad6', renderCircle(0, 0, 0.6 * obj.scale, tmpContext)) : 'blocker' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.rotate(Math.PI / 4), tmpContext.fillStyle = '#db6e6e', renderRectCircle(0, 0, 0.65 * obj.scale, 20, 4, tmpContext, !0)) : 'teleporter' == obj.name && (tmpContext.fillStyle = '#7e7f82', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.rotate(Math.PI / 4), tmpContext.fillStyle = '#d76edb', renderCircle(0, 0, 0.5 * obj.scale, tmpContext, !0));
+    tmpSprite = tmpCanvas, asIcon || (itemSprites[obj.id] = tmpSprite);
+  }
+  return tmpSprite;
+}
+
+function renderCircle(x, y, scale, tmpContext, dontStroke, dontFill) {
+  (tmpContext = tmpContext || mainContext)
+  .beginPath(), tmpContext.arc(x, y, scale, 0, 2 * Math.PI), dontFill || tmpContext.fill(), dontStroke || tmpContext.stroke();
+}
+
+function renderStar(ctxt, spikes, outer, inner) {
+  var x, y, rot = Math.PI / 2 * 3,
+    step = Math.PI / spikes;
+  ctxt.beginPath(), ctxt.moveTo(0, -outer);
+  for (var i = 0; i < spikes; i++)
+    x = Math.cos(rot) * outer, y = Math.sin(rot) * outer, ctxt.lineTo(x, y), rot += step, x = Math.cos(rot) * inner, y = Math.sin(rot) * inner, ctxt.lineTo(x, y), rot += step;
+  ctxt.lineTo(0, -outer), ctxt.closePath();
+}
+
+function renderRect(x, y, w, h, ctxt, stroke) {
+  ctxt.fillRect(x - w / 2, y - h / 2, w, h), stroke || ctxt.strokeRect(x - w / 2, y - h / 2, w, h);
+}
+
+function renderRectCircle(x, y, s, sw, seg, ctxt, stroke) {
+  ctxt.save(), ctxt.translate(x, y), seg = Math.ceil(seg / 2);
+  for (var i = 0; i < seg; i++)
+    renderRect(0, 0, 2 * s, sw, ctxt, stroke), ctxt.rotate(Math.PI / seg);
+  ctxt.restore();
+}
+
+function loadGameObject(data) {
+  for (var i = 0; i < data.length;)
+    objectManager.add(data[i], data[i + 1], data[i + 2], data[i + 3], data[i + 4], data[i + 5], _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[data[i + 6]], !0, data[i + 7] >= 0 ? {
+      sid: data[i + 7]
+    } : null), i += 8;
+}
+
+function wiggleGameObject(dir, sid) {
+  (tmpObj = findObjectBySid(sid)) && (tmpObj.xWiggle += _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].gatherWiggle * Math.cos(dir), tmpObj.yWiggle += _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].gatherWiggle * Math.sin(dir));
+}
+
+function shootTurret(sid, dir) {
+  (tmpObj = findObjectBySid(sid)) && (tmpObj.dir = dir, tmpObj.xWiggle += _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].gatherWiggle * Math.cos(dir + Math.PI), tmpObj.yWiggle += _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].gatherWiggle * Math.sin(dir + Math.PI));
+}
+
+function addProjectile(x, y, dir, range, speed, indx, layer, sid) {
+  inWindow && (projectileManager.addProjectile(x, y, dir, range, speed, indx, null, null, layer)
+    .sid = sid);
+  const angle = Math.atan2(y - player.y, x - player.x);
+  if (Math.abs(angle - dir) <= Math.PI / 2) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("33", dir - Math.PI / 2);
+    setTimeout(() => {
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("33", getMoveDir());
+    }, 222);
+  }
+}
+
+function remProjectile(sid, range) {
+  for (var i = 0; i < projectiles.length; ++i)
+    projectiles[i].sid == sid && (projectiles[i].range = range);
+}
+
+function animateAI(sid) {
+  (tmpObj = findAIBySID(sid)) && tmpObj.startAnim();
+}
+
+function loadAI(data) {
+  for (var i = 0; i < ais.length; ++i)
+    ais[i].forcePos = !ais[i].visible, ais[i].visible = !1;
+  if (data) {
+    var tmpTime = Date.now();
+    for (i = 0; i < data.length;)
+      (tmpObj = findAIBySID(data[i])) ? (tmpObj.index = data[i + 1], tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 2], tmpObj.y2 = data[i + 3], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 4] : tmpObj.d2, tmpObj.d2 = data[i + 4], tmpObj.health = data[i + 5], tmpObj.dt = 0, tmpObj.visible = !0) : ((tmpObj = aiManager.spawn(data[i + 2], data[i + 3], data[i + 4], data[i + 1]))
+        .x2 = tmpObj.x, tmpObj.y2 = tmpObj.y, tmpObj.d2 = tmpObj.dir, tmpObj.health = data[i + 5], aiManager.aiTypes[data[i + 1]].name || (tmpObj.name = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].cowNames[data[i + 6]]), tmpObj.forcePos = !0, tmpObj.sid = data[i], tmpObj.visible = !0), i += 7;
+  }
+}
+var aiSprites = {};
+
+function renderAI(obj, ctxt) {
+  var tmpIndx = obj.index,
+    tmpSprite = aiSprites[tmpIndx];
+  if (!tmpSprite) {
+    var tmpImg = new Image();
+    tmpImg.onload = function () {
+      this.isLoaded = !0, this.onload = null;
+    }, tmpImg.src = '.././img/animals/' + obj.src + '.png', tmpSprite = tmpImg, aiSprites[tmpIndx] = tmpSprite;
+  }
+  if (tmpSprite.isLoaded) {
+    var tmpScale = 1.2 * obj.scale * (obj.spriteMlt || 1);
+    ctxt.drawImage(tmpSprite, -tmpScale, -tmpScale, 2 * tmpScale, 2 * tmpScale);
+  }
+}
+
+function isOnScreen(x, y, s) {
+  return x + offsetCamX + s >= 0 && x + offsetCamX - s <= maxScreenWidth && y + offsetCamY + s >= 0 && y + offsetCamY - s <= maxScreenHeight;
+}
+
+function addPlayer(data, isYou) {
+  var tmpPlayer = function (id) {
+    for (var i = 0; i < players.length; ++i)
+      if (players[i].id == id)
+        return players[i];
+    return null;
+  }(data[0]);
+  tmpPlayer || (tmpPlayer = new _js_data_player_js__WEBPACK_IMPORTED_MODULE_10__["default"](data[0], data[1], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"], projectileManager, objectManager, players, ais, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"], hats, accessories), players.push(tmpPlayer)), tmpPlayer.spawn(isYou ? moofoll : null), tmpPlayer.visible = !1, tmpPlayer.x2 = void 0, tmpPlayer.y2 = void 0, tmpPlayer.setData(data), isYou && (camX = (player = tmpPlayer)
+    .x + offsetCamX, camY = player.y + offsetCamY, updateItems(), updateStatusDisplay(), updateAge(), updateUpgrades(0), gameUI.style.display = 'block');
+}
+
+function removePlayer(id) {
+  for (var i = 0; i < players.length; i++)
+    if (players[i].id == id) {
+      players.splice(i, 1);
+      break;
+    }
+}
+
+function updateItemCounts(index, value) {
+  player && (player.itemCounts[index] = value);
+}
+
+function updatePlayerValue(index, value, updateView) {
+  player && (player[index] = value, updateView && updateStatusDisplay());
+}
+
+
+function place(id, angle = getAttackDir(), t = true) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", id, false);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, angle);
+  t && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
+}
+
+let lastHeal = Date.now();
+let oldHealth = 100;
+
+function getCookieHealing() {
+  const delta = Date.now() - lastHeal;
+  if (delta < 500) return 0;
+
+  return 5;
+}
+
+function getItemOutheal(item) {
+  switch (item) {
+    case 0:
+      return 25;
+      break;
+    case 1:
+      return 40;
+      break;
+    case 2:
+      return 35 + getCookieHealing();
+      break;
+    default:
+      return 40;
+  }
 };
+
+function heal(healCount) {
+  if (player.health == 100) return;
+  
+  lastHeal = Date.now();
+  const healingItemSid = player.items[0];
+  for (let healingCount = 0; healingCount < healCount; healingCount++) {
+    selectToBuild(healingItemSid, false);
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, getAttackDir());
+  };
+  selectToBuild(player.weaponIndex, true);
+  player.buildItem({
+   consume: () => { },
+    scale: 0,
+    x: player.x,
+    y: player.y,
+    dir: 0,
+    id: 0,
+    group: {
+      id: 0,
+      name: 'food',
+      layer: 0
+    }
+  });
+};
+let lastDamage = 0;
+const safeHealDelay = 120;
+let prevHeal = 0;
+
+function healing() {
+  const damage = 100 - player.health;
+  const healingItemSid = player.items[0];
+  const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
+
+  const prevHealEndsIn = Date.now() - prevHeal - window.pingTime;
+  const prevHealFixed = prevHealEndsIn < 0 ? 0 : (prevHealEndsIn > average ? 0 : prevHealEndsIn);
+  const rawHealTimeout = safeHealDelay - window.pingTime / 2;
+  const safeHealTimeout = prevHealFixed ? (
+    rawHealTimeout + prevHealFixed
+  ) : (
+    rawHealTimeout
+  );
+  
+  window.setTimeout(() =>
+    heal(healCount), safeHealTimeout);
+  lastDamage = Date.now();
+  prevHeal = Date.now() + safeHealTimeout;
+}
+
+function updateHealth(sid, value) {
+  (tmpObj = findPlayerBySID(sid)) && (tmpObj.health = value);
+
+  if (sid != player.sid || player.health > oldHealth) {
+    oldHealth = player.health;
+    return;
+  }
+
+  oldHealth = player.health;
+
+  healing();
+}
+
+const cspam = Math.PI / 8;
+
+function getMoveDir() {
+  var newMoveDir = function () {
+    var dx = 0,
+      dy = 0;
+    if (-1 != controllingTouch.id)
+      dx += controllingTouch.currentX - controllingTouch.startX, dy += controllingTouch.currentY - controllingTouch.startY;
+    else
+      for (var key in moveKeys) {
+        var tmpDir = moveKeys[key];
+        dx += !!keys[key] * tmpDir[0], dy += !!keys[key] * tmpDir[1];
+      }
+    return 0 == dx && 0 == dy ? void 0 : _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].fixTo(Math.atan2(dy, dx), 2);
+  }();
+  return newMoveDir;
+}
+
+function findObjectAngleScale(object) {
+  const angle = Math.atan2(object.y - player.y, object.x - player.x);
+  const boundary = angle - Math.PI / 4;
+  const boundary1 = angle + Math.PI / 4;
+  const angleScale = Math.abs(Math.PI - boundary - boundary1);
+
+  return angleScale;
+}
+
+function calculateAngle(previous, next) {
+  const angle = Math.atan2(previous.y - player.y, previous.x - player.x);
+  const angle1 = Math.atan2(next.y - player.y, next.x - player.x);
+
+  return (angle + angle1) / 2;
+}
+
+function calculateCenter(angle) {
+  return angle + Math.PI / 2;
+}
+
+function scanFree(intersectingObject, index, sectors, nearestGameObjects, angle) {
+  const previousSector = sectors[index - 1];
+  const nextSector = nearestGameObjects.find( object => object && Math.abs(Math.atan2(object?.y - player.y, object?.x - player.x) - angle + Math.PI / 2) <= Math.PI / 2 );
+
+  if (nextSector && previousSector) return calculateAngle(previousSector, nextSector);
+  else return calculateCenter(angle);
+}
+
+function findFreeAngles() {
+  const freeAngles = [];
+  const sectors = [];
+
+  for (let i = 0; i < Math.PI * 2; i += Math.PI / 2) {
+    const intersectingObject = nearestGameObjects.find( object => 
+      Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - i) <= Math.PI / 2);
+
+    if (intersectingObject) freeAngles.push(scanFree(intersectingObject, nearestGameObjects.indexOf(intersectingObject), sectors, nearestGameObjects, i));
+    else freeAngles.push(i);
+  }
+
+  return freeAngles;
+}
+
+function autoplace(enemy, replace = false) {
+  if (instakilling) return;
+
+  const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
+  const angles = findFreeAngles();
+  const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].playerScale + (object?.group?.scale) || 50);
+  angles.forEach(angle => {
+    place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
+  });
+
+  if (preplacableObjects) {
+    preplacableObjects.forEach(object => {
+      if (!object) return;
+      
+      const angle = Math.atan2(object.y - player.y, object.x - player.x);
+      place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
+    });
+  }
+}
+
+let reloads = [];
+
+const sxw = 1920 / 2;
+const sxh = 1080 / 2;
+let tmpTime = Date.now();
+let serverLag = 0;
+let average = 111;
+let current = 111;
+let breaking = false;
+
+function autobreak(trap) {
+  if (instakilling) return;
+  
+  const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
+  const trapAngle = Math.atan2(
+    trap.y - player.y,
+    trap.x - player.x
+  );
+  breaking = true;
+  window.trap = trap;
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, trapAngle);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", false, trapAngle);
+  if (player.weaponIndex != correctWeapon) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka = correctWeapon, true);
+  }
+}
+
+// biomeHats function
+function biomeHats() {
+  // Your biomeHats code goes here
+}
+
+function normalInsta(c) {
+      const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+      window.sidFocus = enemy?.sid || 69420;
+      if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
+      if (!enemy) return false;
+      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
+      
+      instakilling = true;
+      if (c) c();
+      storeEquip(7);
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", "!sync");
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka = player.weapons[0], true);
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, angle);
+      setTimeout(() => {
+        storeEquip(53);
+        turretReload = 0;
+        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka = player.weapons[1], true);
+        reloads[player.weapons[1]] = 0;
+        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, angle);
+        setTimeout(() => {
+          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka = player.weapons[0], true);
+          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", false, angle);
+          instakilling = false;
+        }, 1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].clientSendRate / 2);
+      }, 1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].clientSendRate / 2);
+}
+
+function reverseInsta(c) {
+      const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+      window.sidFocus = enemy?.sid || 69420;
+      if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
+      if (!enemy) return;
+      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
+      
+      instakilling = true;
+      if (c) c();
+      storeEquip(53);
+      turretReload = 0;
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka = player.weapons[1], true);
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, angle);
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("ch", "!sync");
+      reloads[player.weapons[1]] = 0;
+      setTimeout(() => {
+        storeEquip(7);
+        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka = player.weapons[0], true);
+        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, angle);
+        setTimeout(() => {
+          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", false, angle);
+          instakilling = false;
+        }, 1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].clientSendRate / 2);
+      }, 1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].clientSendRate / 2);
+}
+
+function botFunctions(tmpPlayer) {
+  if (window.follow) {
+    const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
+    const angle_ = Math.atan2(tmpPlayer.y - player.y, tmpPlayer.x - player.x);
+    const dist = Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y);
+
+    if (dist > 150) {
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("33", angle_);
+      if (player.weaponIndex != correctWeapon) {
+        waka = correctWeapon;
+        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka, true);
+      }
+      storeEquip(11, true);
+    } else {
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("33", null);
+      storeEquip(15, true);
+      waka = player.weapons[0];
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", player.weapons[0], true);
+    }
+  }
+  if (window.bowspam && !breaking && !instakilling && reloads[player.weapons[1]] == speeds[player.weapons[1]]) {
+    if (player.weaponIndex != player.weapons[1]) {
+      waka = player.weapons[1];
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", waka, true);
+    }
+
+    const lookingX = tmpPlayer.x + Math.cos(tmpPlayer.dir);
+    const lookingY = tmpPlayer.y + Math.sin(tmpPlayer.dir);
+    const angle = Math.atan2(lookingY - player.y, lookingX - player.x);
+    
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, angle);
+  }
+}
+
+let lastPing_ = Date.now();
+
+function updatePlayers(data) {
+  queueMicrotask(() =>
+    nearestGameObjects = gameObjects.filter( object => object && Math.hypot(object?.x - player.x, object?.y - player.y) <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].playerScale + (object?.group?.scale || 50) ));
+  if (Date.now() - lastPing_ > 3000) {
+    lastPing_ = Date.now();
+    pingSocket();
+  }
+  current = Date.now() - tmpTime;
+  average = average / 2 + (Date.now() - tmpTime) / 2;
+  serverLag = Math.abs(1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].serverUpdateRate - average);
+  tmpTime = Date.now();
+  let tt = false;
+  turretReload = Math.min(turretReload + current, 2500);
+  if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
+  else reloads[player.weaponIndex] = speeds[player.weaponIndex];
+
+  if (window.keyEvents.KeyG) place(player.items[5], getAttackDir()); 
+  else if (window.keyEvents.KeyV) place(player.items[2], getAttackDir());
+  else if (window.keyEvents.KeyF) place(player.items[4], getAttackDir()); 
+
+  if (window.keyEvents.ArrowUp) offsetCamY -= (deltaHold += 3);
+  else if (window.keyEvents.ArrowDown) offsetCamY += (deltaHold += 3);
+  else if (window.keyEvents.ArrowLeft) offsetCamX -= (deltaHold += 3);
+  else if (window.keyEvents.ArrowRight) offsetCamX += (deltaHold += 3);
+  else deltaHold = 10;
+  
+  for (i = 0; i < data.length;) {
+    (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
+    if (tmpObj.sid == ownerSid) botFunctions(tmpObj);
+    if (player != tmpObj) tt = tmpObj;
+    try {
+      if ((othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] < speeds[tmpObj.weaponIndex]) {
+        (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] += current;
+      } else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = speeds[tmpObj.weaponIndex];
+    } catch(e) { }
+  }
+  
+  if (tt.skinIndex == 26 || tt.skinIndex == 11) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", false, getAttackDir());
+  }
+  
+  if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", true, getAttackDir());
+  }
+
+  if (instakilling) return;
+
+  if (window.keyEvents.SwitchKeyR) {
+    normalInsta();
+  } else if (window.keyEvents.SwitchKeyT) {
+    reverseInsta();
+  }
+
+  if (!breaking && reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", (waka = player.weapons[0]), true);
+  else if (!breaking && reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", (waka = player.weapons[1]), true);
+
+  if (!breaking && reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("5", (waka = player.weapons[0]), true);
+  }
+
+  tt && autoplace(tt);
+
+  const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
+
+  if (!trap && breaking) {
+    breaking = false;
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send("c", false, getAttackDir());
+  }
+  if (!trap) return;
+
+  autobreak(trap);
+}
+
+function findPlayerBySID(sid) {
+  for (var i = 0; i < players.length; ++i)
+    if (players[i].sid == sid)
+      return players[i];
+  return null;
+}
+
+function findAIBySID(sid) {
+  for (var i = 0; i < ais.length; ++i)
+    if (ais[i].sid == sid)
+      return ais[i];
+  return null;
+}
+
+function findObjectBySid(sid) {
+  return gameObjects[sid];
+}
+var lastPing = -1;
+
+function pingSocketResponse() {
+  var pingTime = Date.now() - lastPing;
+  window.pingTime = pingTime, pingDisplay.innerText = 'Ping: ' + pingTime + '\xA0ms';
+}
+
+function pingSocket() {
+  lastPing = Date.now(), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('pp');
+}
+
+function serverShutdownNotice(countdown) {
+  if (!(countdown < 0)) {
+    var minutes = Math.floor(countdown / 60),
+      seconds = countdown % 60;
+    seconds = ('0' + seconds)
+      .slice(-2), shutdownDisplay.innerText = 'Server restarting in ' + minutes + ':' + seconds, shutdownDisplay.hidden = !1;
+  }
+}
+
+function openLink(link) {
+  window.open(link, '_blank');
+}
+window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
+    window.setTimeout(callback, 1000 / 60);
+  },
+  function () {
+    var tmpMid = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale / 2;
+    objectManager.add(0, tmpMid, tmpMid + 200, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[3], 0), objectManager.add(1, tmpMid, tmpMid - 480, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[3], 0), objectManager.add(2, tmpMid + 300, tmpMid + 450, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[3], 0), objectManager.add(3, tmpMid - 950, tmpMid - 130, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[2], 0), objectManager.add(4, tmpMid - 750, tmpMid - 400, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[3], 0), objectManager.add(5, tmpMid - 700, tmpMid + 400, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[2], 0), objectManager.add(6, tmpMid + 800, tmpMid - 200, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[3], 0), objectManager.add(7, tmpMid - 260, tmpMid + 340, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].bushScales[3], 1), objectManager.add(8, tmpMid + 760, tmpMid + 310, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].bushScales[3], 1), objectManager.add(9, tmpMid - 800, tmpMid + 100, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].bushScales[3], 1), objectManager.add(10, tmpMid - 800, tmpMid + 300, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[4].scale, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[4].id, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[10]), objectManager.add(11, tmpMid + 650, tmpMid - 390, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[4].scale, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[4].id, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[10]), objectManager.add(12, tmpMid - 400, tmpMid - 450, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].rockScales[2], 2);
+  }(),
+  function e() {
+    mainContext.globalCompositeOperation = "source-over";
+    now = Date.now(), delta = now - lastUpdate, lastUpdate = now,
+      function () {
+        if (deathTextScale < 120 && (deathTextScale += 0.1 * delta, diedText.style.fontSize = Math.min(Math.round(deathTextScale), 120) + 'px'), player) {
+          var attackDir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDistance(camX, camY, player.x, player.y),
+            tmpDir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDirection(player.x, player.y, camX, camY),
+            camSpd = Math.min(0.01 * attackDir * delta, attackDir);
+          attackDir > 0.1 ? (camX += camSpd * Math.cos(tmpDir), camY += camSpd * Math.sin(tmpDir)) : (camX = player.x, camY = player.y);
+        } else
+          camX = 100, camY = 100;
+        for (var lastTime = now - 1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].serverUpdateRate, i = 0; i < players.length + ais.length; ++i)
+          if ((tmpObj = players[i] || ais[i - players.length]) && tmpObj.visible)
+            if (tmpObj.forcePos)
+              tmpObj.x = tmpObj.x2, tmpObj.y = tmpObj.y2, tmpObj.dir = tmpObj.d2;
+            else {
+              var total = tmpObj.t2 - tmpObj.t1,
+                ratio = (lastTime - tmpObj.t1) / total;
+              tmpObj.dt += delta;
+              var tmpRate = Math.min(1.7, tmpObj.dt / 170),
+                tmpDiff = tmpObj.x2 - tmpObj.x1;
+              tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
+            }
+        var xOffset = camX - maxScreenWidth / 2 + offsetCamX,
+          yOffset = camY - maxScreenHeight / 2 + offsetCamY;
+        _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset <= 0 && _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= 0 ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset))) : (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset))), firstSetup || ((waterMult += waterPlus * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveSpeed * delta) >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveMax ? (waterMult = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveMax, waterPlus = -1) : waterMult <= 1 && (waterMult = waterPlus = 1), mainContext.globalAlpha = 1, mainContext.fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06, mainContext.beginPath();
+        for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 18)
+          x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
+        for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 18)
+          x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));
+        for (mainContext.stroke(), mainContext.globalAlpha = 1, mainContext.strokeStyle = outlineColor, renderGameObjects(-1, xOffset, yOffset), mainContext.globalAlpha = 1, mainContext.lineWidth = 5.5, renderProjectiles(0, xOffset, yOffset), renderPlayers(xOffset, yOffset, 0), mainContext.globalAlpha = 1, i = 0; i < ais.length; ++i)
+          (tmpObj = ais[i])
+          .active && tmpObj.visible && (tmpObj.animate(delta), mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpObj.dir + tmpObj.dirPlus - Math.PI / 2), renderAI(tmpObj, mainContext), mainContext.restore());
+        if (renderGameObjects(0, xOffset, yOffset), renderProjectiles(1, xOffset, yOffset), renderGameObjects(1, xOffset, yOffset), renderPlayers(xOffset, yOffset, 1), renderGameObjects(2, xOffset, yOffset), renderGameObjects(3, xOffset, yOffset), mainContext.fillStyle = '#000', mainContext.globalAlpha = 0.09, xOffset <= 0 && mainContext.fillRect(0, 0, -xOffset, maxScreenHeight), _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset <= maxScreenWidth) {
+          var tmpY = Math.max(0, -yOffset);
+          mainContext.fillRect(_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset, tmpY, maxScreenWidth - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset), maxScreenHeight - tmpY);
+        }
+        if (yOffset <= 0 && mainContext.fillRect(-xOffset, 0, maxScreenWidth + xOffset, -yOffset), _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - yOffset <= maxScreenHeight) {
+          var tmpX = Math.max(0, -xOffset),
+            tmpMin = 0;
+          _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset <= maxScreenWidth && (tmpMin = maxScreenWidth - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset)), mainContext.fillRect(tmpX, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - yOffset, maxScreenWidth - tmpX - tmpMin, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - yOffset));
+        }
+        for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext.strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
+          if ((tmpObj = players[i] || ais[i - players.length])
+            .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
+            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
+            if ('' != tmpText) {
+              if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = tmpObj?.sid == window?.sidFocus ? (window.keyEvents.SwitchKeyR ? '#f00' : '#ff0') : '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj.nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY), tmpObj.isLeader && iconSprites.crown.isLoaded) {
+                var tmpS = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownIconScale;
+                tmpX = tmpObj.x - xOffset - tmpS / 2 - mainContext.measureText(tmpText)
+                  .width / 2 - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownPad, mainContext.drawImage(iconSprites.crown, tmpX, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY - tmpS / 2 - 5, tmpS, tmpS);
+              }
+              1 == tmpObj.iconIndex && iconSprites.skull.isLoaded && (tmpS = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownIconScale, tmpX = tmpObj.x - xOffset - tmpS / 2 + mainContext.measureText(tmpText)
+                .width / 2 + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownPad, mainContext.drawImage(iconSprites.skull, tmpX, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY - tmpS / 2 - 5, tmpS, tmpS));
+            }
+            tmpObj.health > 0 && (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth, mainContext.fillStyle = darkOutlineColor, mainContext.roundRect(tmpObj.x - xOffset - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, tmpObj.y - yOffset + tmpObj.scale + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY, 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth + 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 17, 8), mainContext.fill(), mainContext.fillStyle = tmpObj == player || tmpObj.team && tmpObj.team == player.team ? '#8ecc51' : '#cc5151', mainContext.roundRect(tmpObj.x - xOffset - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth, tmpObj.y - yOffset + tmpObj.scale + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth * (tmpObj.health / tmpObj.maxHealth), 17 - 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 7), mainContext.fill());
+          }
+        for (textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length; ++i)
+          if ((tmpObj = players[i])
+            .visible && tmpObj.chatCountdown > 0) {
+            tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Hammersmith One';
+            var tmpSize = mainContext.measureText(tmpObj.chatMessage);
+            mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
+            var tmpW = tmpSize.width + 17;
+            mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle = '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
+          };
+        !function (delta) {
+          if (player && player.alive) {
+            mapContext.clearRect(0, 0, mapDisplay.width, mapDisplay.height), mapContext.strokeStyle = '#fff', mapContext.lineWidth = 4;
+            for (var i = 0; i < mapPings.length; ++i)
+              (tmpPing = mapPings[i])
+              .update(mapContext, delta);
+            if (mapContext.globalAlpha = 1, mapContext.fillStyle = '#fff', renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, player.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height, 7, mapContext, !0), mapContext.fillStyle = 'rgba(255,255,255,0.35)',   true && minimapData)
+              for (i = 0; i < minimapData.length;)
+                renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height, 7, mapContext, !0), i += 2;
+            lastDeath && (mapContext.fillStyle = '#fc5553', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign = 'center', mapContext.fillText('x', lastDeath.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, lastDeath.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height)), mapMarker && (mapContext.fillStyle = '#fff', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign = 'center', mapContext.fillText('x', mapMarker.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, mapMarker.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height));
+          }
+        }(delta), -1 !== controllingTouch.id && renderControl(controllingTouch.startX, controllingTouch.startY, controllingTouch.currentX, controllingTouch.currentY), -1 !== attackingTouch.id && renderControl(attackingTouch.startX, attackingTouch.startY, attackingTouch.currentX, attackingTouch.currentY);
+      }(), requestAnimFrame(e);
+    mainContext.globalAlpha = Math.min(Math.max(motionBlurLevel, 0), 1);
+    mainContext.globalCompositeOperation = "source-over";
+  }(), window.openLink = openLink, window.aJoinReq = aJoinReq, window.follmoo = function () {
+    moofoll || (moofoll = !0, saveVal('moofoll', 1));
+  }, window.kickFromClan = kickFromClan, window.sendJoin = sendJoin, window.leaveAlliance = leaveAlliance, window.createAlliance = createAlliance, window.storeBuy = storeBuy, window.storeEquip = storeEquip, window.showItemInfo = showItemInfo, window.selectSkinColor = function (index) {
+    skinColor = index, updateSkinColorPicker();
+  }, window.changeStoreIndex = function (index) {
+    currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
+  }, window.config = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"];
+
+document.querySelector("#gameName").innerHTML = "AutoWASM";
+
+document.querySelector("body").insertAdjacentHTML("beforeend", `
+<style>
+.menuCard, .menuText, .menuHeader {
+  background: #222222 !important;
+  color: #aaaaaa;
+  border-radius: 2px;
+  transition: all 1s 0s;
+}
+
+.menuCard {
+  box-shadow: 0px 7px #888888;
+  scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5);
+}
+
+.menuCard:hover {
+  transform: scale(1.05);
+}
+
+#nameInput, #enterGame, #serverBrowser {
+  background: #111111 !important;
+  outline: none;
+}
+
+#mainMenu, #linksContainer2, #linksContainer1 {
+  background-color: transparent !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  border: 0px !important;
+}
+
+#gameName {
+  color: black !important;
+  text-shadow: 5px 9px 0 #1112 !important;
+}
+
+.menuCard {
+  width: 325px !important;
+  margin: 5px !important;
+  padding: 20px !important;
+  border: 0px !important;
+}
+</style>
+`);
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } }, 1);
 
 /***/ }),
 
@@ -9504,9 +11129,14 @@ module.exports = function (ais, AI, players, items, objectManager, config, UTILS
 /*!***********************************!*\
   !*** ./src/js/data/gameObject.js ***!
   \***********************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-module.exports = function (sid) {
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(sid) {
   this.sid = sid, this.init = function (x, y, dir, scale, type, data, owner) {
     data = data || {}, this.sentTo = {}, this.gridLocations = [], this.active = !0, this.doUpdate = data.doUpdate, this.x = x, this.y = y, this.dir = dir, this.xWiggle = 0, this.yWiggle = 0, this.scale = scale, this.type = type, this.id = data.id, this.owner = owner, this.name = data.name, this.isItem = null != this.id, this.group = data.group, this.health = data.health, this.layer = 2, null != this.group ? this.layer = this.group.layer : 0 == this.type ? this.layer = 3 : 2 == this.type ? this.layer = 0 : 4 == this.type && (this.layer = -1), this.colDiv = data.colDiv || 1, this.blocker = data.blocker, this.ignoreCollision = data.ignoreCollision, this.dontGather = data.dontGather, this.hideFromEnemy = data.hideFromEnemy, this.friction = data.friction, this.projDmg = data.projDmg, this.dmg = data.dmg, this.pDmg = data.pDmg, this.pps = data.pps, this.zIndex = data.zIndex || 0, this.turnSpeed = data.turnSpeed, this.req = data.req, this.trap = data.trap, this.healCol = data.healCol, this.teleport = data.teleport, this.boostSpeed = data.boostSpeed, this.projectile = data.projectile, this.shootRange = data.shootRange, this.shootRate = data.shootRate, this.shootCount = this.shootRate, this.spawnPoint = data.spawnPoint;
   }, this.changeHealth = function (amount, doer) {
@@ -9520,15 +11150,22 @@ module.exports = function (sid) {
   };
 };
 
+
 /***/ }),
 
 /***/ "./src/js/data/items.js":
 /*!******************************!*\
   !*** ./src/js/data/items.js ***!
   \******************************/
-/***/ ((module, exports) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-module.exports.groups = [{
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const items = {};
+items.groups = [{
     id: 0,
     name: 'food',
     layer: 0
@@ -9624,7 +11261,7 @@ module.exports.groups = [{
     limit: 2,
     layer: -1
   }
-], exports.projectiles = [{
+], items.projectiles = [{
     indx: 0,
     layer: 0,
     src: 'arrow_1',
@@ -9672,7 +11309,7 @@ module.exports.groups = [{
     scale: 160,
     range: 1400
   }
-], module.exports.weapons = [{
+], items.weapons = [{
     id: 0,
     type: 0,
     name: 'tool hammer',
@@ -9973,8 +11610,8 @@ module.exports.groups = [{
     spdMult: 0.6,
     speed: 1500
   }
-], module.exports.list = [{
-    group: module.exports.groups[0],
+], items.list = [{
+    group: items.groups[0],
     name: 'apple',
     desc: 'restores 20 health when consumed',
     req: [
@@ -9989,7 +11626,7 @@ module.exports.groups = [{
   },
   {
     age: 3,
-    group: module.exports.groups[0],
+    group: items.groups[0],
     name: 'cookie',
     desc: 'restores 40 health when consumed',
     req: [
@@ -10004,7 +11641,7 @@ module.exports.groups = [{
   },
   {
     age: 7,
-    group: module.exports.groups[0],
+    group: items.groups[0],
     name: 'cheese',
     desc: 'restores 30 health and another 50 over 5 seconds',
     req: [
@@ -10018,7 +11655,7 @@ module.exports.groups = [{
     holdOffset: 15
   },
   {
-    group: module.exports.groups[1],
+    group: items.groups[1],
     name: 'wood wall',
     desc: 'provides protection for your village',
     req: [
@@ -10033,7 +11670,7 @@ module.exports.groups = [{
   },
   {
     age: 3,
-    group: module.exports.groups[1],
+    group: items.groups[1],
     name: 'stone wall',
     desc: 'provides improved protection for your village',
     req: [
@@ -10048,7 +11685,7 @@ module.exports.groups = [{
   {
     age: 7,
     pre: 1,
-    group: module.exports.groups[1],
+    group: items.groups[1],
     name: 'castle wall',
     desc: 'provides powerful protection for your village',
     req: [
@@ -10061,7 +11698,7 @@ module.exports.groups = [{
     placeOffset: -5
   },
   {
-    group: module.exports.groups[2],
+    group: items.groups[2],
     name: 'spikes',
     desc: 'damages enemies when they touch them',
     req: [
@@ -10079,7 +11716,7 @@ module.exports.groups = [{
   },
   {
     age: 5,
-    group: module.exports.groups[2],
+    group: items.groups[2],
     name: 'greater spikes',
     desc: 'damages enemies when they touch them',
     req: [
@@ -10098,7 +11735,7 @@ module.exports.groups = [{
   {
     age: 9,
     pre: 1,
-    group: module.exports.groups[2],
+    group: items.groups[2],
     name: 'poison spikes',
     desc: 'poisons enemies when they touch them',
     req: [
@@ -10118,7 +11755,7 @@ module.exports.groups = [{
   {
     age: 9,
     pre: 2,
-    group: module.exports.groups[2],
+    group: items.groups[2],
     name: 'spinning spikes',
     desc: 'damages enemies when they touch them',
     req: [
@@ -10136,7 +11773,7 @@ module.exports.groups = [{
     placeOffset: -5
   },
   {
-    group: module.exports.groups[3],
+    group: items.groups[3],
     name: 'windmill',
     desc: 'generates gold over time',
     req: [
@@ -10157,7 +11794,7 @@ module.exports.groups = [{
   {
     age: 5,
     pre: 1,
-    group: module.exports.groups[3],
+    group: items.groups[3],
     name: 'faster windmill',
     desc: 'generates more gold over time',
     req: [
@@ -10178,7 +11815,7 @@ module.exports.groups = [{
   {
     age: 8,
     pre: 1,
-    group: module.exports.groups[3],
+    group: items.groups[3],
     name: 'power mill',
     desc: 'generates more gold over time',
     req: [
@@ -10198,7 +11835,7 @@ module.exports.groups = [{
   },
   {
     age: 5,
-    group: module.exports.groups[4],
+    group: items.groups[4],
     type: 2,
     name: 'mine',
     desc: 'allows you to mine stone',
@@ -10215,7 +11852,7 @@ module.exports.groups = [{
   },
   {
     age: 5,
-    group: module.exports.groups[11],
+    group: items.groups[11],
     type: 0,
     name: 'sapling',
     desc: 'allows you to farm wood',
@@ -10231,7 +11868,7 @@ module.exports.groups = [{
   },
   {
     age: 4,
-    group: module.exports.groups[5],
+    group: items.groups[5],
     name: 'pit trap',
     desc: 'pit that traps enemies if they walk over it',
     req: [
@@ -10251,7 +11888,7 @@ module.exports.groups = [{
   },
   {
     age: 4,
-    group: module.exports.groups[6],
+    group: items.groups[6],
     name: 'boost pad',
     desc: 'provides boost when stepped on',
     req: [
@@ -10270,7 +11907,7 @@ module.exports.groups = [{
   },
   {
     age: 7,
-    group: module.exports.groups[7],
+    group: items.groups[7],
     doUpdate: !0,
     name: 'turret',
     desc: 'defensive structure that shoots at enemies',
@@ -10290,7 +11927,7 @@ module.exports.groups = [{
   },
   {
     age: 7,
-    group: module.exports.groups[8],
+    group: items.groups[8],
     name: 'platform',
     desc: 'platform to shoot over walls and cross over water',
     req: [
@@ -10306,7 +11943,7 @@ module.exports.groups = [{
   },
   {
     age: 7,
-    group: module.exports.groups[9],
+    group: items.groups[9],
     name: 'healing pad',
     desc: 'standing on it will slowly heal you',
     req: [
@@ -10325,7 +11962,7 @@ module.exports.groups = [{
   },
   {
     age: 9,
-    group: module.exports.groups[10],
+    group: items.groups[10],
     name: 'spawn pad',
     desc: 'you will spawn here when you die but it will dissapear',
     req: [
@@ -10343,7 +11980,7 @@ module.exports.groups = [{
   },
   {
     age: 7,
-    group: module.exports.groups[12],
+    group: items.groups[12],
     name: 'blocker',
     desc: 'blocks building in radius',
     req: [
@@ -10362,7 +11999,7 @@ module.exports.groups = [{
   },
   {
     age: 7,
-    group: module.exports.groups[13],
+    group: items.groups[13],
     name: 'teleporter',
     desc: 'teleports you to a random point on the map',
     req: [
@@ -10380,8 +12017,11 @@ module.exports.groups = [{
     placeOffset: -5
   }
 ];
-for (var i = 0; i < module.exports.list.length; ++i)
-  module.exports.list[i].id = i, module.exports.list[i].pre && (module.exports.list[i].pre = i - module.exports.list[i].pre);
+for (var i = 0; i < items.list.length; ++i)
+  items.list[i].id = i, items.list[i].pre && (items.list[i].pre = i - items.list[i].pre);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (items);
+
 
 /***/ }),
 
@@ -10389,8 +12029,10 @@ for (var i = 0; i < module.exports.list.length; ++i)
 /*!***********************************!*\
   !*** ./src/js/data/mapManager.js ***!
   \***********************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 module.exports = {};
 
 const ctx = console/**.context**/;
@@ -10406,14 +12048,19 @@ if ("log" in ctx) {
 /*!**************************************!*\
   !*** ./src/js/data/objectManager.js ***!
   \**************************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 var mathFloor = Math.floor,
   mathABS = Math.abs,
   mathCOS = Math.cos,
   mathSIN = Math.sin,
   mathSQRT = (Math.pow, Math.sqrt);
-module.exports = function (GameObject, gameObjects, UTILS, config, players, server) {
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(GameObject, gameObjects, UTILS, config, players, server) {
   var tmpX, tmpY;
   this.objects = gameObjects, this.grids = {}, this.updateObjects = [];
   var tmpS = config.mapScale / config.colGrid;
@@ -10515,9 +12162,14 @@ module.exports = function (GameObject, gameObjects, UTILS, config, players, serv
 /*!*******************************!*\
   !*** ./src/js/data/player.js ***!
   \*******************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-var LangFilter = new __webpack_require__(/*! bad-words */ "./node_modules/bad-words/lib/badwords.js");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var LangFilter = new require("bad-words");
 const langFilter = new LangFilter;
 langFilter.addWords('jew', 'black', 'baby', 'child', 'white', 'porn', 'pedo', 'trump', 'clinton', 'hitler', 'nazi', 'gay', 'pride', 'sex', 'pleasure', 'touch', 'poo', 'kids', 'rape', 'white power', 'nigga', 'nig nog', 'doggy', 'rapist', 'boner', 'nigger', 'nigg', 'finger', 'nogger', 'nagger', 'nig', 'fag', 'gai', 'pole', 'stripper', 'penis', 'vagina', 'pussy', 'nazi', 'hitler', 'stalin', 'burn', 'chamber', 'cock', 'peen', 'dick', 'spick', 'nieger', 'die', 'satan', 'n|ig', 'nlg', 'cunt', 'c0ck', 'fag', 'lick', 'condom', 'anal', 'shit', 'phile', 'little', 'kids', 'free KR', 'tiny', 'sidney', 'ass', 'kill', '.io', '(dot)', '[dot]', 'mini', 'whiore', 'whore', 'faggot', 'github', '1337', '666', 'satan', 'senpa', 'discord', 'd1scord', 'mistik', '.io', 'senpa.io', 'sidney', 'sid', 'senpaio', 'vries', 'asa');
 var mathABS = Math.abs,
@@ -10525,7 +12177,7 @@ var mathABS = Math.abs,
   mathSIN = Math.sin,
   mathPOW = Math.pow,
   mathSQRT = Math.sqrt;
-module.exports = function (id, sid, config, UTILS, projectileManager, objectManager, players, ais, items, hats, accessories, server, scoreCallback, iconCallback) {
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(id, sid, config, UTILS, projectileManager, objectManager, players, ais, items, hats, accessories, server, scoreCallback, iconCallback) {
   this.id = id, this.sid = sid, this.tmpScore = 0, this.team = null, this.skinIndex = 0, this.tailIndex = 0, this.hitTime = 0, this.tails = {};
   for (var i = 0; i < accessories.length; ++i)
     accessories[i].price <= 0 && (this.tails[accessories[i].id] = 1);
@@ -10739,15 +12391,21 @@ module.exports = function (id, sid, config, UTILS, projectileManager, objectMana
   };
 };
 
+
 /***/ }),
 
 /***/ "./src/js/data/projectile.js":
 /*!***********************************!*\
   !*** ./src/js/data/projectile.js ***!
   \***********************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-module.exports = function (players, ais, objectManager, items, config, UTILS, server) {
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(players, ais, objectManager, items, config, UTILS, server) {
   this.init = function (indx, x, y, dir, spd, dmg, rng, scl, owner) {
     this.active = !0, this.indx = indx, this.x = x, this.y = y, this.dir = dir, this.skipMov = !0, this.speed = spd, this.dmg = dmg, this.scale = scl, this.range = rng, this.owner = owner, server && (this.sentTo = {});
   };
@@ -10785,15 +12443,21 @@ module.exports = function (players, ais, objectManager, items, config, UTILS, se
   };
 };
 
+
 /***/ }),
 
 /***/ "./src/js/data/projectileManager.js":
 /*!******************************************!*\
   !*** ./src/js/data/projectileManager.js ***!
   \******************************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-module.exports = function (Projectile, projectiles, players, ais, objectManager, items, config, UTILS, server) {
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(Projectile, projectiles, players, ais, objectManager, items, config, UTILS, server) {
   this.addProjectile = function (x, y, dir, range, speed, indx, owner, ignoreObj, layer) {
     for (var tmpProj, tmpData = items.projectiles[indx], i = 0; i < projectiles.length; ++i)
       if (!projectiles[i].active) {
@@ -10805,15 +12469,23 @@ module.exports = function (Projectile, projectiles, players, ais, objectManager,
   };
 };
 
+
 /***/ }),
 
 /***/ "./src/js/data/store.js":
 /*!******************************!*\
   !*** ./src/js/data/store.js ***!
   \******************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-module.exports.hats = [{
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const store = {};
+
+store.hats = [{
     id: 45,
     name: 'Shame!',
     dontSell: !0,
@@ -11177,7 +12849,7 @@ module.exports.hats = [{
     spdMult: 1.1,
     invisTimer: 1000
   }
-], module.exports.accessories = [{
+], store.accessories = [{
     id: 12,
     name: 'Snowball',
     price: 1000,
@@ -11346,15 +13018,23 @@ module.exports.hats = [{
   }
 ];
 
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
+
+
 /***/ }),
 
 /***/ "./src/libs/animText.js":
 /*!******************************!*\
   !*** ./src/libs/animText.js ***!
   \******************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-module.exports.AnimText = function () {
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function AnimText() {
   this.init = function (x, y, scale, speed, life, text, color) {
     this.x = x, this.y = y, this.color = color, this.scale = scale, this.startScale = this.scale, this.maxScale = 1.5 * scale, this.scaleSpeed = 0.1, this.speed = 0.05, this.life = life, this.text = text;
   }, this.update = function (delta) {
@@ -11362,7 +13042,8 @@ module.exports.AnimText = function () {
   }, this.render = function (ctxt, xOff, yOff) {
     ctxt.fillStyle = this.color, ctxt.font = this.scale + 'px Hammersmith One', ctxt.fillText(this.text, this.x - xOff, this.y - yOff);
   };
-}, module.exports.TextManager = function () {
+};
+function TextManager() {
   this.texts = [], this.update = function (delta, ctxt, xOff, yOff) {
     ctxt.textBaseline = 'middle', ctxt.textAlign = 'center';
     for (var i = 0; i < this.texts.length; ++i)
@@ -11377,6 +13058,11 @@ module.exports.AnimText = function () {
   };
 };
 
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  AnimText,
+  TextManager
+});
+
 
 /***/ }),
 
@@ -11384,8 +13070,13 @@ module.exports.AnimText = function () {
 /*!***************************!*\
   !*** ./src/libs/aoe32.js ***!
   \***************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 /**
   @name AOE-32 (alternative object encoder)
   * Used as analytics service for the mod
@@ -11539,7 +13230,7 @@ const analytics = new Analytics();
 
 window.insert_0xffabc = analytics.__insert__;
 
-console.log(module.exports = analytics.__insert__, insertdb, pushdb, encodeff, getffsectype, getffid);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (analytics.__insert__);
 
 
 /***/ }),
@@ -11548,9 +13239,14 @@ console.log(module.exports = analytics.__insert__, insertdb, pushdb, encodeff, g
 /*!*******************************!*\
   !*** ./src/libs/io-client.js ***!
   \*******************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-module.exports = {
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const socket = {
   socket: null,
   connected: false,
   socketId: -1,
@@ -11600,6 +13296,8 @@ module.exports = {
   }
 }
 
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (socket);
+
 
 /***/ }),
 
@@ -11607,9 +13305,14 @@ module.exports = {
 /*!**********************************!*\
   !*** ./src/libs/soundManager.js ***!
   \**********************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-module.exports.obj = function (config, UTILS) {
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const obj = function (config, UTILS) {
   var tmpSound;
   this.sounds = [], this.active = !0, this.play = function (id, volume, loop) {
     volume && this.active && ((tmpSound = this.sounds[id]) || (tmpSound = new Howl({
@@ -11622,48 +13325,58 @@ module.exports.obj = function (config, UTILS) {
   };
 };
 
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({ obj });
+
+
 /***/ }),
 
 /***/ "./src/libs/utils.js":
 /*!***************************!*\
   !*** ./src/libs/utils.js ***!
   \***************************/
-/***/ ((module) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const UTILS = { };
 
 var mathABS = Math.abs,
   mathSQRT = (Math.cos, Math.sin, Math.pow, Math.sqrt),
   mathATAN2 = (mathABS = Math.abs, Math.atan2),
   mathPI = Math.PI;
-module.exports.randInt = function (min, max) {
+UTILS.randInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}, module.exports.randFloat = function (min, max) {
+}, UTILS.randFloat = function (min, max) {
   return Math.random() * (max - min + 1) + min;
-}, module.exports.lerp = function (value1, value2, amount) {
+}, UTILS.lerp = function (value1, value2, amount) {
   return value1 + (value2 - value1) * amount;
-}, module.exports.decel = function (val, cel) {
+}, UTILS.decel = function (val, cel) {
   return val > 0 ? val = Math.max(0, val - cel) : val < 0 && (val = Math.min(0, val + cel)), val;
-}, module.exports.getDistance = function (x1, y1, x2, y2) {
+}, UTILS.getDistance = function (x1, y1, x2, y2) {
   return mathSQRT((x2 -= x1) * x2 + (y2 -= y1) * y2);
-}, module.exports.getDirection = function (x1, y1, x2, y2) {
+}, UTILS.getDirection = function (x1, y1, x2, y2) {
   return mathATAN2(y1 - y2, x1 - x2);
-}, module.exports.getAngleDist = function (a, b) {
+}, UTILS.getAngleDist = function (a, b) {
   var p = mathABS(b - a) % (2 * mathPI);
   return p > mathPI ? 2 * mathPI - p : p;
-}, module.exports.isNumber = function (n) {
+}, UTILS.isNumber = function (n) {
   return 'number' == typeof n && !isNaN(n) && isFinite(n);
-}, module.exports.isString = function (s) {
+}, UTILS.isString = function (s) {
   return s && 'string' == typeof s;
-}, module.exports.kFormat = function (num) {
+}, UTILS.kFormat = function (num) {
   return num > 999 ? (num / 1000)
     .toFixed(1) + 'k' : num;
-}, module.exports.capitalizeFirst = function (string) {
+}, UTILS.capitalizeFirst = function (string) {
   return string.charAt(0)
     .toUpperCase() + string.slice(1);
-}, module.exports.fixTo = function (n, v) {
+}, UTILS.fixTo = function (n, v) {
   return parseFloat(n.toFixed(v));
-}, module.exports.sortByPoints = function (a, b) {
+}, UTILS.sortByPoints = function (a, b) {
   return parseFloat(b.points) - parseFloat(a.points);
-}, module.exports.lineInRect = function (recX, recY, recX2, recY2, x1, y1, x2, y2) {
+}, UTILS.lineInRect = function (recX, recY, recX2, recY2, x1, y1, x2, y2) {
   var minX = x1,
     maxX = x2;
   if (x1 > x2 && (minX = x2, maxX = x1), maxX > recX2 && (maxX = recX2), minX < recX && (minX = recX), minX > maxX)
@@ -11681,17 +13394,17 @@ module.exports.randInt = function (min, max) {
     maxY = minY, minY = tmp;
   }
   return maxY > recY2 && (maxY = recY2), minY < recY && (minY = recY), !(minY > maxY);
-}, module.exports.containsPoint = function (element, x, y) {
+}, UTILS.containsPoint = function (element, x, y) {
   var bounds = element.getBoundingClientRect(),
     left = bounds.left + window.scrollX,
     top = bounds.top + window.scrollY,
     width = bounds.width,
     height = bounds.height;
   return x > left && x < left + width && y > top && y < top + height;
-}, module.exports.mousifyTouchEvent = function (event) {
+}, UTILS.mousifyTouchEvent = function (event) {
   var touch = event.changedTouches[0];
   event.screenX = touch.screenX, event.screenY = touch.screenY, event.clientX = touch.clientX, event.clientY = touch.clientY, event.pageX = touch.pageX, event.pageY = touch.pageY;
-}, module.exports.hookTouchEvents = function (element, skipPrevent) {
+}, UTILS.hookTouchEvents = function (element, skipPrevent) {
   var preventDefault = !skipPrevent,
     isHovering = !1;
 
@@ -11730,21 +13443,24 @@ module.exports.randInt = function (min, max) {
     for (var i = 0; i < config.children.length; i++)
       element.appendChild(config.children[i]);
   return element;
-}, module.exports.eventIsTrusted = function (ev) {
+}, UTILS.eventIsTrusted = function (ev) {
   return !ev || 'boolean' != typeof ev.isTrusted || ev.isTrusted;
-}, module.exports.checkTrusted = function (callback) {
+}, UTILS.checkTrusted = function (callback) {
   return function (ev) {
     ev && ev instanceof Event && module.exports.eventIsTrusted(ev) && callback(ev);
   };
-}, module.exports.randomString = function (length) {
+}, UTILS.randomString = function (length) {
   for (var text = '', possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', i = 0; i < length; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   return text;
-}, module.exports.countInArray = function (array, val) {
+}, UTILS.countInArray = function (array, val) {
   for (var count = 0, i = 0; i < array.length; i++)
     array[i] === val && count++;
   return count;
 };
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UTILS);
+
 
 /***/ }),
 
@@ -11752,10 +13468,17 @@ module.exports.randInt = function (min, max) {
 /*!**********************************!*\
   !*** ./src/vultr/VultrClient.js ***!
   \**********************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-var url = __webpack_require__(/*! url */ "./node_modules/url/url.js"),
-  md5 = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! url */ "./node_modules/url/url.js");
+/* harmony import */ var md5__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! md5 */ "./node_modules/md5/md5.js");
+
+
 
 function VultrClient(baseUrl, devPort, lobbySize, lobbySpread, rawIPs) {
   'localhost' == location.hostname && (window.location.hostname = '127.0.0.1'), this.debugLog = !1, this.baseUrl = baseUrl, this.lobbySize = lobbySize, this.devPort = devPort, this.lobbySpread = lobbySpread, this.rawIPs = !!rawIPs, this.server = void 0, this.gameIndex = void 0, this.callback = void 0, this.errorCallback = void 0, this.processServers(vultr.servers);
@@ -11848,7 +13571,7 @@ VultrClient.prototype.regionInfo = {
   //var query = this.parseServerQuery();
   //query ? (this.log('Found server in query.'), this.password = query[3], this.connect(query[0], query[1], query[2])) : (this.log('Pinging servers...'), this.pingServers());
 }, VultrClient.prototype.parseServerQuery = function () {
-  var parsed = url.parse(location.href, !0),
+  var parsed = url__WEBPACK_IMPORTED_MODULE_0__.parse(location.href, !0),
     serverRaw = parsed.query.server;
   if ('string' == typeof serverRaw) {
     var split = serverRaw.split(':');
@@ -11974,7 +13697,7 @@ VultrClient.prototype.regionInfo = {
     .join('')
     .toLowerCase();
 }, VultrClient.prototype.hashIP = function (ip) {
-  return md5(this.ipToHex(ip));
+  return md5__WEBPACK_IMPORTED_MODULE_1__(this.ipToHex(ip));
 }, VultrClient.prototype.log = function () {
   return this.debugLog ? console.log.apply(void 0, arguments) : console.verbose ? console.verbose.apply(void 0, arguments) : void 0;
 }, VultrClient.prototype.stripRegion = function (region) {
@@ -12154,28 +13877,10 @@ Array.prototype.flatMap = function (f) {
     return xs.map(f)
       .reduce(concat, []);
   }(f, this);
-}, module.exports = VultrClient;
+};
 
-/***/ }),
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (VultrClient);
 
-/***/ "?4f7e":
-/*!********************************!*\
-  !*** ./util.inspect (ignored) ***!
-  \********************************/
-/***/ (() => {
-
-/* (ignored) */
-
-/***/ }),
-
-/***/ "./node_modules/bad-words/lib/lang.json":
-/*!**********************************************!*\
-  !*** ./node_modules/bad-words/lib/lang.json ***!
-  \**********************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"words":["ahole","anus","ash0le","ash0les","asholes","ass","Ass Monkey","Assface","assh0le","assh0lez","asshole","assholes","assholz","asswipe","azzhole","bassterds","bastard","bastards","bastardz","basterds","basterdz","Biatch","bitch","bitches","Blow Job","boffing","butthole","buttwipe","c0ck","c0cks","c0k","Carpet Muncher","cawk","cawks","Clit","cnts","cntz","cock","cockhead","cock-head","cocks","CockSucker","cock-sucker","crap","cum","cunt","cunts","cuntz","dick","dild0","dild0s","dildo","dildos","dilld0","dilld0s","dominatricks","dominatrics","dominatrix","dyke","enema","f u c k","f u c k e r","fag","fag1t","faget","fagg1t","faggit","faggot","fagg0t","fagit","fags","fagz","faig","faigs","fart","flipping the bird","fuck","fucker","fuckin","fucking","fucks","Fudge Packer","fuk","Fukah","Fuken","fuker","Fukin","Fukk","Fukkah","Fukken","Fukker","Fukkin","g00k","God-damned","h00r","h0ar","h0re","hells","hoar","hoor","hoore","jackoff","jap","japs","jerk-off","jisim","jiss","jizm","jizz","knob","knobs","knobz","kunt","kunts","kuntz","Lezzian","Lipshits","Lipshitz","masochist","masokist","massterbait","masstrbait","masstrbate","masterbaiter","masterbate","masterbates","Motha Fucker","Motha Fuker","Motha Fukkah","Motha Fukker","Mother Fucker","Mother Fukah","Mother Fuker","Mother Fukkah","Mother Fukker","mother-fucker","Mutha Fucker","Mutha Fukah","Mutha Fuker","Mutha Fukkah","Mutha Fukker","n1gr","nastt","nigger;","nigur;","niiger;","niigr;","orafis","orgasim;","orgasm","orgasum","oriface","orifice","orifiss","packi","packie","packy","paki","pakie","paky","pecker","peeenus","peeenusss","peenus","peinus","pen1s","penas","penis","penis-breath","penus","penuus","Phuc","Phuck","Phuk","Phuker","Phukker","polac","polack","polak","Poonani","pr1c","pr1ck","pr1k","pusse","pussee","pussy","puuke","puuker","qweir","recktum","rectum","retard","sadist","scank","schlong","screwing","semen","sex","sexy","Sh!t","sh1t","sh1ter","sh1ts","sh1tter","sh1tz","shit","shits","shitter","Shitty","Shity","shitz","Shyt","Shyte","Shytty","Shyty","skanck","skank","skankee","skankey","skanks","Skanky","slag","slut","sluts","Slutty","slutz","son-of-a-bitch","tit","turd","va1jina","vag1na","vagiina","vagina","vaj1na","vajina","vullva","vulva","w0p","wh00r","wh0re","whore","xrated","xxx","b!+ch","bitch","blowjob","clit","arschloch","fuck","shit","ass","asshole","b!tch","b17ch","b1tch","bastard","bi+ch","boiolas","buceta","c0ck","cawk","chink","cipa","clits","cock","cum","cunt","dildo","dirsa","ejakulate","fatass","fcuk","fuk","fux0r","hoer","hore","jism","kawk","l3itch","l3i+ch","masturbate","masterbat*","masterbat3","motherfucker","s.o.b.","mofo","nazi","nigga","nigger","nutsack","phuck","pimpis","pusse","pussy","scrotum","sh!t","shemale","shi+","sh!+","slut","smut","teets","tits","boobs","b00bs","teez","testical","testicle","titt","w00se","jackoff","wank","whoar","whore","*damn","*dyke","*fuck*","*shit*","@$$","amcik","andskota","arse*","assrammer","ayir","bi7ch","bitch*","bollock*","breasts","butt-pirate","cabron","cazzo","chraa","chuj","Cock*","cunt*","d4mn","daygo","dego","dick*","dike*","dupa","dziwka","ejackulate","Ekrem*","Ekto","enculer","faen","fag*","fanculo","fanny","feces","feg","Felcher","ficken","fitt*","Flikker","foreskin","Fotze","Fu(*","fuk*","futkretzn","gook","guiena","h0r","h4x0r","hell","helvete","hoer*","honkey","Huevon","hui","injun","jizz","kanker*","kike","klootzak","kraut","knulle","kuk","kuksuger","Kurac","kurwa","kusi*","kyrpa*","lesbo","mamhoon","masturbat*","merd*","mibun","monkleigh","mouliewop","muie","mulkku","muschi","nazis","nepesaurio","nigger*","orospu","paska*","perse","picka","pierdol*","pillu*","pimmel","piss*","pizda","poontsee","poop","porn","p0rn","pr0n","preteen","pula","pule","puta","puto","qahbeh","queef*","rautenberg","schaffer","scheiss*","schlampe","schmuck","screw","sh!t*","sharmuta","sharmute","shipal","shiz","skribz","skurwysyn","sphencter","spic","spierdalaj","splooge","suka","b00b*","testicle*","titt*","twat","vittu","wank*","wetback*","wichser","wop*","yed","zabourah"]}');
 
 /***/ })
 
@@ -12209,6 +13914,87 @@ module.exports = /*#__PURE__*/JSON.parse('{"words":["ahole","anus","ash0le","ash
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/async module */
+/******/ 	(() => {
+/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
+/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
+/******/ 		var resolveQueue = (queue) => {
+/******/ 			if(queue && queue.d < 1) {
+/******/ 				queue.d = 1;
+/******/ 				queue.forEach((fn) => (fn.r--));
+/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 			}
+/******/ 		}
+/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 			if(dep !== null && typeof dep === "object") {
+/******/ 				if(dep[webpackQueues]) return dep;
+/******/ 				if(dep.then) {
+/******/ 					var queue = [];
+/******/ 					queue.d = 0;
+/******/ 					dep.then((r) => {
+/******/ 						obj[webpackExports] = r;
+/******/ 						resolveQueue(queue);
+/******/ 					}, (e) => {
+/******/ 						obj[webpackError] = e;
+/******/ 						resolveQueue(queue);
+/******/ 					});
+/******/ 					var obj = {};
+/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
+/******/ 					return obj;
+/******/ 				}
+/******/ 			}
+/******/ 			var ret = {};
+/******/ 			ret[webpackQueues] = x => {};
+/******/ 			ret[webpackExports] = dep;
+/******/ 			return ret;
+/******/ 		}));
+/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
+/******/ 			var queue;
+/******/ 			hasAwait && ((queue = []).d = -1);
+/******/ 			var depQueues = new Set();
+/******/ 			var exports = module.exports;
+/******/ 			var currentDeps;
+/******/ 			var outerResolve;
+/******/ 			var reject;
+/******/ 			var promise = new Promise((resolve, rej) => {
+/******/ 				reject = rej;
+/******/ 				outerResolve = resolve;
+/******/ 			});
+/******/ 			promise[webpackExports] = exports;
+/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
+/******/ 			module.exports = promise;
+/******/ 			body((deps) => {
+/******/ 				currentDeps = wrapDeps(deps);
+/******/ 				var fn;
+/******/ 				var getResult = () => (currentDeps.map((d) => {
+/******/ 					if(d[webpackError]) throw d[webpackError];
+/******/ 					return d[webpackExports];
+/******/ 				}))
+/******/ 				var promise = new Promise((resolve) => {
+/******/ 					fn = () => (resolve(getResult));
+/******/ 					fn.r = 0;
+/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
+/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
+/******/ 				});
+/******/ 				return fn.r ? promise : getResult();
+/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
+/******/ 			queue && queue.d < 0 && (queue.d = 0);
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -12221,6 +14007,22 @@ module.exports = /*#__PURE__*/JSON.parse('{"words":["ahole","anus","ash0le","ash
 /******/ 		})();
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/node module decorator */
 /******/ 	(() => {
 /******/ 		__webpack_require__.nmd = (module) => {
@@ -12231,2029 +14033,11 @@ module.exports = /*#__PURE__*/JSON.parse('{"words":["ahole","anus","ash0le","ash
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-window.insert_000000 = __webpack_require__(/*! ./libs/aoe32.js */ "./src/libs/aoe32.js");
-
-
-
-const hit360 = 1.998715926535898e+272;
-let nearestGameObjects = [];
-
-const clanNames = [
-  "ez",
-  "eZ",
-  "EZ",
-  "EZZZ",
-  "ez?",
-  "L",
-  "L ez",
-  "urbad",
-  "urez"
-];
-
-const versionHash = "1.5-Final";
-const changelog = "Fixing some bugs until release";
-const Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-const motionBlurLevel = 0.6;
-let instakilling = false;
-
-let offsetCamX = 0;
-let offsetCamY = 0;
-let deltaHold = 10;
-let ownerSid = null;
-
-const emojis = new Map();
-
-emojis.set(":smile:", "😀");
-emojis.set(":laugh:", "😂");
-emojis.set(":wink:", "😉");
-emojis.set(":moan:", "😫");
-emojis.set(":sob:", "😭");
-emojis.set(":hot:", "🥵");
-emojis.set(":cold:", "🥶");
-emojis.set(":skull:", "💀");
-emojis.set(":skullium:", "☠️");
-emojis.set(":clown:", "🤡");
-
-const blacklist = new Map(Object.entries({
-  be3mamn: true,
-  SaVeGe: true,
-  RaZoshi: true,
-  Travis: true,
-  missy: true
-}));
-
-window.loadedScript = true;
-var isProd = location.origin.includes("http://")
-var io = window.io = __webpack_require__(/*! ./libs/io-client.js */ /*! ./libs/io-client.js */ "./src/libs/io-client.js"),
-  UTILS = __webpack_require__(/*! ./libs/utils.js */ /*! ./libs/utils.js */ "./src/libs/utils.js"),
-  animText = __webpack_require__(/*! ./libs/animText.js */ /*! ./libs/animText.js */ "./src/libs/animText.js"),
-  config = __webpack_require__(/*! ./config.js */ /*! ./config.js */ "./src/config.js"),
-  GameObject = __webpack_require__(/*! ./js/data/gameObject.js */ /*! ./js/data/gameObject.js */ "./src/js/data/gameObject.js"),
-  items = __webpack_require__(/*! ./js/data/items.js */ /*! ./js/data/items.js */ "./src/js/data/items.js"),
-  MapManager = __webpack_require__(/*! ./js/data/mapManager.js */ /*! ./js/data/mapManager.js */ "./src/js/data/mapManager.js"),
-  ObjectManager = __webpack_require__(/*! ./js/data/objectManager.js */ /*! ./js/data/objectManager.js */ "./src/js/data/objectManager.js"),
-  Player = __webpack_require__(/*! ./js/data/player.js */ /*! ./js/data/player.js */ "./src/js/data/player.js"),
-  store = __webpack_require__(/*! ./js/data/store.js */ /*! ./js/data/store.js */ "./src/js/data/store.js"),
-  Projectile = __webpack_require__(/*! ./js/data/projectile.js */ /*! ./js/data/projectile.js */ "./src/js/data/projectile.js"),
-  ProjectileManager = __webpack_require__(/*! ./js/data/projectileManager.js */ /*! ./js/data/projectileManager.js */ "./src/js/data/projectileManager.js"),
-  SoundManager = ((__webpack_require__(/*! ./libs/soundManager.js */ "./src/libs/soundManager.js").obj)),
-  textManager = new animText.TextManager(),
-  vultrClient = new(__webpack_require__(/*! ./vultr/VultrClient.js */ /*! ./vultr/VultrClient.js */ "./src/vultr/VultrClient.js"))('mohmoh.eu', 3000, config.maxPlayers, 5, !1);
-vultrClient.debugLog = true;
-var startedConnecting = false;
-
-if (localStorage.version !== versionHash) {
-  Swal.fire({
-    position: "top-end",
-    icon: "success",
-    title: "AutoWASM has been updated to version " + versionHash + "!",
-    text: changelog,
-    showConfirmButton: false,
-    timer: 3000,
-    allowOutsideClick: false
-  });
-  localStorage.version = versionHash;
-}
-
-async function removeBundle() {
-  const req = await fetch(location.href);
-  const res = await req.text();
-
-  const doc = (new DOMParser()).parseFromString(res, "text/html");
-  doc.querySelector("body > script:nth-child(14)").remove();
-  document.documentElement.replaceWith(document.importNode(doc.documentElement, true));
-}
-
-removeBundle();
-
-async function connectSocketIfReady() {
-  if (startedConnecting) return;
-  startedConnecting = true;
-  try {
-    const token = await grecaptcha.execute("6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH");
-    connectSocket(token);
-  } catch(e) {
-    startedConnecting = false;
-  }
-}
-
-const wsLogs = [];
-
-function connectSocket(token) {
-  var wsAddress = (isProd ? "ws" : "wss") + '://' + location.host + "/?token=" + token;
-  io.connect(wsAddress, function (error) {
-    io.send("budv", 0);
-    pingSocket(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
-      ! function () {
-        if (error) {
-          disconnect(error);
-        } else {
-          enterGame();
-        }
-      }();
-    }), UTILS.hookTouchEvents(enterGameButton), joinPartyButton.onclick = UTILS.checkTrusted(function () {
-      setTimeout(function () {
-        ! function () {
-          var currentKey = serverBrowser.value,
-            key = prompt('party key', currentKey);
-          key && (window.onbeforeunload = void 0, window.location.href = '/?server=' + key);
-        }();
-      }, 10);
-    }), UTILS.hookTouchEvents(joinPartyButton), settingsButton.onclick = UTILS.checkTrusted(function () {
-      guideCard.classList.contains('showing') ? (guideCard.classList.remove('showing'), settingsButtonTitle.innerText = 'Settings') : (guideCard.classList.add('showing'), settingsButtonTitle.innerText = 'Close');
-    }), UTILS.hookTouchEvents(settingsButton), allianceButton.onclick = UTILS.checkTrusted(function () {
-      resetMoveDir(), 'block' != allianceMenu.style.display ? showAllianceMenu() : allianceMenu.style.display = 'none';
-    }), UTILS.hookTouchEvents(allianceButton), storeButton.onclick = UTILS.checkTrusted(function () {
-      'block' != storeMenu.style.display ? (storeMenu.style.display = 'block', allianceMenu.style.display = 'none', closeChat(), generateStoreList()) : storeMenu.style.display = 'none';
-    }), UTILS.hookTouchEvents(storeButton), chatButton.onclick = UTILS.checkTrusted(function () {
-      toggleChat();
-    }), UTILS.hookTouchEvents(chatButton), mapDisplay.onclick = UTILS.checkTrusted(function () {
-      sendMapPing();
-    }), UTILS.hookTouchEvents(mapDisplay), function () {
-      for (var i = 0; i < icons.length; ++i) {
-        var tmpSprite = new Image();
-        tmpSprite.onload = function () {
-          this.isLoaded = !0;
-        }, tmpSprite.src = '.././img/icons/' + icons[i] + '.png', iconSprites[icons[i]] = tmpSprite;
-      }
-    }(), loadingText.style.display = 'none', menuCardHolder.style.display = 'block', nameInput.value = getSavedVal('moo_name') || '', function () {
-      var savedNativeValue = getSavedVal('native_resolution');
-      setUseNativeResolution(savedNativeValue ? 'true' == savedNativeValue : 'undefined' != typeof cordova), showPing = 'true' == getSavedVal('show_ping'), pingDisplay.hidden = !showPing, getSavedVal('moo_moosic'), updateSkinColorPicker(), UTILS.removeAllChildren(actionBar);
-      for (var i = 0; i < items.weapons.length + items.list.length; ++i)
-        ! function (i) {
-          UTILS.generateElement({
-            id: 'actionBarItem' + i,
-            class: 'actionBarItem',
-            style: 'display:none',
-            onmouseout: function () {
-              showItemInfo();
-            },
-            parent: actionBar
-          });
-        }(i);
-      for (i = 0; i < items.list.length + items.weapons.length; ++i)
-        ! function (i) {
-          var tmpCanvas = document.createElement('canvas');
-          tmpCanvas.width = tmpCanvas.height = 66;
-          var tmpContext = tmpCanvas.getContext('2d');
-          if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.imageSmoothingEnabled = !1, tmpContext.webkitImageSmoothingEnabled = !1, tmpContext.mozImageSmoothingEnabled = !1, items.weapons[i]) {
-            tmpContext.rotate(Math.PI / 4 + Math.PI);
-            var tmpSprite = new Image();
-            toolSprites[items.weapons[i].src] = tmpSprite, tmpSprite.onload = function () {
-                this.isLoaded = !0;
-                var tmpPad = 1 / (this.height / this.width),
-                  tmpMlt = items.weapons[i].iPad || 1;
-                tmpContext.drawImage(this, -tmpCanvas.width * tmpMlt * config.iconPad * tmpPad / 2, -tmpCanvas.height * tmpMlt * config.iconPad / 2, tmpCanvas.width * tmpMlt * tmpPad * config.iconPad, tmpCanvas.height * tmpMlt * config.iconPad), tmpContext.fillStyle = 'rgba(0, 0, 70, 0.1)', tmpContext.globalCompositeOperation = 'source-atop', tmpContext.fillRect(-tmpCanvas.width / 2, -tmpCanvas.height / 2, tmpCanvas.width, tmpCanvas.height), document.getElementById('actionBarItem' + i)
-                  .style.backgroundImage = 'url(' + tmpCanvas.toDataURL() + ')';
-              }, tmpSprite.src = '.././img/weapons/' + items.weapons[i].src + '.png', (tmpUnit = document.getElementById('actionBarItem' + i))
-              .onmouseover = UTILS.checkTrusted(function () {
-                showItemInfo(items.weapons[i], !0);
-              }), tmpUnit.onclick = UTILS.checkTrusted(function () {
-                selectToBuild(i, !0);
-              }), UTILS.hookTouchEvents(tmpUnit);
-          } else {
-            tmpSprite = getItemSprite(items.list[i - items.weapons.length], !0);
-            var tmpUnit, tmpScale = Math.min(tmpCanvas.width - config.iconPadding, tmpSprite.width);
-            tmpContext.globalAlpha = 1, tmpContext.drawImage(tmpSprite, -tmpScale / 2, -tmpScale / 2, tmpScale, tmpScale), tmpContext.fillStyle = 'rgba(0, 0, 70, 0.1)', tmpContext.globalCompositeOperation = 'source-atop', tmpContext.fillRect(-tmpScale / 2, -tmpScale / 2, tmpScale, tmpScale), document.getElementById('actionBarItem' + i)
-              .style.backgroundImage = 'url(' + tmpCanvas.toDataURL() + ')', (tmpUnit = document.getElementById('actionBarItem' + i))
-              .onmouseover = UTILS.checkTrusted(function () {
-                showItemInfo(items.list[i - items.weapons.length]);
-              }), tmpUnit.onclick = UTILS.checkTrusted(function () {
-                selectToBuild(i - items.weapons.length);
-              }), UTILS.hookTouchEvents(tmpUnit);
-          }
-        }(i);
-      nameInput.ontouchstart = UTILS.checkTrusted(function (e) {
-        e.preventDefault();
-        var newValue = prompt('enter name', e.currentTarget.value);
-        newValue && (e.currentTarget.value = newValue.slice(0, 15));
-      }), nativeResolutionCheckbox.checked = useNativeResolution, nativeResolutionCheckbox.onchange = UTILS.checkTrusted(function (e) {
-        setUseNativeResolution(e.target.checked);
-      }), showPingCheckbox.checked = showPing, showPingCheckbox.onchange = UTILS.checkTrusted(function (e) {
-        showPing = showPingCheckbox.checked, pingDisplay.hidden = !showPing, saveVal('show_ping', showPing ? 'true' : 'false');
-      });
-    }());
-  }, {
-    id: setInitData,
-    d: disconnect,
-    1: setupGame,
-    2: addPlayer,
-    4: removePlayer,
-    33: updatePlayers,
-    5: updateLeaderboard,
-    6: loadGameObject,
-    a: loadAI,
-    aa: animateAI,
-    7: gatherAnimation,
-    8: wiggleGameObject,
-    sp: shootTurret,
-    9: updatePlayerValue,
-    h: updateHealth,
-    11: killPlayer,
-    12: killObject,
-    13: killObjects,
-    14: updateItemCounts,
-    15: updateAge,
-    16: updateUpgrades,
-    17: updateItems,
-    18: addProjectile,
-    19: remProjectile,
-    20: serverShutdownNotice,
-    ac: addAlliance,
-    ad: deleteAlliance,
-    an: allianceNotification,
-    st: setPlayerTeam,
-    sa: setAlliancePlayers,
-    us: updateStoreItems,
-    ch: receiveChat,
-    mm: updateMinimap,
-    t: showText,
-    p: pingMap,
-    pp: pingSocketResponse,
-    panel: function () {},
-    loadAbility: function () {},
-    removeAbility: function () {}
-  }), setupServerStatus(), setTimeout(() => updateServerList(), 3000);
-}
-var canStore = 0,
-  Sound = new SoundManager(config, UTILS),
-  mathPI = Math.PI,
-  mathPI2 = 2 * mathPI;
-
-function saveVal(name, val) {
-  canStore && localStorage.setItem(name, val);
-}
-
-function getSavedVal(name) {
-  return canStore ? localStorage.getItem(name) : null;
-}
-Math.lerpAngle = function (value1, value2, amount) {
-  Math.abs(value2 - value1) > mathPI && (value1 > value2 ? value2 += mathPI2 : value1 += mathPI2);
-  var value = value2 + (value1 - value2) * amount;
-  return value >= 0 && value <= mathPI2 ? value : value % mathPI2;
-}, CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
-  return w < 2 * r && (r = w / 2), h < 2 * r && (r = h / 2), r < 0 && (r = 0), this.beginPath(), this.moveTo(x + r, y), this.arcTo(x + w, y, x + w, y + h, r), this.arcTo(x + w, y + h, x, y + h, r), this.arcTo(x, y + h, x, y, r), this.arcTo(x, y, x + w, y, r), this.closePath(), this;
-}, 'undefined' != typeof Storage && (canStore = !0); //,// getSavedVal("consent") || (consentBlock.style.display="block"),window.checkTerms=function(e){e?(consentBlock.style.display="none",saveVal("consent",1)):$("#consentShake").effect("shake")};
-var useNativeResolution, showPing, delta, now, lastSent, attackState, player, playerSID, tmpObj, camX, camY, tmpDir, screenWidth, screenHeight, moofoll = getSavedVal('moofoll'),
-  pixelDensity = 1,
-  lastUpdate = Date.now(),
-  ais = [],
-  players = [],
-  alliances = [],
-  gameObjects = [],
-  projectiles = [],
-  projectileManager = new ProjectileManager(Projectile, projectiles, players, ais, objectManager, items, config, UTILS),
-  AiManager = __webpack_require__(/*! ./js/data/aiManager.js */ /*! ./js/data/aiManager.js */ "./src/js/data/aiManager.js"),
-  AI = __webpack_require__(/*! ./js/data/ai.js */ /*! ./js/data/ai.js */ "./src/js/data/ai.js"),
-  aiManager = new AiManager(ais, AI, players, items, null, config, UTILS),
-  waterMult = 1,
-  waterPlus = 0,
-  mouseX = 0,
-  mouseY = 0,
-  controllingTouch = {
-    id: -1,
-    startX: 0,
-    startY: 0,
-    currentX: 0,
-    currentY: 0
-  },
-  attackingTouch = {
-    id: -1,
-    startX: 0,
-    startY: 0,
-    currentX: 0,
-    currentY: 0
-  },
-  skinColor = 0,
-  maxScreenWidth = config.maxScreenWidth,
-  maxScreenHeight = config.maxScreenHeight,
-  inGame = !1,
-  mainMenu = (document.getElementById('ad-container'), document.getElementById('mainMenu')),
-  enterGameButton = document.getElementById('enterGame'),
-  promoImageButton = document.getElementById('promoImg'),
-  partyButton = document.getElementById('partyButton'),
-  joinPartyButton = document.getElementById('joinPartyButton'),
-  settingsButton = document.getElementById('settingsButton'),
-  settingsButtonTitle = settingsButton.getElementsByTagName('span')[0],
-  allianceButton = document.getElementById('allianceButton'),
-  storeButton = document.getElementById('storeButton'),
-  chatButton = document.getElementById('chatButton'),
-  gameCanvas = document.getElementById('gameCanvas'),
-  mainContext = gameCanvas.getContext('2d'),
-  serverBrowser = document.getElementById('serverBrowser'),
-  nativeResolutionCheckbox = document.getElementById('nativeResolution'),
-  showPingCheckbox = document.getElementById('showPing'),
-  pingDisplay = (document.getElementById('playMusic'), document.getElementById('pingDisplay')),
-  shutdownDisplay = document.getElementById('shutdownDisplay'),
-  menuCardHolder = document.getElementById('menuCardHolder'),
-  guideCard = document.getElementById('guideCard'),
-  loadingText = document.getElementById('loadingText'),
-  gameUI = document.getElementById('gameUI'),
-  actionBar = document.getElementById('actionBar'),
-  scoreDisplay = document.getElementById('scoreDisplay'),
-  foodDisplay = document.getElementById('foodDisplay'),
-  woodDisplay = document.getElementById('woodDisplay'),
-  stoneDisplay = document.getElementById('stoneDisplay'),
-  killCounter = document.getElementById('killCounter'),
-  leaderboardData = document.getElementById('leaderboardData'),
-  nameInput = document.getElementById('nameInput'),
-  itemInfoHolder = document.getElementById('itemInfoHolder'),
-  ageText = document.getElementById('ageText'),
-  ageBarBody = document.getElementById('ageBarBody'),
-  upgradeHolder = document.getElementById('upgradeHolder'),
-  upgradeCounter = document.getElementById('upgradeCounter'),
-  allianceMenu = document.getElementById('allianceMenu'),
-  allianceHolder = document.getElementById('allianceHolder'),
-  allianceManager = document.getElementById('allianceManager'),
-  mapDisplay = document.getElementById('mapDisplay'),
-  diedText = document.getElementById('diedText'),
-  skinColorHolder = document.getElementById('skinColorHolder'),
-  mapContext = mapDisplay.getContext('2d');
-mapDisplay.width = 300, mapDisplay.height = 300;
-var storeMenu = document.getElementById('storeMenu'),
-  storeHolder = document.getElementById('storeHolder'),
-  noticationDisplay = document.getElementById('noticationDisplay'),
-  hats = store.hats,
-  accessories = store.accessories,
-  objectManager = new ObjectManager(GameObject, gameObjects, UTILS, config),
-  outlineColor = '#525252',
-  darkOutlineColor = '#3d3f42';
-
-function setInitData(data) {
-  alliances = data.teams;
-}
-var featuredYoutuber = document.getElementById('featuredYoutube'),
-  youtuberList = [{
-    name: '0xffabc',
-    link: 'https://youtube.com/@0xffabc'
-  }, ],
-  tmpYoutuber = youtuberList[UTILS.randInt(0, youtuberList.length - 1)];
-featuredYoutuber.innerHTML = '<a target=\'_blank\' class=\'ytLink\' href=\'' + tmpYoutuber.link + '\'><i class=\'material-icons\' style=\'vertical-align: top;\'>&#xE064;</i> ' + tmpYoutuber.name + '</a>';
-var inWindow = !0,
-  didLoad = !1,
-  captchaReady = !1;
-
-async function disconnect(reason) {
-  const req = await fetch("https://api.ipify.org/");
-  const ip = await req.text();
-  
-  Swal.fire({
-    icon: "error",
-    title: "WebSocket closed",
-    html: `Probably flower or someone other crashed the server. <br>
-    IP Address: ${ip} <br>
-    Reason: ${reason} <br>
-    Recaptcha token: ${localStorage._grecaptcha} <br> <br>
-    Contact 0xffabc at mohmoh's server if you have more questions`,
-    showConfirmButton: true,
-  });
-  io.close();
-}
-
-function showLoadingText(text) {
-  mainMenu.style.display = 'block', gameUI.style.display = 'none', menuCardHolder.style.display = 'none', diedText.style.display = 'none', loadingText.style.display = 'block', loadingText.innerHTML = text + '<a href=\'javascript:window.location.href=window.location.href\' class=\'ytLink\'>reload</a>';
-}
-window.onblur = function () {
-  inWindow = !1;
-}, window.onfocus = function () {
-  inWindow = !0, player && player.alive && resetMoveDir();
-}, gameCanvas.oncontextmenu = function () {
-  return !1;
-};
-window.onload = () => connectSocketIfReady();
-window.captchaCallback = () => connectSocketIfReady();
-didLoad = true;
-connectSocketIfReady();
-
-function setupServerStatus() {
-  var altServerText, altServerURL, tmpHTML = '',
-    overallTotal = 0;
-  tmpHTML += '<option disabled>All Servers - 100 players</option>', serverBrowser.innerHTML = tmpHTML, 'mohmoh.eu' == location.hostname ? (altServerText = 'Back to MohMoh', altServerURL = '//mohmoh.eu/') : (altServerText = 'Try the sandbox', altServerURL = '//mohmoh.eu/'), document.getElementById('altServer')
-    .innerHTML = '<a href=\'' + altServerURL + '\'>' + altServerText + '<i class=\'material-icons\' style=\'font-size:10px;vertical-align:middle\'>arrow_forward_ios</i></a>';
-}
-
-function updateServerList() {
-  /*
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function () {
-      4 == this.readyState && (200 == this.status ? (window.vultr = JSON.parse(this.responseText), vultrClient.processServers(vultr.servers), setupServerStatus()) : console.error('Failed to load server data with status code:', this.status));
-  }, xmlhttp.open('GET', '/serverData', !0), xmlhttp.send();*/
-}
-serverBrowser.addEventListener('change', UTILS.checkTrusted(function () {
-  let parts = serverBrowser.value.split(':');
-  vultrClient.switchServer(parts[0], parts[1], parts[2]);
-}));
-var preAdInterval = 300000,
-  preAdLastShowTime = 0,
-  preAdGameCount = 0;
-
-function showPreAd() {
-  if (!window.adsbygoogle)
-    return console.log('Failed to load video ad API'), void enterGame();
-  window.adsbygoogle.push({
-    type: 'next',
-    adBreakDone: () => {
-      enterGame();
-    }
-  });
-}
-
-function showItemInfo(item, isWeapon, isStoreItem) {
-  if (player && item)
-    if (UTILS.removeAllChildren(itemInfoHolder), itemInfoHolder.classList.add('visible'), UTILS.generateElement({
-        id: 'itemInfoName',
-        text: UTILS.capitalizeFirst(item.name),
-        parent: itemInfoHolder
-      }), UTILS.generateElement({
-        id: 'itemInfoDesc',
-        text: item.desc,
-        parent: itemInfoHolder
-      }), isStoreItem);
-    else if (isWeapon)
-    UTILS.generateElement({
-      class: 'itemInfoReq',
-      text: item.type ? 'secondary' : 'primary',
-      parent: itemInfoHolder
-    });
-  else {
-    for (var i = 0; i < item.req.length; i += 2)
-      UTILS.generateElement({
-        class: 'itemInfoReq',
-        html: item.req[i] + '<span class=\'itemInfoReqVal\'> x' + item.req[i + 1] + '</span>',
-        parent: itemInfoHolder
-      });
-    item.group.limit && UTILS.generateElement({
-      class: 'itemInfoLmt',
-      text: (player.itemCounts[item.group.id] || 0) + '/' + item.group.limit,
-      parent: itemInfoHolder
-    });
-  } else
-    itemInfoHolder.classList.remove('visible');
-}
-window.adsbygoogle && adsbygoogle.push({
-  preloadAdBreaks: 'on'
-}), window.showPreAd = showPreAd;
-var lastDeath, minimapData, mapMarker, allianceNotifications = [],
-  alliancePlayers = [];
-
-function allianceNotification(sid, name) {
-  allianceNotifications.push({
-    sid: sid,
-    name: name
-  }), updateNotifications();
-}
-
-function updateNotifications() {
-  if (allianceNotifications[0]) {
-    var tmpN = allianceNotifications[0];
-    UTILS.removeAllChildren(noticationDisplay), noticationDisplay.style.display = 'block', UTILS.generateElement({
-      class: 'notificationText',
-      text: tmpN.name,
-      parent: noticationDisplay
-    }), UTILS.generateElement({
-      class: 'notifButton',
-      html: '<i class=\'material-icons\' style=\'font-size:28px;color:#cc5151;\'>&#xE14C;</i>',
-      parent: noticationDisplay,
-      onclick: function () {
-        aJoinReq(0);
-      },
-      hookTouch: !0
-    }), UTILS.generateElement({
-      class: 'notifButton',
-      html: '<i class=\'material-icons\' style=\'font-size:28px;color:#8ecc51;\'>&#xE876;</i>',
-      parent: noticationDisplay,
-      onclick: function () {
-        aJoinReq(1);
-      },
-      hookTouch: !0
-    });
-  } else
-    noticationDisplay.style.display = 'none';
-}
-
-function addAlliance(data) {
-  alliances.push(data), 'block' == allianceMenu.style.display && showAllianceMenu();
-}
-
-function setPlayerTeam(team, isOwner) {
-  player && (player.team = team, player.isOwner = isOwner, 'block' == allianceMenu.style.display && showAllianceMenu());
-}
-
-function setAlliancePlayers(data) {
-  alliancePlayers = data, 'block' == allianceMenu.style.display && showAllianceMenu();
-}
-
-function deleteAlliance(sid) {
-  for (var i = alliances.length - 1; i >= 0; i--)
-    alliances[i].sid == sid && alliances.splice(i, 1);
-  'block' == allianceMenu.style.display && showAllianceMenu();
-}
-
-function showAllianceMenu() {
-  if (player && player.alive) {
-    if (closeChat(), storeMenu.style.display = 'none', allianceMenu.style.display = 'block', UTILS.removeAllChildren(allianceHolder), player.team)
-      for (var i = 0; i < alliancePlayers.length; i += 2)
-        ! function (i) {
-          var tmp = UTILS.generateElement({
-            class: 'allianceItem',
-            style: 'color:' + (alliancePlayers[i] == player.sid ? '#fff' : 'rgba(255,255,255,0.6)'),
-            text: alliancePlayers[i + 1],
-            parent: allianceHolder
-          });
-          player.isOwner && alliancePlayers[i] != player.sid && UTILS.generateElement({
-            class: 'joinAlBtn',
-            text: 'Kick',
-            onclick: function () {
-              kickFromClan(alliancePlayers[i]);
-            },
-            hookTouch: !0,
-            parent: tmp
-          });
-        }(i);
-    else if (alliances.length)
-      for (i = 0; i < alliances.length; ++i)
-        ! function (i) {
-          var tmp = UTILS.generateElement({
-            class: 'allianceItem',
-            style: 'color:' + (alliances[i].sid == player.team ? '#fff' : 'rgba(255,255,255,0.6)'),
-            text: alliances[i].sid,
-            parent: allianceHolder
-          });
-          UTILS.generateElement({
-            class: 'joinAlBtn',
-            text: 'Join',
-            onclick: function () {
-              sendJoin(i);
-            },
-            hookTouch: !0,
-            parent: tmp
-          });
-        }(i);
-    else
-      UTILS.generateElement({
-        class: 'allianceItem',
-        text: 'No Tribes Yet',
-        parent: allianceHolder
-      });
-    UTILS.removeAllChildren(allianceManager), player.team ? UTILS.generateElement({
-      class: 'allianceButtonM',
-      style: 'width: 360px',
-      text: player.isOwner ? 'Delete Tribe' : 'Leave Tribe',
-      onclick: function () {
-        leaveAlliance();
-      },
-      hookTouch: !0,
-      parent: allianceManager
-    }) : (UTILS.generateElement({
-      tag: 'input',
-      type: 'text',
-      id: 'allianceInput',
-      maxLength: 7,
-      placeholder: 'unique name',
-      ontouchstart: function (ev) {
-        ev.preventDefault();
-        var newValue = prompt('unique name', ev.currentTarget.value);
-        ev.currentTarget.value = newValue.slice(0, 7);
-      },
-      parent: allianceManager
-    }), UTILS.generateElement({
-      tag: 'div',
-      class: 'allianceButtonM',
-      style: 'width: 140px;',
-      text: 'Create',
-      onclick: function () {
-        createAlliance();
-      },
-      hookTouch: !0,
-      parent: allianceManager
-    }));
-  }
-}
-
-function aJoinReq(join) {
-  io.send('11', allianceNotifications[0].sid, join), allianceNotifications.splice(0, 1), updateNotifications();
-}
-
-function kickFromClan(sid) {
-  io.send('12', sid);
-}
-
-function sendJoin(index) {
-  io.send('10', alliances[index].sid);
-}
-
-function createAlliance() {
-  io.send('8', document.getElementById('allianceInput')
-    .value);
-}
-
-let waka = 0; // sorry for bad variable name
-
-function leaveAlliance() {
-  allianceNotifications = [], updateNotifications(), io.send('9');
-}
-var tmpPing, mapPings = [];
-
-function pingMap(x, y) {
-  for (var i = 0; i < mapPings.length; ++i)
-    if (!mapPings[i].active) {
-      tmpPing = mapPings[i];
-      break;
-    }
-  tmpPing || (tmpPing = new function () {
-    this.init = function (x, y) {
-      this.scale = 0, this.x = x, this.y = y, this.active = !0;
-    }, this.update = function (ctxt, delta) {
-      this.active && (this.scale += 0.05 * delta, this.scale >= config.mapPingScale ? this.active = !1 : (ctxt.globalAlpha = 1 - Math.max(0, this.scale / config.mapPingScale), ctxt.beginPath(), ctxt.arc(this.x / config.mapScale * mapDisplay.width, this.y / config.mapScale * mapDisplay.width, this.scale, 0, 2 * Math.PI), ctxt.stroke()));
-    };
-  }(), mapPings.push(tmpPing)), tmpPing.init(x, y);
-}
-
-function updateMinimap(data) {
-  minimapData = data;
-}
-var currentStoreIndex = 0;
-
-function updateStoreItems(type, id, index) {
-  index ? type ? player.tailIndex = id : player.tails[id] = 1 : type ? player.skinIndex = id : player.skins[id] = 1, 'block' == storeMenu.style.display && generateStoreList();
-}
-
-function generateStoreList() {
-  if (player) {
-    UTILS.removeAllChildren(storeHolder);
-    for (var index = currentStoreIndex, tmpArray = index ? accessories : hats, i = 0; i < tmpArray.length; ++i)
-      tmpArray[i].dontSell || function (i) {
-        var tmp = UTILS.generateElement({
-          id: 'storeDisplay' + i,
-          class: 'storeItem',
-          onmouseout: function () {
-            showItemInfo();
-          },
-          onmouseover: function () {
-            showItemInfo(tmpArray[i], !1, !0);
-          },
-          parent: storeHolder
-        });
-        UTILS.hookTouchEvents(tmp, !0), UTILS.generateElement({
-          tag: 'img',
-          class: 'hatPreview',
-          src: '../img/' + (index ? 'accessories/access_' : 'hats/hat_') + tmpArray[i].id + (tmpArray[i].topSprite ? '_p' : '') + '.png',
-          parent: tmp
-        }), UTILS.generateElement({
-          tag: 'span',
-          text: tmpArray[i].name,
-          parent: tmp
-        }), (index ? player.tails[tmpArray[i].id] : player.skins[tmpArray[i].id]) ? (index ? player.tailIndex : player.skinIndex) == tmpArray[i].id ? UTILS.generateElement({
-          class: 'joinAlBtn',
-          style: 'margin-top: 5px',
-          text: 'Unequip',
-          onclick: function () {
-            storeEquip(0, index);
-          },
-          hookTouch: !0,
-          parent: tmp
-        }) : UTILS.generateElement({
-          class: 'joinAlBtn',
-          style: 'margin-top: 5px',
-          text: 'Equip',
-          onclick: function () {
-            storeEquip(tmpArray[i].id, index);
-          },
-          hookTouch: !0,
-          parent: tmp
-        }) : (UTILS.generateElement({
-          class: 'joinAlBtn',
-          style: 'margin-top: 5px',
-          text: 'Buy',
-          onclick: function () {
-            storeBuy(tmpArray[i].id, index);
-          },
-          hookTouch: !0,
-          parent: tmp
-        }), UTILS.generateElement({
-          tag: 'span',
-          class: 'itemPrice',
-          text: tmpArray[i].price,
-          parent: tmp
-        }));
-      }(i);
-  }
-}
-
-function storeEquip(id, index) {
-  io.send('13c', 0, id, index);
-}
-
-function storeBuy(id, index) {
-  io.send('13c', 1, id, index);
-}
-
-function hideAllWindows() {
-  storeMenu.style.display = 'none', allianceMenu.style.display = 'none', closeChat();
-}
-
-function updateItems(data, wpn) {
-  data && (wpn ? player.weapons = data : player.items = data);
-  for (var i = 0; i < items.list.length; ++i) {
-    var tmpI = items.weapons.length + i;
-    document.getElementById('actionBarItem' + tmpI)
-      .style.display = player.items.indexOf(items.list[i].id) >= 0 ? 'inline-block' : 'none';
-  }
-  for (i = 0; i < items.weapons.length; ++i)
-    document.getElementById('actionBarItem' + i)
-    .style.display = player.weapons[items.weapons[i].type] == items.weapons[i].id ? 'inline-block' : 'none';
-}
-
-function setUseNativeResolution(useNative) {
-  useNativeResolution = useNative, pixelDensity = useNative && window.devicePixelRatio || 1, nativeResolutionCheckbox.checked = useNative, saveVal('native_resolution', useNative.toString()), resize();
-}
-
-function updateSkinColorPicker() {
-  for (var tmpHTML = '', i = 0; i < config.skinColors.length; ++i)
-    tmpHTML += i == skinColor ? '<div class=\'skinColorItem activeSkin\' style=\'background-color:' + config.skinColors[i] + '\' onclick=\'selectSkinColor(' + i + ')\'></div>' : '<div class=\'skinColorItem\' style=\'background-color:' + config.skinColors[i] + '\' onclick=\'selectSkinColor(' + i + ')\'></div>';
-  skinColorHolder.innerHTML = tmpHTML;
-}
-var chatBox = document.getElementById('chatBox'),
-  chatHolder = document.getElementById('chatHolder');
-
-function toggleChat() {
-  usingTouch ? setTimeout(function () {
-    var chatMessage = prompt('chat message');
-    chatMessage && sendChat(chatMessage);
-  }, 1) : 'block' == chatHolder.style.display ? (chatBox.value && sendChat(chatBox.value), closeChat()) : (storeMenu.style.display = 'none', allianceMenu.style.display = 'none', chatHolder.style.display = 'block', chatBox.focus(), resetMoveDir()), chatBox.value = '';
-}
-
-function sendChat(message) {
-  io.send('ch', message.slice(0, 30));
-}
-
-function closeChat() {
-  chatBox.value = '', chatHolder.style.display = 'none';
-}
-var usingTouch, lastDir, profanityList = [
-  'cunt',
-  'whore',
-  'fuck',
-  'shit',
-  'faggot',
-  'nigger',
-  'nigga',
-  'dick',
-  'vagina',
-  'minge',
-  'cock',
-  'rape',
-  'cum',
-  'sex',
-  'tits',
-  'penis',
-  'clit',
-  'pussy',
-  'meatcurtain',
-  'jizz',
-  'prune',
-  'douche',
-  'wanker',
-  'damn',
-  'bitch',
-  'dick',
-  'fag',
-  'bastard'
-];
-
-const syncChats = new Map(Object.entries({
-  "DROP DEAD NO TRACE": "DROP DEAD NO TRACE",
-  "!sync": "!op"
-  }));
-
-function receiveChat(sid, message) {
-  var tmpPlayer = findPlayerBySID(sid);
-
-  for (const [key, value] of emojis) {
-    message = message.replaceAll(key, value);
-  }
-
-  if (/what\ mod/g.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
-    io.send("ch", "AutoWASM By 0xffabc.");
-  } else if (/ez|bad|noskill|faggot|gay/gm.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
-    message = "me is retarded homo";
-  } else if (message.startsWith("!connect") && player.sid == tmpPlayer.sid) {
-    const playerName = message.split("!connect ")[1];
-    io.send("8", clanNames[Math.floor(clanNames.length * Math.random())]);
-    ownerSid = players.find(e => e && e?.name == playerName)?.sid;
-    if (ownerSid) {
-      setTimeout(() => io.send("ch", "[*] Successfully connected to " + playerName + "!"), 1000);
-    } else setTimeout(() => io.send("ch", "[*] Connection failed!"), 1000);
-  } else if (message.startsWith("!disconnect") && player.sid == tmpPlayer.sid) {
-    ownerSid = null;
-    setTimeout(() => io.send("ch", "[*] Successfully disconnected"), 1000);
-  } else if (tmpPlayer.sid == ownerSid || tmpPlayer.sid == player.sid) {
-    switch (message) {
-      case "!follow":
-        setTimeout(() => io.send("ch", `[*] ${!window.follor ? "Enabling" : "Disabling"} follow module!`), 1000);
-        window.follow = !window.follow;
-        break;
-      case "!bowspam":
-        setTimeout(() => io.send("ch", `[*] ${!window.bowspam ? "Enabling" : "Disabling"} bowspam module!`), 1000);
-        window.bowspam = !window.bowspam;
-        break;
-    }
-  }
-
-  if (syncChats.has(message) && tmpPlayer && sid != player.sid) {
-    if (tmpPlayer.weaponIndex == tmpPlayer.weapons[1]) reverseInsta();
-    else normalInsta();
-  } else if (syncChats.has(message) && sid == player.sid) return;
-
-  tmpPlayer && (tmpPlayer.chatMessage = function (text) {
-    for (var tmpString, i = 0; i < profanityList.length; ++i)
-      if (text.indexOf(profanityList[i]) > -1) {
-        tmpString = '';
-        for (var y = 0; y < profanityList[i].length; ++y)
-          tmpString += tmpString.length ? 'o' : 'M';
-        var re = new RegExp(profanityList[i], 'g');
-        text = text.replace(re, tmpString);
-      }
-    return text;
-  }(message), tmpPlayer.chatCountdown = config.chatCountdown);
-}
-
-function resize() {
-  screenWidth = window.innerWidth, screenHeight = window.innerHeight;
-  var scaleFillNative = Math.max(screenWidth / maxScreenWidth, screenHeight / maxScreenHeight) * pixelDensity;
-  gameCanvas.width = screenWidth * pixelDensity, gameCanvas.height = screenHeight * pixelDensity, gameCanvas.style.width = screenWidth + 'px', gameCanvas.style.height = screenHeight + 'px', mainContext.setTransform(scaleFillNative, 0, 0, scaleFillNative, (screenWidth * pixelDensity - maxScreenWidth * scaleFillNative) / 2, (screenHeight * pixelDensity - maxScreenHeight * scaleFillNative) / 2);
-}
-
-function setUsingTouch(using) {
-  (usingTouch = using) ? guideCard.classList.add('touch'): guideCard.classList.remove('touch');
-}
-
-function touchEnd(ev) {
-  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
-  for (var i = 0; i < ev.changedTouches.length; i++) {
-    var t = ev.changedTouches[i];
-    t.identifier == controllingTouch.id ? (controllingTouch.id = -1, sendMoveDir()) : t.identifier == attackingTouch.id && (attackingTouch.id = -1, player.buildIndex >= 0 && (attackState = 1, sendAtckState()), attackState = 0, sendAtckState());
-  }
-}
-
-function getAttackDir() {
-  return (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2));
-}
-window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsingTouch(!1), window.setUsingTouch = setUsingTouch, gameCanvas.addEventListener('touchmove', UTILS.checkTrusted(function (ev) {
-  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
-  for (var i = 0; i < ev.changedTouches.length; i++) {
-    var t = ev.changedTouches[i];
-    t.identifier == controllingTouch.id ? (controllingTouch.currentX = t.pageX, controllingTouch.currentY = t.pageY, sendMoveDir()) : t.identifier == attackingTouch.id && (attackingTouch.currentX = t.pageX, attackingTouch.currentY = t.pageY, attackState = 1);
-  }
-}), !1), gameCanvas.addEventListener('touchstart', UTILS.checkTrusted(function (ev) {
-  if (!inGame)
-    return ev.preventDefault(), !1;
-  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
-  for (var i = 0; i < ev.changedTouches.length; i++) {
-    var t = ev.changedTouches[i];
-    t.pageX < document.body.scrollWidth / 2 && -1 == controllingTouch.id ? (controllingTouch.id = t.identifier, controllingTouch.startX = controllingTouch.currentX = t.pageX, controllingTouch.startY = controllingTouch.currentY = t.pageY, sendMoveDir()) : t.pageX > document.body.scrollWidth / 2 && -1 == attackingTouch.id && (attackingTouch.id = t.identifier, attackingTouch.startX = attackingTouch.currentX = t.pageX, attackingTouch.startY = attackingTouch.currentY = t.pageY, player.buildIndex < 0 && (attackState = 1, sendAtckState()));
-  }
-}), !1), gameCanvas.addEventListener('touchend', UTILS.checkTrusted(touchEnd), !1), gameCanvas.addEventListener('touchcancel', UTILS.checkTrusted(touchEnd), !1), gameCanvas.addEventListener('touchleave', UTILS.checkTrusted(touchEnd), !1), gameCanvas.addEventListener('mousemove', function (e) {
-  e.preventDefault(), e.stopPropagation(), setUsingTouch(!1), mouseX = e.clientX, mouseY = e.clientY;
-}, !1), gameCanvas.addEventListener('mousedown', function (e) {
-  setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
-  touch = e.button == 0;
-}, !1), gameCanvas.addEventListener('mouseup', function (e) {
-  setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
-}, !1);
-  let touch = 0;
-var keys = {},
-  moveKeys = {
-    KeyW: [0, -1],
-    KeyS: [0, 1],
-    KeyA: [-1, 0],
-    KeyD: [1, 0]
-  };
-
-window.keyEvents = {};
-
-function resetMoveDir() {
-  keys = {}, io.send('rmd');
-}
-
-function keysActive() {
-  return 'block' != allianceMenu.style.display && 'block' != chatHolder.style.display;
-}
-
-function sendAtckState() {
-  player && player.alive && io.send('c', attackState, null);
-}
-window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
-  var keyNum = event.which || event.keyCode || 0;
-  const keyCode = event.code;
-  if (document.activeElement.tagName !== "INPUT") {
-    window.keyEvents[keyCode] = true;
-    window.keyEvents["Switch" + keyCode] = !window.keyEvents["Switch" + keyCode];
-  }
-  "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? io.send('7', 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, io.send('7', 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
-})), window.addEventListener('keyup', UTILS.checkTrusted(function (event) {
-  if (player && player.alive) {
-    var keyNum = event.which || event.keyCode || 0;
-    const keyCode = event.code;
-    "Enter" == keyCode ? toggleChat() : keysActive() && keys[keyCode] && (keys[keyCode] = 0, moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 0, sendAtckState()));
-    window.keyEvents[keyCode] = false;
-  }
-}));
-var lastMoveDir = void 0;
-
-function sendMoveDir() {
-  var newMoveDir = function () {
-    var dx = 0,
-      dy = 0;
-    if (-1 != controllingTouch.id)
-      dx += controllingTouch.currentX - controllingTouch.startX, dy += controllingTouch.currentY - controllingTouch.startY;
-    else
-      for (var key in moveKeys) {
-        var tmpDir = moveKeys[key];
-        dx += !!keys[key] * tmpDir[0], dy += !!keys[key] * tmpDir[1];
-      }
-    return 0 == dx && 0 == dy ? void 0 : UTILS.fixTo(Math.atan2(dy, dx), 2);
-  }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send('33', newMoveDir), storeEquip(11, true), storeEquip(getBiomeHat()), lastMoveDir = newMoveDir);
-}
-
-function sendMapPing() {
-  io.send('14', 1);
-}
-
-function selectToBuild(index, wpn) {
-  io.send('5', index, wpn);
-}
-
-function enterGame() {
-  saveVal('moo_name', nameInput.value), !inGame && io.connected && (inGame = !0, Sound.stop('menu'), showLoadingText('Loading...'), io.send('sp', {
-      name: nameInput.value,
-      moofoll: moofoll,
-      skin: "toString"
-    })),
-    function () {
-      var cookieIcon = document.getElementById('ot-sdk-btn-floating');
-      cookieIcon && (cookieIcon.style.display = 'none');
-    }();
-}
-var firstSetup = !0;
-
-function setupGame(yourSID) {
-  loadingText.style.display = 'none', menuCardHolder.style.display = 'block', mainMenu.style.display = 'none', keys = {}, playerSID = yourSID, attackState = 0, inGame = !0, firstSetup && (firstSetup = !1, gameObjects.length = 0);
-}
-
-function showText(x, y, value, type) {
-  textManager.showText(x, y, 50, 0.18, 500, Math.abs(value), value >= 0 ? '#fff' : '#8ecc51');
-}
-var deathTextScale = 99999;
-
-function killPlayer() {
-  window.insert_000000 && window.insert_000000({
-    shameCount: player.shameCount,
-    reloads: reloads,
-    ping: window.pingTime.toString()
-  });
-  inGame = !1,
-    function () {
-      var cookieIcon = document.getElementById('ot-sdk-btn-floating');
-      cookieIcon && (cookieIcon.style.display = 'block');
-    }();
-  try {
-    factorem.refreshAds([2], !0);
-  } catch (e) {}
-  gameUI.style.display = 'none', hideAllWindows(), lastDeath = {
-    x: player.x,
-    y: player.y
-  }, loadingText.style.display = 'none', diedText.style.display = 'block', diedText.style.fontSize = '0px', deathTextScale = 0, setTimeout(function () {
-    menuCardHolder.style.display = 'block', mainMenu.style.display = 'block', diedText.style.display = 'none';
-  }, config.deathFadeout), updateServerList();
-}
-
-function killObjects(sid) {
-  player && objectManager.removeAllItems(sid);
-}
-
-function killObject(sid) {
-  const object = gameObjects[sid];
-  objectManager.disableBySid(sid);
-  players.find(e => e.sid != player.sid && Math.hypot(player.x - e.x, player.y - e.y) < 180) && autoplace(object, true);
-}
-
-function updateStatusDisplay() {
-  scoreDisplay.innerText = player.points, foodDisplay.innerText = player.food, woodDisplay.innerText = player.wood, stoneDisplay.innerText = player.stone, killCounter.innerText = player.kills;
-}
-var iconSprites = {},
-  icons = [
-    'crown',
-    'skull'
-  ],
-  tmpList = [];
-
-function updateUpgrades(points, age) {
-  if (player.upgradePoints = points, player.upgrAge = age, points > 0) {
-    tmpList.length = 0, UTILS.removeAllChildren(upgradeHolder);
-    for (var i = 0; i < items.weapons.length; ++i)
-      items.weapons[i].age == age && (null == items.weapons[i].pre || true || 0) && (UTILS.generateElement({
-          id: 'upgradeItem' + i,
-          class: 'actionBarItem',
-          onmouseout: function () {
-            showItemInfo();
-          },
-          parent: upgradeHolder
-        })
-        .style.backgroundImage = document.getElementById('actionBarItem' + i)
-        .style.backgroundImage, tmpList.push(i));
-    for (i = 0; i < items.list.length; ++i)
-      if (items.list[i].age == age && (null == items.list[i].pre || true || 0)) {
-        var tmpI = items.weapons.length + i;
-        UTILS.generateElement({
-            id: 'upgradeItem' + tmpI,
-            class: 'actionBarItem',
-            onmouseout: function () {
-              showItemInfo();
-            },
-            parent: upgradeHolder
-          })
-          .style.backgroundImage = document.getElementById('actionBarItem' + tmpI)
-          .style.backgroundImage, tmpList.push(tmpI);
-      }
-    for (i = 0; i < tmpList.length; i++)
-      ! function (i) {
-        var tmpItem = document.getElementById('upgradeItem' + i);
-        tmpItem.onmouseover = function () {
-          items.weapons[i] ? showItemInfo(items.weapons[i], !0) : showItemInfo(items.list[i - items.weapons.length]);
-        }, tmpItem.onclick = UTILS.checkTrusted(function () {
-          io.send('6', i);
-        }), UTILS.hookTouchEvents(tmpItem);
-      }(tmpList[i]);
-    tmpList.length ? (upgradeHolder.style.display = 'block', upgradeCounter.style.display = 'block', upgradeCounter.innerHTML = 'SELECT ITEMS (' + points + ')') : (upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo());
-  } else
-    upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo();
-}
-
-function updateAge(xp, mxp, age) {
-  null != xp && (player.XP = xp), null != mxp && (player.maxXP = mxp), null != age && (player.age = age), age == config.maxAge ? (ageText.innerHTML = 'MAX AGE', ageBarBody.style.width = '100%') : (ageText.innerHTML = 'AGE ' + player.age, ageBarBody.style.width = player.XP / player.maxXP * 100 + '%');
-}
-
-function updateLeaderboard(data) {
-  UTILS.removeAllChildren(leaderboardData);
-  for (var tmpC = 1, i = 0; i < data.length; i += 3)
-    ! function (i) {
-      UTILS.generateElement({
-        class: 'leaderHolder',
-        parent: leaderboardData,
-        children: [
-          UTILS.generateElement({
-            class: 'leaderboardItem',
-            style: 'color:' + (data[i] == playerSID ? '#fff' : 'rgba(255,255,255,0.6)'),
-            text: tmpC + '. ' + ('' != data[i + 1] ? data[i + 1] : 'unknown')
-          }),
-          UTILS.generateElement({
-            class: 'leaderScore',
-            text: UTILS.kFormat(data[i + 2]) || '0'
-          })
-        ]
-      });
-    }(i), tmpC++;
-}
-let lastAttackDir = null;
-
-function renderControl(startX, startY, currentX, currentY) {
-  mainContext.save(), mainContext.setTransform(1, 0, 0, 1, 0, 0), mainContext.scale(pixelDensity, pixelDensity);
-  var controlRadius = 50;
-  mainContext.beginPath(), mainContext.arc(startX, startY, controlRadius, 0, 2 * Math.PI, !1), mainContext.closePath(), mainContext.fillStyle = 'rgba(255, 255, 255, 0.3)', mainContext.fill(), controlRadius = 50;
-  var offsetX = currentX - startX,
-    offsetY = currentY - startY,
-    mag = Math.sqrt(Math.pow(offsetX, 2) + Math.pow(offsetY, 2)),
-    divisor = mag > controlRadius ? mag / controlRadius : 1;
-  offsetX /= divisor, offsetY /= divisor, mainContext.beginPath(), mainContext.arc(startX + offsetX, startY + offsetY, 0.5 * controlRadius, 0, 2 * Math.PI, !1), mainContext.closePath(), mainContext.fillStyle = 'white', mainContext.fill(), mainContext.restore();
-}
-
-function renderProjectiles(layer, xOffset, yOffset) {
-  for (var i = 0; i < projectiles.length; ++i)
-    (tmpObj = projectiles[i])
-    .active && tmpObj.layer == layer && (tmpObj.update(delta), tmpObj.active && isOnScreen(tmpObj.x - xOffset, tmpObj.y - yOffset, tmpObj.scale) && (mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpObj.dir), renderProjectile(0, 0, tmpObj, mainContext, 1), mainContext.restore()));
-}
-var projectileSprites = {};
-
-function renderProjectile(x, y, obj, ctxt, debug) {
-  if (obj.src) {
-    var tmpSrc = items.projectiles[obj.indx].src,
-      tmpSprite = projectileSprites[tmpSrc];
-    tmpSprite || ((tmpSprite = new Image())
-      .onload = function () {
-        this.isLoaded = !0;
-      }, tmpSprite.src = '.././img/weapons/' + tmpSrc + '.png', projectileSprites[tmpSrc] = tmpSprite), tmpSprite.isLoaded && ctxt.drawImage(tmpSprite, x - obj.scale / 2, y - obj.scale / 2, obj.scale, obj.scale);
-  } else
-    1 == obj.indx && (ctxt.fillStyle = '#939393', renderCircle(x, y, obj.scale, ctxt));
-}
-
-function renderWaterBodies(xOffset, yOffset, ctxt, padding) {
-  var tmpW = config.riverWidth + padding,
-    tmpY = config.mapScale / 2 - yOffset - tmpW / 2;
-  tmpY < maxScreenHeight && tmpY + tmpW > 0 && ctxt.fillRect(0, tmpY, maxScreenWidth, tmpW);
-}
-
-function renderGameObjects(layer, xOffset, yOffset) {
-  for (var tmpSprite, tmpX, tmpY, i = 0; i < gameObjects.length; ++i)
-    (tmpObj = gameObjects[i])?.active && (tmpX = tmpObj.x + tmpObj.xWiggle - xOffset, tmpY = tmpObj.y + tmpObj.yWiggle - yOffset, 0 == layer && tmpObj.update(delta), tmpObj.layer == layer && isOnScreen(tmpX, tmpY, tmpObj.scale + (tmpObj.blocker || 0)) && (mainContext.globalAlpha = tmpObj.hideFromEnemy ? 0.6 : 1, tmpObj.isItem ? (tmpSprite = getItemSprite(tmpObj), mainContext.save(), mainContext.translate(tmpX, tmpY), mainContext.rotate(tmpObj.dir), mainContext.drawImage(tmpSprite, -tmpSprite.width / 2, -tmpSprite.height / 2), tmpObj.blocker && (mainContext.strokeStyle = '#db6e6e', mainContext.globalAlpha = 0.3, mainContext.lineWidth = 6, renderCircle(0, 0, tmpObj.blocker, mainContext, !1, !0)), mainContext.restore()) : (tmpSprite = getResSprite(tmpObj), mainContext.drawImage(tmpSprite, tmpX - tmpSprite.width / 2, tmpY - tmpSprite.height / 2))));
-}
-
-const speeds = [300, 400, 400, 300, 300, 700, 300, 100, 400, 600, 400, 1, 700, 230, 700, 1500];
-let lastPoison = Date.now();
-let turretReload = 0;
-const othersReloads  = [];
-
-function getBiomeHat() {
-  const biomeID = player.y >= config.mapScale - config.snowBiomeTop ? 2 : player.y <= config.snowBiomeTop ? 1 : 0;
-
-  switch (biomeID) {
-    case 0:
-      return 12; // forest
-      break;
-    case 1:
-      return 15; // winter
-      break;
-    case 2:
-      return 12; // desert
-      break;
-  }
-}
-
-function gatherAnimation(sid, didHit, index) {
-  (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
-
-  if (sid == ownerSid && normalInsta() == false) {
-    io.send("c", true, players.find(p => p && p?.sid == ownerSid).dir); 
-  }
-  
-  if (sid == player.sid) reloads[waka] = 0;
-  else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = 0;
-
-  const hitHat = breaking ? 40 : ((player.health < 100 && player.health > 60) ? 55 : 7);
-  const hitAcc = (player.health > 50) ? 21 : 18;
-  const idleHat = breaking ? 26 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
-  const idleAcc = players.length >= 2 ? 15 : 11;
-
-  storeEquip(idleHat);
-  storeEquip(idleAcc, true);
-
-  setTimeout(() => {
-    storeEquip(hitHat);
-    storeEquip(hitAcc, true);
-    setTimeout(() => {
-      if (!attackState) {
-        storeEquip(getBiomeHat());
-        storeEquip(idleAcc, true);
-      }
-    }, average);
-  }, speeds[waka] - window.pingTime);
-}
-
-function renderPlayers(xOffset, yOffset, zIndex) {
-  mainContext.globalAlpha = 1;
-  for (var i = 0; i < players.length; ++i)
-    (tmpObj = players[i])
-    .zIndex == zIndex && (tmpObj.animate(delta), tmpObj.visible && (tmpObj.skinRot += 0.002 * delta, tmpDir = ((player == tmpObj) ? getAttackDir() : tmpObj.dir) + tmpObj.dirPlus, mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpDir), renderPlayer(tmpObj, mainContext), mainContext.restore()));
-}
-
-function renderPlayer(e, t) {
-  (t = t || mainContext)
-  .lineWidth = 5.5, t.lineJoin = 'miter';
-  var i = Math.PI / 4 * (items.weapons[e.weaponIndex].armS || 1),
-    n = e.buildIndex < 0 && items.weapons[e.weaponIndex].hndS || 1,
-    s = e.buildIndex < 0 && items.weapons[e.weaponIndex].hndD || 1;
-  if (e.tailIndex > 0 && function (index, ctxt, owner) {
-      if (!(tmpSkin = accessSprites[index])) {
-        var tmpImage = new Image();
-        tmpImage.onload = function () {
-          this.isLoaded = !0, this.onload = null;
-        }, tmpImage.src = '.././img/accessories/access_' + index + '.png', accessSprites[index] = tmpImage, tmpSkin = tmpImage;
-      }
-      var tmpObj = accessPointers[index];
-      if (!tmpObj) {
-        for (var i = 0; i < accessories.length; ++i)
-          if (accessories[i].id == index) {
-            tmpObj = accessories[i];
-            break;
-          }
-        accessPointers[index] = tmpObj;
-      }
-      tmpSkin.isLoaded && (ctxt.save(), ctxt.translate(-20 - (tmpObj.xOff || 0), 0), tmpObj.spin && ctxt.rotate(owner.skinRot), ctxt.drawImage(tmpSkin, -tmpObj.scale / 2, -tmpObj.scale / 2, tmpObj.scale, tmpObj.scale), ctxt.restore());
-    }(e.tailIndex, t, e), e.buildIndex < 0 && !items.weapons[e.weaponIndex].aboveHand && (renderTool(items.weapons[e.weaponIndex], config.weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == items.weapons[e.weaponIndex].projectile || items.weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, items.projectiles[items.weapons[e.weaponIndex].projectile], mainContext)), t.fillStyle = config.skinColors[e.skinColor], renderCircle(e.scale * Math.cos(i), e.scale * Math.sin(i), 14), renderCircle(e.scale * s * Math.cos(-i * n), e.scale * s * Math.sin(-i * n), 14), e.buildIndex < 0 && items.weapons[e.weaponIndex].aboveHand && (renderTool(items.weapons[e.weaponIndex], config.weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == items.weapons[e.weaponIndex].projectile || items.weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, items.projectiles[items.weapons[e.weaponIndex].projectile], mainContext)), e.buildIndex >= 0) {
-    var o = getItemSprite(items.list[e.buildIndex]);
-    t.drawImage(o, e.scale - items.list[e.buildIndex].holdOffset, -o.width / 2);
-  }
-  renderCircle(0, 0, e.scale, t), e.skinIndex > 0 && (t.rotate(Math.PI / 2), function renderSkin(index, ctxt, parentSkin, owner) {
-    if (!(tmpSkin = skinSprites[index])) {
-      var tmpImage = new Image();
-      tmpImage.onload = function () {
-        this.isLoaded = !0, this.onload = null;
-      }, tmpImage.src = '.././img/hats/hat_' + index + '.png', skinSprites[index] = tmpImage, tmpSkin = tmpImage;
-    }
-    var tmpObj = parentSkin || skinPointers[index];
-    if (!tmpObj) {
-      for (var i = 0; i < hats.length; ++i)
-        if (hats[i].id == index) {
-          tmpObj = hats[i];
-          break;
-        }
-      skinPointers[index] = tmpObj;
-    }
-    tmpSkin.isLoaded && ctxt.drawImage(tmpSkin, -tmpObj.scale / 2, -tmpObj.scale / 2, tmpObj.scale, tmpObj.scale), !parentSkin && tmpObj.topSprite && (ctxt.save(), ctxt.rotate(owner.skinRot), renderSkin(index + '_top', ctxt, tmpObj, owner), ctxt.restore());
-  }(e.skinIndex, t, null, e));
-}
-var tmpSkin, skinSprites = {},
-  skinPointers = {},
-  accessSprites = {},
-  accessPointers = {},
-  toolSprites = {};
-
-function renderTool(obj, variant, x, y, ctxt) {
-  var tmpSrc = obj.src + (variant || ''),
-    tmpSprite = toolSprites[tmpSrc];
-  tmpSprite || ((tmpSprite = new Image())
-    .onload = function () {
-      this.isLoaded = !0;
-    }, tmpSprite.src = '.././img/weapons/' + tmpSrc + '.png', toolSprites[tmpSrc] = tmpSprite), tmpSprite.isLoaded && ctxt.drawImage(tmpSprite, x + obj.xOff - obj.length / 2, y + obj.yOff - obj.width / 2, obj.length, obj.width);
-}
-var gameObjectSprites = {};
-
-function getResSprite(obj) {
-  var biomeID = obj.y >= config.mapScale - config.snowBiomeTop ? 2 : obj.y <= config.snowBiomeTop ? 1 : 0,
-    tmpIndex = obj.type + '_' + obj.scale + '_' + biomeID,
-    tmpSprite = gameObjectSprites[tmpIndex];
-  if (!tmpSprite) {
-    var tmpCanvas = document.createElement('canvas');
-    tmpCanvas.width = tmpCanvas.height = 2.1 * obj.scale + 5.5;
-    var tmpContext = tmpCanvas.getContext('2d');
-    if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.rotate(UTILS.randFloat(0, Math.PI)), tmpContext.strokeStyle = outlineColor, tmpContext.lineWidth = 5.5, 0 == obj.type)
-      for (var tmpScale, i = 0; i < 2; ++i)
-        renderStar(tmpContext, 7, tmpScale = tmpObj.scale * (i ? 0.5 : 1), 0.7 * tmpScale), tmpContext.fillStyle = biomeID ? i ? '#fff' : '#e3f1f4' : i ? '#b4db62' : '#9ebf57', tmpContext.fill(), i || tmpContext.stroke();
-    else if (1 == obj.type)
-      if (2 == biomeID)
-        tmpContext.fillStyle = '#606060', renderStar(tmpContext, 6, 0.3 * obj.scale, 0.71 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#89a54c', renderCircle(0, 0, 0.55 * obj.scale, tmpContext), tmpContext.fillStyle = '#a5c65b', renderCircle(0, 0, 0.3 * obj.scale, tmpContext, !0);
-      else {
-        var tmpRange;
-        ! function (ctxt, spikes, outer, inner) {
-          var tmpOuter, rot = Math.PI / 2 * 3,
-            step = Math.PI / 6;
-          ctxt.beginPath(), ctxt.moveTo(0, -inner);
-          for (var i = 0; i < 6; i++)
-            tmpOuter = UTILS.randInt(outer + 0.9, 1.2 * outer), ctxt.quadraticCurveTo(Math.cos(rot + step) * tmpOuter, Math.sin(rot + step) * tmpOuter, Math.cos(rot + 2 * step) * inner, Math.sin(rot + 2 * step) * inner), rot += 2 * step;
-          ctxt.lineTo(0, -inner), ctxt.closePath();
-        }(tmpContext, 0, tmpObj.scale, 0.7 * tmpObj.scale), tmpContext.fillStyle = biomeID ? '#e3f1f4' : '#89a54c', tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = biomeID ? '#6a64af' : '#c15555';
-        var rotVal = mathPI2 / 4;
-        for (i = 0; i < 4; ++i)
-          renderCircle((tmpRange = UTILS.randInt(tmpObj.scale / 3.5, tmpObj.scale / 2.3)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), UTILS.randInt(10, 12), tmpContext);
-      }
-    else
-      2 != obj.type && 3 != obj.type || (tmpContext.fillStyle = 2 == obj.type ? 2 == biomeID ? '#938d77' : '#939393' : '#e0c655', renderStar(tmpContext, 3, obj.scale, obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = 2 == obj.type ? 2 == biomeID ? '#b2ab90' : '#bcbcbc' : '#ebdca3', renderStar(tmpContext, 3, 0.55 * obj.scale, 0.65 * obj.scale), tmpContext.fill());
-    tmpSprite = tmpCanvas, gameObjectSprites[tmpIndex] = tmpSprite;
-  }
-  return tmpSprite;
-}
-var itemSprites = [];
-
-function getItemSprite(obj, asIcon) {
-  var tmpSprite = itemSprites[obj.id];
-  if (!tmpSprite || asIcon) {
-    var tmpCanvas = document.createElement('canvas');
-    tmpCanvas.width = tmpCanvas.height = 2.5 * obj.scale + 5.5 + (items.list[obj.id].spritePadding || 0);
-    var tmpContext = tmpCanvas.getContext('2d');
-    if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.rotate(asIcon ? 0 : Math.PI / 2), tmpContext.strokeStyle = outlineColor, tmpContext.lineWidth = 5.5 * (asIcon ? tmpCanvas.width / 81 : 1), 'apple' == obj.name) {
-      tmpContext.fillStyle = '#c15555', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#89a54c';
-      var leafDir = -Math.PI / 2;
-      ! function (x, y, l, r, ctxt) {
-        var endX = x + 25 * Math.cos(r),
-          endY = y + 25 * Math.sin(r);
-        ctxt.moveTo(x, y), ctxt.beginPath(), ctxt.quadraticCurveTo((x + endX) / 2 + 10 * Math.cos(r + Math.PI / 2), (y + endY) / 2 + 10 * Math.sin(r + Math.PI / 2), endX, endY), ctxt.quadraticCurveTo((x + endX) / 2 - 10 * Math.cos(r + Math.PI / 2), (y + endY) / 2 - 10 * Math.sin(r + Math.PI / 2), x, y), ctxt.closePath(), ctxt.fill(), ctxt.stroke();
-      }(obj.scale * Math.cos(leafDir), obj.scale * Math.sin(leafDir), 0, leafDir + Math.PI / 2, tmpContext);
-    } else if ('cookie' == obj.name) {
-      tmpContext.fillStyle = '#cca861', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#937c4b';
-      for (var rotVal = mathPI2 / (chips = 4), i = 0; i < chips; ++i)
-        renderCircle((tmpRange = UTILS.randInt(obj.scale / 2.5, obj.scale / 1.7)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), UTILS.randInt(4, 5), tmpContext, !0);
-    } else if ('cheese' == obj.name) {
-      var chips, tmpRange;
-      for (tmpContext.fillStyle = '#f4f3ac', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#c3c28b', rotVal = mathPI2 / (chips = 4), i = 0; i < chips; ++i)
-        renderCircle((tmpRange = UTILS.randInt(obj.scale / 2.5, obj.scale / 1.7)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), UTILS.randInt(4, 5), tmpContext, !0);
-    } else if ('wood wall' == obj.name || 'stone wall' == obj.name || 'castle wall' == obj.name) {
-      tmpContext.fillStyle = 'castle wall' == obj.name ? '#83898e' : 'wood wall' == obj.name ? '#a5974c' : '#939393';
-      var sides = 'castle wall' == obj.name ? 4 : 3;
-      renderStar(tmpContext, sides, 1.1 * obj.scale, 1.1 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = 'castle wall' == obj.name ? '#9da4aa' : 'wood wall' == obj.name ? '#c9b758' : '#bcbcbc', renderStar(tmpContext, sides, 0.65 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
-    } else if ('spikes' == obj.name || 'greater spikes' == obj.name || 'poison spikes' == obj.name || 'spinning spikes' == obj.name) {
-      tmpContext.fillStyle = 'poison spikes' == obj.name ? '#7b935d' : '#939393';
-      var tmpScale = 0.6 * obj.scale;
-      renderStar(tmpContext, 'spikes' == obj.name ? 5 : 6, obj.scale, tmpScale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, tmpScale, tmpContext), tmpContext.fillStyle = '#c9b758', renderCircle(0, 0, tmpScale / 2, tmpContext, !0);
-    } else if ('windmill' == obj.name || 'faster windmill' == obj.name || 'power mill' == obj.name)
-      tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#c9b758', renderRectCircle(0, 0, 1.5 * obj.scale, 29, 4, tmpContext), tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, 0.5 * obj.scale, tmpContext);
-    else if ('mine' == obj.name)
-      tmpContext.fillStyle = '#939393', renderStar(tmpContext, 3, obj.scale, obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#bcbcbc', renderStar(tmpContext, 3, 0.55 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
-    else if ('sapling' == obj.name)
-      for (i = 0; i < 2; ++i)
-        renderStar(tmpContext, 7, tmpScale = obj.scale * (i ? 0.5 : 1), 0.7 * tmpScale), tmpContext.fillStyle = i ? '#b4db62' : '#9ebf57', tmpContext.fill(), i || tmpContext.stroke();
-    else if ('pit trap' == obj.name)
-      tmpContext.fillStyle = '#a5974c', renderStar(tmpContext, 3, 1.1 * obj.scale, 1.1 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = outlineColor, renderStar(tmpContext, 3, 0.65 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
-    else if ('boost pad' == obj.name)
-      tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#dbd97d',
-      function (s, ctx) {
-        ctx = ctx || mainContext;
-        var h = s * (Math.sqrt(3) / 2);
-        ctx.beginPath(), ctx.moveTo(0, -h / 2), ctx.lineTo(-s / 2, h / 2), ctx.lineTo(s / 2, h / 2), ctx.lineTo(0, -h / 2), ctx.fill(), ctx.closePath();
-      }(1 * obj.scale, tmpContext);
-    else if ('turret' == obj.name)
-      tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#939393', renderRect(0, -25, 0.9 * obj.scale, 50, tmpContext), renderCircle(0, 0, 0.6 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke();
-    else if ('platform' == obj.name) {
-      tmpContext.fillStyle = '#cebd5f';
-      var tmpS = 2 * obj.scale,
-        tmpW = tmpS / 4,
-        tmpX = -obj.scale / 2;
-      for (i = 0; i < 4; ++i)
-        renderRect(tmpX - tmpW / 2, 0, tmpW, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpX += tmpS / 4;
-    } else
-      'healing pad' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#db6e6e', renderRectCircle(0, 0, 0.65 * obj.scale, 20, 4, tmpContext, !0)) : 'spawn pad' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#71aad6', renderCircle(0, 0, 0.6 * obj.scale, tmpContext)) : 'blocker' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.rotate(Math.PI / 4), tmpContext.fillStyle = '#db6e6e', renderRectCircle(0, 0, 0.65 * obj.scale, 20, 4, tmpContext, !0)) : 'teleporter' == obj.name && (tmpContext.fillStyle = '#7e7f82', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.rotate(Math.PI / 4), tmpContext.fillStyle = '#d76edb', renderCircle(0, 0, 0.5 * obj.scale, tmpContext, !0));
-    tmpSprite = tmpCanvas, asIcon || (itemSprites[obj.id] = tmpSprite);
-  }
-  return tmpSprite;
-}
-
-function renderCircle(x, y, scale, tmpContext, dontStroke, dontFill) {
-  (tmpContext = tmpContext || mainContext)
-  .beginPath(), tmpContext.arc(x, y, scale, 0, 2 * Math.PI), dontFill || tmpContext.fill(), dontStroke || tmpContext.stroke();
-}
-
-function renderStar(ctxt, spikes, outer, inner) {
-  var x, y, rot = Math.PI / 2 * 3,
-    step = Math.PI / spikes;
-  ctxt.beginPath(), ctxt.moveTo(0, -outer);
-  for (var i = 0; i < spikes; i++)
-    x = Math.cos(rot) * outer, y = Math.sin(rot) * outer, ctxt.lineTo(x, y), rot += step, x = Math.cos(rot) * inner, y = Math.sin(rot) * inner, ctxt.lineTo(x, y), rot += step;
-  ctxt.lineTo(0, -outer), ctxt.closePath();
-}
-
-function renderRect(x, y, w, h, ctxt, stroke) {
-  ctxt.fillRect(x - w / 2, y - h / 2, w, h), stroke || ctxt.strokeRect(x - w / 2, y - h / 2, w, h);
-}
-
-function renderRectCircle(x, y, s, sw, seg, ctxt, stroke) {
-  ctxt.save(), ctxt.translate(x, y), seg = Math.ceil(seg / 2);
-  for (var i = 0; i < seg; i++)
-    renderRect(0, 0, 2 * s, sw, ctxt, stroke), ctxt.rotate(Math.PI / seg);
-  ctxt.restore();
-}
-
-function loadGameObject(data) {
-  for (var i = 0; i < data.length;)
-    objectManager.add(data[i], data[i + 1], data[i + 2], data[i + 3], data[i + 4], data[i + 5], items.list[data[i + 6]], !0, data[i + 7] >= 0 ? {
-      sid: data[i + 7]
-    } : null), i += 8;
-}
-
-function wiggleGameObject(dir, sid) {
-  (tmpObj = findObjectBySid(sid)) && (tmpObj.xWiggle += config.gatherWiggle * Math.cos(dir), tmpObj.yWiggle += config.gatherWiggle * Math.sin(dir));
-}
-
-function shootTurret(sid, dir) {
-  (tmpObj = findObjectBySid(sid)) && (tmpObj.dir = dir, tmpObj.xWiggle += config.gatherWiggle * Math.cos(dir + Math.PI), tmpObj.yWiggle += config.gatherWiggle * Math.sin(dir + Math.PI));
-}
-
-function addProjectile(x, y, dir, range, speed, indx, layer, sid) {
-  inWindow && (projectileManager.addProjectile(x, y, dir, range, speed, indx, null, null, layer)
-    .sid = sid);
-  const angle = Math.atan2(y - player.y, x - player.x);
-  if (Math.abs(angle - dir) <= Math.PI / 2) {
-    io.send("33", dir - Math.PI / 2);
-    setTimeout(() => {
-      io.send("33", getMoveDir());
-    }, 222);
-  }
-}
-
-function remProjectile(sid, range) {
-  for (var i = 0; i < projectiles.length; ++i)
-    projectiles[i].sid == sid && (projectiles[i].range = range);
-}
-
-function animateAI(sid) {
-  (tmpObj = findAIBySID(sid)) && tmpObj.startAnim();
-}
-
-function loadAI(data) {
-  for (var i = 0; i < ais.length; ++i)
-    ais[i].forcePos = !ais[i].visible, ais[i].visible = !1;
-  if (data) {
-    var tmpTime = Date.now();
-    for (i = 0; i < data.length;)
-      (tmpObj = findAIBySID(data[i])) ? (tmpObj.index = data[i + 1], tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 2], tmpObj.y2 = data[i + 3], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 4] : tmpObj.d2, tmpObj.d2 = data[i + 4], tmpObj.health = data[i + 5], tmpObj.dt = 0, tmpObj.visible = !0) : ((tmpObj = aiManager.spawn(data[i + 2], data[i + 3], data[i + 4], data[i + 1]))
-        .x2 = tmpObj.x, tmpObj.y2 = tmpObj.y, tmpObj.d2 = tmpObj.dir, tmpObj.health = data[i + 5], aiManager.aiTypes[data[i + 1]].name || (tmpObj.name = config.cowNames[data[i + 6]]), tmpObj.forcePos = !0, tmpObj.sid = data[i], tmpObj.visible = !0), i += 7;
-  }
-}
-var aiSprites = {};
-
-function renderAI(obj, ctxt) {
-  var tmpIndx = obj.index,
-    tmpSprite = aiSprites[tmpIndx];
-  if (!tmpSprite) {
-    var tmpImg = new Image();
-    tmpImg.onload = function () {
-      this.isLoaded = !0, this.onload = null;
-    }, tmpImg.src = '.././img/animals/' + obj.src + '.png', tmpSprite = tmpImg, aiSprites[tmpIndx] = tmpSprite;
-  }
-  if (tmpSprite.isLoaded) {
-    var tmpScale = 1.2 * obj.scale * (obj.spriteMlt || 1);
-    ctxt.drawImage(tmpSprite, -tmpScale, -tmpScale, 2 * tmpScale, 2 * tmpScale);
-  }
-}
-
-function isOnScreen(x, y, s) {
-  return x + offsetCamX + s >= 0 && x + offsetCamX - s <= maxScreenWidth && y + offsetCamY + s >= 0 && y + offsetCamY - s <= maxScreenHeight;
-}
-
-function addPlayer(data, isYou) {
-  var tmpPlayer = function (id) {
-    for (var i = 0; i < players.length; ++i)
-      if (players[i].id == id)
-        return players[i];
-    return null;
-  }(data[0]);
-  tmpPlayer || (tmpPlayer = new Player(data[0], data[1], config, UTILS, projectileManager, objectManager, players, ais, items, hats, accessories), players.push(tmpPlayer)), tmpPlayer.spawn(isYou ? moofoll : null), tmpPlayer.visible = !1, tmpPlayer.x2 = void 0, tmpPlayer.y2 = void 0, tmpPlayer.setData(data), isYou && (camX = (player = tmpPlayer)
-    .x + offsetCamX, camY = player.y + offsetCamY, updateItems(), updateStatusDisplay(), updateAge(), updateUpgrades(0), gameUI.style.display = 'block');
-}
-
-function removePlayer(id) {
-  for (var i = 0; i < players.length; i++)
-    if (players[i].id == id) {
-      players.splice(i, 1);
-      break;
-    }
-}
-
-function updateItemCounts(index, value) {
-  player && (player.itemCounts[index] = value);
-}
-
-function updatePlayerValue(index, value, updateView) {
-  player && (player[index] = value, updateView && updateStatusDisplay());
-}
-
-
-function place(id, angle = getAttackDir(), t = true) {
-  io.send("5", id, false);
-  io.send("c", true, angle);
-  t && io.send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
-}
-
-let lastHeal = Date.now();
-let oldHealth = 100;
-
-function getCookieHealing() {
-  const delta = Date.now() - lastHeal;
-  if (delta < 500) return 0;
-
-  return 5;
-}
-
-function getItemOutheal(item) {
-  switch (item) {
-    case 0:
-      return 25;
-      break;
-    case 1:
-      return 40;
-      break;
-    case 2:
-      return 35 + getCookieHealing();
-      break;
-    default:
-      return 40;
-  }
-};
-
-function heal(healCount) {
-  if (player.health == 100) return;
-  
-  lastHeal = Date.now();
-  const healingItemSid = player.items[0];
-  for (let healingCount = 0; healingCount < healCount; healingCount++) {
-    selectToBuild(healingItemSid, false);
-    io.send("c", true, getAttackDir());
-  };
-  selectToBuild(player.weaponIndex, true);
-  player.buildItem({
-   consume: () => { },
-    scale: 0,
-    x: player.x,
-    y: player.y,
-    dir: 0,
-    id: 0,
-    group: {
-      id: 0,
-      name: 'food',
-      layer: 0
-    }
-  });
-};
-let lastDamage = 0;
-const safeHealDelay = 120;
-let prevHeal = 0;
-
-function healing() {
-  const damage = 100 - player.health;
-  const healingItemSid = player.items[0];
-  const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
-
-  const prevHealEndsIn = Date.now() - prevHeal - window.pingTime;
-  const prevHealFixed = prevHealEndsIn < 0 ? 0 : (prevHealEndsIn > average ? 0 : prevHealEndsIn);
-  const rawHealTimeout = safeHealDelay - window.pingTime / 2;
-  const safeHealTimeout = prevHealFixed ? (
-    rawHealTimeout + prevHealFixed
-  ) : (
-    rawHealTimeout
-  );
-  
-  window.setTimeout(() =>
-    heal(healCount), safeHealTimeout);
-  lastDamage = Date.now();
-  prevHeal = Date.now() + safeHealTimeout;
-}
-
-function updateHealth(sid, value) {
-  (tmpObj = findPlayerBySID(sid)) && (tmpObj.health = value);
-
-  if (sid != player.sid || player.health > oldHealth) {
-    oldHealth = player.health;
-    return;
-  }
-
-  oldHealth = player.health;
-
-  healing();
-}
-
-const cspam = Math.PI / 8;
-
-function getMoveDir() {
-  var newMoveDir = function () {
-    var dx = 0,
-      dy = 0;
-    if (-1 != controllingTouch.id)
-      dx += controllingTouch.currentX - controllingTouch.startX, dy += controllingTouch.currentY - controllingTouch.startY;
-    else
-      for (var key in moveKeys) {
-        var tmpDir = moveKeys[key];
-        dx += !!keys[key] * tmpDir[0], dy += !!keys[key] * tmpDir[1];
-      }
-    return 0 == dx && 0 == dy ? void 0 : UTILS.fixTo(Math.atan2(dy, dx), 2);
-  }();
-  return newMoveDir;
-}
-
-function findObjectAngleScale(object) {
-  const angle = Math.atan2(object.y - player.y, object.x - player.x);
-  const boundary = angle - Math.PI / 4;
-  const boundary1 = angle + Math.PI / 4;
-  const angleScale = Math.abs(Math.PI - boundary - boundary1);
-
-  return angleScale;
-}
-
-function calculateAngle(previous, next) {
-  const angle = Math.atan2(previous.y - player.y, previous.x - player.x);
-  const angle1 = Math.atan2(next.y - player.y, next.x - player.x);
-
-  return (angle + angle1) / 2;
-}
-
-function calculateCenter(angle) {
-  return angle + Math.PI / 2;
-}
-
-function scanFree(intersectingObject, index, sectors, nearestGameObjects, angle) {
-  const previousSector = sectors[index - 1];
-  const nextSector = nearestGameObjects.find( object => object && Math.abs(Math.atan2(object?.y - player.y, object?.x - player.x) - angle + Math.PI / 2) <= Math.PI / 2 );
-
-  if (nextSector && previousSector) return calculateAngle(previousSector, nextSector);
-  else return calculateCenter(angle);
-}
-
-function findFreeAngles() {
-  const freeAngles = [];
-  const sectors = [];
-
-  for (let i = 0; i < Math.PI * 2; i += Math.PI / 2) {
-    const intersectingObject = nearestGameObjects.find( object => 
-      Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - i) <= Math.PI / 2);
-
-    if (intersectingObject) freeAngles.push(scanFree(intersectingObject, nearestGameObjects.indexOf(intersectingObject), sectors, nearestGameObjects, i));
-    else freeAngles.push(i);
-  }
-
-  return freeAngles;
-}
-
-function autoplace(enemy, replace = false) {
-  if (instakilling) return;
-
-  const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
-  const angles = findFreeAngles();
-  const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < config.playerScale + (object?.group?.scale) || 50);
-  angles.forEach(angle => {
-    place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
-  });
-
-  if (preplacableObjects) {
-    preplacableObjects.forEach(object => {
-      if (!object) return;
-      
-      const angle = Math.atan2(object.y - player.y, object.x - player.x);
-      place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
-    });
-  }
-}
-
-let reloads = [];
-
-const sxw = 1920 / 2;
-const sxh = 1080 / 2;
-let tmpTime = Date.now();
-let serverLag = 0;
-let average = 111;
-let current = 111;
-let breaking = false;
-
-function autobreak(trap) {
-  if (instakilling) return;
-  
-  const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
-  const trapAngle = Math.atan2(
-    trap.y - player.y,
-    trap.x - player.x
-  );
-  breaking = true;
-  window.trap = trap;
-  io.send("c", true, trapAngle);
-  io.send("c", false, trapAngle);
-  if (player.weaponIndex != correctWeapon) {
-    io.send("5", waka = correctWeapon, true);
-  }
-}
-
-// biomeHats function
-function biomeHats() {
-  // Your biomeHats code goes here
-}
-
-function normalInsta(c) {
-      const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
-      window.sidFocus = enemy?.sid || 69420;
-      if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
-      if (!enemy) return false;
-      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
-      
-      instakilling = true;
-      if (c) c();
-      storeEquip(7);
-      io.send("ch", "!sync");
-      io.send("5", waka = player.weapons[0], true);
-      io.send("c", true, angle);
-      setTimeout(() => {
-        storeEquip(53);
-        turretReload = 0;
-        io.send("5", waka = player.weapons[1], true);
-        reloads[player.weapons[1]] = 0;
-        io.send("c", true, angle);
-        setTimeout(() => {
-          io.send("5", waka = player.weapons[0], true);
-          io.send("c", false, angle);
-          instakilling = false;
-        }, 1000 / config.clientSendRate / 2);
-      }, 1000 / config.clientSendRate / 2);
-}
-
-function reverseInsta(c) {
-      const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
-      window.sidFocus = enemy?.sid || 69420;
-      if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
-      if (!enemy) return;
-      const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x) - Math.PI;
-      
-      instakilling = true;
-      if (c) c();
-      storeEquip(53);
-      turretReload = 0;
-      io.send("5", waka = player.weapons[1], true);
-      io.send("c", true, angle);
-      io.send("ch", "!sync");
-      reloads[player.weapons[1]] = 0;
-      setTimeout(() => {
-        storeEquip(7);
-        io.send("5", waka = player.weapons[0], true);
-        io.send("c", true, angle);
-        setTimeout(() => {
-          io.send("c", false, angle);
-          instakilling = false;
-        }, 1000 / config.clientSendRate / 2);
-      }, 1000 / config.clientSendRate / 2);
-}
-
-function botFunctions(tmpPlayer) {
-  if (window.follow) {
-    const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
-    const angle_ = Math.atan2(tmpPlayer.y - player.y, tmpPlayer.x - player.x);
-    const dist = Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y);
-
-    if (dist > 150) {
-      io.send("33", angle_);
-      if (player.weaponIndex != correctWeapon) {
-        waka = correctWeapon;
-        io.send("5", waka, true);
-      }
-      storeEquip(11, true);
-    } else {
-      io.send("33", null);
-      storeEquip(15, true);
-      waka = player.weapons[0];
-      io.send("5", player.weapons[0], true);
-    }
-  }
-  if (window.bowspam && !breaking && !instakilling && reloads[player.weapons[1]] == speeds[player.weapons[1]]) {
-    if (player.weaponIndex != player.weapons[1]) {
-      waka = player.weapons[1];
-      io.send("5", waka, true);
-    }
-
-    const lookingX = tmpPlayer.x + Math.cos(tmpPlayer.dir);
-    const lookingY = tmpPlayer.y + Math.sin(tmpPlayer.dir);
-    const angle = Math.atan2(lookingY - player.y, lookingX - player.x);
-    
-    io.send("c", true, angle);
-  }
-}
-
-let lastPing_ = Date.now();
-
-function updatePlayers(data) {
-  queueMicrotask(() =>
-    nearestGameObjects = gameObjects.filter( object => object && Math.hypot(object?.x - player.x, object?.y - player.y) <= config.playerScale + (object?.group?.scale || 50) ));
-  if (Date.now() - lastPing_ > 3000) {
-    lastPing_ = Date.now();
-    pingSocket();
-  }
-  current = Date.now() - tmpTime;
-  average = average / 2 + (Date.now() - tmpTime) / 2;
-  serverLag = Math.abs(1000 / config.serverUpdateRate - average);
-  tmpTime = Date.now();
-  let tt = false;
-  turretReload = Math.min(turretReload + current, 2500);
-  if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
-  else reloads[player.weaponIndex] = speeds[player.weaponIndex];
-
-  if (window.keyEvents.KeyG) place(player.items[5], getAttackDir()); 
-  else if (window.keyEvents.KeyV) place(player.items[2], getAttackDir());
-  else if (window.keyEvents.KeyF) place(player.items[4], getAttackDir()); 
-
-  if (window.keyEvents.ArrowUp) offsetCamY -= (deltaHold += 3);
-  else if (window.keyEvents.ArrowDown) offsetCamY += (deltaHold += 3);
-  else if (window.keyEvents.ArrowLeft) offsetCamX -= (deltaHold += 3);
-  else if (window.keyEvents.ArrowRight) offsetCamX += (deltaHold += 3);
-  else deltaHold = 10;
-  
-  for (i = 0; i < data.length;) {
-    (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
-    if (tmpObj.sid == ownerSid) botFunctions(tmpObj);
-    if (player != tmpObj) tt = tmpObj;
-    try {
-      if ((othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] < speeds[tmpObj.weaponIndex]) {
-        (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] += current;
-      } else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = speeds[tmpObj.weaponIndex];
-    } catch(e) { }
-  }
-  
-  if (tt.skinIndex == 26 || tt.skinIndex == 11) {
-    io.send("c", false, getAttackDir());
-  }
-  
-  if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
-    io.send("c", true, getAttackDir());
-  }
-
-  if (instakilling) return;
-
-  if (window.keyEvents.SwitchKeyR) {
-    normalInsta();
-  } else if (window.keyEvents.SwitchKeyT) {
-    reverseInsta();
-  }
-
-  if (!breaking && reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send("5", (waka = player.weapons[0]), true);
-  else if (!breaking && reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) io.send("5", (waka = player.weapons[1]), true);
-
-  if (!breaking && reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
-    io.send("5", (waka = player.weapons[0]), true);
-  }
-
-  tt && autoplace(tt);
-
-  const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
-
-  if (!trap && breaking) {
-    breaking = false;
-    io.send("c", false, getAttackDir());
-  }
-  if (!trap) return;
-
-  autobreak(trap);
-}
-
-function findPlayerBySID(sid) {
-  for (var i = 0; i < players.length; ++i)
-    if (players[i].sid == sid)
-      return players[i];
-  return null;
-}
-
-function findAIBySID(sid) {
-  for (var i = 0; i < ais.length; ++i)
-    if (ais[i].sid == sid)
-      return ais[i];
-  return null;
-}
-
-function findObjectBySid(sid) {
-  return gameObjects[sid];
-}
-var lastPing = -1;
-
-function pingSocketResponse() {
-  var pingTime = Date.now() - lastPing;
-  window.pingTime = pingTime, pingDisplay.innerText = 'Ping: ' + pingTime + '\xA0ms';
-}
-
-function pingSocket() {
-  lastPing = Date.now(), io.send('pp');
-}
-
-function serverShutdownNotice(countdown) {
-  if (!(countdown < 0)) {
-    var minutes = Math.floor(countdown / 60),
-      seconds = countdown % 60;
-    seconds = ('0' + seconds)
-      .slice(-2), shutdownDisplay.innerText = 'Server restarting in ' + minutes + ':' + seconds, shutdownDisplay.hidden = !1;
-  }
-}
-
-function openLink(link) {
-  window.open(link, '_blank');
-}
-window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
-    window.setTimeout(callback, 1000 / 60);
-  },
-  function () {
-    var tmpMid = config.mapScale / 2;
-    objectManager.add(0, tmpMid, tmpMid + 200, 0, config.treeScales[3], 0), objectManager.add(1, tmpMid, tmpMid - 480, 0, config.treeScales[3], 0), objectManager.add(2, tmpMid + 300, tmpMid + 450, 0, config.treeScales[3], 0), objectManager.add(3, tmpMid - 950, tmpMid - 130, 0, config.treeScales[2], 0), objectManager.add(4, tmpMid - 750, tmpMid - 400, 0, config.treeScales[3], 0), objectManager.add(5, tmpMid - 700, tmpMid + 400, 0, config.treeScales[2], 0), objectManager.add(6, tmpMid + 800, tmpMid - 200, 0, config.treeScales[3], 0), objectManager.add(7, tmpMid - 260, tmpMid + 340, 0, config.bushScales[3], 1), objectManager.add(8, tmpMid + 760, tmpMid + 310, 0, config.bushScales[3], 1), objectManager.add(9, tmpMid - 800, tmpMid + 100, 0, config.bushScales[3], 1), objectManager.add(10, tmpMid - 800, tmpMid + 300, 0, items.list[4].scale, items.list[4].id, items.list[10]), objectManager.add(11, tmpMid + 650, tmpMid - 390, 0, items.list[4].scale, items.list[4].id, items.list[10]), objectManager.add(12, tmpMid - 400, tmpMid - 450, 0, config.rockScales[2], 2);
-  }(),
-  function e() {
-    mainContext.globalCompositeOperation = "source-over";
-    now = Date.now(), delta = now - lastUpdate, lastUpdate = now,
-      function () {
-        if (deathTextScale < 120 && (deathTextScale += 0.1 * delta, diedText.style.fontSize = Math.min(Math.round(deathTextScale), 120) + 'px'), player) {
-          var attackDir = UTILS.getDistance(camX, camY, player.x, player.y),
-            tmpDir = UTILS.getDirection(player.x, player.y, camX, camY),
-            camSpd = Math.min(0.01 * attackDir * delta, attackDir);
-          attackDir > 0.1 ? (camX += camSpd * Math.cos(tmpDir), camY += camSpd * Math.sin(tmpDir)) : (camX = player.x, camY = player.y);
-        } else
-          camX = 100, camY = 100;
-        for (var lastTime = now - 1000 / config.serverUpdateRate, i = 0; i < players.length + ais.length; ++i)
-          if ((tmpObj = players[i] || ais[i - players.length]) && tmpObj.visible)
-            if (tmpObj.forcePos)
-              tmpObj.x = tmpObj.x2, tmpObj.y = tmpObj.y2, tmpObj.dir = tmpObj.d2;
-            else {
-              var total = tmpObj.t2 - tmpObj.t1,
-                ratio = (lastTime - tmpObj.t1) / total;
-              tmpObj.dt += delta;
-              var tmpRate = Math.min(1.7, tmpObj.dt / 170),
-                tmpDiff = tmpObj.x2 - tmpObj.x1;
-              tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
-            }
-        var xOffset = camX - maxScreenWidth / 2 + offsetCamX,
-          yOffset = camY - maxScreenHeight / 2 + offsetCamY;
-        config.snowBiomeTop - yOffset <= 0 && config.mapScale - config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.mapScale - config.snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.snowBiomeTop - yOffset >= 0 ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, config.snowBiomeTop - yOffset), mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, config.snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (config.snowBiomeTop - yOffset))) : (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, config.mapScale - config.snowBiomeTop - yOffset), mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, config.mapScale - config.snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (config.mapScale - config.snowBiomeTop - yOffset))), firstSetup || ((waterMult += waterPlus * config.waveSpeed * delta) >= config.waveMax ? (waterMult = config.waveMax, waterPlus = -1) : waterMult <= 1 && (waterMult = waterPlus = 1), mainContext.globalAlpha = 1, mainContext.fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, config.riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06, mainContext.beginPath();
-        for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 18)
-          x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
-        for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 18)
-          x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));
-        for (mainContext.stroke(), mainContext.globalAlpha = 1, mainContext.strokeStyle = outlineColor, renderGameObjects(-1, xOffset, yOffset), mainContext.globalAlpha = 1, mainContext.lineWidth = 5.5, renderProjectiles(0, xOffset, yOffset), renderPlayers(xOffset, yOffset, 0), mainContext.globalAlpha = 1, i = 0; i < ais.length; ++i)
-          (tmpObj = ais[i])
-          .active && tmpObj.visible && (tmpObj.animate(delta), mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpObj.dir + tmpObj.dirPlus - Math.PI / 2), renderAI(tmpObj, mainContext), mainContext.restore());
-        if (renderGameObjects(0, xOffset, yOffset), renderProjectiles(1, xOffset, yOffset), renderGameObjects(1, xOffset, yOffset), renderPlayers(xOffset, yOffset, 1), renderGameObjects(2, xOffset, yOffset), renderGameObjects(3, xOffset, yOffset), mainContext.fillStyle = '#000', mainContext.globalAlpha = 0.09, xOffset <= 0 && mainContext.fillRect(0, 0, -xOffset, maxScreenHeight), config.mapScale - xOffset <= maxScreenWidth) {
-          var tmpY = Math.max(0, -yOffset);
-          mainContext.fillRect(config.mapScale - xOffset, tmpY, maxScreenWidth - (config.mapScale - xOffset), maxScreenHeight - tmpY);
-        }
-        if (yOffset <= 0 && mainContext.fillRect(-xOffset, 0, maxScreenWidth + xOffset, -yOffset), config.mapScale - yOffset <= maxScreenHeight) {
-          var tmpX = Math.max(0, -xOffset),
-            tmpMin = 0;
-          config.mapScale - xOffset <= maxScreenWidth && (tmpMin = maxScreenWidth - (config.mapScale - xOffset)), mainContext.fillRect(tmpX, config.mapScale - yOffset, maxScreenWidth - tmpX - tmpMin, maxScreenHeight - (config.mapScale - yOffset));
-        }
-        for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext.strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
-          if ((tmpObj = players[i] || ais[i - players.length])
-            .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
-            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
-            if ('' != tmpText) {
-              if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = tmpObj?.sid == window?.sidFocus ? (window.keyEvents.SwitchKeyR ? '#f00' : '#ff0') : '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj.nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown.isLoaded) {
-                var tmpS = config.crownIconScale;
-                tmpX = tmpObj.x - xOffset - tmpS / 2 - mainContext.measureText(tmpText)
-                  .width / 2 - config.crownPad, mainContext.drawImage(iconSprites.crown, tmpX, tmpObj.y - yOffset - tmpObj.scale - config.nameY - tmpS / 2 - 5, tmpS, tmpS);
-              }
-              1 == tmpObj.iconIndex && iconSprites.skull.isLoaded && (tmpS = config.crownIconScale, tmpX = tmpObj.x - xOffset - tmpS / 2 + mainContext.measureText(tmpText)
-                .width / 2 + config.crownPad, mainContext.drawImage(iconSprites.skull, tmpX, tmpObj.y - yOffset - tmpObj.scale - config.nameY - tmpS / 2 - 5, tmpS, tmpS));
-            }
-            tmpObj.health > 0 && (config.healthBarWidth, mainContext.fillStyle = darkOutlineColor, mainContext.roundRect(tmpObj.x - xOffset - config.healthBarWidth - config.healthBarPad, tmpObj.y - yOffset + tmpObj.scale + config.nameY, 2 * config.healthBarWidth + 2 * config.healthBarPad, 17, 8), mainContext.fill(), mainContext.fillStyle = tmpObj == player || tmpObj.team && tmpObj.team == player.team ? '#8ecc51' : '#cc5151', mainContext.roundRect(tmpObj.x - xOffset - config.healthBarWidth, tmpObj.y - yOffset + tmpObj.scale + config.nameY + config.healthBarPad, 2 * config.healthBarWidth * (tmpObj.health / tmpObj.maxHealth), 17 - 2 * config.healthBarPad, 7), mainContext.fill());
-          }
-        for (textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length; ++i)
-          if ((tmpObj = players[i])
-            .visible && tmpObj.chatCountdown > 0) {
-            tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Hammersmith One';
-            var tmpSize = mainContext.measureText(tmpObj.chatMessage);
-            mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
-            var tmpW = tmpSize.width + 17;
-            mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle = '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
-          };
-        !function (delta) {
-          if (player && player.alive) {
-            mapContext.clearRect(0, 0, mapDisplay.width, mapDisplay.height), mapContext.strokeStyle = '#fff', mapContext.lineWidth = 4;
-            for (var i = 0; i < mapPings.length; ++i)
-              (tmpPing = mapPings[i])
-              .update(mapContext, delta);
-            if (mapContext.globalAlpha = 1, mapContext.fillStyle = '#fff', renderCircle(player.x / config.mapScale * mapDisplay.width, player.y / config.mapScale * mapDisplay.height, 7, mapContext, !0), mapContext.fillStyle = 'rgba(255,255,255,0.35)',   true && minimapData)
-              for (i = 0; i < minimapData.length;)
-                renderCircle(minimapData[i] / config.mapScale * mapDisplay.width, minimapData[i + 1] / config.mapScale * mapDisplay.height, 7, mapContext, !0), i += 2;
-            lastDeath && (mapContext.fillStyle = '#fc5553', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign = 'center', mapContext.fillText('x', lastDeath.x / config.mapScale * mapDisplay.width, lastDeath.y / config.mapScale * mapDisplay.height)), mapMarker && (mapContext.fillStyle = '#fff', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign = 'center', mapContext.fillText('x', mapMarker.x / config.mapScale * mapDisplay.width, mapMarker.y / config.mapScale * mapDisplay.height));
-          }
-        }(delta), -1 !== controllingTouch.id && renderControl(controllingTouch.startX, controllingTouch.startY, controllingTouch.currentX, controllingTouch.currentY), -1 !== attackingTouch.id && renderControl(attackingTouch.startX, attackingTouch.startY, attackingTouch.currentX, attackingTouch.currentY);
-      }(), requestAnimFrame(e);
-    mainContext.globalAlpha = Math.min(Math.max(motionBlurLevel, 0), 1);
-    mainContext.globalCompositeOperation = "source-over";
-  }(), window.openLink = openLink, window.aJoinReq = aJoinReq, window.follmoo = function () {
-    moofoll || (moofoll = !0, saveVal('moofoll', 1));
-  }, window.kickFromClan = kickFromClan, window.sendJoin = sendJoin, window.leaveAlliance = leaveAlliance, window.createAlliance = createAlliance, window.storeBuy = storeBuy, window.storeEquip = storeEquip, window.showItemInfo = showItemInfo, window.selectSkinColor = function (index) {
-    skinColor = index, updateSkinColorPicker();
-  }, window.changeStoreIndex = function (index) {
-    currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
-  }, window.config = config;
-
-document.querySelector("#gameName").innerHTML = "AutoWASM";
-
-document.querySelector("body").insertAdjacentHTML("beforeend", `
-<style>
-.menuCard, .menuText, .menuHeader {
-  background: #222222 !important;
-  color: #aaaaaa;
-  border-radius: 2px;
-  transition: all 1s 0s;
-}
-
-.menuCard {
-  box-shadow: 0px 7px #888888;
-  scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5);
-}
-
-.menuCard:hover {
-  transform: scale(1.05);
-}
-
-#nameInput, #enterGame, #serverBrowser {
-  background: #111111 !important;
-  outline: none;
-}
-
-#mainMenu, #linksContainer2, #linksContainer1 {
-  background-color: transparent !important;
-  background-image: none !important;
-  backdrop-filter: none !important;
-  border: 0px !important;
-}
-
-#gameName {
-  color: black !important;
-  text-shadow: 5px 9px 0 #1112 !important;
-}
-
-.menuCard {
-  width: 325px !important;
-  margin: 5px !important;
-  padding: 20px !important;
-  border: 0px !important;
-}
-</style>
-`);
-
-})();
-
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module used 'module' so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/index.js");
+/******/ 	
 /******/ })()
 ;
