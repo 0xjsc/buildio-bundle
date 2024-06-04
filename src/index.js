@@ -759,7 +759,7 @@ function toggleChat() {
 }
 
 function sendChat(message) {
-  io.send('ch', message.slice(0, 30));
+  io.send(packets.SEND_CHAT, message.slice(0, 30));
 }
 
 function closeChat() {
@@ -1071,7 +1071,7 @@ function updateUpgrades(points, age) {
         tmpItem.onmouseover = function () {
           items.weapons[i] ? showItemInfo(items.weapons[i], !0) : showItemInfo(items.list[i - items.weapons.length]);
         }, tmpItem.onclick = UTILS.checkTrusted(function () {
-          io.send('6', i);
+          io.send(packets.UPGRADE, i);
         }), UTILS.hookTouchEvents(tmpItem);
       }(tmpList[i]);
     tmpList.length ? (upgradeHolder.style.display = 'block', upgradeCounter.style.display = 'block', upgradeCounter.innerHTML = 'SELECT ITEMS (' + points + ')') : (upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo());
@@ -1172,7 +1172,7 @@ function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
 
   if (sid == ownerSid && normalInsta() == false) {
-    io.send("c", true, players.find(p => p && p?.sid == ownerSid).dir); 
+    io.send(packets.ATTACK, true, players.find(p => p && p?.sid == ownerSid).dir); 
   }
   
   if (sid == player.sid) reloads[waka] = 0;
@@ -1410,9 +1410,9 @@ function addProjectile(x, y, dir, range, speed, indx, layer, sid) {
     .sid = sid);
   const angle = Math.atan2(y - player.y, x - player.x);
   if (Math.abs(angle - dir) <= Math.PI / 2) {
-    io.send("33", dir - Math.PI / 2);
+    io.send(packets.MOVEMENT, dir - Math.PI / 2);
     setTimeout(() => {
-      io.send("33", getMoveDir());
+      io.send(packets.MOVEMENT, getMoveDir());
     }, 222);
   }
 }
@@ -1486,9 +1486,9 @@ function updatePlayerValue(index, value, updateView) {
 
 
 function place(id, angle = getAttackDir(), t = true) {
-  io.send("5", id, false);
-  io.send("c", true, angle);
-  t && io.send("5", (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
+  io.send(packets.CHANGE_WEAPON, id, false);
+  io.send(packets.ATTACK, true, angle);
+  t && io.send(packets.CHANGE_WEAPON, (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
 }
 
 let lastHeal = Date.now();
@@ -1524,7 +1524,7 @@ function heal(healCount) {
   const healingItemSid = player.items[0];
   for (let healingCount = 0; healingCount < healCount; healingCount++) {
     selectToBuild(healingItemSid, false);
-    io.send("c", true, getAttackDir());
+    io.send(packets.ATTACK, true, getAttackDir());
   };
   selectToBuild(player.weaponIndex, true);
   player.buildItem({
@@ -1679,10 +1679,10 @@ function autobreak(trap) {
   );
   breaking = true;
   window.trap = trap;
-  io.send("c", true, trapAngle);
-  io.send("c", false, trapAngle);
+  io.send(packets.ATTACK, true, trapAngle);
+  io.send(packets.ATTACK, false, trapAngle);
   if (player.weaponIndex != correctWeapon) {
-    io.send("5", waka = correctWeapon, true);
+    io.send(packets.CHANGE_WEAPON, waka = correctWeapon, true);
   }
 }
 
@@ -1701,18 +1701,18 @@ function normalInsta(c) {
       instakilling = true;
       if (c) c();
       storeEquip(7);
-      io.send("ch", "!sync");
-      io.send("5", waka = player.weapons[0], true);
-      io.send("c", true, angle);
+      io.send(packets.SEND_CHAT, "!sync");
+      io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
+      io.send(packets.ATTACK, true, angle);
       setTimeout(() => {
         storeEquip(53);
         turretReload = 0;
-        io.send("5", waka = player.weapons[1], true);
+        io.send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
         reloads[player.weapons[1]] = 0;
-        io.send("c", true, angle);
+        io.send(packets.ATTACK, true, angle);
         setTimeout(() => {
-          io.send("5", waka = player.weapons[0], true);
-          io.send("c", false, angle);
+          io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
+          io.send(packets.ATTACK, false, angle);
           instakilling = false;
         }, 1000 / config.clientSendRate / 2);
       }, 1000 / config.clientSendRate / 2);
@@ -1729,16 +1729,16 @@ function reverseInsta(c) {
       if (c) c();
       storeEquip(53);
       turretReload = 0;
-      io.send("5", waka = player.weapons[1], true);
-      io.send("c", true, angle);
-      io.send("ch", "!sync");
+      io.send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
+      io.send(packets.ATTACK, true, angle);
+      io.send(packets.SEND_CHAT, "!sync");
       reloads[player.weapons[1]] = 0;
       setTimeout(() => {
         storeEquip(7);
-        io.send("5", waka = player.weapons[0], true);
-        io.send("c", true, angle);
+        io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
+        io.send(packets.ATTACK, true, angle);
         setTimeout(() => {
-          io.send("c", false, angle);
+          io.send(packets.ATTACK, false, angle);
           instakilling = false;
         }, 1000 / config.clientSendRate / 2);
       }, 1000 / config.clientSendRate / 2);
@@ -1751,30 +1751,30 @@ function botFunctions(tmpPlayer) {
     const dist = Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y);
 
     if (dist > 150) {
-      io.send("33", angle_);
+      io.send(packets.MOVEMENT, angle_);
       if (player.weaponIndex != correctWeapon) {
         waka = correctWeapon;
-        io.send("5", waka, true);
+        io.send(packets.CHANGE_WEAPON, waka, true);
       }
       storeEquip(11, true);
     } else {
-      io.send("33", null);
+      io.send(packets.MOVEMENT, null);
       storeEquip(15, true);
       waka = player.weapons[0];
-      io.send("5", player.weapons[0], true);
+      io.send(packets.CHANGE_WEAPON, player.weapons[0], true);
     }
   }
   if (window.bowspam && !breaking && !instakilling && reloads[player.weapons[1]] == speeds[player.weapons[1]]) {
     if (player.weaponIndex != player.weapons[1]) {
       waka = player.weapons[1];
-      io.send("5", waka, true);
+      io.send(packets.CHANGE_WEAPON, waka, true);
     }
 
     const lookingX = tmpPlayer.x + Math.cos(tmpPlayer.dir);
     const lookingY = tmpPlayer.y + Math.sin(tmpPlayer.dir);
     const angle = Math.atan2(lookingY - player.y, lookingX - player.x);
     
-    io.send("c", true, angle);
+    io.send(packets.ATTACK, true, angle);
   }
 }
 
@@ -1818,11 +1818,11 @@ function updatePlayers(data) {
   }
   
   if (tt.skinIndex == 26 || tt.skinIndex == 11) {
-    io.send("c", false, getAttackDir());
+    io.send(packets.ATTACK, false, getAttackDir());
   }
   
   if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
-    io.send("c", true, getAttackDir());
+    io.send(packets.ATTACK, true, getAttackDir());
   }
 
   if (instakilling) return;
@@ -1833,11 +1833,11 @@ function updatePlayers(data) {
     reverseInsta();
   }
 
-  if (!breaking && reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send("5", (waka = player.weapons[0]), true);
-  else if (!breaking && reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) io.send("5", (waka = player.weapons[1]), true);
+  if (!breaking && reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
+  else if (!breaking && reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
 
   if (!breaking && reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
-    io.send("5", (waka = player.weapons[0]), true);
+    io.send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
   }
 
   tt && autoplace(tt);
@@ -1846,7 +1846,7 @@ function updatePlayers(data) {
 
   if (!trap && breaking) {
     breaking = false;
-    io.send("c", false, getAttackDir());
+    io.send(packets.ATTACK, false, getAttackDir());
   }
   if (!trap) return;
 
@@ -1878,7 +1878,7 @@ function pingSocketResponse() {
 }
 
 function pingSocket() {
-  lastPing = Date.now(), io.send('pp');
+  lastPing = Date.now(), io.send(packets.PING);
 }
 
 function serverShutdownNotice(countdown) {
