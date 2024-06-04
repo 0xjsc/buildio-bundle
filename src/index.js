@@ -897,8 +897,9 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
 }, false);
 gameCanvas.addEventListener("wheel", function (e) {
-  maxScreenWidth += e.deltaY * 10;
-  maxScreenHeight += e.deltaX * 10;
+  const fixedDelta = e.deltaY > 0 ? 100 : -100;
+  maxScreenWidth += fixedDelta;
+  maxScreenHeight += fixedDelta;
   
   resize();
 }, false);
