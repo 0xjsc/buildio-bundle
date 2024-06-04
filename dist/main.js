@@ -9241,9 +9241,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_data_store_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./js/data/store.js */ "./src/js/data/store.js");
 /* harmony import */ var _js_data_projectile_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./js/data/projectile.js */ "./src/js/data/projectile.js");
 /* harmony import */ var _js_data_projectileManager_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./js/data/projectileManager.js */ "./src/js/data/projectileManager.js");
-/* harmony import */ var _libs_soundManager_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./libs/soundManager.js */ "./src/libs/soundManager.js");
-/* harmony import */ var _vultr_VultrClient_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./vultr/VultrClient.js */ "./src/vultr/VultrClient.js");
-
+/* harmony import */ var _vultr_VultrClient_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./vultr/VultrClient.js */ "./src/vultr/VultrClient.js");
 
 
 
@@ -9261,7 +9259,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const textManager = new _libs_animText_js__WEBPACK_IMPORTED_MODULE_4__["default"].TextManager();
-const vultrClient = new _vultr_VultrClient_js__WEBPACK_IMPORTED_MODULE_15__["default"]("mohmoh.eu", 3000, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].maxPlayers, 5, false);
+const vultrClient = new _vultr_VultrClient_js__WEBPACK_IMPORTED_MODULE_14__["default"]("mohmoh.eu", 3000, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].maxPlayers, 5, false);
 
 window.insert_000000 = _libs_aoe32_js__WEBPACK_IMPORTED_MODULE_0__["default"];
 
@@ -9490,7 +9488,6 @@ function connectSocket(token) {
   }), setupServerStatus(), setTimeout(() => updateServerList(), 3000);
 }
 var canStore = 0,
-  Sound = new _libs_soundManager_js__WEBPACK_IMPORTED_MODULE_14__["default"](_config_js__WEBPACK_IMPORTED_MODULE_5__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"]),
   mathPI = Math.PI,
   mathPI2 = 2 * mathPI;
 
@@ -10200,7 +10197,7 @@ function selectToBuild(index, wpn) {
 }
 
 function enterGame() {
-  saveVal('moo_name', nameInput.value), !inGame && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].connected && (inGame = !0, Sound.stop('menu'), showLoadingText('Loading...'), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('sp', {
+  saveVal('moo_name', nameInput.value), !inGame && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].connected && (inGame = !0, showLoadingText('Loading...'), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send('sp', {
       name: nameInput.value,
       moofoll: moofoll,
       skin: "toString"
@@ -13438,35 +13435,6 @@ const socket = {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (socket);
-
-
-/***/ }),
-
-/***/ "./src/libs/soundManager.js":
-/*!**********************************!*\
-  !*** ./src/libs/soundManager.js ***!
-  \**********************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-const obj = function (config, UTILS) {
-  var tmpSound;
-  this.sounds = [], this.active = !0, this.play = function (id, volume, loop) {
-    volume && this.active && ((tmpSound = this.sounds[id]) || (tmpSound = new Howl({
-      src: '.././sound/' + id + '.mp3'
-    }), this.sounds[id] = tmpSound), loop && tmpSound.isPlaying || (tmpSound.isPlaying = !0, tmpSound.play(), tmpSound.volume((volume || 1) * config.volumeMult), tmpSound.loop(loop)));
-  }, this.toggleMute = function (id, mute) {
-    (tmpSound = this.sounds[id]) && tmpSound.mute(mute);
-  }, this.stop = function (id) {
-    (tmpSound = this.sounds[id]) && (tmpSound.stop(), tmpSound.isPlaying = !1);
-  };
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({ obj });
 
 
 /***/ }),
