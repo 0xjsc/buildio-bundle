@@ -1,4 +1,4 @@
-module.exports.obj = function (config, UTILS) {
+const obj = function (config, UTILS) {
   var tmpSound;
   this.sounds = [], this.active = !0, this.play = function (id, volume, loop) {
     volume && this.active && ((tmpSound = this.sounds[id]) || (tmpSound = new Howl({
@@ -10,3 +10,5 @@ module.exports.obj = function (config, UTILS) {
     (tmpSound = this.sounds[id]) && (tmpSound.stop(), tmpSound.isPlaying = !1);
   };
 };
+
+export default { obj };
