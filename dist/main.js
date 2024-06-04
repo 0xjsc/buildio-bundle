@@ -14064,6 +14064,7 @@ function normalInsta(c) {
       instakilling = true;
       if (c) c();
       storeEquip(7);
+      storeEquip(15, true);
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!sync");
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
@@ -14098,6 +14099,7 @@ function reverseInsta(c) {
       reloads[player.weapons[1]] = 0;
       setTimeout(() => {
         storeEquip(7);
+        storeEquip(15, true);
         _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
         _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
         setTimeout(() => {
