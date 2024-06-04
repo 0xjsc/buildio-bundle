@@ -13,6 +13,8 @@ import store from "./js/data/store.js";
 import Projectile from "./js/data/projectile.js";
 import ProjectileManager from "./js/data/projectileManager.js";
 import Vultr from "./vultr/VultrClient.js";
+import AiManager from "./js/data/aiManager.js";
+import AI from "./js/data/ai.js";
 
 const textManager = new animText.TextManager();
 const vultrClient = new Vultr("mohmoh.eu", 3000, config.maxPlayers, 5, false);
@@ -270,8 +272,6 @@ var useNativeResolution, showPing, delta, now, lastSent, attackState, player, pl
   gameObjects = [],
   projectiles = [],
   projectileManager = new ProjectileManager(Projectile, projectiles, players, ais, objectManager, items, config, UTILS),
-  AiManager = require(/*! ./js/data/aiManager.js */ "./js/data/aiManager.js"),
-  AI = require(/*! ./js/data/ai.js */ "./js/data/ai.js"),
   aiManager = new AiManager(ais, AI, players, items, null, config, UTILS),
   waterMult = 1,
   waterPlus = 0,
