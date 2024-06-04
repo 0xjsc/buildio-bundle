@@ -12378,6 +12378,27 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const packets = {
+  PING: "pp",
+  REGISTER: "budv",
+  ACCEPT_CLAN_JOIN: "11",
+  SEND_CLAN_JOIN: "10",
+  CLAN_KICK: "12",
+  CLAN_CREATE: "8",
+  CLAN_LEAVE: "9",
+  STORE_EQUIP: "13c",
+  SEND_CHAT: "ch",
+  ATTACK: "c",
+  AIM: "2",
+  RESET_MOVE_DIR: "rmd",
+  FREEZE: "7",
+  MAP_PING: "14",
+  MOVEMENT: "33",
+  CHANGE_WEAPON: "5",
+  SPAWN: "sp",
+  UPGRADE: "6"
+}
+
 const textManager = new _libs_animText_js__WEBPACK_IMPORTED_MODULE_4__["default"].TextManager();
 const vultrClient = new _vultr_VultrClient_js__WEBPACK_IMPORTED_MODULE_14__["default"]("mohmoh.eu", 3000, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].maxPlayers, 5, false);
 
