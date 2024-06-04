@@ -1,4 +1,5 @@
-module.exports.groups = [{
+const items = {};
+items.groups = [{
     id: 0,
     name: 'food',
     layer: 0
@@ -94,7 +95,7 @@ module.exports.groups = [{
     limit: 2,
     layer: -1
   }
-], exports.projectiles = [{
+], items.projectiles = [{
     indx: 0,
     layer: 0,
     src: 'arrow_1',
@@ -142,7 +143,7 @@ module.exports.groups = [{
     scale: 160,
     range: 1400
   }
-], module.exports.weapons = [{
+], items.weapons = [{
     id: 0,
     type: 0,
     name: 'tool hammer',
@@ -443,8 +444,8 @@ module.exports.groups = [{
     spdMult: 0.6,
     speed: 1500
   }
-], module.exports.list = [{
-    group: module.exports.groups[0],
+], items.list = [{
+    group: items.groups[0],
     name: 'apple',
     desc: 'restores 20 health when consumed',
     req: [
@@ -459,7 +460,7 @@ module.exports.groups = [{
   },
   {
     age: 3,
-    group: module.exports.groups[0],
+    group: items.groups[0],
     name: 'cookie',
     desc: 'restores 40 health when consumed',
     req: [
@@ -474,7 +475,7 @@ module.exports.groups = [{
   },
   {
     age: 7,
-    group: module.exports.groups[0],
+    group: items.groups[0],
     name: 'cheese',
     desc: 'restores 30 health and another 50 over 5 seconds',
     req: [
@@ -488,7 +489,7 @@ module.exports.groups = [{
     holdOffset: 15
   },
   {
-    group: module.exports.groups[1],
+    group: items.groups[1],
     name: 'wood wall',
     desc: 'provides protection for your village',
     req: [
@@ -503,7 +504,7 @@ module.exports.groups = [{
   },
   {
     age: 3,
-    group: module.exports.groups[1],
+    group: items.groups[1],
     name: 'stone wall',
     desc: 'provides improved protection for your village',
     req: [
@@ -518,7 +519,7 @@ module.exports.groups = [{
   {
     age: 7,
     pre: 1,
-    group: module.exports.groups[1],
+    group: items.groups[1],
     name: 'castle wall',
     desc: 'provides powerful protection for your village',
     req: [
@@ -531,7 +532,7 @@ module.exports.groups = [{
     placeOffset: -5
   },
   {
-    group: module.exports.groups[2],
+    group: items.groups[2],
     name: 'spikes',
     desc: 'damages enemies when they touch them',
     req: [
@@ -549,7 +550,7 @@ module.exports.groups = [{
   },
   {
     age: 5,
-    group: module.exports.groups[2],
+    group: items.groups[2],
     name: 'greater spikes',
     desc: 'damages enemies when they touch them',
     req: [
@@ -568,7 +569,7 @@ module.exports.groups = [{
   {
     age: 9,
     pre: 1,
-    group: module.exports.groups[2],
+    group: items.groups[2],
     name: 'poison spikes',
     desc: 'poisons enemies when they touch them',
     req: [
@@ -588,7 +589,7 @@ module.exports.groups = [{
   {
     age: 9,
     pre: 2,
-    group: module.exports.groups[2],
+    group: items.groups[2],
     name: 'spinning spikes',
     desc: 'damages enemies when they touch them',
     req: [
@@ -606,7 +607,7 @@ module.exports.groups = [{
     placeOffset: -5
   },
   {
-    group: module.exports.groups[3],
+    group: items.groups[3],
     name: 'windmill',
     desc: 'generates gold over time',
     req: [
@@ -627,7 +628,7 @@ module.exports.groups = [{
   {
     age: 5,
     pre: 1,
-    group: module.exports.groups[3],
+    group: items.groups[3],
     name: 'faster windmill',
     desc: 'generates more gold over time',
     req: [
@@ -648,7 +649,7 @@ module.exports.groups = [{
   {
     age: 8,
     pre: 1,
-    group: module.exports.groups[3],
+    group: items.groups[3],
     name: 'power mill',
     desc: 'generates more gold over time',
     req: [
@@ -668,7 +669,7 @@ module.exports.groups = [{
   },
   {
     age: 5,
-    group: module.exports.groups[4],
+    group: items.groups[4],
     type: 2,
     name: 'mine',
     desc: 'allows you to mine stone',
@@ -685,7 +686,7 @@ module.exports.groups = [{
   },
   {
     age: 5,
-    group: module.exports.groups[11],
+    group: items.groups[11],
     type: 0,
     name: 'sapling',
     desc: 'allows you to farm wood',
@@ -701,7 +702,7 @@ module.exports.groups = [{
   },
   {
     age: 4,
-    group: module.exports.groups[5],
+    group: items.groups[5],
     name: 'pit trap',
     desc: 'pit that traps enemies if they walk over it',
     req: [
@@ -721,7 +722,7 @@ module.exports.groups = [{
   },
   {
     age: 4,
-    group: module.exports.groups[6],
+    group: items.groups[6],
     name: 'boost pad',
     desc: 'provides boost when stepped on',
     req: [
@@ -740,7 +741,7 @@ module.exports.groups = [{
   },
   {
     age: 7,
-    group: module.exports.groups[7],
+    group: items.groups[7],
     doUpdate: !0,
     name: 'turret',
     desc: 'defensive structure that shoots at enemies',
@@ -760,7 +761,7 @@ module.exports.groups = [{
   },
   {
     age: 7,
-    group: module.exports.groups[8],
+    group: items.groups[8],
     name: 'platform',
     desc: 'platform to shoot over walls and cross over water',
     req: [
@@ -776,7 +777,7 @@ module.exports.groups = [{
   },
   {
     age: 7,
-    group: module.exports.groups[9],
+    group: items.groups[9],
     name: 'healing pad',
     desc: 'standing on it will slowly heal you',
     req: [
@@ -795,7 +796,7 @@ module.exports.groups = [{
   },
   {
     age: 9,
-    group: module.exports.groups[10],
+    group: items.groups[10],
     name: 'spawn pad',
     desc: 'you will spawn here when you die but it will dissapear',
     req: [
@@ -813,7 +814,7 @@ module.exports.groups = [{
   },
   {
     age: 7,
-    group: module.exports.groups[12],
+    group: items.groups[12],
     name: 'blocker',
     desc: 'blocks building in radius',
     req: [
@@ -832,7 +833,7 @@ module.exports.groups = [{
   },
   {
     age: 7,
-    group: module.exports.groups[13],
+    group: items.groups[13],
     name: 'teleporter',
     desc: 'teleports you to a random point on the map',
     req: [
@@ -850,5 +851,7 @@ module.exports.groups = [{
     placeOffset: -5
   }
 ];
-for (var i = 0; i < module.exports.list.length; ++i)
-  module.exports.list[i].id = i, module.exports.list[i].pre && (module.exports.list[i].pre = i - module.exports.list[i].pre);
+for (var i = 0; i < items.list.length; ++i)
+  items.list[i].id = i, items.list[i].pre && (items.list[i].pre = i - items.list[i].pre);
+
+export default items;
