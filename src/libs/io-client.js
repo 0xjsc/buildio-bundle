@@ -1,4 +1,4 @@
-module.exports = {
+const socket = {
   socket: null,
   connected: false,
   socketId: -1,
@@ -47,3 +47,5 @@ module.exports = {
     this.socket.close();
   }
 }
+
+export default socket;
