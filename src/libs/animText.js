@@ -1,4 +1,4 @@
-module.exports.AnimText = function () {
+function AnimText() {
   this.init = function (x, y, scale, speed, life, text, color) {
     this.x = x, this.y = y, this.color = color, this.scale = scale, this.startScale = this.scale, this.maxScale = 1.5 * scale, this.scaleSpeed = 0.1, this.speed = 0.05, this.life = life, this.text = text;
   }, this.update = function (delta) {
@@ -6,7 +6,8 @@ module.exports.AnimText = function () {
   }, this.render = function (ctxt, xOff, yOff) {
     ctxt.fillStyle = this.color, ctxt.font = this.scale + 'px Hammersmith One', ctxt.fillText(this.text, this.x - xOff, this.y - yOff);
   };
-}, module.exports.TextManager = function () {
+};
+function TextManager() {
   this.texts = [], this.update = function (delta, ctxt, xOff, yOff) {
     ctxt.textBaseline = 'middle', ctxt.textAlign = 'center';
     for (var i = 0; i < this.texts.length; ++i)
@@ -20,3 +21,8 @@ module.exports.AnimText = function () {
     tmpText || (tmpText = new module.exports.AnimText(), this.texts.push(tmpText)), tmpText.init(x, y, scale, speed, life, text, color);
   };
 };
+
+export default {
+  AnimText,
+  TextManager
+}
