@@ -1,4 +1,6 @@
-module.exports.hats = [{
+const store = {};
+
+store.hats = [{
     id: 45,
     name: 'Shame!',
     dontSell: !0,
@@ -362,7 +364,7 @@ module.exports.hats = [{
     spdMult: 1.1,
     invisTimer: 1000
   }
-], module.exports.accessories = [{
+], store.accessories = [{
     id: 12,
     name: 'Snowball',
     price: 1000,
@@ -530,3 +532,5 @@ module.exports.hats = [{
     dmg: 0.25
   }
 ];
+
+export default store;
