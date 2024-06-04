@@ -1,4 +1,4 @@
-module.exports = function (players, ais, objectManager, items, config, UTILS, server) {
+export default function (players, ais, objectManager, items, config, UTILS, server) {
   this.init = function (indx, x, y, dir, spd, dmg, rng, scl, owner) {
     this.active = !0, this.indx = indx, this.x = x, this.y = y, this.dir = dir, this.skipMov = !0, this.speed = spd, this.dmg = dmg, this.scale = scl, this.range = rng, this.owner = owner, server && (this.sentTo = {});
   };
