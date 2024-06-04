@@ -1,4 +1,4 @@
-module.exports = function (Projectile, projectiles, players, ais, objectManager, items, config, UTILS, server) {
+export default function (Projectile, projectiles, players, ais, objectManager, items, config, UTILS, server) {
   this.addProjectile = function (x, y, dir, range, speed, indx, owner, ignoreObj, layer) {
     for (var tmpProj, tmpData = items.projectiles[indx], i = 0; i < projectiles.length; ++i)
       if (!projectiles[i].active) {
