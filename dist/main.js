@@ -14482,13 +14482,25 @@ Bow spamming module: <span onclick = "window.bowspam = !window.bowspam; this.inn
 Auto-sync: ON <br> <br>
 
 !connect <username> - Connect to a user to sync with <br>
+!disconnect - Disconnect from the user <br>
 !bowspam - Start bowspam module <br>
 !follow - Follow the player <br>
 
 <div align = "right"> @0xffabc </div>
 `;
 
-document.getElementById("syncBtn").onclick = () => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!connect " + document.getElementById("username_").value);
+document.getElementById("syncBtn").onclick = function e() {
+  if (this.innerHTML == "Connect") {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!connect " + document.getElementById("username_").value);
+    this.innerHTML = "Disconnect";
+  } else if (this.innerHTML == "Disconnect") {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!disconnect");
+    this.innerHTML = "Connect";
+  } else {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!connect " + document.getElementById("username_").value);
+    this.innerHTML = "Disconnect";
+  }
+}
 
 })();
 
