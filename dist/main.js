@@ -14147,9 +14147,9 @@ function botFunctions(tmpPlayer) {
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka, true);
     }
 
-    if (reloads[player.weapons[1]] > speeds[player.weapons[1]] - window.pingTime && player.skinIndex != 1) {
+    if (reloads[player.weapons[1]] > speeds[player.weapons[1]] / 2 && player.skinIndex != 1) {
       storeEquip(1);
-    } else if (reloads[player.weapons[1]] < speeds[player.weapons[1]] - window.pingTime && player.skinIndex != 20) {
+    } else if (player.skinIndex != 20) {
       storeEquip(20);
     }
 
