@@ -1498,6 +1498,7 @@ function updatePlayerValue(index, value, updateView) {
 function place(id, angle = getAttackDir(), t = true) {
   io.send(packets.CHANGE_WEAPON, id, false);
   io.send(packets.ATTACK, true, angle);
+  if (!attackState) io.send(packets.CHANGE_WEAPON, waka, true);
 }
 
 let lastHeal = Date.now();
@@ -1847,8 +1848,7 @@ function updatePlayers(data) {
   }
 
   tt && autoplace(tt);
-  io.send(packets.CHANGE_WEAPON, (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
-  if (!attackState) io.send(packets.ATTACK, false, getAttackDir());
+  if (attackState) io.send(packets.CHANGE_WEAPON, (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
 
   const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
 
