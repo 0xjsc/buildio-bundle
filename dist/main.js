@@ -13234,6 +13234,7 @@ function receiveChat(sid, message) {
 }
 
 function resize() {
+  gridDelta = maxScreenHeight / 18;
   screenWidth = window.innerWidth, screenHeight = window.innerHeight;
   var scaleFillNative = Math.max(screenWidth / maxScreenWidth, screenHeight / maxScreenHeight) * pixelDensity;
   gameCanvas.width = screenWidth * pixelDensity, gameCanvas.height = screenHeight * pixelDensity, gameCanvas.style.width = screenWidth + 'px', gameCanvas.style.height = screenHeight + 'px', mainContext.setTransform(scaleFillNative, 0, 0, scaleFillNative, (screenWidth * pixelDensity - maxScreenWidth * scaleFillNative) / 2, (screenHeight * pixelDensity - maxScreenHeight * scaleFillNative) / 2);
@@ -14270,6 +14271,8 @@ function openLink(link) {
   window.open(link, '_blank');
 }
 
+let gridDelta = maxScreenHeight / 18;
+
 function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
   if (player) {
@@ -14304,9 +14307,9 @@ function render() {
       .fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(
         xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06
     , mainContext.beginPath();
-  for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 18)
+  for (var x = -camX; x < maxScreenWidth; x += gridDelta)
     x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
-  for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 18)
+  for (var y = -camY; y < maxScreenHeight; y += gridDelta)
     x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));
   for (mainContext.stroke(), mainContext.globalAlpha = 1, mainContext.strokeStyle = outlineColor, renderGameObjects(-1, xOffset, yOffset), mainContext
     .globalAlpha = 1, mainContext.lineWidth = 5.5, renderProjectiles(0, xOffset, yOffset), renderPlayers(xOffset, yOffset, 0), mainContext.globalAlpha = 1, i =
@@ -14373,16 +14376,7 @@ function render() {
         renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height, 7, mapContext, !0), i +=
         2;
   }
-  if (!mapMarker || !player) return window.requestAnimationFrame(render);
-  
-  mainContext.save();
-  mainContext.beginPath();
-  mainContext.fillStyle = "rgb(255, 0, 0)";
-  mainContext.moveTo(player.x - xOffset, player.y - yOffset);
-  mainContext.lineTo(mapMarker.x - xOffset, mapMarker.y - yOffset);
-  mainContext.closePath();
-  mainContext.fill();
-  mainContext.restore();
+
   window.requestAnimationFrame(render);
 };
 
