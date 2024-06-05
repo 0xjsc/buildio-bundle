@@ -14474,10 +14474,10 @@ menu.style = `
   position: fixed;
   background-color: black;
   box-shadow: 2px 2px 12px black;
-  height: 330px;
+  height: 290px;
   width: 250px;
   top: 90px;
-  left: 896px;
+  right: 90px;
   z-index: 10;
   border: 5px solid transparent;
   border-image: linear-gradient(to bottom right, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
