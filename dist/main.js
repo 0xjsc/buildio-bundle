@@ -14270,6 +14270,8 @@ function openLink(link) {
   window.open(link, '_blank');
 }
 
+var i = 0;
+
 function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
   if (player) {
