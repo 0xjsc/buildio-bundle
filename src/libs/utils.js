@@ -13,7 +13,10 @@ UTILS.randInt = function (min, max) {
 }, UTILS.decel = function (val, cel) {
   return val > 0 ? val = Math.max(0, val - cel) : val < 0 && (val = Math.min(0, val + cel)), val;
 }, UTILS.getDistance = function (x1, y1, x2, y2) {
-  return mathSQRT((x2 -= x1) * x2 + (y2 -= y1) * y2);
+  const dx = Math.abs(x1 - x2);
+  const dy = Math.abs(y1 - y2);
+
+  return dx + dy;
 }, UTILS.getDirection = function (x1, y1, x2, y2) {
   return mathATAN2(y1 - y2, x1 - x2);
 }, UTILS.getAngleDist = function (a, b) {
