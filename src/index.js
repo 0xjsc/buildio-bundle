@@ -1909,12 +1909,13 @@ function render() {
   if (player) {
     attackDir = UTILS.getDistance(camX, camY, player.x, player.y);
     tmp_Dir = UTILS.getDirection(player.x, player.y, camX, camY);
-    
+
     camSpd = Math.min(0.01 * attackDir * delta, attackDir);
     if (attackDir > 0.1) {
       camX += camSpd * Math.cos(tmp_Dir);
       camY += camSpd * Math.sin(tmp_Dir);
-    } else {
+    }
+    else {
       camX = player.x;
       camY = player.y;
     }
@@ -1963,7 +1964,7 @@ function render() {
         tmpObj.x = tmpObj.x2, tmpObj.y = tmpObj.y2, tmpObj.dir = tmpObj.d2;
       else {
         var total = tmpObj.t2 - tmpObj.t1
-          , ratio = (tmpTime - tmpObj.t1) / total;
+          , ratio = (now - 111 - tmpObj.t1) / total;
         tmpObj.dt += delta;
         var tmpRate = Math.min(1.7, tmpObj.dt / 170)
           , tmpDiff = tmpObj.x2 - tmpObj.x1;
@@ -1980,10 +1981,11 @@ function render() {
         mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle =
           '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
       }
-      
+
       var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
       if ('' != tmpText) {
-        if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj
+        if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext
+          .textAlign = 'center', mainContext.lineWidth = tmpObj
           .nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config
             .nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown
           .isLoaded) {
@@ -2003,11 +2005,10 @@ function render() {
           .x - xOffset - config.healthBarWidth, tmpObj.y - yOffset + tmpObj.scale + config.nameY + config.healthBarPad, 2 * config.healthBarWidth * (tmpObj
             .health / tmpObj.maxHealth), 17 - 2 * config.healthBarPad, 7), mainContext.fill());
     }
+
   if (player && player.alive) {
     mapContext.clearRect(0, 0, mapDisplay.width, mapDisplay.height), mapContext.strokeStyle = '#fff', mapContext.lineWidth = 4;
-    for (var i = 0; i < mapPings.length; ++i)
-      (tmpPing = mapPings[i])
-      .update(mapContext, delta);
+
     if (mapContext.globalAlpha = 1, mapContext.fillStyle = '#fff', renderCircle(player.x / config.mapScale * mapDisplay.width, player.y / config.mapScale *
         mapDisplay.height, 7, mapContext, !0), mapContext.fillStyle = 'rgba(255,255,255,0.35)', true && minimapData)
       for (i = 0; i < minimapData.length;)
@@ -2017,7 +2018,6 @@ function render() {
 
   window.requestAnimationFrame(render);
 };
-
 render();
 
 window.aJoinReq = aJoinReq;
