@@ -14150,6 +14150,7 @@ function botFunctions(tmpPlayer) {
   }
 }
 
+let attackDir = 0, tmp_Dir = 0, camSpd = 0;
 let lastPing_ = Date.now();
 
 function updatePlayers(data) {
@@ -14158,13 +14159,14 @@ function updatePlayers(data) {
   if (Date.now() - lastPing_ > 3000) {
     lastPing_ = Date.now();
     pingSocket();
-  }
+  };
+  
   if (player) {
-    var attackDir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDistance(camX, camY, player.x, player.y),
-    tmpDir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDirection(player.x, player.y, camX, camY),
+    attackDir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDistance(camX, camY, player.x, player.y),
+    tmp_Dir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDirection(player.x, player.y, camX, camY),
     camSpd = Math.min(0.01 * attackDir * delta, attackDir);
-    attackDir > 0.1 ? (camX += camSpd * Math.cos(tmpDir), camY += camSpd * Math.sin(tmpDir)) : (camX = player.x, camY = player.y);
-  }
+  };
+  
   current = Date.now() - tmpTime;
   average = average / 2 + (Date.now() - tmpTime) / 2;
   serverLag = Math.abs(1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].serverUpdateRate - average);
@@ -14268,87 +14270,128 @@ function serverShutdownNotice(countdown) {
 function openLink(link) {
   window.open(link, '_blank');
 }
-window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
-    window.setTimeout(callback, 1000 / 60);
-  },
-  function e() {
-    now = Date.now(), delta = now - lastUpdate, lastUpdate = now,
-      function () {
-        for (var lastTime = tmpTime, i = 0; i < players.length + ais.length; ++i)
-          if ((tmpObj = players[i] || ais[i - players.length]) && tmpObj.visible)
-            if (tmpObj.forcePos)
-              tmpObj.x = tmpObj.x2, tmpObj.y = tmpObj.y2, tmpObj.dir = tmpObj.d2;
-            else {
-              var total = tmpObj.t2 - tmpObj.t1,
-                ratio = (lastTime - tmpObj.t1) / total;
-              tmpObj.dt += delta;
-              var tmpRate = Math.min(1.7, tmpObj.dt / 170),
-                tmpDiff = tmpObj.x2 - tmpObj.x1;
-              tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
-            }
-        var xOffset = camX - maxScreenWidth / 2 + offsetCamX,
-          yOffset = camY - maxScreenHeight / 2 + offsetCamY;
-        _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset <= 0 && _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= 0 ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset))) : (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset))), firstSetup || ((waterMult += waterPlus * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveSpeed * delta) >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveMax ? (waterMult = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveMax, waterPlus = -1) : waterMult <= 1 && (waterMult = waterPlus = 1), mainContext.fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06, mainContext.beginPath();
-        for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 4)
-          x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
-        for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 4)
-          x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));
-        for (mainContext.stroke(), mainContext.globalAlpha = 1, mainContext.strokeStyle = outlineColor, renderGameObjects(-1, xOffset, yOffset), mainContext.globalAlpha = 1, mainContext.lineWidth = 5.5, renderProjectiles(0, xOffset, yOffset), renderPlayers(xOffset, yOffset, 0), mainContext.globalAlpha = 1, i = 0; i < ais.length; ++i)
-          (tmpObj = ais[i])
-          .active && tmpObj.visible && (tmpObj.animate(delta), mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpObj.dir + tmpObj.dirPlus - Math.PI / 2), renderAI(tmpObj, mainContext), mainContext.restore());
-        if (renderGameObjects(0, xOffset, yOffset), renderProjectiles(1, xOffset, yOffset), renderGameObjects(1, xOffset, yOffset), renderPlayers(xOffset, yOffset, 1), renderGameObjects(2, xOffset, yOffset), renderGameObjects(3, xOffset, yOffset), mainContext.fillStyle = '#000', mainContext.globalAlpha = 0.09, xOffset <= 0 && mainContext.fillRect(0, 0, -xOffset, maxScreenHeight), _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset <= maxScreenWidth) {
-          var tmpY = Math.max(0, -yOffset);
-          mainContext.fillRect(_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset, tmpY, maxScreenWidth - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset), maxScreenHeight - tmpY);
+
+function render() {
+  now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
+  attackDir > 0.1 ? (camX += camSpd * Math.cos(tmp_Dir), camY += camSpd * Math.sin(tmp_Dir)) : (camX = player.x, camY = player.y);
+  for (var lastTime = tmpTime, i = 0; i < players.length + ais.length; ++i)
+    if ((tmpObj = players[i] || ais[i - players.length]) && tmpObj.visible)
+      if (tmpObj.forcePos)
+        tmpObj.x = tmpObj.x2, tmpObj.y = tmpObj.y2, tmpObj.dir = tmpObj.d2;
+      else {
+        var total = tmpObj.t2 - tmpObj.t1
+          , ratio = (lastTime - tmpObj.t1) / total;
+        tmpObj.dt += delta;
+        var tmpRate = Math.min(1.7, tmpObj.dt / 170)
+          , tmpDiff = tmpObj.x2 - tmpObj.x1;
+        tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj
+          .d2, tmpObj.d1, Math.min(1.2, ratio));
+      }
+  var xOffset = camX - maxScreenWidth / 2 + offsetCamX
+    , yOffset = camY - maxScreenHeight / 2 + offsetCamY;
+  _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset <= 0 && _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext
+      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext
+      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext
+      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= 0 ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0
+      , maxScreenWidth, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset
+      , maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset))) : (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth
+      , _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop -
+      yOffset, maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset))), firstSetup || ((waterMult += waterPlus * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"]
+        .waveSpeed * delta) >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveMax ? (waterMult = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveMax, waterPlus = -1) : waterMult <= 1 && (waterMult = waterPlus = 1), mainContext
+      .fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(
+        xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06
+    , mainContext.beginPath();
+  for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 4)
+    x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
+  for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 4)
+    x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));
+  for (mainContext.stroke(), mainContext.globalAlpha = 1, mainContext.strokeStyle = outlineColor, renderGameObjects(-1, xOffset, yOffset), mainContext
+    .globalAlpha = 1, mainContext.lineWidth = 5.5, renderProjectiles(0, xOffset, yOffset), renderPlayers(xOffset, yOffset, 0), mainContext.globalAlpha = 1, i =
+    0; i < ais.length; ++i)
+    (tmpObj = ais[i])
+    .active && tmpObj.visible && (tmpObj.animate(delta), mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(
+      tmpObj.dir + tmpObj.dirPlus - Math.PI / 2), renderAI(tmpObj, mainContext), mainContext.restore());
+  if (renderGameObjects(0, xOffset, yOffset), renderProjectiles(1, xOffset, yOffset), renderGameObjects(1, xOffset, yOffset), renderPlayers(xOffset, yOffset
+      , 1), renderGameObjects(2, xOffset, yOffset), renderGameObjects(3, xOffset, yOffset), mainContext.fillStyle = '#000', mainContext.globalAlpha = 0.09
+    , xOffset <= 0 && mainContext.fillRect(0, 0, -xOffset, maxScreenHeight), _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset <= maxScreenWidth) {
+    var tmpY = Math.max(0, -yOffset);
+    mainContext.fillRect(_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset, tmpY, maxScreenWidth - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset), maxScreenHeight - tmpY);
+  }
+  if (yOffset <= 0 && mainContext.fillRect(-xOffset, 0, maxScreenWidth + xOffset, -yOffset), _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - yOffset <= maxScreenHeight) {
+    var tmpX = Math.max(0, -xOffset)
+      , tmpMin = 0;
+    _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset <= maxScreenWidth && (tmpMin = maxScreenWidth - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset)), mainContext.fillRect(tmpX, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale -
+      yOffset, maxScreenWidth - tmpX - tmpMin, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - yOffset));
+  }
+  for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext
+    .strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
+    if ((tmpObj = players[i] || ais[i - players.length])
+      .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
+      var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
+      if ('' != tmpText) {
+        if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = tmpObj?.sid == window?.sidFocus ? (window.keyEvents
+            .SwitchKeyR ? '#f00' : '#ff0') : '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj
+          .nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"]
+            .nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY), tmpObj.isLeader && iconSprites.crown
+          .isLoaded) {
+          var tmpS = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownIconScale;
+          tmpX = tmpObj.x - xOffset - tmpS / 2 - mainContext.measureText(tmpText)
+            .width / 2 - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownPad, mainContext.drawImage(iconSprites.crown, tmpX, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY - tmpS / 2 - 5, tmpS
+              , tmpS);
         }
-        if (yOffset <= 0 && mainContext.fillRect(-xOffset, 0, maxScreenWidth + xOffset, -yOffset), _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - yOffset <= maxScreenHeight) {
-          var tmpX = Math.max(0, -xOffset),
-            tmpMin = 0;
-          _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset <= maxScreenWidth && (tmpMin = maxScreenWidth - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset)), mainContext.fillRect(tmpX, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - yOffset, maxScreenWidth - tmpX - tmpMin, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - yOffset));
-        }
-        for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext.strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
-          if ((tmpObj = players[i] || ais[i - players.length])
-            .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
-            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
-            if ('' != tmpText) {
-              if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = tmpObj?.sid == window?.sidFocus ? (window.keyEvents.SwitchKeyR ? '#f00' : '#ff0') : '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj.nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY), tmpObj.isLeader && iconSprites.crown.isLoaded) {
-                var tmpS = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownIconScale;
-                tmpX = tmpObj.x - xOffset - tmpS / 2 - mainContext.measureText(tmpText)
-                  .width / 2 - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownPad, mainContext.drawImage(iconSprites.crown, tmpX, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY - tmpS / 2 - 5, tmpS, tmpS);
-              }
-              1 == tmpObj.iconIndex && iconSprites.skull.isLoaded && (tmpS = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownIconScale, tmpX = tmpObj.x - xOffset - tmpS / 2 + mainContext.measureText(tmpText)
-                .width / 2 + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownPad, mainContext.drawImage(iconSprites.skull, tmpX, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY - tmpS / 2 - 5, tmpS, tmpS));
-            }
-            tmpObj.health > 0 && (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth, mainContext.fillStyle = darkOutlineColor, mainContext.roundRect(tmpObj.x - xOffset - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, tmpObj.y - yOffset + tmpObj.scale + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY, 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth + 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 17, 8), mainContext.fill(), mainContext.fillStyle = tmpObj == player || tmpObj.team && tmpObj.team == player.team ? '#8ecc51' : '#cc5151', mainContext.roundRect(tmpObj.x - xOffset - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth, tmpObj.y - yOffset + tmpObj.scale + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth * (tmpObj.health / tmpObj.maxHealth), 17 - 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 7), mainContext.fill());
-          }
-        for (textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length; ++i)
-          if ((tmpObj = players[i])
-            .visible && tmpObj.chatCountdown > 0) {
-            tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Hammersmith One';
-            var tmpSize = mainContext.measureText(tmpObj.chatMessage);
-            mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
-            var tmpW = tmpSize.width + 17;
-            mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle = '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
-          };
-        !function (delta) {
-          if (player && player.alive) {
-            mapContext.clearRect(0, 0, mapDisplay.width, mapDisplay.height), mapContext.strokeStyle = '#fff', mapContext.lineWidth = 4;
-            for (var i = 0; i < mapPings.length; ++i)
-              (tmpPing = mapPings[i])
-              .update(mapContext, delta);
-            if (mapContext.globalAlpha = 1, mapContext.fillStyle = '#fff', renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, player.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height, 7, mapContext, !0), mapContext.fillStyle = 'rgba(255,255,255,0.35)',   true && minimapData)
-              for (i = 0; i < minimapData.length;)
-                renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height, 7, mapContext, !0), i += 2;
-            lastDeath && (mapContext.fillStyle = '#fc5553', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign = 'center', mapContext.fillText('x', lastDeath.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, lastDeath.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height)), mapMarker && (mapContext.fillStyle = '#fff', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign = 'center', mapContext.fillText('x', mapMarker.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, mapMarker.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height));
-          }
-        }(delta), -1 !== controllingTouch.id && renderControl(controllingTouch.startX, controllingTouch.startY, controllingTouch.currentX, controllingTouch.currentY), -1 !== attackingTouch.id && renderControl(attackingTouch.startX, attackingTouch.startY, attackingTouch.currentX, attackingTouch.currentY);
-      }(), requestAnimFrame(e);
-  }(), window.openLink = openLink, window.aJoinReq = aJoinReq, window.follmoo = function () {
-    moofoll || (moofoll = !0, saveVal('moofoll', 1));
-  }, window.kickFromClan = kickFromClan, window.sendJoin = sendJoin, window.leaveAlliance = leaveAlliance, window.createAlliance = createAlliance, window.storeBuy = storeBuy, window.storeEquip = storeEquip, window.showItemInfo = showItemInfo, window.selectSkinColor = function (index) {
-    skinColor = index, updateSkinColorPicker();
-  }, window.changeStoreIndex = function (index) {
-    currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
-  }, window.config = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"];
+        1 == tmpObj.iconIndex && iconSprites.skull.isLoaded && (tmpS = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownIconScale, tmpX = tmpObj.x - xOffset - tmpS / 2 + mainContext.measureText(
+            tmpText)
+          .width / 2 + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownPad, mainContext.drawImage(iconSprites.skull, tmpX, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY - tmpS / 2 - 5, tmpS
+            , tmpS));
+      }
+      tmpObj.health > 0 && (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth, mainContext.fillStyle = darkOutlineColor, mainContext.roundRect(tmpObj.x - xOffset - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth -
+          _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, tmpObj.y - yOffset + tmpObj.scale + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY, 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth + 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 17, 8), mainContext
+        .fill(), mainContext.fillStyle = tmpObj == player || tmpObj.team && tmpObj.team == player.team ? '#8ecc51' : '#cc5151', mainContext.roundRect(tmpObj
+          .x - xOffset - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth, tmpObj.y - yOffset + tmpObj.scale + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth * (tmpObj
+            .health / tmpObj.maxHealth), 17 - 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 7), mainContext.fill());
+    }
+  for (textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length; ++i)
+    if ((tmpObj = players[i])
+      .visible && tmpObj.chatCountdown > 0) {
+      tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Hammersmith One';
+      var tmpSize = mainContext.measureText(tmpObj.chatMessage);
+      mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
+      var tmpW = tmpSize.width + 17;
+      mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle =
+        '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
+    };
+  if (player && player.alive) {
+    mapContext.clearRect(0, 0, mapDisplay.width, mapDisplay.height), mapContext.strokeStyle = '#fff', mapContext.lineWidth = 4;
+    for (var i = 0; i < mapPings.length; ++i)
+      (tmpPing = mapPings[i])
+      .update(mapContext, delta);
+    if (mapContext.globalAlpha = 1, mapContext.fillStyle = '#fff', renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, player.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale *
+        mapDisplay.height, 7, mapContext, !0), mapContext.fillStyle = 'rgba(255,255,255,0.35)',  true && minimapData)
+      for (i = 0; i < minimapData.length;)
+        renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height, 7, mapContext, !0), i +=
+        2;
+    lastDeath && (mapContext.fillStyle = '#fc5553', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign =
+        'center', mapContext.fillText('x', lastDeath.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, lastDeath.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height)), mapMarker &&
+      (mapContext.fillStyle = '#fff', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign = 'center'
+        , mapContext.fillText('x', mapMarker.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, mapMarker.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height));
+  }
+  window.requestAnimationFrame(render);
+};
+
+render();
+
+window.aJoinReq = aJoinReq;
+window.kickFromClan = kickFromClan;
+window.sendJoin = sendJoin;
+window.leaveAlliance = leaveAlliance;
+window.createAlliance = createAlliance;
+window.showItemInfo = showItemInfo;
+window.selectSkinColor = function (index) {
+  skinColor = index, updateSkinColorPicker();
+};
+window.changeStoreIndex = function (index) {
+  currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
+};
 
 document.querySelector("#gameName").innerHTML = "AutoWASM";
 
