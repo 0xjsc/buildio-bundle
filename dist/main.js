@@ -14280,19 +14280,6 @@ function render() {
     camX += camSpd * Math.cos(tmp_Dir);
     camY += camSpd * Math.sin(tmp_Dir);
   }
-  for (var lastTime = tmpTime, i = 0; i < players.length + ais.length; ++i)
-    if ((tmpObj = players[i] || ais[i - players.length]) && tmpObj.visible)
-      if (tmpObj.forcePos)
-        tmpObj.x = tmpObj.x2, tmpObj.y = tmpObj.y2, tmpObj.dir = tmpObj.d2;
-      else {
-        var total = tmpObj.t2 - tmpObj.t1
-          , ratio = (lastTime - tmpObj.t1) / total;
-        tmpObj.dt += delta;
-        var tmpRate = Math.min(1.7, tmpObj.dt / 170)
-          , tmpDiff = tmpObj.x2 - tmpObj.x1;
-        tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj
-          .d2, tmpObj.d1, Math.min(1.2, ratio));
-      }
   var xOffset = camX - maxScreenWidth / 2 + offsetCamX
     , yOffset = camY - maxScreenHeight / 2 + offsetCamY;
   _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset <= 0 && _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext
@@ -14333,6 +14320,18 @@ function render() {
     .strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
     if ((tmpObj = players[i] || ais[i - players.length])
       .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
+      if (tmpObj.forcePos)
+        tmpObj.x = tmpObj.x2, tmpObj.y = tmpObj.y2, tmpObj.dir = tmpObj.d2;
+      else {
+        var total = tmpObj.t2 - tmpObj.t1
+          , ratio = (lastTime - tmpObj.t1) / total;
+        tmpObj.dt += delta;
+        var tmpRate = Math.min(1.7, tmpObj.dt / 170)
+          , tmpDiff = tmpObj.x2 - tmpObj.x1;
+        tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj
+          .d2, tmpObj.d1, Math.min(1.2, ratio));
+      };
+      
       var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
       if ('' != tmpText) {
         if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj
