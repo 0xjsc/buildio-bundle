@@ -14277,8 +14277,13 @@ function render() {
     tmp_Dir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDirection(player.x, player.y, camX, camY);
     
     camSpd = Math.min(0.01 * attackDir * delta, attackDir);
-    camX += camSpd * Math.cos(tmp_Dir);
-    camY += camSpd * Math.sin(tmp_Dir);
+    if (attackDir > 0.1) {
+      camX += camSpd * Math.cos(tmp_Dir);
+      camY += camSpd * Math.sin(tmp_Dir);
+    } else {
+      camX = player.x;
+      camY = player.y;
+    }
   }
   var xOffset = camX - maxScreenWidth / 2 + offsetCamX
     , yOffset = camY - maxScreenHeight / 2 + offsetCamY;
