@@ -1796,7 +1796,7 @@ let attackDir = 0, tmp_Dir = 0, camSpd = 0;
 let lastPing_ = Date.now();
 
 function updatePlayers(data) {
-  nearestGameObjects = gameObjects.filter(object => isOnScreen(object?.x, object?.y, 45));
+  nearestGameObjects = gameObjects.filter(object => (Math.abs(object?.x - player?.x) + Math.abs(object?.y - player?.y)) < 1000);
   console.log(nearestGameObjects);
   
   if (Date.now() - lastPing_ > 3000) {
