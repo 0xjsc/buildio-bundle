@@ -1831,7 +1831,7 @@ function updatePlayers(data) {
     } catch(e) { }
   }
 
-  if (instakilling) return io.send(packets.CHANGE_WEAPON, (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);;
+  if (instakilling) return;
 
   if (window.keyEvents.SwitchKeyR) {
     normalInsta();
@@ -1848,6 +1848,7 @@ function updatePlayers(data) {
 
   tt && autoplace(tt);
   io.send(packets.CHANGE_WEAPON, (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
+  if (!attackState) io.send(packets.ATTACK, false, getAttackDir());
 
   const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
 
