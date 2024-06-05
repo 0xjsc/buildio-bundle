@@ -156,12 +156,7 @@ export default function (id, sid, config, UTILS, projectileManager, objectManage
       worked && (this.useRes(item), this.buildIndex = -1);
     }
   }, this.hasRes = function (item, mult) {
-    for (var i = 0; i < item.req.length;) {
-      if (this[item.req[i]] < Math.round(item.req[i + 1] * (mult || 1)))
-        return !1;
-      i += 2;
-    }
-    return !0;
+    return true;
   }, this.useRes = function (item, mult) {
     if (!config.inSandbox)
       for (var i = 0; i < item.req.length;)
