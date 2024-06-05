@@ -10449,7 +10449,7 @@ var mathFloor = Math.floor,
   mathSQRT = (Math.pow, Math.sqrt);
 /* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(GameObject, gameObjects, UTILS, config, players, server) {
   var tmpX, tmpY;
-  this.objects = gameObjects, this.grids = {}, this.updateObjects = new Map;
+  this.objects = gameObjects, this.grids = {}, this.updateObjects = [];
   var tmpS = config.mapScale / config.colGrid;
   this.setObjectGrids = function (obj) {
     for (var objX = Math.min(config.mapScale, Math.max(0, obj.x)), objY = Math.min(config.mapScale, Math.max(0, obj.y)), x = 0; x < config.colGrid; ++x) {
@@ -10462,7 +10462,11 @@ var mathFloor = Math.floor,
       (tmpIndx = this.grids[obj.gridLocations[i]].indexOf(obj)) >= 0 && this.grids[obj.gridLocations[i]].splice(tmpIndx, 1);
   }, this.disableObj = function (obj) {
     if (!obj) return;
-    this.updateObjects.delete(obj);
+    if (obj.active = !1, server) {
+      obj.owner && obj.pps && (obj.owner.pps -= obj.pps), this.removeObjGrid(obj);
+      var tmpIndx = this.updateObjects.indexOf(obj);
+      delete this.updateObjects[tmpIndx];
+    }
   }, this.hitObj = function (tmpObj, tmpDir) {
     for (var p = 0; p < players.length; ++p)
       players[p].active && (tmpObj.sentTo[players[p].id] && (tmpObj.active ? players[p].canSee(tmpObj) && server.send(players[p].id, '8', UTILS.fixTo(tmpDir, 1), tmpObj.sid) : server.send(players[p].id, '12', tmpObj.sid)), tmpObj.active || tmpObj.owner != players[p] || players[p].changeItemCount(tmpObj.group.id, -1));
@@ -10476,20 +10480,20 @@ var mathFloor = Math.floor,
     return tmpArray;
   }, this.add = function (sid, x, y, dir, s, type, data, setSID, owner) {
     tmpObj = new GameObject(sid);
-    gameObjects.set(sid, tmpObj);
+    gameObjects[sid] = tmpObj;
     setSID && (tmpObj.sid = sid);
     tmpObj.init(x, y, dir, s, type, data, owner);
     server && (this.setObjectGrids(tmpObj));
-    tmpObj.doUpdate && (this.updateObjects.set(sid, tmpObj));
+    tmpObj.doUpdate && (this.updateObjects[sid] = tmpObj);
   }, this.disableBySid = function (sid) {
-    this.disableObj(gameObjects.get(sid));
+    this.disableObj(gameObjects[sid])
   }, this.removeAllItems = function (sid, server) {
     for (var i = 0; i < gameObjects.length; ++i)
       gameObjects[i]?.active && gameObjects[i].owner && gameObjects[i].owner.sid == sid && this.disableObj(gameObjects[i]);
     server && server.broadcast('13', sid);
   }, this.fetchSpawnObj = function (sid) {
-    /** for (var tmpLoc = null, i = 0; i < gameObjects.length; ++i)
-      if ((tmpObj = value)
+    for (var tmpLoc = null, i = 0; i < gameObjects.length; ++i)
+      if ((tmpObj = gameObjects[i])
         .active && tmpObj.owner && tmpObj.owner.sid == sid && tmpObj.spawnPoint) {
         tmpLoc = [
           tmpObj.x,
@@ -10498,7 +10502,7 @@ var mathFloor = Math.floor,
         break;
       }
     return tmpLoc;
-  **/}, this.checkItemLocation = function (x, y, s, sM, indx, ignoreWater, placer) {
+  }, this.checkItemLocation = function (x, y, s, sM, indx, ignoreWater, placer) {
     for (var i = 0; i < gameObjects.length; ++i) {
       var blockS = gameObjects[i].blocker ? gameObjects[i].blocker : gameObjects[i].getScale(sM, gameObjects[i].isItem);
       if (gameObjects[i].active && UTILS.getDistance(x, y, gameObjects[i].x, gameObjects[i].y) < s + blockS)
