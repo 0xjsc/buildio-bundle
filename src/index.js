@@ -1160,9 +1160,8 @@ function renderWaterBodies(xOffset, yOffset, ctxt, padding) {
 }
 
 function renderGameObjects(layer, xOffset, yOffset) {
-  const length = nearestGameObjects.length;
   var tmpSprite, tmpX, tmpY;
-  for (let i = 0; i < length; i++)
+  for (let i = 0; i < nearestGameObjects.length; i++)
     (tmpObj = nearestGameObjects[i])?.active && (tmpX = tmpObj.x + tmpObj.xWiggle - xOffset, tmpY = tmpObj.y + tmpObj.yWiggle - yOffset, 0 == layer && tmpObj.update(delta), tmpObj.layer == layer && isOnScreen(tmpX, tmpY, tmpObj.scale + (tmpObj.blocker || 0)) && (mainContext.globalAlpha = tmpObj.hideFromEnemy ? 0.6 : 1, tmpObj.isItem ? (tmpSprite = getItemSprite(tmpObj), mainContext.save(), mainContext.translate(tmpX, tmpY), mainContext.rotate(tmpObj.dir), mainContext.drawImage(tmpSprite, -tmpSprite.width / 2, -tmpSprite.height / 2), tmpObj.blocker && (mainContext.strokeStyle = '#db6e6e', mainContext.globalAlpha = 0.3, mainContext.lineWidth = 6, renderCircle(0, 0, tmpObj.blocker, mainContext, !1, !0)), mainContext.restore()) : (tmpSprite = getResSprite(tmpObj), mainContext.drawImage(tmpSprite, tmpX - tmpSprite.width / 2, tmpY - tmpSprite.height / 2))));
 }
 
@@ -1979,17 +1978,13 @@ function render() {
     .strokeStyle = darkOutlineColor, textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length + ais.length; ++i)
     if ((tmpObj = players[i] || ais[i - players.length])
       .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
-      if (tmpObj.forcePos)
-        tmpObj.x = tmpObj.x2, tmpObj.y = tmpObj.y2, tmpObj.dir = tmpObj.d2;
-      else {
-        var total = tmpObj.t2 - tmpObj.t1
-          , ratio = (now - 111 - tmpObj.t1) / total;
-        tmpObj.dt += delta;
-        var tmpRate = Math.min(1.7, tmpObj.dt / 170)
-          , tmpDiff = tmpObj.x2 - tmpObj.x1;
-        tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj
+      var total = tmpObj.t2 - tmpObj.t1
+        , ratio = (now - 111 - tmpObj.t1) / total;
+      tmpObj.dt += delta;
+      var tmpRate = Math.min(1.7, tmpObj.dt / 170)
+        , tmpDiff = tmpObj.x2 - tmpObj.x1;
+      tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj
           .d2, tmpObj.d1, Math.min(1.2, ratio));
-      };
 
       if (ais[i]) {
         tmpObj.animate(delta);
