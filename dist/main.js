@@ -14464,15 +14464,10 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   padding: 20px !important;
   border: 0px !important;
 }
-</style>
-`);
 
-const menu = document.createElement("div");
-document.documentElement.appendChild(menu);
-
-menu.style = `
+#modMenu {
   position: fixed;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.6);
   box-shadow: 2px 2px 12px black;
   height: 290px;
   width: 250px;
@@ -14483,7 +14478,19 @@ menu.style = `
   border-image: linear-gradient(to bottom right, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
   border-image-slice: 1;
   color: white;
-`;
+  transition: all 1s 0s;
+}
+
+#modMenu:hover {
+  transform: scale(1.05);
+  background: black;
+}
+</style>
+`);
+
+const menu = document.createElement("div");
+document.documentElement.appendChild(menu);
+menu.id = "modMenu";
 
 menu.innerHTML = `
 <center> AutoWASM Sync </center> <br>
