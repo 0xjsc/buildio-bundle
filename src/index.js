@@ -843,11 +843,11 @@ function receiveChat(sid, message) {
   } else if (tmpPlayer.sid == ownerSid || tmpPlayer.sid == player.sid) {
     switch (message) {
       case "!follow":
-        setTimeout(() => io.send(packets.SEND_CHAT, `[*] ${!window.follow ? "Enabling" : "Disabling"} follow module!`), 1000);
+        setTimeout(() => io.send(packets.SEND_CHAT, `[*] ${window.follow ? "Enabling" : "Disabling"} follow module!`), 1000);
         window.follow = !window.follow;
         break;
       case "!bowspam":
-        setTimeout(() => io.send(packets.SEND_CHAT, `[*] ${!window.bowspam ? "Enabling" : "Disabling"} bowspam module!`), 1000);
+        setTimeout(() => io.send(packets.SEND_CHAT, `[*] ${window.bowspam ? "Enabling" : "Disabling"} bowspam module!`), 1000);
         window.bowspam = !window.bowspam;
         break;
     }
@@ -1775,10 +1775,16 @@ function botFunctions(tmpPlayer) {
       io.send(packets.CHANGE_WEAPON, player.weapons[0], true);
     }
   }
-  if (window.bowspam && !breaking && !instakilling && reloads[player.weapons[1]] == speeds[player.weapons[1]]) {
+  if (window.bowspam && !breaking && !instakilling) {
     if (player.weaponIndex != player.weapons[1]) {
       waka = player.weapons[1];
       io.send(packets.CHANGE_WEAPON, waka, true);
+    }
+
+    if (reloads[player.weapons[1]] > speeds[player.weapons[1]] - window.pingTime && player.skinIndex != 1) {
+      storeEquip(1);
+    } else if (reloads[player.weapons[1]] < speeds[player.weapons[1]] - window.pingTime && player.skinIndex != 20) {
+      storeEquip(20);
     }
 
     const lookingX = tmpPlayer.x + Math.cos(tmpPlayer.dir);
@@ -1838,10 +1844,10 @@ function updatePlayers(data) {
     reverseInsta();
   }
 
-  if (!breaking && reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
-  else if (!breaking && reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
+  if (!window.bowspam && !breaking && reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
+  else if (!window.bowspam && !breaking && reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
 
-  if (!breaking && reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
+  if (!window.bowspam && !breaking && reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
     io.send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
   }
 
@@ -1849,7 +1855,7 @@ function updatePlayers(data) {
 
   const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
 
-  if (!trap && breaking) {
+  if (!window.bowspam && !trap && breaking) {
     breaking = false;
     io.send(packets.ATTACK, false, getAttackDir());
   }
