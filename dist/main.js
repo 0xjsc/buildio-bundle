@@ -13334,7 +13334,7 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, newMoveDir), storeEquip(player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : 11, true), storeEquip(getBiomeHat()), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, newMoveDir), storeEquip(player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : (11), true), storeEquip(getBiomeHat()), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
@@ -13557,7 +13557,7 @@ function gatherAnimation(sid, didHit, index) {
   const hitHat = breaking ? 40 : ((player.health < 100 && player.health > 60) ? 55 : 7);
   const hitAcc = (player.health > 50) ? 15 : 18;
   const idleHat = breaking ? 26 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
-  const idleAcc = players.length >= 2 ? 15 : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : 11);
+  const idleAcc = players.length >= 2 ? 15 : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : 19);
 
   storeEquip(idleHat);
   storeEquip(idleAcc, true);
