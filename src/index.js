@@ -1965,6 +1965,16 @@ function render() {
         tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj
           .d2, tmpObj.d1, Math.min(1.2, ratio));
       };
+
+      if (players[i] && tmpObj.chatCountdown > 0) {
+        textManager.update(delta, mainContext, xOffset, yOffset);
+        tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Hammersmith One';
+        var tmpSize = mainContext.measureText(tmpObj.chatMessage);
+        mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
+        var tmpW = tmpSize.width + 17;
+        mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle =
+          '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
+      }
       
       var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
       if ('' != tmpText) {
@@ -1988,16 +1998,6 @@ function render() {
           .x - xOffset - config.healthBarWidth, tmpObj.y - yOffset + tmpObj.scale + config.nameY + config.healthBarPad, 2 * config.healthBarWidth * (tmpObj
             .health / tmpObj.maxHealth), 17 - 2 * config.healthBarPad, 7), mainContext.fill());
     }
-  for (textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length; ++i)
-    if ((tmpObj = players[i])
-      .visible && tmpObj.chatCountdown > 0) {
-      tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Hammersmith One';
-      var tmpSize = mainContext.measureText(tmpObj.chatMessage);
-      mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
-      var tmpW = tmpSize.width + 17;
-      mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle =
-        '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
-    };
   if (player && player.alive) {
     mapContext.clearRect(0, 0, mapDisplay.width, mapDisplay.height), mapContext.strokeStyle = '#fff', mapContext.lineWidth = 4;
     for (var i = 0; i < mapPings.length; ++i)
