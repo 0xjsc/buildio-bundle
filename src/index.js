@@ -1498,7 +1498,6 @@ function updatePlayerValue(index, value, updateView) {
 function place(id, angle = getAttackDir(), t = true) {
   io.send(packets.CHANGE_WEAPON, id, false);
   io.send(packets.ATTACK, true, angle);
-  t && io.send(packets.CHANGE_WEAPON, (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
 }
 
 let lastHeal = Date.now();
@@ -1796,6 +1795,7 @@ let lastPing_ = Date.now();
 
 function updatePlayers(data) {
   nearestGameObjects = gameObjects.filter(object => (Math.abs(object?.x - player?.x) + Math.abs(object?.y - player?.y)) < maxScreenWidth);
+  io.send(packets.CHANGE_WEAPON, (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
   
   if (Date.now() - lastPing_ > 3000) {
     lastPing_ = Date.now();
