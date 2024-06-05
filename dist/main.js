@@ -14273,7 +14273,8 @@ function openLink(link) {
 
 function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
-  attackDir > 0.1 ? (camX += camSpd * Math.cos(tmp_Dir), camY += camSpd * Math.sin(tmp_Dir)) : (camX = player.x, camY = player.y);
+  if (player)
+    attackDir > 0.1 ? (camX += camSpd * Math.cos(tmp_Dir), camY += camSpd * Math.sin(tmp_Dir)) : (camX = player.x, camY = player.y);
   for (var lastTime = tmpTime, i = 0; i < players.length + ais.length; ++i)
     if ((tmpObj = players[i] || ais[i - players.length]) && tmpObj.visible)
       if (tmpObj.forcePos)
