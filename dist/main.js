@@ -13216,6 +13216,10 @@ function receiveChat(sid, message) {
     else normalInsta();
   } else if (syncChats.has(message) && sid == player.sid) return;
 
+  if (message == "!Synchronize") {
+    return bowSync();
+  }
+
   tmpPlayer && (tmpPlayer.chatMessage = function (text) {
     for (var tmpString, i = 0; i < profanityList.length; ++i)
       if (text.indexOf(profanityList[i]) > -1) {
@@ -13554,6 +13558,8 @@ function gatherAnimation(sid, didHit, index) {
   if (sid == player.sid) reloads[waka] = 0;
   else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = 0;
 
+  if (instakilling) return;
+
   const hitHat = breaking ? 40 : ((player.health < 100 && player.health > 60) ? 55 : 7);
   const hitAcc = (player.health > 50) ? 15 : 18;
   const idleHat = breaking ? 26 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
@@ -13563,9 +13569,11 @@ function gatherAnimation(sid, didHit, index) {
   storeEquip(idleAcc, true);
 
   setTimeout(() => {
+    if (instakilling) return;
     storeEquip(hitHat);
     storeEquip(hitAcc, true);
     setTimeout(() => {
+      if (instakilling) return;
       if (!attackState) {
         storeEquip(getBiomeHat());
         storeEquip(idleAcc, true);
@@ -14045,6 +14053,20 @@ function autobreak(trap) {
   if (player.weaponIndex != correctWeapon) {
     _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = correctWeapon, true);
   }
+}
+
+function bowSync() {
+  const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+  window.sidFocus = enemy?.sid || 69420;
+  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
+  if (!enemy) return false;
+  const angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+
+  storeEquip(53);
+  turretReload = 0;
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, getAttackDir());
 }
 
 function normalInsta() {
