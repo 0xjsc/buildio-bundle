@@ -1801,7 +1801,6 @@ function updatePlayers(data) {
   if (player) {
     attackDir = UTILS.getDistance(camX, camY, player.x, player.y),
     tmp_Dir = UTILS.getDirection(player.x, player.y, camX, camY),
-    camSpd = Math.min(0.01 * attackDir * delta, attackDir);
   };
   
   current = Date.now() - tmpTime;
@@ -1910,8 +1909,11 @@ function openLink(link) {
 
 function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
-  if (player)
-    attackDir > 0.1 ? (camX += camSpd * Math.cos(tmp_Dir), camY += camSpd * Math.sin(tmp_Dir)) : (camX = player.x, camY = player.y);
+  if (player) {
+    camSpd = Math.min(0.01 * attackDir * delta, attackDir);
+    camX += camSpd * Math.cos(tmp_Dir);
+    camY += camSpd * Math.sin(tmp_Dir);
+  }
   for (var lastTime = tmpTime, i = 0; i < players.length + ais.length; ++i)
     if ((tmpObj = players[i] || ais[i - players.length]) && tmpObj.visible)
       if (tmpObj.forcePos)
@@ -1939,9 +1941,9 @@ function render() {
       .fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, config.riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(
         xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06
     , mainContext.beginPath();
-  for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 4)
+  for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 18)
     x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
-  for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 4)
+  for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 18)
     x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));
   for (mainContext.stroke(), mainContext.globalAlpha = 1, mainContext.strokeStyle = outlineColor, renderGameObjects(-1, xOffset, yOffset), mainContext
     .globalAlpha = 1, mainContext.lineWidth = 5.5, renderProjectiles(0, xOffset, yOffset), renderPlayers(xOffset, yOffset, 0), mainContext.globalAlpha = 1, i =
@@ -1967,8 +1969,7 @@ function render() {
       .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
       var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
       if ('' != tmpText) {
-        if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = tmpObj?.sid == window?.sidFocus ? (window.keyEvents
-            .SwitchKeyR ? '#f00' : '#ff0') : '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj
+        if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj
           .nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config
             .nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown
           .isLoaded) {
@@ -2008,11 +2009,17 @@ function render() {
       for (i = 0; i < minimapData.length;)
         renderCircle(minimapData[i] / config.mapScale * mapDisplay.width, minimapData[i + 1] / config.mapScale * mapDisplay.height, 7, mapContext, !0), i +=
         2;
-    lastDeath && (mapContext.fillStyle = '#fc5553', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign =
-        'center', mapContext.fillText('x', lastDeath.x / config.mapScale * mapDisplay.width, lastDeath.y / config.mapScale * mapDisplay.height)), mapMarker &&
-      (mapContext.fillStyle = '#fff', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign = 'center'
-        , mapContext.fillText('x', mapMarker.x / config.mapScale * mapDisplay.width, mapMarker.y / config.mapScale * mapDisplay.height));
   }
+  if (!mapMarker || !player) return window.requestAnimationFrame(render);
+  
+  mainContext.save();
+  mainContext.beginPath();
+  mainContext.fillStyle = "rgb(255, 0, 0)";
+  mainContext.moveTo(player.x - xOffset, player.y - yOffset);
+  mainContext.lineTo(mapMarker.x - xOffset, mapMarker.y - yOffset);
+  mainContext.closePath();
+  mainContext.fill();
+  mainContext.restore();
   window.requestAnimationFrame(render);
 };
 
