@@ -14306,7 +14306,7 @@ function render() {
     x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
   for (var y = -camY; y < maxScreenHeight; y += gridDelta)
     y > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));*/
-  for (var i = -camX; i < maxScreenWidth || k < maxScreenHeight; i += gridDelta, k += gridDelta) {
+  for (var i = -camX, k = -camY; i < maxScreenWidth || k < maxScreenHeight; i += gridDelta, k += gridDelta) {
     if (i > 0) {
       mainContext.moveTo(i, 0);
       mainContext.lineTo(i, maxScreenHeight);
