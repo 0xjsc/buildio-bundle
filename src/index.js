@@ -1781,9 +1781,9 @@ function botFunctions(tmpPlayer) {
       io.send(packets.CHANGE_WEAPON, waka, true);
     }
 
-    if (reloads[player.weapons[1]] > speeds[player.weapons[1]] - window.pingTime && player.skinIndex != 1) {
+    if (reloads[player.weapons[1]] > speeds[player.weapons[1]] / 2 && player.skinIndex != 1) {
       storeEquip(1);
-    } else if (reloads[player.weapons[1]] < speeds[player.weapons[1]] - window.pingTime && player.skinIndex != 20) {
+    } else if (player.skinIndex != 20) {
       storeEquip(20);
     }
 
