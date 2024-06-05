@@ -1498,7 +1498,8 @@ function updatePlayerValue(index, value, updateView) {
 function place(id, angle = getAttackDir(), t = true) {
   io.send(packets.CHANGE_WEAPON, id, false);
   io.send(packets.ATTACK, true, angle);
-  if (!attackState) io.send(packets.CHANGE_WEAPON, waka, true);
+  
+  io.send(packets.CHANGE_WEAPON, waka, true);
 }
 
 let lastHeal = Date.now();
@@ -1825,11 +1826,6 @@ function updatePlayers(data) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
     if (tmpObj.sid == ownerSid) botFunctions(tmpObj);
     if (player != tmpObj) tt = tmpObj;
-    try {
-      if ((othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] < speeds[tmpObj.weaponIndex]) {
-        (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] += current;
-      } else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = speeds[tmpObj.weaponIndex];
-    } catch(e) { }
   }
 
   if (instakilling) return;
@@ -1848,7 +1844,6 @@ function updatePlayers(data) {
   }
 
   tt && autoplace(tt);
-  if (attackState) io.send(packets.CHANGE_WEAPON, (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
 
   const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
 
