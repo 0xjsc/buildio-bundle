@@ -12474,7 +12474,7 @@ serverPackets[serverSide.ALLIANCE_PLAYERS] = setAlliancePlayers;
 serverPackets[serverSide.UPDATE_STORE] = updateStoreItems;
 serverPackets[serverSide.CHAT] = receiveChat;
 serverPackets[serverSide.MINIMAP_TICK] = updateMinimap;
-serverPackets[serverSide.PING] = pingSocketResponce;
+serverPackets[serverSide.PING] = pingSocketResponse;
 serverPackets[serverSide.MAP_PING] = pingMap;
 serverPackets[serverSide.SHOW_TEXT] = showText;
 
