@@ -1465,7 +1465,7 @@ function renderAI(obj, ctxt) {
 }
 
 function isOnScreen(x, y, s) {
-  return x + offsetCamX + s >= 0 && x + offsetCamX - s <= maxScreenWidth && y + offsetCamY + s >= 0 && y + offsetCamY - s <= maxScreenHeight;
+  return x + offsetCamX >= 0 && x + offsetCamX <= maxScreenWidth && y + offsetCamY >= 0 && y + offsetCamY <= maxScreenHeight;
 }
 
 function addPlayer(data, isYou) {
@@ -1796,7 +1796,8 @@ let attackDir = 0, tmp_Dir = 0, camSpd = 0;
 let lastPing_ = Date.now();
 
 function updatePlayers(data) {
-  nearestGameObjects = gameObjects.filter( object => object && isOnScreen(object?.x, object?.y, 45));
+  nearestGameObjects = gameObjects.filter(object => isOnScreen(object?.x, object?.y, 45));
+  console.log(nearestGameObjects);
   
   if (Date.now() - lastPing_ > 3000) {
     lastPing_ = Date.now();
