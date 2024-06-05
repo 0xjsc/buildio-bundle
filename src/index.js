@@ -1907,88 +1907,127 @@ function serverShutdownNotice(countdown) {
 function openLink(link) {
   window.open(link, '_blank');
 }
-window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
-    window.setTimeout(callback, 1000 / 60);
-  },
-  function e() {
-    now = Date.now(), delta = now - lastUpdate, lastUpdate = now,
-    attackDir > 0.1 ? (camX += camSpd * Math.cos(tmp_Dir), camY += camSpd * Math.sin(tmp_Dir)) : (camX = player.x, camY = player.y);
-      function () {
-        for (var lastTime = tmpTime, i = 0; i < players.length + ais.length; ++i)
-          if ((tmpObj = players[i] || ais[i - players.length]) && tmpObj.visible)
-            if (tmpObj.forcePos)
-              tmpObj.x = tmpObj.x2, tmpObj.y = tmpObj.y2, tmpObj.dir = tmpObj.d2;
-            else {
-              var total = tmpObj.t2 - tmpObj.t1,
-                ratio = (lastTime - tmpObj.t1) / total;
-              tmpObj.dt += delta;
-              var tmpRate = Math.min(1.7, tmpObj.dt / 170),
-                tmpDiff = tmpObj.x2 - tmpObj.x1;
-              tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
-            }
-        var xOffset = camX - maxScreenWidth / 2 + offsetCamX,
-          yOffset = camY - maxScreenHeight / 2 + offsetCamY;
-        config.snowBiomeTop - yOffset <= 0 && config.mapScale - config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.mapScale - config.snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.snowBiomeTop - yOffset >= 0 ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, config.snowBiomeTop - yOffset), mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, config.snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (config.snowBiomeTop - yOffset))) : (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, config.mapScale - config.snowBiomeTop - yOffset), mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, config.mapScale - config.snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (config.mapScale - config.snowBiomeTop - yOffset))), firstSetup || ((waterMult += waterPlus * config.waveSpeed * delta) >= config.waveMax ? (waterMult = config.waveMax, waterPlus = -1) : waterMult <= 1 && (waterMult = waterPlus = 1), mainContext.fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, config.riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06, mainContext.beginPath();
-        for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 4)
-          x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
-        for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 4)
-          x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));
-        for (mainContext.stroke(), mainContext.globalAlpha = 1, mainContext.strokeStyle = outlineColor, renderGameObjects(-1, xOffset, yOffset), mainContext.globalAlpha = 1, mainContext.lineWidth = 5.5, renderProjectiles(0, xOffset, yOffset), renderPlayers(xOffset, yOffset, 0), mainContext.globalAlpha = 1, i = 0; i < ais.length; ++i)
-          (tmpObj = ais[i])
-          .active && tmpObj.visible && (tmpObj.animate(delta), mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpObj.dir + tmpObj.dirPlus - Math.PI / 2), renderAI(tmpObj, mainContext), mainContext.restore());
-        if (renderGameObjects(0, xOffset, yOffset), renderProjectiles(1, xOffset, yOffset), renderGameObjects(1, xOffset, yOffset), renderPlayers(xOffset, yOffset, 1), renderGameObjects(2, xOffset, yOffset), renderGameObjects(3, xOffset, yOffset), mainContext.fillStyle = '#000', mainContext.globalAlpha = 0.09, xOffset <= 0 && mainContext.fillRect(0, 0, -xOffset, maxScreenHeight), config.mapScale - xOffset <= maxScreenWidth) {
-          var tmpY = Math.max(0, -yOffset);
-          mainContext.fillRect(config.mapScale - xOffset, tmpY, maxScreenWidth - (config.mapScale - xOffset), maxScreenHeight - tmpY);
+function e() {
+  now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
+  attackDir > 0.1 ? (camX += camSpd * Math.cos(tmp_Dir), camY += camSpd * Math.sin(tmp_Dir)) : (camX = player.x, camY = player.y);
+  for (var lastTime = tmpTime, i = 0; i < players.length + ais.length; ++i)
+    if ((tmpObj = players[i] || ais[i - players.length]) && tmpObj.visible)
+      if (tmpObj.forcePos)
+        tmpObj.x = tmpObj.x2, tmpObj.y = tmpObj.y2, tmpObj.dir = tmpObj.d2;
+      else {
+        var total = tmpObj.t2 - tmpObj.t1
+          , ratio = (lastTime - tmpObj.t1) / total;
+        tmpObj.dt += delta;
+        var tmpRate = Math.min(1.7, tmpObj.dt / 170)
+          , tmpDiff = tmpObj.x2 - tmpObj.x1;
+        tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj
+          .d2, tmpObj.d1, Math.min(1.2, ratio));
+      }
+  var xOffset = camX - maxScreenWidth / 2 + offsetCamX
+    , yOffset = camY - maxScreenHeight / 2 + offsetCamY;
+  config.snowBiomeTop - yOffset <= 0 && config.mapScale - config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext
+      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.mapScale - config.snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext
+      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext
+      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.snowBiomeTop - yOffset >= 0 ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0,
+      maxScreenWidth, config.snowBiomeTop - yOffset), mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, config.snowBiomeTop - yOffset,
+      maxScreenWidth, maxScreenHeight - (config.snowBiomeTop - yOffset))) : (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth,
+      config.mapScale - config.snowBiomeTop - yOffset), mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, config.mapScale - config.snowBiomeTop -
+      yOffset, maxScreenWidth, maxScreenHeight - (config.mapScale - config.snowBiomeTop - yOffset))), firstSetup || ((waterMult += waterPlus * config
+        .waveSpeed * delta) >= config.waveMax ? (waterMult = config.waveMax, waterPlus = -1) : waterMult <= 1 && (waterMult = waterPlus = 1), mainContext
+      .fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, config.riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(
+        xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06,
+    mainContext.beginPath();
+  for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 4)
+    x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
+  for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 4)
+    x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));
+  for (mainContext.stroke(), mainContext.globalAlpha = 1, mainContext.strokeStyle = outlineColor, renderGameObjects(-1, xOffset, yOffset), mainContext
+    .globalAlpha = 1, mainContext.lineWidth = 5.5, renderProjectiles(0, xOffset, yOffset), renderPlayers(xOffset, yOffset, 0), mainContext.globalAlpha = 1, i =
+    0; i < ais.length; ++i)
+    (tmpObj = ais[i])
+    .active && tmpObj.visible && (tmpObj.animate(delta), mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(
+      tmpObj.dir + tmpObj.dirPlus - Math.PI / 2), renderAI(tmpObj, mainContext), mainContext.restore());
+  if (renderGameObjects(0, xOffset, yOffset), renderProjectiles(1, xOffset, yOffset), renderGameObjects(1, xOffset, yOffset), renderPlayers(xOffset, yOffset,
+    1), renderGameObjects(2, xOffset, yOffset), renderGameObjects(3, xOffset, yOffset), mainContext.fillStyle = '#000', mainContext.globalAlpha = 0.09,
+    xOffset <= 0 && mainContext.fillRect(0, 0, -xOffset, maxScreenHeight), config.mapScale - xOffset <= maxScreenWidth) {
+    var tmpY = Math.max(0, -yOffset);
+    mainContext.fillRect(config.mapScale - xOffset, tmpY, maxScreenWidth - (config.mapScale - xOffset), maxScreenHeight - tmpY);
+  }
+  if (yOffset <= 0 && mainContext.fillRect(-xOffset, 0, maxScreenWidth + xOffset, -yOffset), config.mapScale - yOffset <= maxScreenHeight) {
+    var tmpX = Math.max(0, -xOffset)
+      , tmpMin = 0;
+    config.mapScale - xOffset <= maxScreenWidth && (tmpMin = maxScreenWidth - (config.mapScale - xOffset)), mainContext.fillRect(tmpX, config.mapScale -
+      yOffset, maxScreenWidth - tmpX - tmpMin, maxScreenHeight - (config.mapScale - yOffset));
+  }
+  for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext
+    .strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
+    if ((tmpObj = players[i] || ais[i - players.length])
+      .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
+      var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
+      if ('' != tmpText) {
+        if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = tmpObj?.sid == window?.sidFocus ? (window.keyEvents
+            .SwitchKeyR ? '#f00' : '#ff0') : '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj
+          .nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config
+            .nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown
+          .isLoaded) {
+          var tmpS = config.crownIconScale;
+          tmpX = tmpObj.x - xOffset - tmpS / 2 - mainContext.measureText(tmpText)
+            .width / 2 - config.crownPad, mainContext.drawImage(iconSprites.crown, tmpX, tmpObj.y - yOffset - tmpObj.scale - config.nameY - tmpS / 2 - 5, tmpS,
+              tmpS);
         }
-        if (yOffset <= 0 && mainContext.fillRect(-xOffset, 0, maxScreenWidth + xOffset, -yOffset), config.mapScale - yOffset <= maxScreenHeight) {
-          var tmpX = Math.max(0, -xOffset),
-            tmpMin = 0;
-          config.mapScale - xOffset <= maxScreenWidth && (tmpMin = maxScreenWidth - (config.mapScale - xOffset)), mainContext.fillRect(tmpX, config.mapScale - yOffset, maxScreenWidth - tmpX - tmpMin, maxScreenHeight - (config.mapScale - yOffset));
-        }
-        for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext.strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
-          if ((tmpObj = players[i] || ais[i - players.length])
-            .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
-            var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
-            if ('' != tmpText) {
-              if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = tmpObj?.sid == window?.sidFocus ? (window.keyEvents.SwitchKeyR ? '#f00' : '#ff0') : '#fff', mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', mainContext.lineWidth = tmpObj.nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown.isLoaded) {
-                var tmpS = config.crownIconScale;
-                tmpX = tmpObj.x - xOffset - tmpS / 2 - mainContext.measureText(tmpText)
-                  .width / 2 - config.crownPad, mainContext.drawImage(iconSprites.crown, tmpX, tmpObj.y - yOffset - tmpObj.scale - config.nameY - tmpS / 2 - 5, tmpS, tmpS);
-              }
-              1 == tmpObj.iconIndex && iconSprites.skull.isLoaded && (tmpS = config.crownIconScale, tmpX = tmpObj.x - xOffset - tmpS / 2 + mainContext.measureText(tmpText)
-                .width / 2 + config.crownPad, mainContext.drawImage(iconSprites.skull, tmpX, tmpObj.y - yOffset - tmpObj.scale - config.nameY - tmpS / 2 - 5, tmpS, tmpS));
-            }
-            tmpObj.health > 0 && (config.healthBarWidth, mainContext.fillStyle = darkOutlineColor, mainContext.roundRect(tmpObj.x - xOffset - config.healthBarWidth - config.healthBarPad, tmpObj.y - yOffset + tmpObj.scale + config.nameY, 2 * config.healthBarWidth + 2 * config.healthBarPad, 17, 8), mainContext.fill(), mainContext.fillStyle = tmpObj == player || tmpObj.team && tmpObj.team == player.team ? '#8ecc51' : '#cc5151', mainContext.roundRect(tmpObj.x - xOffset - config.healthBarWidth, tmpObj.y - yOffset + tmpObj.scale + config.nameY + config.healthBarPad, 2 * config.healthBarWidth * (tmpObj.health / tmpObj.maxHealth), 17 - 2 * config.healthBarPad, 7), mainContext.fill());
-          }
-        for (textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length; ++i)
-          if ((tmpObj = players[i])
-            .visible && tmpObj.chatCountdown > 0) {
-            tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Hammersmith One';
-            var tmpSize = mainContext.measureText(tmpObj.chatMessage);
-            mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
-            var tmpW = tmpSize.width + 17;
-            mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle = '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
-          };
-        !function (delta) {
-          if (player && player.alive) {
-            mapContext.clearRect(0, 0, mapDisplay.width, mapDisplay.height), mapContext.strokeStyle = '#fff', mapContext.lineWidth = 4;
-            for (var i = 0; i < mapPings.length; ++i)
-              (tmpPing = mapPings[i])
-              .update(mapContext, delta);
-            if (mapContext.globalAlpha = 1, mapContext.fillStyle = '#fff', renderCircle(player.x / config.mapScale * mapDisplay.width, player.y / config.mapScale * mapDisplay.height, 7, mapContext, !0), mapContext.fillStyle = 'rgba(255,255,255,0.35)',  true && minimapData)
-              for (i = 0; i < minimapData.length;)
-                renderCircle(minimapData[i] / config.mapScale * mapDisplay.width, minimapData[i + 1] / config.mapScale * mapDisplay.height, 7, mapContext, !0), i += 2;
-            lastDeath && (mapContext.fillStyle = '#fc5553', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign = 'center', mapContext.fillText('x', lastDeath.x / config.mapScale * mapDisplay.width, lastDeath.y / config.mapScale * mapDisplay.height)), mapMarker && (mapContext.fillStyle = '#fff', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign = 'center', mapContext.fillText('x', mapMarker.x / config.mapScale * mapDisplay.width, mapMarker.y / config.mapScale * mapDisplay.height));
-          }
-        }(delta), -1 !== controllingTouch.id && renderControl(controllingTouch.startX, controllingTouch.startY, controllingTouch.currentX, controllingTouch.currentY), -1 !== attackingTouch.id && renderControl(attackingTouch.startX, attackingTouch.startY, attackingTouch.currentX, attackingTouch.currentY);
-      }(), requestAnimFrame(e);
-  }(), window.openLink = openLink, window.aJoinReq = aJoinReq, window.follmoo = function () {
-    moofoll || (moofoll = !0, saveVal('moofoll', 1));
-  }, window.kickFromClan = kickFromClan, window.sendJoin = sendJoin, window.leaveAlliance = leaveAlliance, window.createAlliance = createAlliance, window.storeBuy = storeBuy, window.storeEquip = storeEquip, window.showItemInfo = showItemInfo, window.selectSkinColor = function (index) {
-    skinColor = index, updateSkinColorPicker();
-  }, window.changeStoreIndex = function (index) {
-    currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
-  }, window.config = config;
+        1 == tmpObj.iconIndex && iconSprites.skull.isLoaded && (tmpS = config.crownIconScale, tmpX = tmpObj.x - xOffset - tmpS / 2 + mainContext.measureText(
+            tmpText)
+          .width / 2 + config.crownPad, mainContext.drawImage(iconSprites.skull, tmpX, tmpObj.y - yOffset - tmpObj.scale - config.nameY - tmpS / 2 - 5, tmpS,
+            tmpS));
+      }
+      tmpObj.health > 0 && (config.healthBarWidth, mainContext.fillStyle = darkOutlineColor, mainContext.roundRect(tmpObj.x - xOffset - config.healthBarWidth -
+          config.healthBarPad, tmpObj.y - yOffset + tmpObj.scale + config.nameY, 2 * config.healthBarWidth + 2 * config.healthBarPad, 17, 8), mainContext
+        .fill(), mainContext.fillStyle = tmpObj == player || tmpObj.team && tmpObj.team == player.team ? '#8ecc51' : '#cc5151', mainContext.roundRect(tmpObj
+          .x - xOffset - config.healthBarWidth, tmpObj.y - yOffset + tmpObj.scale + config.nameY + config.healthBarPad, 2 * config.healthBarWidth * (tmpObj
+            .health / tmpObj.maxHealth), 17 - 2 * config.healthBarPad, 7), mainContext.fill());
+    }
+  for (textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length; ++i)
+    if ((tmpObj = players[i])
+      .visible && tmpObj.chatCountdown > 0) {
+      tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Hammersmith One';
+      var tmpSize = mainContext.measureText(tmpObj.chatMessage);
+      mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
+      var tmpW = tmpSize.width + 17;
+      mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle =
+        '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
+    };
+  ! function (delta) {
+    if (player && player.alive) {
+      mapContext.clearRect(0, 0, mapDisplay.width, mapDisplay.height), mapContext.strokeStyle = '#fff', mapContext.lineWidth = 4;
+      for (var i = 0; i < mapPings.length; ++i)
+        (tmpPing = mapPings[i])
+        .update(mapContext, delta);
+      if (mapContext.globalAlpha = 1, mapContext.fillStyle = '#fff', renderCircle(player.x / config.mapScale * mapDisplay.width, player.y / config.mapScale *
+          mapDisplay.height, 7, mapContext, !0), mapContext.fillStyle = 'rgba(255,255,255,0.35)', true && minimapData)
+        for (i = 0; i < minimapData.length;)
+          renderCircle(minimapData[i] / config.mapScale * mapDisplay.width, minimapData[i + 1] / config.mapScale * mapDisplay.height, 7, mapContext, !0), i +=
+          2;
+      lastDeath && (mapContext.fillStyle = '#fc5553', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign =
+          'center', mapContext.fillText('x', lastDeath.x / config.mapScale * mapDisplay.width, lastDeath.y / config.mapScale * mapDisplay.height)), mapMarker &&
+        (mapContext.fillStyle = '#fff', mapContext.font = '34px Hammersmith One', mapContext.textBaseline = 'middle', mapContext.textAlign = 'center',
+          mapContext.fillText('x', mapMarker.x / config.mapScale * mapDisplay.width, mapMarker.y / config.mapScale * mapDisplay.height));
+    }
+  }(delta), -1 !== controllingTouch.id && renderControl(controllingTouch.startX, controllingTouch.startY, controllingTouch.currentX, controllingTouch.currentY),
+    -1 !== attackingTouch.id && renderControl(attackingTouch.startX, attackingTouch.startY, attackingTouch.currentX, attackingTouch.currentY);
+  window.requestAnimationFrame(e);
+}();
+window.aJoinReq = aJoinReq;
+window.kickFromClan = kickFromClan;
+window.sendJoin = sendJoin;
+window.leaveAlliance = leaveAlliance;
+window.createAlliance = createAlliance;
+window.showItemInfo = showItemInfo;
+window.selectSkinColor = function (index) {
+  skinColor = index, updateSkinColorPicker();
+};
+window.changeStoreIndex = function (index) {
+  currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
+};
 
 document.querySelector("#gameName").innerHTML = "AutoWASM";
 
