@@ -1160,7 +1160,9 @@ function renderWaterBodies(xOffset, yOffset, ctxt, padding) {
 }
 
 function renderGameObjects(layer, xOffset, yOffset) {
-  for (var tmpSprite, tmpX, tmpY, i = 0; i < gameObjects.length; ++i)
+  let i = gameObjects.length;
+  var tmpSprite, tmpX, tmpY;
+  while (--i)
     (tmpObj = gameObjects[i])?.active && (tmpX = tmpObj.x + tmpObj.xWiggle - xOffset, tmpY = tmpObj.y + tmpObj.yWiggle - yOffset, 0 == layer && tmpObj.update(delta), tmpObj.layer == layer && isOnScreen(tmpX, tmpY, tmpObj.scale + (tmpObj.blocker || 0)) && (mainContext.globalAlpha = tmpObj.hideFromEnemy ? 0.6 : 1, tmpObj.isItem ? (tmpSprite = getItemSprite(tmpObj), mainContext.save(), mainContext.translate(tmpX, tmpY), mainContext.rotate(tmpObj.dir), mainContext.drawImage(tmpSprite, -tmpSprite.width / 2, -tmpSprite.height / 2), tmpObj.blocker && (mainContext.strokeStyle = '#db6e6e', mainContext.globalAlpha = 0.3, mainContext.lineWidth = 6, renderCircle(0, 0, tmpObj.blocker, mainContext, !1, !0)), mainContext.restore()) : (tmpSprite = getResSprite(tmpObj), mainContext.drawImage(tmpSprite, tmpX - tmpSprite.width / 2, tmpY - tmpSprite.height / 2))));
 }
 
@@ -2110,8 +2112,8 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   box-shadow: 2px 2px 12px black;
   height: 290px;
   width: 250px;
-  top: 90px;
-  left: 90px;
+  top: 45px;
+  left: 45px;
   z-index: 10;
   border: 5px solid transparent;
   border-image: linear-gradient(to bottom right, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
