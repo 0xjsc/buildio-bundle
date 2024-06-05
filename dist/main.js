@@ -14302,11 +14302,19 @@ function render() {
       .fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(
         xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06
     , mainContext.beginPath();
-  for (var x = -camX; x < maxScreenWidth; x += gridDelta)
+  /*for (var x = -camX; x < maxScreenWidth; x += gridDelta)
     x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
   for (var y = -camY; y < maxScreenHeight; y += gridDelta)
-    x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));
-  
+    x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));*/
+
+  for (let i = -camX; i < maxScreenWidth; i += gridDelta) {
+    if (i < 0) continue;
+
+    mainContext.moveTo(i, 0);
+    mainContext.lineTo(i, maxScreenHeight);
+    mainContext.moveTo(0, i);
+    mainContext.lineTo(maxScreenWidth, i);
+  }
   mainContext.stroke();
   mainContext.globalAlpha = 1;
   mainContext.strokeStyle = outlineColor;
