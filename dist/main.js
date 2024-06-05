@@ -14324,7 +14324,7 @@ function render() {
         tmpObj.x = tmpObj.x2, tmpObj.y = tmpObj.y2, tmpObj.dir = tmpObj.d2;
       else {
         var total = tmpObj.t2 - tmpObj.t1
-          , ratio = (lastTime - tmpObj.t1) / total;
+          , ratio = (tmpTime - tmpObj.t1) / total;
         tmpObj.dt += delta;
         var tmpRate = Math.min(1.7, tmpObj.dt / 170)
           , tmpDiff = tmpObj.x2 - tmpObj.x1;
