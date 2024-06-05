@@ -233,7 +233,7 @@ function connectSocket(token) {
         }, tmpSprite.src = '.././img/icons/' + icons[i] + '.png', iconSprites[icons[i]] = tmpSprite;
       }
     }(), loadingText.style.display = 'none', menuCardHolder.style.display = 'block', nameInput.value = getSavedVal('moo_name') || '', function () {
-      var savedNativeValue = getSavedVal('native_resolution');
+      var savedNativeValue = getSavedVal('native_resolution') || true;
       setUseNativeResolution(savedNativeValue ? 'true' == savedNativeValue : 'undefined' != typeof cordova), showPing = 'true' == getSavedVal('show_ping'), pingDisplay.hidden = !showPing, getSavedVal('moo_moosic'), updateSkinColorPicker(), UTILS.removeAllChildren(actionBar);
       for (var i = 0; i < items.weapons.length + items.list.length; ++i)
         ! function (i) {
@@ -1498,8 +1498,7 @@ function updatePlayerValue(index, value, updateView) {
 function place(id, angle = getAttackDir(), t = true) {
   io.send(packets.CHANGE_WEAPON, id, false);
   io.send(packets.ATTACK, true, angle);
-  
-  if (!attackState) io.send(packets.CHANGE_WEAPON, (player.weapons[0] != waka && player.weapons[1] != waka) ? (waka = player.weapons[0]) : waka, true);
+  io.send(packets.CHANGE_WEAPON, (player.weapons[0] != waka && player.weapons[1] != waka) ? (waka = player.weapons[0]) : waka, true);
 }
 
 let lastHeal = Date.now();
@@ -1796,7 +1795,7 @@ let attackDir = 0, tmp_Dir = 0, camSpd = 0;
 let lastPing_ = Date.now();
 
 function updatePlayers(data) {
-  nearestGameObjects = gameObjects.filter(object => (Math.abs(object?.x - player?.x) + Math.abs(object?.y - player?.y)) < maxScreenWidth);
+  nearestGameObjects = gameObjects.filter(object => (Math.abs(object?.x - player?.x) + Math.abs(object?.y - player?.y)) < maxScreenWidth + offsetCamX + 1);
   
   if (Date.now() - lastPing_ > 3000) {
     lastPing_ = Date.now();
@@ -1828,10 +1827,7 @@ function updatePlayers(data) {
     if (player != tmpObj) tt = tmpObj;
   }
 
-  if (instakilling) {
-    if (attackState) io.send(packets.CHANGE_WEAPON, (player.weapons[0] != waka && player.weapons[1] != waka) ? (waka = player.weapons[0]) : waka, true);
-    return;
-  };
+  if (instakilling) return;
 
   if (window.keyEvents.SwitchKeyR) {
     normalInsta();
@@ -1847,8 +1843,7 @@ function updatePlayers(data) {
   }
 
   tt && autoplace(tt);
-  if (attackState) io.send(packets.CHANGE_WEAPON, (player.weapons[0] != waka && player.weapons[1] != waka) ? (waka = player.weapons[0]) : waka, true);
-
+  
   const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
 
   if (!window.bowspam && !trap && breaking) {
