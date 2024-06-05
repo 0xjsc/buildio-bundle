@@ -1496,6 +1496,8 @@ function updatePlayerValue(index, value, updateView) {
 
 
 function place(id, angle = getAttackDir(), t = true) {
+  if (instakilling) return;
+  
   io.send(packets.CHANGE_WEAPON, id, false);
   io.send(packets.ATTACK, true, angle);
   io.send(packets.CHANGE_WEAPON, (player.weapons[0] != waka && player.weapons[1] != waka) ? (waka = player.weapons[0]) : waka, true);
