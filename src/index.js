@@ -1787,6 +1787,7 @@ function botFunctions(tmpPlayer) {
   }
 }
 
+let attackDir = 0, tmpDir = 0, camSpd = 0;
 let lastPing_ = Date.now();
 
 function updatePlayers(data) {
@@ -1795,13 +1796,14 @@ function updatePlayers(data) {
   if (Date.now() - lastPing_ > 3000) {
     lastPing_ = Date.now();
     pingSocket();
-  }
+  };
+  
   if (player) {
-    var attackDir = UTILS.getDistance(camX, camY, player.x, player.y),
+    attackDir = UTILS.getDistance(camX, camY, player.x, player.y),
     tmpDir = UTILS.getDirection(player.x, player.y, camX, camY),
     camSpd = Math.min(0.01 * attackDir * delta, attackDir);
-    attackDir > 0.1 ? (camX += camSpd * Math.cos(tmpDir), camY += camSpd * Math.sin(tmpDir)) : (camX = player.x, camY = player.y);
-  }
+  };
+  
   current = Date.now() - tmpTime;
   average = average / 2 + (Date.now() - tmpTime) / 2;
   serverLag = Math.abs(1000 / config.serverUpdateRate - average);
@@ -1910,6 +1912,7 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
   },
   function e() {
     now = Date.now(), delta = now - lastUpdate, lastUpdate = now,
+    attackDir > 0.1 ? (camX += camSpd * Math.cos(tmpDir), camY += camSpd * Math.sin(tmpDir)) : (camX = player.x, camY = player.y);
       function () {
         for (var lastTime = tmpTime, i = 0; i < players.length + ais.length; ++i)
           if ((tmpObj = players[i] || ais[i - players.length]) && tmpObj.visible)
