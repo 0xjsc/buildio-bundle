@@ -1014,7 +1014,7 @@ function enterGame() {
   io.send(packets.SPAWN, {
     name: nameInput.value,
     moofoll: moofoll,
-    skin: "toString"
+    skin: skinColor
   });
 
   inGame = true;
