@@ -12672,7 +12672,7 @@ Math.lerpAngle = function (value1, value2, amount) {
 }, CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
   return w < 2 * r && (r = w / 2), h < 2 * r && (r = h / 2), r < 0 && (r = 0), this.beginPath(), this.moveTo(x + r, y), this.arcTo(x + w, y, x + w, y + h, r), this.arcTo(x + w, y + h, x, y + h, r), this.arcTo(x, y + h, x, y, r), this.arcTo(x, y, x + w, y, r), this.closePath(), this;
 }, 'undefined' != typeof Storage && (canStore = !0); //,// getSavedVal("consent") || (consentBlock.style.display="block"),window.checkTerms=function(e){e?(consentBlock.style.display="none",saveVal("consent",1)):$("#consentShake").effect("shake")};
-var useNativeResolution, showPing, delta, now, lastSent, attackState, player, playerSID, tmpObj, camX, camY, tmpDir, screenWidth, screenHeight, moofoll = getSavedVal('moofoll'),
+var useNativeResolution, showPing, delta, now, lastSent, attackState, player, playerSID, tmpObj, camX = 100, camY = 100, tmpDir, screenWidth, screenHeight, moofoll = getSavedVal('moofoll'),
   pixelDensity = 1,
   lastUpdate = Date.now(),
   ais = [],
@@ -12808,31 +12808,12 @@ function setupServerStatus() {
     .innerHTML = '<a href=\'' + altServerURL + '\'>' + altServerText + '<i class=\'material-icons\' style=\'font-size:10px;vertical-align:middle\'>arrow_forward_ios</i></a>';
 }
 
-function updateServerList() {
-  /*
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function () {
-      4 == this.readyState && (200 == this.status ? (window.vultr = JSON.parse(this.responseText), vultrClient.processServers(vultr.servers), setupServerStatus()) : console.error('Failed to load server data with status code:', this.status));
-  }, xmlhttp.open('GET', '/serverData', !0), xmlhttp.send();*/
-}
+function updateServerList() { }
+
 serverBrowser.addEventListener('change', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
   let parts = serverBrowser.value.split(':');
   vultrClient.switchServer(parts[0], parts[1], parts[2]);
 }));
-var preAdInterval = 300000,
-  preAdLastShowTime = 0,
-  preAdGameCount = 0;
-
-function showPreAd() {
-  if (!window.adsbygoogle)
-    return console.log('Failed to load video ad API'), void enterGame();
-  window.adsbygoogle.push({
-    type: 'next',
-    adBreakDone: () => {
-      enterGame();
-    }
-  });
-}
 
 function showItemInfo(item, isWeapon, isStoreItem) {
   if (player && item)
@@ -12866,9 +12847,7 @@ function showItemInfo(item, isWeapon, isStoreItem) {
   } else
     itemInfoHolder.classList.remove('visible');
 }
-window.adsbygoogle && adsbygoogle.push({
-  preloadAdBreaks: 'on'
-}), window.showPreAd = showPreAd;
+
 var lastDeath, minimapData, mapMarker, allianceNotifications = [],
   alliancePlayers = [];
 
@@ -14084,11 +14063,6 @@ function autobreak(trap) {
   }
 }
 
-// biomeHats function
-function biomeHats() {
-  // Your biomeHats code goes here
-}
-
 function normalInsta() {
       const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
       window.sidFocus = enemy?.sid || 69420;
@@ -14184,6 +14158,12 @@ function updatePlayers(data) {
   if (Date.now() - lastPing_ > 3000) {
     lastPing_ = Date.now();
     pingSocket();
+  }
+  if (player) {
+    var attackDir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDistance(camX, camY, player.x, player.y),
+    tmpDir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDirection(player.x, player.y, camX, camY),
+    camSpd = Math.min(0.01 * attackDir * delta, attackDir);
+    attackDir > 0.1 ? (camX += camSpd * Math.cos(tmpDir), camY += camSpd * Math.sin(tmpDir)) : (camX = player.x, camY = player.y);
   }
   current = Date.now() - tmpTime;
   average = average / 2 + (Date.now() - tmpTime) / 2;
@@ -14291,22 +14271,10 @@ function openLink(link) {
 window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
     window.setTimeout(callback, 1000 / 60);
   },
-  function () {
-    var tmpMid = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale / 2;
-    objectManager.add(0, tmpMid, tmpMid + 200, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[3], 0), objectManager.add(1, tmpMid, tmpMid - 480, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[3], 0), objectManager.add(2, tmpMid + 300, tmpMid + 450, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[3], 0), objectManager.add(3, tmpMid - 950, tmpMid - 130, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[2], 0), objectManager.add(4, tmpMid - 750, tmpMid - 400, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[3], 0), objectManager.add(5, tmpMid - 700, tmpMid + 400, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[2], 0), objectManager.add(6, tmpMid + 800, tmpMid - 200, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].treeScales[3], 0), objectManager.add(7, tmpMid - 260, tmpMid + 340, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].bushScales[3], 1), objectManager.add(8, tmpMid + 760, tmpMid + 310, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].bushScales[3], 1), objectManager.add(9, tmpMid - 800, tmpMid + 100, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].bushScales[3], 1), objectManager.add(10, tmpMid - 800, tmpMid + 300, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[4].scale, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[4].id, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[10]), objectManager.add(11, tmpMid + 650, tmpMid - 390, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[4].scale, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[4].id, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[10]), objectManager.add(12, tmpMid - 400, tmpMid - 450, 0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].rockScales[2], 2);
-  }(),
   function e() {
-    mainContext.globalCompositeOperation = "source-over";
     now = Date.now(), delta = now - lastUpdate, lastUpdate = now,
       function () {
-        if (deathTextScale < 120 && (deathTextScale += 0.1 * delta, diedText.style.fontSize = Math.min(Math.round(deathTextScale), 120) + 'px'), player) {
-          var attackDir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDistance(camX, camY, player.x, player.y),
-            tmpDir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDirection(player.x, player.y, camX, camY),
-            camSpd = Math.min(0.01 * attackDir * delta, attackDir);
-          attackDir > 0.1 ? (camX += camSpd * Math.cos(tmpDir), camY += camSpd * Math.sin(tmpDir)) : (camX = player.x, camY = player.y);
-        } else
-          camX = 100, camY = 100;
-        for (var lastTime = now - 1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].serverUpdateRate, i = 0; i < players.length + ais.length; ++i)
+        for (var lastTime = tmpTime, i = 0; i < players.length + ais.length; ++i)
           if ((tmpObj = players[i] || ais[i - players.length]) && tmpObj.visible)
             if (tmpObj.forcePos)
               tmpObj.x = tmpObj.x2, tmpObj.y = tmpObj.y2, tmpObj.dir = tmpObj.d2;
@@ -14321,9 +14289,9 @@ window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAn
         var xOffset = camX - maxScreenWidth / 2 + offsetCamX,
           yOffset = camY - maxScreenHeight / 2 + offsetCamY;
         _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset <= 0 && _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= 0 ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0, maxScreenWidth, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset))) : (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset, maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset))), firstSetup || ((waterMult += waterPlus * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveSpeed * delta) >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveMax ? (waterMult = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveMax, waterPlus = -1) : waterMult <= 1 && (waterMult = waterPlus = 1), mainContext.fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06, mainContext.beginPath();
-        for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 18)
+        for (var x = -camX; x < maxScreenWidth; x += maxScreenHeight / 4)
           x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
-        for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 18)
+        for (var y = -camY; y < maxScreenHeight; y += maxScreenHeight / 4)
           x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));
         for (mainContext.stroke(), mainContext.globalAlpha = 1, mainContext.strokeStyle = outlineColor, renderGameObjects(-1, xOffset, yOffset), mainContext.globalAlpha = 1, mainContext.lineWidth = 5.5, renderProjectiles(0, xOffset, yOffset), renderPlayers(xOffset, yOffset, 0), mainContext.globalAlpha = 1, i = 0; i < ais.length; ++i)
           (tmpObj = ais[i])
