@@ -826,10 +826,8 @@ function receiveChat(sid, message) {
     message = message.replaceAll(key, value);
   }
 
-  if (/what\ mod/g.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
+  if (/what\ mod/g.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 530 && player.sid != tmpPlayer.sid) {
     io.send(packets.SEND_CHAT, "AutoWASM By 0xffabc.");
-  } else if (/ez|bad|noskill|faggot|gay/gm.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 230 && player.sid != tmpPlayer.sid) {
-    message = "me is retarded homo";
   } else if (message.startsWith("!connect") && player.sid == tmpPlayer.sid) {
     const playerName = message.split("!connect ")[1];
     io.send(packets.CLAN_CREATE, clanNames[Math.floor(clanNames.length * Math.random())]);
@@ -837,8 +835,8 @@ function receiveChat(sid, message) {
     if (ownerSid) {
       setTimeout(() => io.send(packets.SEND_CHAT, "[*] Successfully connected to " + playerName + "!"), 1000);
     } else setTimeout(() => io.send(packets.SEND_CHAT, "[*] Connection failed!"), 1000);
-  } else if (message.startsWith("!disconnect") && player.sid == tmpPlayer.sid) {
-    ownerSid = null;
+  } else if (message.startsWith("!disconnect") && (player.sid == tmpPlayer.sid || tmpPlayer.sid == ownerSid)) {
+    ownerSid = player.sid;
     setTimeout(() => io.send(packets.SEND_CHAT, "[*] Successfully disconnected"), 1000);
   } else if (tmpPlayer.sid == ownerSid || tmpPlayer.sid == player.sid) {
     switch (message) {
