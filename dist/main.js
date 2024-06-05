@@ -14153,7 +14153,6 @@ let lastPing_ = Date.now();
 
 function updatePlayers(data) {
   nearestGameObjects = gameObjects.filter(object => (Math.abs(object?.x - player?.x) + Math.abs(object?.y - player?.y)) < maxScreenWidth);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
   
   if (Date.now() - lastPing_ > 3000) {
     lastPing_ = Date.now();
@@ -14190,7 +14189,7 @@ function updatePlayers(data) {
     } catch(e) { }
   }
 
-  if (instakilling) return;
+  if (instakilling) return _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);;
 
   if (window.keyEvents.SwitchKeyR) {
     normalInsta();
@@ -14206,6 +14205,7 @@ function updatePlayers(data) {
   }
 
   tt && autoplace(tt);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (waka !== player.weapons[0] && waka !== player.weapons[1]) ? player.weapons[0] : waka, true);
 
   const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
 
