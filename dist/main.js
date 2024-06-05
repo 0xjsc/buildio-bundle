@@ -14060,6 +14060,7 @@ function bowSync() {
   window.sidFocus = enemy?.sid || 69420;
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
   if (!enemy) return false;
+  fixInsta();
   const angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
 
   storeEquip(53);
@@ -14067,6 +14068,13 @@ function bowSync() {
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, getAttackDir());
+}
+
+function fixInsta() {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, null);
+  setTimeout(() => {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, getMoveDir());
+  }, 222);
 }
 
 function normalInsta() {
@@ -14077,6 +14085,7 @@ function normalInsta() {
       const angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
       
       instakilling = true;
+      fixInsta();
       storeEquip(7);
       storeEquip(15, true);
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!sync");
@@ -14105,6 +14114,7 @@ function reverseInsta() {
       
       instakilling = true;
       storeEquip(53);
+      fixInsta();
       turretReload = 0;
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
