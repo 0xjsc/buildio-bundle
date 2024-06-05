@@ -14467,6 +14467,42 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
 </style>
 `);
 
+const menu = document.createElement("div");
+document.documentElement.appendChild(menu);
+
+menu.style = `
+  position: fixed;
+  background-color: black;
+  box-shadow: 2px 2px 12px black;
+  height: 330px;
+  width: 250px;
+  top: 90px;
+  left: 896px;
+  z-index: 10;
+  border: 5px solid transparent;
+  border-image: linear-gradient(to bottom right, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
+  border-image-slice: 1;
+  color: white;
+`;
+
+menu.innerHTML = `
+<center> AutoWASM Sync </center> <br>
+
+<input type = "text" placeholder = "Player Username" id = "username_"> <button id = "syncBtn"> Connect </button> <br>
+
+Follow module: <span onclick = "window.follow = !window.follow; this.innerHTML = window.follow ? 'ON' : 'OFF'"> OFF </span> <br>
+Bow spamming module: <span onclick = "window.bowspam = !window.bowspam; this.innerHTML = window.bowspam ? 'ON' : 'OFF'"> OFF </span> <br>
+Auto-sync: ON <br> <br>
+
+!connect <username> - Connect to a user to sync with <br>
+!bowspam - Start bowspam module <br>
+!follow - Follow the player <br>
+
+<div align = "right"> @0xffabc </div>
+`;
+
+document.getElementById("syncBtn").onclick = () => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!connect " + document.getElementById("username_").value);
+
 })();
 
 /******/ })()
