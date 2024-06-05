@@ -1797,7 +1797,7 @@ let lastPing_ = Date.now();
 
 function updatePlayers(data) {
   queueMicrotask(() =>
-    nearestGameObjects = gameObjects.filter( object => object && isOnScreen(object?.x, object?.y, 45) );
+    nearestGameObjects = gameObjects.filter( object => object && isOnScreen(object?.x, object?.y, 45) ));
   if (Date.now() - lastPing_ > 3000) {
     lastPing_ = Date.now();
     pingSocket();
