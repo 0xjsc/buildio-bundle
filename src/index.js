@@ -1658,15 +1658,6 @@ function autoplace(enemy, replace = false) {
   angles.forEach(angle => {
     place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
   });
-
-  if (preplacableObjects) {
-    preplacableObjects.forEach(object => {
-      if (!object) return;
-      
-      const angle = Math.atan2(object.y - player.y, object.x - player.x);
-      place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
-    });
-  }
 }
 
 let reloads = [];
