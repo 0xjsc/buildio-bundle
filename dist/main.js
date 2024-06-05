@@ -14305,15 +14305,16 @@ function render() {
   /*for (var x = -camX; x < maxScreenWidth; x += gridDelta)
     x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
   for (var y = -camY; y < maxScreenHeight; y += gridDelta)
-    x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));*/
-
-  for (let i = -camX; i < maxScreenWidth; i += gridDelta) {
-    if (i < 0) continue;
-
-    mainContext.moveTo(i, 0);
-    mainContext.lineTo(i, maxScreenHeight);
-    mainContext.moveTo(0, i);
-    mainContext.lineTo(maxScreenWidth, i);
+    y > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));*/
+  for (var i = -camX; i < maxScreenWidth || k < maxScreenHeight; i += gridDelta, k += gridDelta) {
+    if (i > 0) {
+      mainContext.moveTo(i, 0);
+      mainContext.lineTo(i, maxScreenHeight);
+    }
+    if (k > 0) {
+      mainContext.moveTo(0, k);
+      mainContext.lineTo(maxScreenWidth, k);
+    }
   }
   mainContext.stroke();
   mainContext.globalAlpha = 1;
