@@ -1797,7 +1797,6 @@ let lastPing_ = Date.now();
 
 function updatePlayers(data) {
   nearestGameObjects = gameObjects.filter(object => (Math.abs(object?.x - player?.x) + Math.abs(object?.y - player?.y)) < maxScreenWidth);
-  console.log(nearestGameObjects);
   
   if (Date.now() - lastPing_ > 3000) {
     lastPing_ = Date.now();
