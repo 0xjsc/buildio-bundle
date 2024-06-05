@@ -14166,11 +14166,6 @@ function updatePlayers(data) {
     pingSocket();
   };
   
-  if (player) {
-    attackDir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDistance(camX, camY, player.x, player.y);
-    tmp_Dir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDirection(player.x, player.y, camX, camY);
-  };
-  
   current = Date.now() - tmpTime;
   average = average / 2 + (Date.now() - tmpTime) / 2;
   serverLag = Math.abs(1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].serverUpdateRate - average);
@@ -14278,6 +14273,9 @@ function openLink(link) {
 function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
   if (player) {
+    attackDir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDistance(camX, camY, player.x, player.y);
+    tmp_Dir = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].getDirection(player.x, player.y, camX, camY);
+    
     camSpd = Math.min(0.01 * attackDir * delta, attackDir);
     camX += camSpd * Math.cos(tmp_Dir);
     camY += camSpd * Math.sin(tmp_Dir);
