@@ -133,8 +133,8 @@ const clanNames = [
   "urez"
 ];
 
-const versionHash = "1.5-Final";
-const changelog = "Fixing some bugs until release";
+const versionHash = "1.6-PreAlpha";
+const changelog = "Optimised some mod aspects, improved autoinsta calculations, improved hat switcher defense";
 const motionBlurLevel = 0.6;
 let instakilling = false;
 
@@ -1725,7 +1725,7 @@ function biomeHats() {
   // Your biomeHats code goes here
 }
 
-function normalInsta(c) {
+function normalInsta() {
       const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
       window.sidFocus = enemy?.sid || 69420;
       if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
@@ -1733,7 +1733,6 @@ function normalInsta(c) {
       const angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
       
       instakilling = true;
-      if (c) c();
       storeEquip(7);
       storeEquip(15, true);
       io.send(packets.SEND_CHAT, "!sync");
@@ -1749,11 +1748,11 @@ function normalInsta(c) {
           io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
           io.send(packets.ATTACK, false, angle);
           instakilling = false;
-        }, 1000 / config.clientSendRate / 2);
-      }, 1000 / config.clientSendRate / 2);
+        }, average / 2);
+      }, average / 2);
 }
 
-function reverseInsta(c) {
+function reverseInsta() {
       const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
       window.sidFocus = enemy?.sid || 69420;
       if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
@@ -1761,7 +1760,6 @@ function reverseInsta(c) {
       const angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
       
       instakilling = true;
-      if (c) c();
       storeEquip(53);
       turretReload = 0;
       io.send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
@@ -1776,8 +1774,8 @@ function reverseInsta(c) {
         setTimeout(() => {
           io.send(packets.ATTACK, false, angle);
           instakilling = false;
-        }, 1000 / config.clientSendRate / 2);
-      }, 1000 / config.clientSendRate / 2);
+        }, average / 2);
+      }, average / 2);
 }
 
 function botFunctions(tmpPlayer) {
