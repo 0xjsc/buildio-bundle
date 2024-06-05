@@ -1424,13 +1424,6 @@ function shootTurret(sid, dir) {
 function addProjectile(x, y, dir, range, speed, indx, layer, sid) {
   inWindow && (projectileManager.addProjectile(x, y, dir, range, speed, indx, null, null, layer)
     .sid = sid);
-  const angle = Math.atan2(y - player.y, x - player.x);
-  if (Math.abs(angle - dir) <= Math.PI / 2) {
-    io.send(packets.MOVEMENT, dir - Math.PI / 2);
-    setTimeout(() => {
-      io.send(packets.MOVEMENT, getMoveDir());
-    }, 222);
-  }
 }
 
 function remProjectile(sid, range) {
@@ -1763,7 +1756,7 @@ function botFunctions(tmpPlayer) {
 
     if (dist > 150) {
       io.send(packets.MOVEMENT, angle_);
-      if (player.weaponIndex != correctWeapon) {
+      if (player.weaponIndex != correctWeapon && !window.bowspam) {
         waka = correctWeapon;
         io.send(packets.CHANGE_WEAPON, waka, true);
       }
@@ -1771,8 +1764,10 @@ function botFunctions(tmpPlayer) {
     } else {
       io.send(packets.MOVEMENT, null);
       storeEquip(15, true);
-      waka = player.weapons[0];
-      io.send(packets.CHANGE_WEAPON, player.weapons[0], true);
+      if (!window.bowspam) {
+        waka = player.weapons[0];
+        io.send(packets.CHANGE_WEAPON, player.weapons[0], true);
+      }
     }
   }
   if (window.bowspam && !breaking && !instakilling) {
