@@ -14197,8 +14197,8 @@ function updatePlayers(data) {
       } else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = speeds[tmpObj.weaponIndex];
     } catch(e) { }
     var total = tmpObj.t2 - tmpObj.t1;
-    ratio = (Date.now() - tmpObj.t1) / total;
-    tmpObj.dt += delta;
+    var ratio = (Date.now() - tmpObj.t1) / total;
+    tmpObj.dt += 16;
     var tmpRate = Math.min(1.7, tmpObj.dt / 170);
     tmpDiff = tmpObj.x2 - tmpObj.x1;
     tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate;
