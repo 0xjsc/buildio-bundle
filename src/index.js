@@ -101,7 +101,7 @@ serverPackets[serverSide.UPDATE_AGE] = updateAge;
 serverPackets[serverSide.UPDATE_UPGRADES] = updateUpgrades;
 serverPackets[serverSide.UPDATE_ITEMS] = updateItems;
 serverPackets[serverSide.ADD_PROJECTILE] = addProjectile;
-serverPackets[serverSide.REMOVE_PROJECTILE] = removeProjectile;
+serverPackets[serverSide.REMOVE_PROJECTILE] = () => { };
 serverPackets[serverSide.SERVER_SHUTDOWN] = serverShutdownNotice;
 serverPackets[serverSide.ADD_ALLIANCE] = addAlliance;
 serverPackets[serverSide.DELETE_ALLIANCE] = deleteAlliance;
