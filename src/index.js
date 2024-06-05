@@ -1818,14 +1818,6 @@ function updatePlayers(data) {
       } else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = speeds[tmpObj.weaponIndex];
     } catch(e) { }
   }
-  
-  if (tt.skinIndex == 26 || tt.skinIndex == 11) {
-    io.send(packets.ATTACK, false, getAttackDir());
-  }
-  
-  if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
-    io.send(packets.ATTACK, true, getAttackDir());
-  }
 
   if (instakilling) return;
 
@@ -1850,9 +1842,14 @@ function updatePlayers(data) {
     breaking = false;
     io.send(packets.ATTACK, false, getAttackDir());
   }
-  if (!trap) return;
+  
+  if (trap) return autobreak(trap);
 
-  autobreak(trap);
+  if (tt.skinIndex == 26 || tt.skinIndex == 11) {
+    io.send(packets.ATTACK, false, getAttackDir());
+  } else if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
+    io.send(packets.ATTACK, true, getAttackDir());
+  }
 }
 
 function findPlayerBySID(sid) {
