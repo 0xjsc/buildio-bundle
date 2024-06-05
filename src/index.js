@@ -340,6 +340,7 @@ var useNativeResolution, showPing, delta, now, lastSent, attackState, player, pl
   skinColor = 0,
   maxScreenWidth = config.maxScreenWidth,
   maxScreenHeight = config.maxScreenHeight,
+  gridDelta = maxScreenHeight / 18,
   inGame = !1,
   mainMenu = (document.getElementById('ad-container'), document.getElementById('mainMenu')),
   enterGameButton = document.getElementById('enterGame'),
@@ -1907,8 +1908,6 @@ function serverShutdownNotice(countdown) {
 function openLink(link) {
   window.open(link, '_blank');
 }
-
-let gridDelta = maxScreenHeight / 18;
 
 function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
