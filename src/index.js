@@ -16,6 +16,8 @@ import Vultr from "./vultr/VultrClient.js";
 import AiManager from "./js/data/aiManager.js";
 import AI from "./js/data/ai.js";
 
+const serverPackets = {};
+
 const packets = {
   PING: "pp",
   REGISTER: "budv",
@@ -35,7 +37,83 @@ const packets = {
   CHANGE_WEAPON: "5",
   SPAWN: "sp",
   UPGRADE: "6"
+};
+
+const serverSide = {
+  INIT: "id",
+  DISCONNECT: "d",
+  SETUP_GAME: 1,
+  ADD_PLAYER: 2,
+  REMOVE_PLAYER: 4,
+  PLAYER_TICK: 33,
+  UPDATE_LEADERBOARD: 5,
+  GAME_OBJECT: 6,
+  LOAD_AI: "a",
+  ANIMAL_TICK: "aa",
+  HIT_START: 7,
+  OBJECT_WIGGLE: 8,
+  TURRET_SHOOT: "sp",
+  RESOURCES: 9,
+  HEALTH: "h",
+  KILL_PLAYER: 11,
+  KILL_OBJECT: 12,
+  KILL_OBJECTS: 13,
+  UPDATE_ITEM_COUNTS: 14,
+  UPDATE_AGE: 15,
+  UPDATE_UPGRADES: 16,
+  UPDATE_ITEMS: 17,
+  ADD_PROJECTILE: 18,
+  REMOVE_PROJECTILE: 19,
+  SERVER_SHUTDOWN: 20,
+  ADD_ALLIANCE: "ac",
+  DELETE_ALLIANCE: "ad",
+  ALLIANCE_PING: "an",
+  PLAYER_CLAN: "st",
+  ALLIANCE_PLAYERS: "sa",
+  UPDATE_STORE: "us",
+  CHAT: "ch",
+  MINIMAP_TICK: "mm",
+  MAP_PING: "p",
+  PING: "pp",
+  SHOW_TEXT: "t"
 }
+
+serverPackets[serverSide.INIT] = setInitData;
+serverPackets[serverSide.DISCONNECT] = disconnect;
+serverPackets[serverSide.SETUP_GAME] = setupGame;
+serverPackets[serverSide.ADD_PLAYER] = addPlayer;
+serverPackets[serverSide.REMOVE_PLAYER] = removePlayer;
+serverPackets[serverSide.PLAYER_TICK] = updatePlayers;
+serverPackets[serverSide.UPDATE_LEADERBOARD] = updateLeaderboard;
+serverPackets[serverSide.GAME_OBJECT] = loadGameObject;
+serverPackets[serverSide.LOAD_AI] = loadAI;
+serverPackets[serverSide.ANIMAL_TICK] = animateAI;
+serverPackets[serverSide.HIT_START] = gatherAnimation;
+serverPackets[serverSide.OBJECT_WIGGLE] = wiggleGameObject;
+serverPackets[serverSide.TURRET_SHOOT] = shootTurret;
+serverPackets[serverSide.RESOURCES] = updatePlayerValue;
+serverPackets[serverSide.HEALTH] = updateHealth;
+serverPackets[serverSide.KILL_PLAYER] = killPlayer;
+serverPackets[serverSide.KILL_OBJECT] = killObject;
+serverPackets[serverSide.KILL_OBJECTS] = killObjects;
+serverPackets[serverSide.UPDATE_ITEM_COUNTS] = updateItemCounts;
+serverPackets[serverSide.UPDATE_AGE] = updateAge;
+serverPackets[serverSide.UPDATE_UPGRADES] = updateUpgrades;
+serverPackets[serverSide.UPDATE_ITEMS] = updateItems;
+serverPackets[serverSide.ADD_PROJECTILE] = addProjectile;
+serverPackets[serverSide.REMOVE_PROJECTILE] = removeProjectile;
+serverPackets[serverSide.SERVER_SHUTDOWN] = serverShutdownNotice;
+serverPackets[serverSide.ADD_ALLIANCE] = addAlliance;
+serverPackets[serverSide.DELETE_ALLIANCE] = deleteAlliance;
+serverPackets[serverSide.ALLIANCE_PING] = allianceNotification;
+serverPackets[serverSide.PLAYER_CLAN] = setPlayerTeam;
+serverPackets[serverSide.ALLIANCE_PLAYERS] = setAlliancePlayers;
+serverPackets[serverSide.UPDATE_STORE] = updateStoreItems;
+serverPackets[serverSide.CHAT] = receiveMessage;
+serverPackets[serverSide.MINIMAP_TICK] = updateMinimap;
+serverPackets[serverSide.PING] = pingSocketResponce;
+serverPackets[serverSide.MAP_PING] = pingMap;
+serverPackets[serverSide.SHOW_TEXT] = showText;
 
 const textManager = new animText.TextManager();
 const vultrClient = new Vultr("mohmoh.eu", 3000, config.maxPlayers, 5, false);
@@ -211,47 +289,7 @@ function connectSocket(token) {
         showPing = showPingCheckbox.checked, pingDisplay.hidden = !showPing, saveVal('show_ping', showPing ? 'true' : 'false');
       });
     }());
-  }, {
-    id: setInitData,
-    d: disconnect,
-    1: setupGame,
-    2: addPlayer,
-    4: removePlayer,
-    33: updatePlayers,
-    5: updateLeaderboard,
-    6: loadGameObject,
-    a: loadAI,
-    aa: animateAI,
-    7: gatherAnimation,
-    8: wiggleGameObject,
-    sp: shootTurret,
-    9: updatePlayerValue,
-    h: updateHealth,
-    11: killPlayer,
-    12: killObject,
-    13: killObjects,
-    14: updateItemCounts,
-    15: updateAge,
-    16: updateUpgrades,
-    17: updateItems,
-    18: addProjectile,
-    19: remProjectile,
-    20: serverShutdownNotice,
-    ac: addAlliance,
-    ad: deleteAlliance,
-    an: allianceNotification,
-    st: setPlayerTeam,
-    sa: setAlliancePlayers,
-    us: updateStoreItems,
-    ch: receiveChat,
-    mm: updateMinimap,
-    t: showText,
-    p: pingMap,
-    pp: pingSocketResponse,
-    panel: function () {},
-    loadAbility: function () {},
-    removeAbility: function () {}
-  }), setupServerStatus(), setTimeout(() => updateServerList(), 3000);
+  }, serverPackets), setupServerStatus(), setTimeout(() => updateServerList(), 3000);
 }
 var canStore = 0,
   mathPI = Math.PI,
