@@ -935,7 +935,8 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
 }, false);
 gameCanvas.addEventListener("wheel", function (e) {
-  const fixedDelta = e.deltaY > 0 ? 100 : -100;
+  const deltaY = maxScreenWidth / 20;
+  const fixedDelta = e.deltaY > 0 ? deltaY : -deltaY;
   maxScreenWidth += fixedDelta;
   maxScreenHeight += fixedDelta;
   
