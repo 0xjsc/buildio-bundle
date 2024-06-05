@@ -976,7 +976,7 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : UTILS.fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send(packets.MOVEMENT, newMoveDir), storeEquip(player.y <= config.snowBiomeTop ? 6 : 11, true), storeEquip(getBiomeHat()), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send(packets.MOVEMENT, newMoveDir), storeEquip(player.y <= config.snowBiomeTop ? 6 : (11), true), storeEquip(getBiomeHat()), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
@@ -1199,7 +1199,7 @@ function gatherAnimation(sid, didHit, index) {
   const hitHat = breaking ? 40 : ((player.health < 100 && player.health > 60) ? 55 : 7);
   const hitAcc = (player.health > 50) ? 15 : 18;
   const idleHat = breaking ? 26 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
-  const idleAcc = players.length >= 2 ? 15 : (player.y <= config.snowBiomeTop ? 6 : 11);
+  const idleAcc = players.length >= 2 ? 15 : (player.y <= config.snowBiomeTop ? 6 : 19);
 
   storeEquip(idleHat);
   storeEquip(idleAcc, true);
