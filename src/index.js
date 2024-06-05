@@ -1236,7 +1236,7 @@ function gatherAnimation(sid, didHit, index) {
 function renderPlayers(xOffset, yOffset, zIndex) {
   for (var i = 0; i < players.length; ++i)
     (tmpObj = players[i])
-    .zIndex == zIndex && (tmpObj.animate(delta), tmpObj.visible && (tmpObj.skinRot += 0.002 * delta, tmpDir = ((player == tmpObj) ? getAttackDir() : tmpObj.dir) + tmpObj.dirPlus, mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpDir), renderPlayer(tmpObj, mainContext), mainContext.restore()));
+    .zIndex == zIndex && (tmpObj.animate(delta), tmpObj.visible && tmpObj.alive && (tmpObj.skinRot += 0.002 * delta, tmpDir = ((player == tmpObj) ? getAttackDir() : tmpObj.dir) + tmpObj.dirPlus, mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpDir), renderPlayer(tmpObj, mainContext), mainContext.restore()));
 }
 
 function renderPlayer(e, t) {
