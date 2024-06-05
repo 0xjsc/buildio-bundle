@@ -1800,11 +1800,6 @@ function updatePlayers(data) {
     pingSocket();
   };
   
-  if (player) {
-    attackDir = UTILS.getDistance(camX, camY, player.x, player.y);
-    tmp_Dir = UTILS.getDirection(player.x, player.y, camX, camY);
-  };
-  
   current = Date.now() - tmpTime;
   average = average / 2 + (Date.now() - tmpTime) / 2;
   serverLag = Math.abs(1000 / config.serverUpdateRate - average);
@@ -1912,6 +1907,9 @@ function openLink(link) {
 function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
   if (player) {
+    attackDir = UTILS.getDistance(camX, camY, player.x, player.y);
+    tmp_Dir = UTILS.getDirection(player.x, player.y, camX, camY);
+    
     camSpd = Math.min(0.01 * attackDir * delta, attackDir);
     camX += camSpd * Math.cos(tmp_Dir);
     camY += camSpd * Math.sin(tmp_Dir);
