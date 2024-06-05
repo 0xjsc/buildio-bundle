@@ -14340,7 +14340,7 @@ function render() {
       yOffset, maxScreenWidth - tmpX - tmpMin, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - yOffset));
   }
   for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext
-    .strokeStyle = darkOutlineColor, i = 0; i < players.length + ais.length; ++i)
+    .strokeStyle = darkOutlineColor, textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length + ais.length; ++i)
     if ((tmpObj = players[i] || ais[i - players.length])
       .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
       if (tmpObj.forcePos)
@@ -14365,7 +14365,6 @@ function render() {
       }
 
       if (players[i]) {
-        textManager.update(delta, mainContext, xOffset, yOffset);
         if (tmpObj.chatCountdown > 0) {
           tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Hammersmith One';
           var tmpSize = mainContext.measureText(tmpObj.chatMessage);
