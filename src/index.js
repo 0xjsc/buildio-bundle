@@ -1940,12 +1940,17 @@ function render() {
     x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
   for (var y = -camY; y < maxScreenHeight; y += gridDelta)
     x > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));
-  for (mainContext.stroke(), mainContext.globalAlpha = 1, mainContext.strokeStyle = outlineColor, renderGameObjects(-1, xOffset, yOffset), mainContext
-    .globalAlpha = 1, mainContext.lineWidth = 5.5, renderProjectiles(0, xOffset, yOffset), renderPlayers(xOffset, yOffset, 0), mainContext.globalAlpha = 1, i =
-    0; i < ais.length; ++i)
-    (tmpObj = ais[i])
-    .active && tmpObj.visible && (tmpObj.animate(delta), mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(
-      tmpObj.dir + tmpObj.dirPlus - Math.PI / 2), renderAI(tmpObj, mainContext), mainContext.restore());
+  
+  mainContext.stroke();
+  mainContext.globalAlpha = 1;
+  mainContext.strokeStyle = outlineColor;
+  renderGameObjects(-1, xOffset, yOffset);
+  mainContext.globalAlpha = 1;
+  mainContext.lineWidth = 5.5;
+  renderProjectiles(0, xOffset, yOffset);
+  renderPlayers(xOffset, yOffset, 0);
+  mainContext.globalAlpha = 1;
+
   if (renderGameObjects(0, xOffset, yOffset), renderProjectiles(1, xOffset, yOffset), renderGameObjects(1, xOffset, yOffset), renderPlayers(xOffset, yOffset
       , 1), renderGameObjects(2, xOffset, yOffset), renderGameObjects(3, xOffset, yOffset), mainContext.fillStyle = '#000', mainContext.globalAlpha = 0.09
     , xOffset <= 0 && mainContext.fillRect(0, 0, -xOffset, maxScreenHeight), config.mapScale - xOffset <= maxScreenWidth) {
@@ -1973,6 +1978,15 @@ function render() {
         tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj
           .d2, tmpObj.d1, Math.min(1.2, ratio));
       };
+
+      if (ais[i]) {
+        tmpObj.animate(delta);
+        mainContext.save();
+        mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset);
+        mainContext.rotate(tmpObj.dir + tmpObj.dirPlus - Math.PI / 2);
+        renderAI(tmpObj, mainContext);
+        mainContext.restore();
+      }
 
       if (players[i] && tmpObj.chatCountdown > 0) {
         textManager.update(delta, mainContext, xOffset, yOffset);
