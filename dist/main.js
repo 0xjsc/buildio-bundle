@@ -14197,11 +14197,12 @@ function updatePlayers(data) {
       } else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = speeds[tmpObj.weaponIndex];
     } catch(e) { }
     var total = tmpObj.t2 - tmpObj.t1;
-    ratio = (lastTime - tmpObj.t1) / total;
+    ratio = (Date.now() - tmpObj.t1) / total;
     tmpObj.dt += delta;
     var tmpRate = Math.min(1.7, tmpObj.dt / 170);
     tmpDiff = tmpObj.x2 - tmpObj.x1;
-    tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1;
+    tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate;
+    tmpDiff = tmpObj.y2 - tmpObj.y1;
     tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate;
     tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
   }
