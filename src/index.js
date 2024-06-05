@@ -1799,8 +1799,8 @@ function updatePlayers(data) {
   };
   
   if (player) {
-    attackDir = UTILS.getDistance(camX, camY, player.x, player.y),
-    tmp_Dir = UTILS.getDirection(player.x, player.y, camX, camY),
+    attackDir = UTILS.getDistance(camX, camY, player.x, player.y);
+    tmp_Dir = UTILS.getDirection(player.x, player.y, camX, camY);
   };
   
   current = Date.now() - tmpTime;
