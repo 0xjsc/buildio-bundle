@@ -14333,8 +14333,8 @@ function render() {
     const moX = dxw - mouseX;
     const moY = dxh - mouseY;
     
-    camX = player.x + moX;
-    camY = player.y + moY;
+    camX = player.x + moX / 10;
+    camY = player.y + moY / 10;
   }
   var xOffset = camX - maxScreenWidth / 2 + offsetCamX
     , yOffset = camY - maxScreenHeight / 2 + offsetCamY;
