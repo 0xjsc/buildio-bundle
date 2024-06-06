@@ -1839,7 +1839,7 @@ const modulesQueue = [
     nearestGameObjects = gameObjects.filter(object => {
       if (!object?.x) return;
 
-      if (!isOnScreen(object?.x - offsetX, object?.y - offsetY, 45)) return;
+      if (!isOnScreen(object?.x - xOffset, object?.y - yOffset, 45)) return;
       
       return true;
     });
@@ -1981,7 +1981,7 @@ var i = 0;
 const dxw = 1920 / 2;
 const dxh = 1080 / 2;
 
-let offsetX, offsetY;
+let xOffset, yOffset;
 
 function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
