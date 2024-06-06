@@ -14245,6 +14245,8 @@ const modulesQueue = [
 
     tt && autoplace();
   }, (tt) => {
+    if (breaking) return;
+    
     if (tt?.skinIndex == 26 || tt?.skinIndex == 11) {
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, getAttackDir());
     } else if (attackState && tt?.skinIndex != 26 && tt?.skinIndex != 11) {
