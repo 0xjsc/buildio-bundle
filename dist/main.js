@@ -14241,12 +14241,13 @@ const modulesQueue = [
     else deltaHold = 10;
   }, (tt) => {
     if (instakilling) return;
+    if (!tt) return;
 
     tt && autoplace();
-    
-    if (tt.skinIndex == 26 || tt.skinIndex == 11) {
+  }, (tt) => {
+    if (tt?.skinIndex == 26 || tt?.skinIndex == 11) {
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, getAttackDir());
-    } else if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
+    } else if (attackState && tt?.skinIndex != 26 && tt?.skinIndex != 11) {
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, getAttackDir());
     }
   }, () => { /** Instakill shouldn't be interrupted **/
