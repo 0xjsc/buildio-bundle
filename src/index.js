@@ -1804,6 +1804,7 @@ function reverseInsta() {
       storeEquip(getBiomeHat());
       instakilling = false;
       autoclicker = false;
+      aimOverride = false;
     }, average / 2 + serverLag);
   }, average / 2 + serverLag);
 }
