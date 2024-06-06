@@ -1887,6 +1887,8 @@ const modulesQueue = [
 
     tt && autoplace();
   }, (tt) => {
+    if (breaking) return;
+    
     if (tt?.skinIndex == 26 || tt?.skinIndex == 11) {
       io.send(packets.ATTACK, false, getAttackDir());
     } else if (attackState && tt?.skinIndex != 26 && tt?.skinIndex != 11) {
