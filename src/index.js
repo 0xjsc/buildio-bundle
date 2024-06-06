@@ -2022,7 +2022,7 @@ function render() {
     if ((tmpObj = players[i] || ais[i - players.length])
       .visible) {
       var total = tmpObj.t2 - tmpObj.t1;
-      ratio = (now - average - tmpObj.t1) / total;
+      var ratio = (now - average - tmpObj.t1) / total;
       tmpObj.dt += delta;
       var tmpRate = Math.min(1.7, tmpObj.dt / 170);
       tmpDiff = tmpObj.x2 - tmpObj.x1;
