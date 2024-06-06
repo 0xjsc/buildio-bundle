@@ -1856,6 +1856,8 @@ function antiInsta() {
   // Your antiInsta code goes here
 };
 
+let controlFlow = false;
+
 function boostInstaOptimisations() {
   if (!window.enemy) return;
 
@@ -1864,18 +1866,20 @@ function boostInstaOptimisations() {
 
   if (distance > 400 && distance < 450 && keyEvents.ShiftLeft) {
     place(player.items[4], angle);
+    controlFlow = true;
     
     io.send(packets.MOVEMENT, angle);
   } else if (keyEvents.ShiftLeft && distance < 240) {
     io.send(packets.MOVEMENT, null);
     
     reverseInsta();
+    controlFlow = false;
   } else if (keyEvents.ShiftLeft && distance > 450) {
     io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
 
     io.send(packets.MOVEMENT, angle);
     storeEquip(40);
-  } else if (keyEvents.ShiftLeft && distance < 400) {
+  } else if (keyEvents.ShiftLeft && distance < 400 && !controlFlow) {
     io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
 
     io.send(packets.MOVEMENT, angle - Math.PI);
