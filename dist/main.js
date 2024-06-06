@@ -13557,6 +13557,7 @@ function gatherAnimation(sid, didHit, index) {
   else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = 0;
 
   if (instakilling) return;
+  if (sid != player.sid) return;
 
   const hitHat = breaking ? 40 : ((player.health < 100 && player.health > 60) ? 55 : 7);
   const hitAcc = (player.health > 50) ? 15 : 18;
