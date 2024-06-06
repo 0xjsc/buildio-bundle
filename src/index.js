@@ -1747,8 +1747,9 @@ function normalInsta() {
         reloads[player.weapons[1]] = 0;
         io.send(packets.ATTACK, true, angle);
         setTimeout(() => {
+          io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
           io.send(packets.ATTACK, false, angle);
-          setTimeout(() => instakilling = false, 111);
+          instakilling = false;
           autoclicker = false;
         }, average / 2);
       }, average / 2);
@@ -1779,7 +1780,7 @@ function reverseInsta() {
         io.send(packets.ATTACK, true, angle);
         setTimeout(() => {
           io.send(packets.ATTACK, false, angle);
-          setTimeout(() => instakilling = false, 111);
+          instakilling = false;
           autoclicker = false;
         }, average / 2);
       }, average / 2);
@@ -1870,10 +1871,10 @@ const modulesQueue = [
     if (window.bowspam) return;
     if (breaking) return;
     
-    if (reloads[player.weapons[0]] !== speeds[player.weapons[0]]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
-    else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
+    if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
+    else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
 
-    if (reloads[player.weapons[1]] == speeds[player.weapons[1]] && reloads[player.weapons[0]] == speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
+    if (reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
       io.send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
     }
   },
@@ -1923,7 +1924,7 @@ function updatePlayers(data) {
   for (let i = 0; i < data.length;) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
     if (tmpObj.sid == ownerSid) botFunctions(tmpObj);
-    if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 500 && tmpObj != player) window.enemy = tt = tmpObj;
+    if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 200 && tmpObj != player) window.enemy = tt = tmpObj;
   }
 
   modulesQueue.forEach(task => task(tt));
