@@ -17,6 +17,7 @@ import AiManager from "./js/data/aiManager.js";
 import AI from "./js/data/ai.js";
 
 const serverPackets = {};
+let freeCam = false;
 
 const packets = {
   PING: "pp",
@@ -425,7 +426,8 @@ async function disconnect(reason) {
     Contact 0xffabc at mohmoh's server if you have more questions`,
     showConfirmButton: true,
   });
-  io.close();
+
+  freeCam = true;
 }
 
 function showLoadingText(text) {
@@ -2008,25 +2010,37 @@ const modulesQueue = [
   () => {
     if (!window.testPacketLimit) return;
 
-    window.testPacketLimit += 1200;
+    window.testPacketLimit++;
 
-    for (let i = 0; i < 100; i++) {
-      io.send(packets.SEND_CHAT, "[*] Testing WS limit ->" + window.testPacketLimit);
-      io.send(packets.MOVEMENT, Math.random() * 6);
-      io.send(packets.AIM, Math.random() * 6);
-      io.send(packets.CLAN_CREATE, "MD");
-      io.send(packets.CLAN_LEAVE);
-      io.send(packets.CLAN_CREATE, "MD");
-      io.send(packets.CLAN_LEAVE);
-      io.send(packets.ATTACK, true, Math.random() * 6);
-      io.send(packets.PING);
-      io.send(packets.MAP_PING);
+    io.send(packets.SEND_CHAT, "[*] Testing WS limit ->" + window.testPacketLimit);
     
-      storeEquip(~~(Math.random() * 50));
-      storeEquip(~~(Math.random() * 20, true));
-    }
+    for (let i = 0; i < window.testPacketLimit; i++) 
+      io.send(packets.PING);
   }
 ];
+
+setInterval(() => {
+  if (!freeCam) return;
+
+  if (keyEvents.keyW)
+    player.y += 20;
+  if (keyEvents.KeyS)
+    player.y -= 20;
+  if (keyEvents.KeyR)
+    player.x -= 20;
+  if (keyEvents.keyL)
+    player.x += 20;
+
+  players.map(player_ => {
+    if (!player_) return player_;
+    if (player_?.sid != player.sid) return player_;
+
+    player_.x = player.x;
+    player_.y = player.y;
+
+    return player_;
+  });
+}, 111);
 
 let attackDir = 0, tmp_Dir = 0, camSpd = 0;
 let lastPing_ = Date.now();
