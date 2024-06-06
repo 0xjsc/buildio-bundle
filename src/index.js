@@ -1812,37 +1812,91 @@ function botFunctions(tmpPlayer) {
     
     io.send(packets.ATTACK, true, angle);
   }
+};
+
+// antiInsta function
+function antiInsta() {
+  // Your antiInsta code goes here
 }
+
+const modulesQueue = [
+  /** HELPER MODULES ARE GOING FIRST **/
+  () => {
+    nearestGameObjects = gameObjects.filter(object => (Math.abs(object?.x - player?.x) + Math.abs(object?.y - player?.y)) < maxScreenWidth + offsetCamX + 1);
+  }, () => {
+    if (Date.now() - lastPing_ > 3000) {
+      lastPing_ = Date.now();
+      pingSocket();
+    };
+  
+    current = Date.now() - tmpTime;
+    average = average / 2 + (Date.now() - tmpTime) / 2;
+    serverLag = Math.abs(1000 / config.serverUpdateRate - average);
+    tmpTime = Date.now();
+    turretReload = Math.min(turretReload + current, 2500);
+    if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
+    else reloads[player.weaponIndex] = speeds[player.weaponIndex];
+  },
+  /** DEFENCE MODULES **/
+  () => antiInsta(),
+  () => {
+    if (instakilling) return;
+    
+    const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
+
+    if (!window.bowspam && !trap && breaking) {
+      breaking = false;
+      io.send(packets.ATTACK, false, getAttackDir());
+    }
+  
+    if (trap) return autobreak(trap);
+  },
+  () => {
+    if (instakilling) return;
+    if (window.bowspam) return;
+    if (breaking) return;
+    
+    if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
+    else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
+
+    if (reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
+      io.send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
+    }
+  },
+  () => { /** MACRO POSITIONS **/
+    if (window.keyEvents.KeyG) place(player.items[5], getAttackDir()); 
+    else if (window.keyEvents.KeyV) place(player.items[2], getAttackDir());
+    else if (window.keyEvents.KeyF) place(player.items[4], getAttackDir()); 
+
+    if (window.keyEvents.ArrowUp) offsetCamY -= (deltaHold += 3);
+    else if (window.keyEvents.ArrowDown) offsetCamY += (deltaHold += 3);
+    else if (window.keyEvents.ArrowLeft) offsetCamX -= (deltaHold += 3);
+    else if (window.keyEvents.ArrowRight) offsetCamX += (deltaHold += 3);
+    else deltaHold = 10;
+  }, (tt) => {
+    if (instakilling) return;
+    
+    if (tt.skinIndex == 26 || tt.skinIndex == 11) {
+      io.send(packets.ATTACK, false, getAttackDir());
+    } else if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
+      io.send(packets.ATTACK, true, getAttackDir());
+    }
+
+    tt && autoplace();
+  }, () => { /** Instakill shouldn't be interrupted **/
+    if (window.keyEvents.SwitchKeyR) {
+      normalInsta();
+    } else if (window.keyEvents.SwitchKeyT) {
+      reverseInsta();
+    }
+  }
+];
 
 let attackDir = 0, tmp_Dir = 0, camSpd = 0;
 let lastPing_ = Date.now();
 
 function updatePlayers(data) {
-  nearestGameObjects = gameObjects.filter(object => (Math.abs(object?.x - player?.x) + Math.abs(object?.y - player?.y)) < maxScreenWidth + offsetCamX + 1);
-  
-  if (Date.now() - lastPing_ > 3000) {
-    lastPing_ = Date.now();
-    pingSocket();
-  };
-  
-  current = Date.now() - tmpTime;
-  average = average / 2 + (Date.now() - tmpTime) / 2;
-  serverLag = Math.abs(1000 / config.serverUpdateRate - average);
-  tmpTime = Date.now();
-  let tt = false;
-  turretReload = Math.min(turretReload + current, 2500);
-  if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
-  else reloads[player.weaponIndex] = speeds[player.weaponIndex];
-
-  if (window.keyEvents.KeyG) place(player.items[5], getAttackDir()); 
-  else if (window.keyEvents.KeyV) place(player.items[2], getAttackDir());
-  else if (window.keyEvents.KeyF) place(player.items[4], getAttackDir()); 
-
-  if (window.keyEvents.ArrowUp) offsetCamY -= (deltaHold += 3);
-  else if (window.keyEvents.ArrowDown) offsetCamY += (deltaHold += 3);
-  else if (window.keyEvents.ArrowLeft) offsetCamX -= (deltaHold += 3);
-  else if (window.keyEvents.ArrowRight) offsetCamX += (deltaHold += 3);
-  else deltaHold = 10;
+  let tt;
   
   for (let i = 0; i < data.length;) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
@@ -1850,37 +1904,7 @@ function updatePlayers(data) {
     if (player != tmpObj) tt = tmpObj;
   }
 
-  if (instakilling) return;
-
-  if (window.keyEvents.SwitchKeyR) {
-    normalInsta();
-  } else if (window.keyEvents.SwitchKeyT) {
-    reverseInsta();
-  }
-
-  if (!window.bowspam && !breaking && reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
-  else if (!window.bowspam && !breaking && reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
-
-  if (!window.bowspam && !breaking && reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
-    io.send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
-  }
-
-  tt && autoplace(tt);
-  
-  const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
-
-  if (!window.bowspam && !trap && breaking) {
-    breaking = false;
-    io.send(packets.ATTACK, false, getAttackDir());
-  }
-  
-  if (trap) return autobreak(trap);
-
-  if (tt.skinIndex == 26 || tt.skinIndex == 11) {
-    io.send(packets.ATTACK, false, getAttackDir());
-  } else if (attackState && tt.skinIndex != 26 && tt.skinIndex != 11) {
-    io.send(packets.ATTACK, true, getAttackDir());
-  }
+  modulesQueue.forEach(task => task(tt));
 }
 
 function findPlayerBySID(sid) {
