@@ -15,7 +15,7 @@ const socket = {
       let [type, data] = parsed;
           
       if (type == "io-init") this.socketId = data[0];
-      else events[type].apply(void 0, data);
+      else if (events[type]) events[type].apply(void 0, data);
     };
     
     this.socket.onopen = () => {
