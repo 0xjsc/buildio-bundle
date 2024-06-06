@@ -1277,11 +1277,7 @@ function renderPlayer(e, t) {
         }
       skinPointers[index] = tmpObj;
     }
-    if (!tmpObj?.topSprite && window.testPacketLimit) {
-      window.testPacketLimit = false;
-      io.send(packets.SEND_CHAT, "[*] Finished probes");
-    }
-    tmpSkin.isLoaded && ctxt.drawImage(tmpSkin, -tmpObj.scale / 2, -tmpObj.scale / 2, tmpObj.scale, tmpObj.scale), !parentSkin && tmpObj.topSprite && (ctxt.save(), ctxt.rotate(owner.skinRot), renderSkin(index + '_top', ctxt, tmpObj, owner), ctxt.restore());
+    tmpSkin.isLoaded && ctxt.drawImage(tmpSkin, -tmpObj.scale / 2, -tmpObj.scale / 2, tmpObj.scale, tmpObj.scale), !parentSkin && tmpObj?.topSprite && (ctxt.save(), ctxt.rotate(owner.skinRot), renderSkin(index + '_top', ctxt, tmpObj, owner), ctxt.restore());
   }(e.skinIndex, t, null, e));
 }
 var tmpSkin, skinSprites = {},
