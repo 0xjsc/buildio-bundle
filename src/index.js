@@ -978,7 +978,7 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : UTILS.fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send(packets.MOVEMENT, newMoveDir), storeEquip(player.y <= config.snowBiomeTop ? 6 : (11), true), storeEquip(getBiomeHat()), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send(packets.MOVEMENT, newMoveDir), !attackState && (storeEquip(player.y <= config.snowBiomeTop ? 6 : (11), true), storeEquip(getBiomeHat())), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
