@@ -1836,7 +1836,13 @@ function antiInsta() {
 const modulesQueue = [
   /** HELPER MODULES ARE GOING FIRST **/
   () => {
-    nearestGameObjects = gameObjects.filter(object => (Math.abs(object?.x - player?.x) + Math.abs(object?.y - player?.y)) < maxScreenWidth + offsetCamX + 1);
+    nearestGameObjects = gameObjects.filter(object => {
+      if (!object?.x) return;
+
+      if (!isOnScreen(object?.x - offsetX, object?.y - offsetY, 45)) return;
+      
+      return true;
+    });
   }, () => {
     if (Date.now() - lastPing_ > 3000) {
       lastPing_ = Date.now();
@@ -1975,6 +1981,8 @@ var i = 0;
 const dxw = 1920 / 2;
 const dxh = 1080 / 2;
 
+let offsetX, offsetY;
+
 function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
 
@@ -1990,8 +1998,10 @@ function render() {
     camX = player.x + moX / 10;
     camY = player.y + moY / 10;
   }
-  var xOffset = camX - maxScreenWidth / 2 + offsetCamX
-    , yOffset = camY - maxScreenHeight / 2 + offsetCamY;
+  
+  xOffset = camX - maxScreenWidth / 2 + offsetCamX;
+  yOffset = camY - maxScreenHeight / 2 + offsetCamY;
+  
   config.snowBiomeTop - yOffset <= 0 && config.mapScale - config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext
       .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.mapScale - config.snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext
       .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : config.snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext
