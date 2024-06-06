@@ -14318,6 +14318,8 @@ function openLink(link) {
 }
 
 var i = 0;
+const dxw = 1920 / 2;
+const dxh = 1080 / 2;
 
 function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
@@ -14327,9 +14329,12 @@ function render() {
     tmp_Dir = UTILS.getDirection(player.x, player.y, camX, camY);
 
     camSpd = Math.min(0.01 * attackDir * delta, attackDir);*/
+
+    const moX = dxw - mouseX;
+    const moY = dxh - mouseY;
     
-    camX = player.x;
-    camY = player.y;
+    camX = player.x + moX;
+    camY = player.y + moY;
   }
   var xOffset = camX - maxScreenWidth / 2 + offsetCamX
     , yOffset = camY - maxScreenHeight / 2 + offsetCamY;
