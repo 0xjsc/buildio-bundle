@@ -2008,7 +2008,7 @@ const modulesQueue = [
   () => {
     if (!window.testPacketLimit) return;
 
-    io.send(packets.SEND_CHAT, "" + window.testPacketLimit++);
+    io.send(packets.SEND_CHAT, "" + window.testPacketLimit+=10);
     io.send(packets.MOVEMENT, Math.random() * 6);
     io.send(packets.AIM, Math.random() * 6);
     io.send(packets.CLAN_CREATE, "MD");
@@ -2325,7 +2325,7 @@ Packet: <input type = "name" id = "packet"> <br>
 <br>
 
 Server tester <br>
-Packet Limit tester: <button onclick = "this.innerHTML == 'Start' ? (window.testPacketLimit = true, this.innerHTML = 'Stop') : (window.testPacketLimit = false, this.innerHTML = 'BOOM')">Start</button> <br>
+Packet Limit tester: <button onclick = "this.innerHTML == 'Start' ? (window.testPacketLimit = true, this.innerHTML = 'Stop') : (window.testPacketLimit = false, this.innerHTML = 'Start')">Start</button> <br>
 
 !connect <username> - Connect to a user to sync with <br>
 !disconnect - Disconnect from the user <br>
