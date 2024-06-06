@@ -13336,7 +13336,7 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, newMoveDir), storeEquip(player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : (11), true), storeEquip(getBiomeHat()), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, newMoveDir), !attackState && (storeEquip(player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : (11), true), storeEquip(getBiomeHat())), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
