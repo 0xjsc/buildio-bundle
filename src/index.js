@@ -1747,9 +1747,8 @@ function normalInsta() {
         reloads[player.weapons[1]] = 0;
         io.send(packets.ATTACK, true, angle);
         setTimeout(() => {
-          io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
           io.send(packets.ATTACK, false, angle);
-          instakilling = false;
+          setTimeout(() => instakilling = false, 111);
           autoclicker = false;
         }, average / 2);
       }, average / 2);
@@ -1780,7 +1779,7 @@ function reverseInsta() {
         io.send(packets.ATTACK, true, angle);
         setTimeout(() => {
           io.send(packets.ATTACK, false, angle);
-          instakilling = false;
+          setTimeout(() => instakilling = false, 111);
           autoclicker = false;
         }, average / 2);
       }, average / 2);
