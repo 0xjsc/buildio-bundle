@@ -1968,18 +1968,13 @@ function render() {
   
   mainContext.globalAlpha = 0.5; 
   if (player) {
-    attackDir = UTILS.getDistance(camX, camY, player.x, player.y);
+    /*attackDir = UTILS.getDistance(camX, camY, player.x, player.y);
     tmp_Dir = UTILS.getDirection(player.x, player.y, camX, camY);
 
-    camSpd = Math.min(0.01 * attackDir * delta, attackDir);
-    if (attackDir > 0.1) {
-      camX += camSpd * Math.cos(tmp_Dir);
-      camY += camSpd * Math.sin(tmp_Dir);
-    }
-    else {
-      camX = player.x;
-      camY = player.y;
-    }
+    camSpd = Math.min(0.01 * attackDir * delta, attackDir);*/
+    
+    camX = player.x;
+    camY = player.y;
   }
   var xOffset = camX - maxScreenWidth / 2 + offsetCamX
     , yOffset = camY - maxScreenHeight / 2 + offsetCamY;
