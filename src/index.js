@@ -1860,21 +1860,20 @@ function boostInstaOptimisations() {
   if (!window.enemy) return;
 
   const distance = Math.hypot(window.enemy.x - player.x, window.enemy.y - player.y);
+  const angle = Math.atan2(window.enemy.y - player.y, window.enemy.x - player.x);
 
   if (distance > 400 && distance < 450 && keyEvents.ShiftLeft) {
-    const angle = Math.atan2(window.enemy.y - player.y, window.enemy.x - player.x);
-
     place(player.items[4], angle);
+    
     io.send(packets.MOVEMENT, angle);
   } else if (keyEvents.ShiftLeft && distance < 240) {
-
     io.send(packets.MOVEMENT, null);
+    
     reverseInsta();
   } else if (keyEvents.ShiftLeft && distance > 450) {
     io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
 
     io.send(packets.MOVEMENT, angle);
-    
     storeEquip(40);
   } else if (keyEvents.ShiftLeft && distance < 400) {
     io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
