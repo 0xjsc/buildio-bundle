@@ -17,7 +17,6 @@ import AiManager from "./js/data/aiManager.js";
 import AI from "./js/data/ai.js";
 
 const serverPackets = {};
-let freeCam = false;
 
 const packets = {
   PING: "pp",
@@ -134,8 +133,8 @@ const clanNames = [
   "urez"
 ];
 
-const versionHash = "1.6-Beta";
-const changelog = "Perfected autoinsta";
+const versionHash = "1.6-Gamma";
+const changelog = "Optimised some aspects of the mod";
 const motionBlurLevel = 0.6;
 let instakilling = false;
 
@@ -426,8 +425,6 @@ async function disconnect(reason) {
     Contact 0xffabc at mohmoh's server if you have more questions`,
     showConfirmButton: true,
   });
-
-  freeCam = true;
 }
 
 function showLoadingText(text) {
@@ -1553,22 +1550,11 @@ function heal(healCount) {
     io.send(packets.ATTACK, true, getAttackDir());
   };
   selectToBuild(player.weaponIndex, true);
-  player.buildItem({
-   consume: () => { },
-    scale: 0,
-    x: player.x,
-    y: player.y,
-    dir: 0,
-    id: 0,
-    group: {
-      id: 0,
-      name: 'food',
-      layer: 0
-    }
-  });
 };
-let lastDamage = 0;
+
 const safeHealDelay = 120;
+
+let lastDamage = 0;
 let prevHeal = 0;
 let healTimestamp = Date.now();
 
@@ -1607,8 +1593,6 @@ function updateHealth(sid, value) {
 
   healTimestamp = Date.now();
 }
-
-const cspam = Math.PI / 8;
 
 function getMoveDir() {
   var newMoveDir = function () {
@@ -2010,7 +1994,7 @@ const modulesQueue = [
   () => {
     if (!window.testPacketLimit) return;
 
-    window.testPacketLimit++;
+    window.testPacketLimit *= 2;
 
     io.send(packets.SEND_CHAT, "[*] Testing WS limit ->" + window.testPacketLimit);
     
@@ -2018,29 +2002,6 @@ const modulesQueue = [
       io.send(packets.PING);
   }
 ];
-
-setInterval(() => {
-  if (!freeCam) return;
-
-  if (keyEvents.keyW)
-    player.y += 20;
-  if (keyEvents.KeyS)
-    player.y -= 20;
-  if (keyEvents.KeyR)
-    player.x -= 20;
-  if (keyEvents.keyL)
-    player.x += 20;
-
-  players.map(player_ => {
-    if (!player_) return player_;
-    if (player_?.sid != player.sid) return player_;
-
-    player_.x = player.x;
-    player_.y = player.y;
-
-    return player_;
-  });
-}, 111);
 
 let attackDir = 0, tmp_Dir = 0, camSpd = 0;
 let lastPing_ = Date.now();
