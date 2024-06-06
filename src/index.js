@@ -1857,18 +1857,26 @@ function antiInsta() {
 };
 
 function boostInstaOptimisations() {
-  if (!window.enemyDanger) return;
+  if (!window.enemy) return;
 
-  const distance = Math.hypot(window.enemyDanger.x - player.x, window.enemyDanger.y - player.y);
+  const distance = Math.hypot(window.enemy.x - player.x, window.enemy.y - player.y);
 
-  if (distance > 200 && keyEvents.ShiftLeft) {
-    const angle = Math.atan2(window.enemyDanger.y2 - player.y2, window.enemyDanger.x2 - player.x2);
+  if (distance > 300 && distance < 350 && keyEvents.ShiftLeft) {
+    const angle = Math.atan2(window.enemy.y - player.y, window.enemy.x - player.x);
 
     place(player.items[4], angle);
     io.send(packets.MOVEMENT, angle);
-  } else if (keyEvents.ShiftLeft) {
+  } else if (keyEvents.ShiftLeft && distance < 240) {
 
     io.send(packets.MOVEMENT, null);
+    reverseInsta();
+  } else if (keyEvents.ShiftLeft && distance > 350) {
+    io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.floor(Math.sin(Date.now()) * 3))).fill(".").join(""));
+
+    io.send(packets.MOVEMENT, angle);
+    
+    setTimeout(() => io.send(packets.MOVEMENT, null), average / 2);
+  } else if (keyEvents.ShiftLeft && distance < 200) {
     reverseInsta();
   }
 }
