@@ -1985,10 +1985,6 @@ function render() {
       .fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, config.riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(
         xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06
     , mainContext.beginPath();
-  /*for (var x = -camX; x < maxScreenWidth; x += gridDelta)
-    x > 0 && (mainContext.moveTo(x, 0), mainContext.lineTo(x, maxScreenHeight));
-  for (var y = -camY; y < maxScreenHeight; y += gridDelta)
-    y > 0 && (mainContext.moveTo(0, y), mainContext.lineTo(maxScreenWidth, y));*/
   for (var i = -camX, k = -camY; i < maxScreenWidth || k < maxScreenHeight; i += gridDelta, k += gridDelta) {
     if (i > 0) {
       mainContext.moveTo(i, 0);
@@ -2024,14 +2020,16 @@ function render() {
   for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext
     .strokeStyle = darkOutlineColor, textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length + ais.length; ++i)
     if ((tmpObj = players[i] || ais[i - players.length])
-      .visible && (10 != tmpObj.skinIndex || tmpObj == player || tmpObj.team && tmpObj.team == player.team)) {
-      var total = tmpObj.t2 - tmpObj.t1
-        , ratio = (now - 111 - tmpObj.t1) / total;
+      .visible) {
+      var total = tmpObj.t2 - tmpObj.t1;
+      ratio = (now - average - tmpObj.t1) / total;
       tmpObj.dt += delta;
-      var tmpRate = Math.min(1.7, tmpObj.dt / 170)
-        , tmpDiff = tmpObj.x2 - tmpObj.x1;
-      tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate, tmpDiff = tmpObj.y2 - tmpObj.y1, tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate, tmpObj.dir = Math.lerpAngle(tmpObj
-          .d2, tmpObj.d1, Math.min(1.2, ratio));
+      var tmpRate = Math.min(1.7, tmpObj.dt / 170);
+      tmpDiff = tmpObj.x2 - tmpObj.x1;
+      tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate;
+      tmpDiff = tmpObj.y2 - tmpObj.y1;
+      tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate;
+      tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
 
       if (ais[i]) {
         tmpObj.animate(delta);
