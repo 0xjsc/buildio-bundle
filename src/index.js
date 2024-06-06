@@ -167,8 +167,6 @@ const blacklist = new Map(Object.entries({
 
 window.loadedScript = true;
 
-let aimOverride = false;
-
 var isProd = location.origin.includes("http://")
 var startedConnecting = false;
 
