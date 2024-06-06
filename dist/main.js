@@ -14114,7 +14114,7 @@ function reverseInsta() {
       window.sidFocus = enemy?.sid || 69420;
       if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
       if (!enemy) return;
-      const angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+      let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
       
       instakilling = true;
       storeEquip(53);
