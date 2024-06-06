@@ -13923,6 +13923,8 @@ let prevHeal = 0;
 let healTimestamp = Date.now();
 
 function healing(healTimestamp) {
+  if (player.health == 100) return;
+  
   const damage = 100 - player.health;
   const healingItemSid = player.items[0];
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
