@@ -133,8 +133,8 @@ const clanNames = [
   "urez"
 ];
 
-const versionHash = "1.6-PreAlpha";
-const changelog = "Optimised some mod aspects, improved autoinsta calculations, improved hat switcher defense";
+const versionHash = "1.6-Beta";
+const changelog = "Perfected autoinsta";
 const motionBlurLevel = 0.6;
 let instakilling = false;
 
