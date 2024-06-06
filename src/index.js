@@ -2008,21 +2008,23 @@ const modulesQueue = [
   () => {
     if (!window.testPacketLimit) return;
 
-    window.testPacketLimit += 12;
+    window.testPacketLimit += 1200;
 
-    io.send(packets.SEND_CHAT, "[*] Testing WS limit ->" + window.testPacketLimit);
-    io.send(packets.MOVEMENT, Math.random() * 6);
-    io.send(packets.AIM, Math.random() * 6);
-    io.send(packets.CLAN_CREATE, "MD");
-    io.send(packets.CLAN_LEAVE);
-    io.send(packets.CLAN_CREATE, "MD");
-    io.send(packets.CLAN_LEAVE);
-    io.send(packets.ATTACK, true, Math.random() * 6);
-    io.send(packets.PING);
-    io.send(packets.MAP_PING);
+    for (let i = 0; i < 100; i++) {
+      io.send(packets.SEND_CHAT, "[*] Testing WS limit ->" + window.testPacketLimit);
+      io.send(packets.MOVEMENT, Math.random() * 6);
+      io.send(packets.AIM, Math.random() * 6);
+      io.send(packets.CLAN_CREATE, "MD");
+      io.send(packets.CLAN_LEAVE);
+      io.send(packets.CLAN_CREATE, "MD");
+      io.send(packets.CLAN_LEAVE);
+      io.send(packets.ATTACK, true, Math.random() * 6);
+      io.send(packets.PING);
+      io.send(packets.MAP_PING);
     
-    storeEquip(~~(Math.random() * 50));
-    storeEquip(~~(Math.random() * 20, true));
+      storeEquip(~~(Math.random() * 50));
+      storeEquip(~~(Math.random() * 20, true));
+    }
   }
 ];
 
