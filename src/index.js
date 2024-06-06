@@ -1864,10 +1864,10 @@ function boostSpike() {
   const distance = Math.hypot(window.enemy.x - player.x, window.enemy.y - player.y);
   const angle = Math.atan2(window.enemy.y - player.y, window.enemy.x - player.x);
 
-  if (distance > 300 && distance < 400) {
+  if (distance > 400 && distance < 500) {
     place(player.items[4], angle);
     io.send(packets.MOVEMENT, angle);
-  } else if (distance < 300) {
+  } else if (distance < 400) {
     const enemyBorder = {
       x: window.enemy.x + Math.cos(Math.PI / 2) * config.playerScale,
       y: window.enemy.y + Math.sin(Math.PI / 2) * config.playerScale
@@ -1879,6 +1879,7 @@ function boostSpike() {
     
     place(player.items[2], angle - enB - Math.PI);
     place(player.items[2], angle + enB - Math.PI);
+    place(player.items[4], angle);
   } else {
     io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
 
