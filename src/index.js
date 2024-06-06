@@ -1724,66 +1724,70 @@ function fixInsta() {
 }
 
 function normalInsta() {
-      const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
-      window.sidFocus = enemy?.sid || 69420;
-      if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
-      if (!enemy) return false;
-      let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
-      
-      instakilling = true;
-      autoclicker = angle;
-      fixInsta();
-      storeEquip(7);
-      storeEquip(15, true);
-      io.send(packets.SEND_CHAT, "!sync");
+  const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+  window.sidFocus = enemy?.sid || 69420;
+  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
+  if (!enemy) return false;
+  if (instakilling) return;
+
+  let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+
+  instakilling = true;
+  autoclicker = angle;
+  fixInsta();
+  storeEquip(7);
+  storeEquip(15, true);
+  io.send(packets.SEND_CHAT, "!sync");
+  io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
+  io.send(packets.ATTACK, true, angle);
+  setTimeout(() => {
+    angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+    autoclicker = angle;
+    storeEquip(53);
+    turretReload = 0;
+    io.send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
+    reloads[player.weapons[1]] = 0;
+    io.send(packets.ATTACK, true, angle);
+    setTimeout(() => {
       io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
-      io.send(packets.ATTACK, true, angle);
-      setTimeout(() => {
-        angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
-        autoclicker = angle;
-        storeEquip(53);
-        turretReload = 0;
-        io.send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
-        reloads[player.weapons[1]] = 0;
-        io.send(packets.ATTACK, true, angle);
-        setTimeout(() => {
-          io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
-          io.send(packets.ATTACK, false, angle);
-          instakilling = false;
-          autoclicker = false;
-        }, average / 2);
-      }, average / 2);
+      io.send(packets.ATTACK, false, angle);
+      instakilling = false;
+      autoclicker = false;
+    }, average);
+  }, average);
 }
 
 function reverseInsta() {
-      const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
-      window.sidFocus = enemy?.sid || 69420;
-      if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
-      if (!enemy) return;
-      let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
-      autoclicker = angle;
-      
-      instakilling = true;
-      storeEquip(53);
-      fixInsta();
-      turretReload = 0;
-      io.send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
-      io.send(packets.ATTACK, true, angle);
-      io.send(packets.SEND_CHAT, "!sync");
-      reloads[player.weapons[1]] = 0;
-      setTimeout(() => {
-        angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
-        autoclicker = angle;
-        storeEquip(7);
-        storeEquip(15, true);
-        io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
-        io.send(packets.ATTACK, true, angle);
-        setTimeout(() => {
-          io.send(packets.ATTACK, false, angle);
-          instakilling = false;
-          autoclicker = false;
-        }, average / 2);
-      }, average / 2);
+  const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+  window.sidFocus = enemy?.sid || 69420;
+  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
+  if (!enemy) return;
+  if (instakilling) return;
+
+  let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+  autoclicker = angle;
+
+  instakilling = true;
+  storeEquip(53);
+  fixInsta();
+  turretReload = 0;
+  io.send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
+  io.send(packets.ATTACK, true, angle);
+  io.send(packets.SEND_CHAT, "!sync");
+  reloads[player.weapons[1]] = 0;
+  setTimeout(() => {
+    angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+    autoclicker = angle;
+    storeEquip(7);
+    storeEquip(15, true);
+    io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
+    io.send(packets.ATTACK, true, angle);
+    setTimeout(() => {
+      io.send(packets.ATTACK, false, angle);
+      instakilling = false;
+      autoclicker = false;
+    }, average);
+  }, average);
 }
 
 function botFunctions(tmpPlayer) {
