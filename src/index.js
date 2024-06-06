@@ -637,8 +637,8 @@ function sendJoin(index) {
 }
 
 function createAlliance() {
-  io.send(packets.CLAN_CREATE, document.getElementById('allianceInput')
-    .value);
+  io.send(packets.CLAN_CREATE, "⁣" + document.getElementById('allianceInput')
+    .value + "⁣");
 }
 
 let waka = 0; // sorry for bad variable name
