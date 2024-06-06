@@ -1871,13 +1871,13 @@ function boostInstaOptimisations() {
     io.send(packets.MOVEMENT, null);
     reverseInsta();
   } else if (keyEvents.ShiftLeft && distance > 450) {
-    io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.floor(Math.sin(Date.now()) * 3))).fill(".").join(""));
+    io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
 
     io.send(packets.MOVEMENT, angle);
     
     storeEquip(40);
   } else if (keyEvents.ShiftLeft && distance < 400) {
-    io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.floor(Math.sin(Date.now()) * 3))).fill(".").join(""));
+    io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
 
     io.send(packets.MOVEMENT, angle - Math.PI);
     
