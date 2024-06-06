@@ -1861,7 +1861,7 @@ function boostInstaOptimisations() {
 
   const distance = Math.hypot(window.enemy.x - player.x, window.enemy.y - player.y);
 
-  if (distance > 300 && distance < 350 && keyEvents.ShiftLeft) {
+  if (distance > 400 && distance < 450 && keyEvents.ShiftLeft) {
     const angle = Math.atan2(window.enemy.y - player.y, window.enemy.x - player.x);
 
     place(player.items[4], angle);
@@ -1870,14 +1870,12 @@ function boostInstaOptimisations() {
 
     io.send(packets.MOVEMENT, null);
     reverseInsta();
-  } else if (keyEvents.ShiftLeft && distance > 350) {
+  } else if (keyEvents.ShiftLeft && distance > 450) {
     io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.floor(Math.sin(Date.now()) * 3))).fill(".").join(""));
 
     io.send(packets.MOVEMENT, angle);
     
     setTimeout(() => io.send(packets.MOVEMENT, null), average / 2);
-  } else if (keyEvents.ShiftLeft && distance < 200) {
-    reverseInsta();
   }
 }
 
