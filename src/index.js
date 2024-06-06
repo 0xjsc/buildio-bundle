@@ -1708,12 +1708,11 @@ function autobreak(trap) {
 }
 
 function bowSync() {
-  const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 500 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
-  window.sidFocus = enemy?.sid || 69420;
-  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
+  const enemy = players.find(e => e.sid == ownerSid);
+
   if (!enemy) return false;
   fixInsta();
-  const angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+  const angle = enemy.dir;
 
   storeEquip(53);
   turretReload = 0;
