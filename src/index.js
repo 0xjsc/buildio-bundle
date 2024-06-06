@@ -979,7 +979,7 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : UTILS.fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send(packets.MOVEMENT, newMoveDir), (!window.enemy && !attackState && !breaking && !instakilling) && (storeEquip(player.y <= config.snowBiomeTop ? 6 : 11, true), storeEquip(getBiomeHat())), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send(packets.MOVEMENT, newMoveDir), (!window.enemyDanger && !attackState && !instakilling) && (storeEquip(player.y <= config.snowBiomeTop ? 6 : 11, true), storeEquip(getBiomeHat())), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
@@ -1941,7 +1941,9 @@ function updatePlayers(data) {
   for (let i = 0; i < data.length;) {
     (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
     if (tmpObj.sid == ownerSid) botFunctions(tmpObj);
+    
     if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 500 && tmpObj != player) window.enemy = tt = tmpObj;
+    if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 200 && tmpObj != player) window.enemyDanger = tmpObj;
   }
 
   modulesQueue.forEach(task => task(tt));
