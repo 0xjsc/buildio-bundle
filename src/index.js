@@ -1205,7 +1205,7 @@ function gatherAnimation(sid, didHit, index) {
 
   const hitHat = breaking ? 40 : ((player.health < 100 && player.health > 60) ? 55 : 7);
   const hitAcc = (player.health > 50) ? 15 : (player.health < 40 ? 18 : 13);
-  const idleHat = breaking ? 26 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
+  const idleHat = breaking ? 6 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
   const idleAcc = players.length >= 2 ? 15 : (player.y <= config.snowBiomeTop ? 6 : 19);
 
   storeEquip(idleHat);
