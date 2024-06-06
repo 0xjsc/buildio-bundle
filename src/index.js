@@ -2025,7 +2025,7 @@ function render() {
       var ratio = (now - average - tmpObj.t1) / total;
       tmpObj.dt += delta;
       var tmpRate = Math.min(1.7, tmpObj.dt / 170);
-      tmpDiff = tmpObj.x2 - tmpObj.x1;
+      var tmpDiff = tmpObj.x2 - tmpObj.x1;
       tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate;
       tmpDiff = tmpObj.y2 - tmpObj.y1;
       tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate;
