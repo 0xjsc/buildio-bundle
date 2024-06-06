@@ -1961,12 +1961,7 @@ var i = 0;
 
 function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
-  /** 
-  * Smart trick to make every last frame lose their opacity by 50% 
-  * Which will implement motion blur  
-  **/
-  
-  mainContext.globalAlpha = 0.5; 
+
   if (player) {
     /*attackDir = UTILS.getDistance(camX, camY, player.x, player.y);
     tmp_Dir = UTILS.getDirection(player.x, player.y, camX, camY);
