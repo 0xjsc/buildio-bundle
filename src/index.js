@@ -1562,20 +1562,22 @@ function heal(healCount) {
 let lastDamage = 0;
 const safeHealDelay = 120;
 let prevHeal = 0;
+let healTimestamp = Date.now();
 
-function healing() {
+function healing(healTimestamp) {
   const damage = 100 - player.health;
   const healingItemSid = player.items[0];
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
+  const timeDelay = Date.now() - healTimestamp;
 
   const prevHealEndsIn = Date.now() - prevHeal - window.pingTime;
   const prevHealFixed = prevHealEndsIn < 0 ? 0 : (prevHealEndsIn > average ? 0 : prevHealEndsIn);
   const rawHealTimeout = safeHealDelay - window.pingTime / 2;
-  const safeHealTimeout = prevHealFixed ? (
+  const safeHealTimeout = (prevHealFixed ? (
     rawHealTimeout + prevHealFixed
   ) : (
     rawHealTimeout
-  );
+  )) - timeDelay + 1;
   
   window.setTimeout(() =>
     heal(healCount), safeHealTimeout);
@@ -1593,7 +1595,7 @@ function updateHealth(sid, value) {
 
   oldHealth = player.health;
 
-  healing();
+  healTimestamp = Date.now();
 }
 
 const cspam = Math.PI / 8;
@@ -1841,6 +1843,7 @@ const modulesQueue = [
   },
   /** DEFENCE MODULES **/
   () => antiInsta(),
+  () => healing(healTimestamp),
   () => {
     if (instakilling) return;
     
