@@ -1215,7 +1215,7 @@ function gatherAnimation(sid, didHit, index) {
     setTimeout(() => {
       if (instakilling) return;
       if (!attackState) {
-        storeEquip(getBiomeHat());
+        storeEquip(idleHat == 53 ? 6 : idleHat);
         storeEquip(idleAcc, true);
       }
     }, average);
@@ -1722,7 +1722,7 @@ function normalInsta() {
       window.sidFocus = enemy?.sid || 69420;
       if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
       if (!enemy) return false;
-      const angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+      let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
       
       instakilling = true;
       fixInsta();
@@ -1732,6 +1732,7 @@ function normalInsta() {
       io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
       io.send(packets.ATTACK, true, angle);
       setTimeout(() => {
+        angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
         storeEquip(53);
         turretReload = 0;
         io.send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
@@ -1761,6 +1762,7 @@ function reverseInsta() {
       io.send(packets.SEND_CHAT, "!sync");
       reloads[player.weapons[1]] = 0;
       setTimeout(() => {
+        angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
         storeEquip(7);
         storeEquip(15, true);
         io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
