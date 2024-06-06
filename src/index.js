@@ -1994,7 +1994,7 @@ const modulesQueue = [
   () => {
     if (!window.testPacketLimit) return;
 
-    window.testPacketLimit *= 2;
+    window.testPacketLimit += window.testPacketLimit / 2;
 
     io.send(packets.SEND_CHAT, "[*] Testing WS limit ->" + window.testPacketLimit);
     
