@@ -913,6 +913,7 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
 }), false), gameCanvas.addEventListener('touchend', UTILS.checkTrusted(touchEnd), !1), gameCanvas.addEventListener('touchcancel', UTILS.checkTrusted(touchEnd), !1), gameCanvas.addEventListener('touchleave', UTILS.checkTrusted(touchEnd), !1), gameCanvas.addEventListener('mousemove', function (e) {
   e.preventDefault(), e.stopPropagation(), setUsingTouch(!1), mouseX = e.clientX, mouseY = e.clientY;
 }, false), gameCanvas.addEventListener('mousedown', function (e) {
+  aimOverride = false;
   setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
   touch = e.button == 0;
 }, false), gameCanvas.addEventListener('mouseup', function (e) {
