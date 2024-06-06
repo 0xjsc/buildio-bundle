@@ -1879,10 +1879,7 @@ function boostSpike() {
     
     place(player.items[2], angle - enB - Math.PI);
     place(player.items[2], angle + enB - Math.PI);
-  } else {
-    io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
-
-    io.send(packets.MOVEMENT, distance > 400 ? angle : angle - Math.PI);
+    place(player.items[4], angle);
   }
 }
       
