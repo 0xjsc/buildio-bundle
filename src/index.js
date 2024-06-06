@@ -142,6 +142,7 @@ let offsetCamX = 0;
 let offsetCamY = 0;
 let deltaHold = 10;
 let ownerSid = null;
+let autoclicker = false;
 
 const emojis = new Map();
 
@@ -1730,6 +1731,7 @@ function normalInsta() {
       let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
       
       instakilling = true;
+      autoclicker = angle;
       fixInsta();
       storeEquip(7);
       storeEquip(15, true);
@@ -1738,6 +1740,7 @@ function normalInsta() {
       io.send(packets.ATTACK, true, angle);
       setTimeout(() => {
         angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+        autoclicker = angle;
         storeEquip(53);
         turretReload = 0;
         io.send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
@@ -1747,6 +1750,7 @@ function normalInsta() {
           io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
           io.send(packets.ATTACK, false, angle);
           instakilling = false;
+          autoclicker = false;
         }, average / 2);
       }, average / 2);
 }
@@ -1757,6 +1761,7 @@ function reverseInsta() {
       if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
       if (!enemy) return;
       let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+      autoclicker = angle;
       
       instakilling = true;
       storeEquip(53);
@@ -1768,6 +1773,7 @@ function reverseInsta() {
       reloads[player.weapons[1]] = 0;
       setTimeout(() => {
         angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+        autoclicker = angle;
         storeEquip(7);
         storeEquip(15, true);
         io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
@@ -1775,6 +1781,7 @@ function reverseInsta() {
         setTimeout(() => {
           io.send(packets.ATTACK, false, angle);
           instakilling = false;
+          autoclicker = false;
         }, average / 2);
       }, average / 2);
 }
@@ -1899,6 +1906,10 @@ const modulesQueue = [
       normalInsta();
     } else if (window.keyEvents.SwitchKeyT) {
       reverseInsta();
+    }
+  }, () => {
+    if (autoclicker) {
+      io.send(packets.ATTACK, true, autoclicker);
     }
   }
 ];
