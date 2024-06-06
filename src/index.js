@@ -1714,6 +1714,10 @@ function bowSync() {
   io.send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
   io.send(packets.ATTACK, true, angle);
   io.send(packets.ATTACK, false, getAttackDir());
+
+  setTimeout(() => {
+    storeEquip(getBiomeHat());
+  }, average);
 }
 
 function fixInsta() {
@@ -1751,6 +1755,7 @@ function normalInsta() {
     setTimeout(() => {
       io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
       io.send(packets.ATTACK, false, angle);
+      storeEquip(getBiomeHat());
       instakilling = false;
       autoclicker = false;
     }, average);
@@ -1784,6 +1789,7 @@ function reverseInsta() {
     io.send(packets.ATTACK, true, angle);
     setTimeout(() => {
       io.send(packets.ATTACK, false, angle);
+      storeEquip(getBiomeHat());
       instakilling = false;
       autoclicker = false;
     }, average);
