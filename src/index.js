@@ -198,6 +198,9 @@ const wsLogs = [];
 
 function connectSocket(token) {
   var wsAddress = (isProd ? "ws" : "wss") + '://' + location.host + "/?token=" + token;
+  
+  window.socket = top.socket = io;
+  
   io.connect(wsAddress, function (error) {
     io.send(packets.REGISTER, 0);
     pingSocket(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
@@ -2298,6 +2301,12 @@ Follow module: <span onclick = "window.follow = !window.follow; this.innerHTML =
 Bow spamming module: <span onclick = "window.bowspam = !window.bowspam; this.innerHTML = window.bowspam ? 'ON' : 'OFF'"> OFF </span> <br>
 Boost Insta Optimisations: <span onclick = "window.boostinsta = !window.boostinsta; this.innerHTML = window.boostinsta ? 'ON' : 'OFF'"> OFF </span> <br>
 Auto-sync: ON <br> <br>
+
+<br> WebSocket Sender <br>
+Packet: <input type = "name" id = "packet"> <br>
+<button onclick = "window.socket.send(msgpack.encode(JSON.parse(document.getElementById('packet').value)))"> Send </button> <br>
+<button onclick = "window.intervalSend ? (clearInterval(window.intervalSend), this.innerHTML = 'Interval Send') : (window.intervalSend = setInterval(() => window.socket.send(msgpack.encode(JSON.parse(document.getElementById('packet').value))), parseInt(prompt('Enter delay'))), this.innerHTML = 'Stop interval')"> Interval Send </button> <br>
+<br>
 
 !connect <username> - Connect to a user to sync with <br>
 !disconnect - Disconnect from the user <br>
