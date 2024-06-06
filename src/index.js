@@ -167,6 +167,8 @@ const blacklist = new Map(Object.entries({
 
 window.loadedScript = true;
 
+let aimOverride = false;
+
 var isProd = location.origin.includes("http://")
 var startedConnecting = false;
 
@@ -894,7 +896,7 @@ function touchEnd(ev) {
 }
 
 function getAttackDir() {
-  return (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2));
+  return aimOverride ? aimOverride : (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2));
 }
 window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsingTouch(!1), window.setUsingTouch = setUsingTouch, gameCanvas.addEventListener('touchmove', UTILS.checkTrusted(function (ev) {
   ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
@@ -1683,6 +1685,7 @@ let serverLag = 0;
 let average = 111;
 let current = 111;
 let breaking = false;
+let aimOverride = false;
 
 function autobreak(trap) {
   if (instakilling) return;
@@ -1694,8 +1697,12 @@ function autobreak(trap) {
   );
   breaking = true;
   window.trap = trap;
+  
   io.send(packets.ATTACK, true, trapAngle);
   io.send(packets.ATTACK, false, trapAngle);
+
+  aimOverride = trapAngle;
+  
   if (player.weaponIndex != correctWeapon) {
     io.send(packets.CHANGE_WEAPON, waka = correctWeapon, true);
   }
@@ -1736,6 +1743,8 @@ function normalInsta() {
 
   let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
 
+  aimOverride = angle;
+
   instakilling = true;
   autoclicker = angle;
   fixInsta();
@@ -1747,6 +1756,7 @@ function normalInsta() {
   setTimeout(() => {
     angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
     autoclicker = angle;
+    aimOverride = angle;
     storeEquip(53);
     turretReload = 0;
     io.send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
@@ -1758,6 +1768,7 @@ function normalInsta() {
       storeEquip(getBiomeHat());
       instakilling = false;
       autoclicker = false;
+      aimOverride = false;
     }, average / 2 + serverLag);
   }, average / 2 + serverLag);
 }
@@ -1770,6 +1781,7 @@ function reverseInsta() {
   if (instakilling) return;
 
   let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+  aimOverride = angle;
   autoclicker = angle;
 
   instakilling = true;
@@ -1782,6 +1794,7 @@ function reverseInsta() {
   reloads[player.weapons[1]] = 0;
   setTimeout(() => {
     angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+    aimOverride = angle;
     autoclicker = angle;
     storeEquip(7);
     storeEquip(15, true);
@@ -1875,8 +1888,10 @@ const modulesQueue = [
     
     const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
 
-    if (!window.bowspam && !trap && breaking) {
+    if (!trap && breaking) {
       breaking = false;
+      aimOverride = false;
+      
       io.send(packets.ATTACK, false, getAttackDir());
     }
   
@@ -2207,7 +2222,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
 
 #modMenu:hover {
   transform: scale(1.05);
-  background: black;
+  background: rgba(0, 0, 0, 0.8);
 }
 </style>
 `);
