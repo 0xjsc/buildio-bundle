@@ -1858,6 +1858,34 @@ function antiInsta() {
 
 let controlFlow = false;
 
+function boostSpike() {
+  if (!window.enemy) return;
+
+  const distance = Math.hypot(window.enemy.x - player.x, window.enemy.y - player.y);
+  const angle = Math.atan2(window.enemy.y - player.y, window.enemy.x - player.x);
+
+  if (distance > 300 && distance < 400) {
+    place(player.items[4], angle);
+    io.send(packets.MOVEMENT, angle);
+  } else if (distance < 300) {
+    const enemyBorder = {
+      x: window.enemy.x + Math.cos(Math.PI / 2) * config.playerScale,
+      y: window.enemy.y + Math.sin(Math.PI / 2) * config.playerScale
+    };
+
+    const enB = Math.atan2(enemyBorder.y - player.y, enemyBorder.x - player.x);
+    
+    io.send(packets.MOVEMENT, angle);
+    
+    place(player.items[2], angle - enB - Math.PI);
+    place(player.items[2], angle + enB - Math.PI);
+  } else {
+    io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
+
+    io.send(packets.MOVEMENT, distance > 400 ? angle : angle - Math.PI);
+  }
+}
+      
 function boostInstaOptimisations() {
   if (!window.enemy) return;
 
@@ -1946,6 +1974,7 @@ const modulesQueue = [
     if (window.keyEvents.KeyG) place(player.items[5], getAttackDir()); 
     else if (window.keyEvents.KeyV) place(player.items[2], getAttackDir());
     else if (window.keyEvents.KeyF) place(player.items[4], getAttackDir()); 
+    else if (window.keyEvents.KeyZ) boostSpike();
 
     if (window.keyEvents.ArrowUp) offsetCamY -= (deltaHold += 3);
     else if (window.keyEvents.ArrowDown) offsetCamY += (deltaHold += 3);
