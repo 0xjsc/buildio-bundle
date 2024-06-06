@@ -2008,7 +2008,7 @@ const modulesQueue = [
   () => {
     if (!window.testPacketLimit) return;
 
-    window.testPacketLimit += 10;
+    window.testPacketLimit += 12;
 
     io.send(packets.SEND_CHAT, "[*] Testing WS limit ->" + window.testPacketLimit);
     io.send(packets.MOVEMENT, Math.random() * 6);
@@ -2018,6 +2018,8 @@ const modulesQueue = [
     io.send(packets.CLAN_CREATE, "MD");
     io.send(packets.CLAN_LEAVE);
     io.send(packets.ATTACK, true, Math.random() * 6);
+    io.send(packets.PING);
+    io.send(packets.MAP_PING);
     
     storeEquip(~~(Math.random() * 50));
     storeEquip(~~(Math.random() * 20, true));
