@@ -1854,6 +1854,23 @@ function botFunctions(tmpPlayer) {
 // antiInsta function
 function antiInsta() {
   // Your antiInsta code goes here
+};
+
+function boostInstaOptimisations() {
+  if (!window.enemyDanger) return;
+
+  const distance = Math.hypot(window.enemyDanger.x - player.x, window.enemyDanger.y - player.y);
+
+  if (distance > 200 && keyEvents.ShiftLeft) {
+    const angle = Math.atan2(window.enemyDanger.y2 - player.y2, window.enemyDanger.x2 - player.x2);
+
+    place(player.items[4], angle);
+    io.send(packets.MOVEMENT, angle);
+  } else if (keyEvents.ShiftLeft) {
+
+    io.send(packets.MOVEMENT, null);
+    reverseInsta();
+  }
 }
 
 const modulesQueue = [
@@ -1923,7 +1940,7 @@ const modulesQueue = [
     if (instakilling) return;
     if (!tt) return;
 
-    tt && autoplace();
+    window.boostinsta ? (tt && boostInstaOptimisations()) : (tt && autoplace());
   }, (tt) => {
     if (breaking) return;
     if (instakilling) return;
@@ -2238,6 +2255,7 @@ menu.innerHTML = `
 
 Follow module: <span onclick = "window.follow = !window.follow; this.innerHTML = window.follow ? 'ON' : 'OFF'"> OFF </span> <br>
 Bow spamming module: <span onclick = "window.bowspam = !window.bowspam; this.innerHTML = window.bowspam ? 'ON' : 'OFF'"> OFF </span> <br>
+Boost Insta Optimisations: <span onclick = "window.boostinsta = !window.boostinsta; this.innerHTML = window.boostinsta ? 'ON' : 'OFF'"> OFF </span> <br>
 Auto-sync: ON <br> <br>
 
 !connect <username> - Connect to a user to sync with <br>
