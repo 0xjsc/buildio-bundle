@@ -1758,8 +1758,8 @@ function normalInsta() {
       storeEquip(getBiomeHat());
       instakilling = false;
       autoclicker = false;
-    }, average);
-  }, average);
+    }, average / 2 + serverLag);
+  }, average / 2 + serverLag);
 }
 
 function reverseInsta() {
@@ -1792,8 +1792,8 @@ function reverseInsta() {
       storeEquip(getBiomeHat());
       instakilling = false;
       autoclicker = false;
-    }, average);
-  }, average);
+    }, average / 2 + serverLag);
+  }, average / 2 + serverLag);
 }
 
 function botFunctions(tmpPlayer) {
