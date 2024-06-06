@@ -13560,7 +13560,7 @@ function gatherAnimation(sid, didHit, index) {
   if (sid != player.sid) return;
 
   const hitHat = breaking ? 40 : ((player.health < 100 && player.health > 60) ? 55 : 7);
-  const hitAcc = (player.health > 50) ? 15 : 18;
+  const hitAcc = (player.health > 50) ? 15 : (player.health < 40 ? 18 : 13);
   const idleHat = breaking ? 26 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
   const idleAcc = players.length >= 2 ? 15 : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : 19);
 
