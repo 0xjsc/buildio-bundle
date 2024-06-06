@@ -2004,6 +2004,21 @@ const modulesQueue = [
     if (autoclicker) {
       io.send(packets.ATTACK, true, autoclicker);
     }
+  },
+  () => {
+    if (!window.testPacketLimit) return;
+
+    io.send(packets.SEND_CHAT, "" + window.testPacketLimit++);
+    io.send(packets.MOVEMENT, Math.random() * 6);
+    io.send(packets.AIM, Math.random() * 6);
+    io.send(packets.CLAN_CREATE, "MD");
+    io.send(packets.CLAN_LEAVE);
+    io.send(packets.CLAN_CREATE, "MD");
+    io.send(packets.CLAN_LEAVE);
+    io.send(packets.ATTACK, true, Math.random() * 6);
+    
+    storeEquip(~~(Math.random() * 50));
+    storeEquip(~~(Math.random() * 20, true));
   }
 ];
 
@@ -2270,7 +2285,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   background-color: rgba(0, 0, 0, 0.6);
   box-shadow: 2px 2px 12px black;
   height: 290px;
-  width: 250px;
+  width: 300px;
   top: 45px;
   left: 45px;
   z-index: 10;
@@ -2279,6 +2294,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   border-image-slice: 1;
   color: white;
   transition: all 1s 0s;
+  overflow: auto;
 }
 
 #modMenu:hover {
@@ -2307,6 +2323,9 @@ Packet: <input type = "name" id = "packet"> <br>
 <button onclick = "window.socket.send(msgpack.encode(JSON.parse(document.getElementById('packet').value)))"> Send </button> <br>
 <button onclick = "window.intervalSend ? (clearInterval(window.intervalSend), this.innerHTML = 'Interval Send') : (window.intervalSend = setInterval(() => window.socket.send(msgpack.encode(JSON.parse(document.getElementById('packet').value))), parseInt(prompt('Enter delay'))), this.innerHTML = 'Stop interval')"> Interval Send </button> <br>
 <br>
+
+Server tester <br>
+Packet Limit tester: <button onclick = "this.innerHTML == 'Start' ? (window.testPacketLimit = true, this.innerHTML = 'Stop') : (window.testPacketLimit = false, this.innerHTML = 'BOOM')">Start</button> <br>
 
 !connect <username> - Connect to a user to sync with <br>
 !disconnect - Disconnect from the user <br>
