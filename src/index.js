@@ -1875,7 +1875,14 @@ function boostInstaOptimisations() {
 
     io.send(packets.MOVEMENT, angle);
     
-    setTimeout(() => io.send(packets.MOVEMENT, null), average / 2);
+    storeEquip(40);
+  } else if (keyEvents.ShiftLeft && distance < 400) {
+    io.send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.floor(Math.sin(Date.now()) * 3))).fill(".").join(""));
+
+    io.send(packets.MOVEMENT, angle - Math.PI);
+    
+    storeEquip(getBiomeHat());
+    storeEquip(11, true);
   }
 }
 
