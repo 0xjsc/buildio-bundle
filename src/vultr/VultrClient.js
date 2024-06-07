@@ -1,9 +1,8 @@
-import url from "url";
-import md5 from "md5";
 
 function VultrClient(baseUrl, devPort, lobbySize, lobbySpread, rawIPs) {
   'localhost' == location.hostname && (window.location.hostname = '127.0.0.1'), this.debugLog = !1, this.baseUrl = baseUrl, this.lobbySize = lobbySize, this.devPort = devPort, this.lobbySpread = lobbySpread, this.rawIPs = !!rawIPs, this.server = void 0, this.gameIndex = void 0, this.callback = void 0, this.errorCallback = void 0;
 }
+
 VultrClient.prototype.regionInfo = {
   0: {
     name: 'Local',
@@ -88,27 +87,6 @@ VultrClient.prototype.regionInfo = {
 }, VultrClient.prototype.start = function (callback, errorCallback) {
   this.callback = callback, this.errorCallback = errorCallback;
   this.connect(null, null, null);
-  console.log("ez")
-  //var query = this.parseServerQuery();
-  //query ? (this.log('Found server in query.'), this.password = query[3], this.connect(query[0], query[1], query[2])) : (this.log('Pinging servers...'), this.pingServers());
-}, VultrClient.prototype.parseServerQuery = function () {
-  var parsed = url.parse(location.href, !0),
-    serverRaw = parsed.query.server;
-  if ('string' == typeof serverRaw) {
-    var split = serverRaw.split(':');
-    if (3 == split.length) {
-      var region = split[0],
-        index = parseInt(split[1]),
-        gameIndex = parseInt(split[2]);
-      return '0' == region || region.startsWith('vultr:') || (region = 'vultr:' + region), [
-        region,
-        index,
-        gameIndex,
-        parsed.query.password
-      ];
-    }
-    this.errorCallback('Invalid number of server parameters in ' + serverRaw);
-  }
 }, VultrClient.prototype.findServer = function (region, index) {
   var serverList = this.servers[region];
   if (Array.isArray(serverList)) {
@@ -205,7 +183,7 @@ VultrClient.prototype.regionInfo = {
   var href = '/?server=' + (region = this.stripRegion(region)) + ':' + index + ':' + game;
   return password && (href += '&password=' + encodeURIComponent(password)), href;
 }, VultrClient.prototype.serverAddress = function (ip, forceSecure) {
-  return 'a' // '127.0.0.1' == ip || '7f000001' == ip || '903d62ef5d1c2fecdcaeb5e7dd485eff' == ip ? window.location.hostname : this.rawIPs ? forceSecure ? 'ip_' + this.hashIP(ip) + '.' + this.baseUrl : ip : 'ip_' + ip + '.' + this.baseUrl;
+  return 'a'
 }, VultrClient.prototype.serverPort = function (server) {
   return 0 == server.region ? this.devPort : location.protocol.startsWith('https') ? 443 : 80;
 }, VultrClient.prototype.processServers = function (serverList) {
@@ -217,8 +195,6 @@ VultrClient.prototype.regionInfo = {
       .substr(-2))
     .join('')
     .toLowerCase();
-}, VultrClient.prototype.hashIP = function (ip) {
-  return md5(this.ipToHex(ip));
 }, VultrClient.prototype.log = function () {
   return this.debugLog ? console.log.apply(void 0, arguments) : console.verbose ? console.verbose.apply(void 0, arguments) : void 0;
 }, VultrClient.prototype.stripRegion = function (region) {
