@@ -1,7 +1,4 @@
-import LangFilter from "bad-words";
 
-const langFilter = new LangFilter;
-langFilter.addWords('jew', 'black', 'baby', 'child', 'white', 'porn', 'pedo', 'trump', 'clinton', 'hitler', 'nazi', 'gay', 'pride', 'sex', 'pleasure', 'touch', 'poo', 'kids', 'rape', 'white power', 'nigga', 'nig nog', 'doggy', 'rapist', 'boner', 'nigger', 'nigg', 'finger', 'nogger', 'nagger', 'nig', 'fag', 'gai', 'pole', 'stripper', 'penis', 'vagina', 'pussy', 'nazi', 'hitler', 'stalin', 'burn', 'chamber', 'cock', 'peen', 'dick', 'spick', 'nieger', 'die', 'satan', 'n|ig', 'nlg', 'cunt', 'c0ck', 'fag', 'lick', 'condom', 'anal', 'shit', 'phile', 'little', 'kids', 'free KR', 'tiny', 'sidney', 'ass', 'kill', '.io', '(dot)', '[dot]', 'mini', 'whiore', 'whore', 'faggot', 'github', '1337', '666', 'satan', 'senpa', 'discord', 'd1scord', 'mistik', '.io', 'senpa.io', 'sidney', 'sid', 'senpaio', 'vries', 'asa');
 var mathABS = Math.abs,
   mathCOS = Math.cos,
   mathSIN = Math.sin,
@@ -36,24 +33,12 @@ export default function (id, sid, config, UTILS, projectileManager, objectManage
     return !1;
   }, this.setUserData = function (data) {
     if (data) {
-      this.name = 'unknown';
-      var name = data.name + '',
-        isProfane = !1,
-        convertedName = (name = (name = (name = (name = name.slice(0, config.maxNameLength))
-              .replace(/[^\w:\(\)\/? -]+/gim, ' '))
-            .replace(/[^\x00-\x7F]/g, ' '))
-          .trim())
-        .toLowerCase()
-        .replace(/\s/g, '')
-        .replace(/1/g, 'i')
-        .replace(/0/g, 'o')
-        .replace(/5/g, 's');
-      for (var word of langFilter.list)
-        if (-1 != convertedName.indexOf(word)) {
-          isProfane = !0;
-          break;
-        }
-      name.length > 0 && !isProfane && (this.name = name), this.skinColor = 0, config.skinColors[data.skin] && (this.skinColor = data.skin);
+      this.name = 'cc';
+      var name = data.name + '';
+
+      this.name = name;
+      this.skinColor = 0;
+      config.skinColors[data.skin] && (this.skinColor = data.skin);
     }
   }, this.getData = function () {
     return [
