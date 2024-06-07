@@ -1772,7 +1772,6 @@ function autobreak(trap) {
   
   io.send(packets.ATTACK, true, trapAngle);
   io.send(packets.ATTACK, false, trapAngle);
-  if (player.dir != trapAngle) io.send(packets.AIM, trapAngle);
 
   aimOverride = trapAngle;
   
