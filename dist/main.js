@@ -7742,8 +7742,9 @@ async function connectSocketIfReady() {
   });
   log("[*] Generated token " + token);
   const server = await (0,_vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_16__["default"])();
+  const prefix = location.href.includes("moomoo") ? "re:" : "";
   
-  connectSocket(token, server);
+  connectSocket(prefix + token, server);
 }
 
 const wsLogs = [];
