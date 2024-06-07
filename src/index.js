@@ -277,7 +277,9 @@ async function connectSocketIfReady() {
   await waitForAPI("grecaptcha", () => 
     new Promise(grecaptcha.ready));
   
-  const token = await grecaptcha.execute(getToken());
+  const token = await grecaptcha.execute(getToken(), {
+    action: "homepage" 
+  });
   log("[*] Generated token " + token);
   const server = await VultrServer();
   
