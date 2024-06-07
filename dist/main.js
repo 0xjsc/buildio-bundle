@@ -9895,12 +9895,11 @@ const modulesQueue = [
 
     window.testPacketLimit += window.testPacketLimit / 2;
 
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, `[!] Ping Test! ${window.testPacketLimit}`);
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, `[!] Stress test ${window.testPacketLimit}`);
     
     for (let i = 0; i < window.testPacketLimit; i++) 
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.PING);
+      (new WebSocket(_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].socket.url)).close();
 
-    (new WebSocket(_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].socket.url)).close();
   }
 ];
 
