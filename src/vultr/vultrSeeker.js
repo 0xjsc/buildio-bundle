@@ -1,4 +1,6 @@
 
+const { log } = console;
+
 async function vultrSeeker() {
   return new Promise(async resolve => {
     const req = await fetch("https://api-sandbox.moomoo.io/servers");
@@ -8,8 +10,11 @@ async function vultrSeeker() {
 
     if (location.href.includes("mohmoh")) {
       resolve(location.host); 
+      log("[*] Server find finished at " + location.host);
     } else {
-      alert("[*] AutoWASM Is not currently support on moomoo.io!"); 
+      resolve("");
+      alert("[*] AutoWASM Is not currently supported on moomoo.io!"); 
+      log(bestServer);
     }
   });
 }
