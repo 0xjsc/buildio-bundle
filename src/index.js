@@ -12,7 +12,6 @@ import Player from "./js/data/player.js";
 import store from "./js/data/store.js";
 import Projectile from "./js/data/projectile.js";
 import ProjectileManager from "./js/data/projectileManager.js";
-import Vultr from "./vultr/VultrClient.js";
 import AiManager from "./js/data/aiManager.js";
 import AI from "./js/data/ai.js";
 import VultrServer from "./vultr/VultrSeeker.js";
@@ -185,7 +184,6 @@ serverPackets[serverSide.MAP_PING] = pingMap;
 serverPackets[serverSide.SHOW_TEXT] = showText;
 
 const textManager = new animText.TextManager();
-const vultrClient = new Vultr("mohmoh.eu", 3000, config.maxPlayers, 5, false);
 
 const hit360 = 1.998715926535898e+272;
 let nearestGameObjects = [];
@@ -534,11 +532,6 @@ function setupServerStatus() {
 }
 
 function updateServerList() { }
-
-serverBrowser.addEventListener('change', UTILS.checkTrusted(function () {
-  let parts = serverBrowser.value.split(':');
-  vultrClient.switchServer(parts[0], parts[1], parts[2]);
-}));
 
 function showItemInfo(item, isWeapon, isStoreItem) {
   if (player && item)
