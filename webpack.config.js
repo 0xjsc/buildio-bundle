@@ -1,4 +1,5 @@
 export default {
   "target": "web",
-  "mode": "production"
+  "mode": "development",
+  "devtool": false
 }
