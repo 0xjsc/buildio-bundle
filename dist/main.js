@@ -9108,7 +9108,7 @@ function gatherAnimation(sid, didHit, index) {
   const idleAcc = players.length >= 2 ? 15 : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : 19);
 
   storeEquip(window.tanker ? 6 : idleHat);
-  storeEquip(window.tanker ? 15 : idleAcc, true);
+  storeEquip(window.tanker ? (players.filter(e => Math.hypot(e?.x - player.x, e?.y - player.y) < 180).length > 2 ? 59 : 15) : idleAcc, true);
 
   setTimeout(() => {
     if (instakilling) return;
