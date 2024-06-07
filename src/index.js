@@ -135,8 +135,8 @@ const clanNames = [
   "urez"
 ];
 
-const versionHash = "1.6-Delta";
-const changelog = "Improved moomoo.io support";
+const versionHash = "1.6-Theta";
+const changelog = "Added tanker mode";
 const motionBlurLevel = 0.6;
 let instakilling = false;
 
@@ -1014,7 +1014,7 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : UTILS.fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send(packets.MOVEMENT, newMoveDir), (!window.enemyDanger && !instakilling) && (storeEquip(player.y <= config.snowBiomeTop ? 6 : 11, true), storeEquip(getBiomeHat())), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send(packets.MOVEMENT, newMoveDir), (!window.enemyDanger && !instakilling) && (storeEquip(window.tanker ? 15 : (player.y <= config.snowBiomeTop ? 6 : 11), true), storeEquip(window.tanker ? 6 : getBiomeHat())), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
@@ -1209,6 +1209,10 @@ let turretReload = 0;
 const othersReloads  = [];
 
 function getBiomeHat() {
+
+  if (window.tanker) 
+    return 6;
+  
   const biomeID = player.y >= config.mapScale - config.snowBiomeTop ? 2 : player.y <= config.snowBiomeTop ? 1 : 0;
 
   switch (biomeID) {
@@ -1242,8 +1246,8 @@ function gatherAnimation(sid, didHit, index) {
   const idleHat = breaking ? 6 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
   const idleAcc = players.length >= 2 ? 15 : (player.y <= config.snowBiomeTop ? 6 : 19);
 
-  storeEquip(idleHat);
-  storeEquip(idleAcc, true);
+  storeEquip(window.tanker ? 6 : idleHat);
+  storeEquip(window.tanker ? 15 : idleAcc, true);
 
   setTimeout(() => {
     if (instakilling) return;
@@ -1252,8 +1256,8 @@ function gatherAnimation(sid, didHit, index) {
     setTimeout(() => {
       if (instakilling) return;
       if (!attackState) {
-        storeEquip(idleHat == 53 ? 6 : idleHat);
-        storeEquip(idleAcc, true);
+        storeEquip(window.tanker ? 6 : (idleHat == 53 ? 6 : idleHat));
+        storeEquip(window.tanker ? 15 : idleAcc, true);
       }
     }, average);
   }, speeds[waka] - window.pingTime);
@@ -2330,7 +2334,7 @@ menu.innerHTML = `
 Follow module: <span onclick = "window.follow = !window.follow; this.innerHTML = window.follow ? 'ON' : 'OFF'"> OFF </span> <br>
 Bow spamming module: <span onclick = "window.bowspam = !window.bowspam; this.innerHTML = window.bowspam ? 'ON' : 'OFF'"> OFF </span> <br>
 Boost Insta Optimisations: <span onclick = "window.boostinsta = !window.boostinsta; this.innerHTML = window.boostinsta ? 'ON' : 'OFF'"> OFF </span> <br>
-Auto-sync: ON <br> <br>
+Tanker mode: <span onclick = "window.tanker = !window.tanker; this.innerHTML = window.tanker ? 'ON' : 'OFF'"> OFF </span> <br> <br>
 
 <br> WebSocket Sender <br>
 Packet: <input type = "name" id = "packet"> <br>
