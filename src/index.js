@@ -1630,6 +1630,8 @@ function getItemOutheal(item) {
 
 function heal(healCount) {
   if (player.health == 100) return;
+
+  findPlayerBySID(player.sid).health = 100;
   
   lastHeal = Date.now();
   const healingItemSid = player.items[0];
@@ -1671,12 +1673,6 @@ function healing(healTimestamp) {
 
 function updateHealth(sid, value) {
   (tmpObj = findPlayerBySID(sid)) && (tmpObj.health = value);
-
-  if (tmpObj.sid == player.sid) {
-    setTimeout(() => {
-      tmpObj.health = 100;
-    }, 120);
-  }
 
   oldHealth = player.health;
 
