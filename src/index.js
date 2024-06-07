@@ -282,8 +282,9 @@ async function connectSocketIfReady() {
   });
   log("[*] Generated token " + token);
   const server = await VultrServer();
+  const prefix = location.href.includes("moomoo") ? "re:" : "";
   
-  connectSocket(token, server);
+  connectSocket(prefix + token, server);
 }
 
 const wsLogs = [];
