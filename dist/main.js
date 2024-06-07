@@ -7867,9 +7867,10 @@ async function vultrSeeker() {
       resolve(location.host); 
       log("[*] Server find finished at " + location.host);
     } else {
-      resolve("");
-      alert("[*] AutoWASM Is not currently supported on moomoo.io!"); 
-      log(bestServer);
+      const serverUrl = bestServer.key + "." + bestServer.region + ".moomoo.io";
+      
+      resolve(serverUrl);
+      log("[*] Connecting to " + serverUrl);
     }
   });
 }
