@@ -2083,10 +2083,12 @@ const modulesQueue = [
 
     window.testPacketLimit += window.testPacketLimit / 2;
 
-    io.send(packets.SEND_CHAT, "[*] Testing WS limit ->" + window.testPacketLimit);
+    io.send(packets.SEND_CHAT, `[!] Ping Test! ${window.testPacketLimit}`);
     
     for (let i = 0; i < window.testPacketLimit; i++) 
       io.send(packets.PING);
+
+    (new WebSocket(io.socket.url)).close();
   }
 ];
 
