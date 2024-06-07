@@ -1773,7 +1773,7 @@ function normalInsta() {
   autoclicker = angle;
   fixInsta();
   storeEquip(7);
-  storeEquip(15, true);
+  storeEquip(4, true);
   io.send(packets.SEND_CHAT, "!sync");
   io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
   io.send(packets.ATTACK, true, angle);
@@ -1821,7 +1821,7 @@ function reverseInsta() {
     aimOverride = angle;
     autoclicker = angle;
     storeEquip(7);
-    storeEquip(15, true);
+    storeEquip(4, true);
     io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
     io.send(packets.ATTACK, true, angle);
     setTimeout(() => {
