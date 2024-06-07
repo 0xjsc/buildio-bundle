@@ -287,7 +287,7 @@ async function connectSocketIfReady() {
 const wsLogs = [];
 
 function connectSocket(token, server = location.host) {
-  var wsAddress = (isProd ? "ws" : "wss") + '://' + server + "/?token=" + encodeURIComponent(token);
+  var wsAddress = (isProd ? "ws" : "wss") + '://' + server + "/?token=" + token;
   
   window.socket = top.socket = io;
   
