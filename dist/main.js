@@ -7996,43 +7996,28 @@ function getToken() {
   return location.href.includes("mohmoh") ? "6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH" : "6LfahtgjAAAAAF8SkpjyeYMcxMdxIaQeh-VoPATP";
 }
 
-function fixRecaptcha() {
-  // How this code snippet works:
-  // This logic overwrites the default behavior of `grecaptcha.ready()` to
-  // ensure that it can be safely called at any time. When `grecaptcha.ready()`
-  // is called before reCAPTCHA is loaded, the callback function that is passed
-  // by `grecaptcha.ready()` is enqueued for execution after reCAPTCHA is
-  // loaded.
-  
-  if(typeof grecaptcha === 'undefined') {
-    grecaptcha = {};
-  }
-  
-  grecaptcha.ready = function(cb) {
-    if(typeof grecaptcha === 'undefined') {
-      // window.__grecaptcha_cfg is a global variable that stores reCAPTCHA's
-      // configuration. By default, any functions listed in its 'fns' property
-      // are automatically executed when reCAPTCHA loads.
-      const c = '___grecaptcha_cfg';
-      window[c] = window[c] || {};
-      (window[c]['fns'] = window[c]['fns']||[]).push(cb);
-    } else {
-      cb();
-    }
-  }
-}
+async function waitForAPI(prop, callback) {
+  return new Promise(async resolve => {
+    if (!window[prop]) {
+      const waitInt = setInterval(async () => {
+        if (!window[prop]) return;
 
-function waitRecaptcha() {
-  fixRecaptcha();
-  
-  return new Promise(grecaptcha.ready);
+        clearInterval(waitInt);
+        resolve(
+          await callback()
+        );
+      }, 100);
+    }
+    else resolve(await callback());
+  });
 }
 
 async function connectSocketIfReady() {
   if (startedConnecting) return;
   startedConnecting = true;
 
-  await waitRecaptcha();
+  await waitForAPI("grecaptcha", () => 
+    new Promise(grecaptcha.ready));
   
   const token = await grecaptcha.execute(getToken());
   log("[*] Generated token " + token);
