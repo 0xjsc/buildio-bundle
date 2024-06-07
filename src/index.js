@@ -18,6 +18,8 @@ import AI from "./js/data/ai.js";
 import VultrServer from "./vultr/VultrSeeker.js";
 import VultrLock from "./vultr/VultrLock.js";
 
+VultrLock();
+
 const serverPackets = {};
 const { log } = console;
 
