@@ -406,13 +406,7 @@ var storeMenu = document.getElementById('storeMenu'),
 function setInitData(data) {
   alliances = data.teams;
 }
-var featuredYoutuber = document.getElementById('featuredYoutube'),
-  youtuberList = [{
-    name: '0xffabc',
-    link: 'https://youtube.com/@0xffabc'
-  }, ],
-  tmpYoutuber = youtuberList[UTILS.randInt(0, youtuberList.length - 1)];
-featuredYoutuber.innerHTML = '<a target=\'_blank\' class=\'ytLink\' href=\'' + tmpYoutuber.link + '\'><i class=\'material-icons\' style=\'vertical-align: top;\'>&#xE064;</i> ' + tmpYoutuber.name + '</a>';
+
 var inWindow = !0,
   didLoad = !1,
   captchaReady = !1;
