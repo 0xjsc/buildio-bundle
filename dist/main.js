@@ -8183,7 +8183,8 @@ function connectSocket(token, server = location.host) {
   window.socket = top.socket = _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"];
   
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].connect(wsAddress, function (error) {
-    // io.send(packets.REGISTER, 0);
+    if (location.href.includes("mohmoh"))
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.REGISTER, 0);
     
     pingSocket(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
       if (error) {
