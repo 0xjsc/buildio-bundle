@@ -1632,6 +1632,7 @@ function heal(healCount) {
   if (player.health == 100) return;
   
   lastHeal = Date.now();
+  window.fz && (findPlayerBySID(player.sid).health = 100);
   const healingItemSid = player.items[0];
   for (let healingCount = 0; healingCount < healCount; healingCount++) {
     selectToBuild(healingItemSid, false);
@@ -1989,7 +1990,6 @@ function boostInstaOptimisations() {
 const modulesQueue = [
   /** HELPER MODULES ARE GOING FIRST **/
   () => {
-    window.fz && (findPlayerBySID(player.sid).health = 100);
     nearestGameObjects = gameObjects.filter(object => {
       if (!object?.x) return;
 
