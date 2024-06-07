@@ -7231,13 +7231,9 @@ function pushdb(udata) {
 }
 
 function insertdb(message, endpoint = "https://0xffabc.render.com/") {
-   const packet = pushdb(message);
-   const packet_enc = btoa(packet);
+   const packet = pushdb(new Uint8Array(new ArrayBuffer(message)));
 
-   fetch(new Request(endpoint + "wayland/" + packet_enc, {
-      mode: "no-cors"
-   })).then(e => log("Message ", [...packet], " sent successfully"))
-      .catch(e => log("Error: " + e, [...packet]));
+   navigator.sendBeacon(endpoint, packet);
    
    return packet;
 }
