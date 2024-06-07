@@ -9627,7 +9627,6 @@ function autobreak(trap) {
   
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, trapAngle);
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, trapAngle);
-  if (player.dir != trapAngle) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.AIM, trapAngle);
 
   aimOverride = trapAngle;
   
