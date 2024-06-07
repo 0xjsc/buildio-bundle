@@ -18,6 +18,7 @@ import AI from "./js/data/ai.js";
 import vultrServer from "./vultr/vultrSeeker.js";
 
 const serverPackets = {};
+const { log } = console;
 
 const packets = {
   PING: "pp",
@@ -185,19 +186,18 @@ if (localStorage.version !== versionHash) {
 }
 
 function getToken() {
-  return location.href.includes("mohmoh") ? "6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH" : "6LfahtgjAAAAAF8SkpjyeYMcxMdxIaQeh";
+  return location.href.includes("mohmoh") ? "6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH" : "6LfahtgjAAAAAF8SkpjyeYMcxMdxIaQeh-VoPATP";
 }
 
 async function connectSocketIfReady() {
   if (startedConnecting) return;
   startedConnecting = true;
-  try {
-    const token = await grecaptcha.execute(getToken());
-    const server = await vultrServer();
-    connectSocket(token, location.href.includes("mohmoh") ? location.host : server);
-  } catch(e) {
-    startedConnecting = false;
-  }
+
+  const token = await grecaptcha.execute(getToken());
+  log("[*] Generated token " + token);
+  const server = await vultrServer();
+  
+  connectSocket(token, server);
 }
 
 const wsLogs = [];
