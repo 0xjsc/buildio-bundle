@@ -9580,7 +9580,7 @@ function normalInsta() {
   autoclicker = angle;
   fixInsta();
   storeEquip(7);
-  storeEquip(15, true);
+  storeEquip(4, true);
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!sync");
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
@@ -9628,7 +9628,7 @@ function reverseInsta() {
     aimOverride = angle;
     autoclicker = angle;
     storeEquip(7);
-    storeEquip(15, true);
+    storeEquip(4, true);
     _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
     _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
     setTimeout(() => {
