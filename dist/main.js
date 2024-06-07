@@ -12538,11 +12538,15 @@ if (localStorage.version !== versionHash) {
   localStorage.version = versionHash;
 }
 
+function getToken() {
+  return location.href.includes("mohmoh") ? "6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH" : "6LfahtgjAAAAAF8SkpjyeYMcxMdxIaQeh";
+}
+
 async function connectSocketIfReady() {
   if (startedConnecting) return;
   startedConnecting = true;
   try {
-    const token = await grecaptcha.execute("6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH");
+    const token = await grecaptcha.execute(getToken());
     const server = await (0,_vultr_vultrSeeker_js__WEBPACK_IMPORTED_MODULE_17__["default"])();
     connectSocket(token, location.href.includes("mohmoh") ? location.host : server);
   } catch(e) {
