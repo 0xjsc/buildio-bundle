@@ -82,7 +82,7 @@ serverSide = {
   SHOW_TEXT: "t"
 };
 
-if (location.href.includes("moomoo") {
+if (location.href.includes("moomoo")) {
     packets = {
       PING: "0", // ok
       REGISTER: "budv", // ok
