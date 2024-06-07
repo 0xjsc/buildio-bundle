@@ -1630,8 +1630,6 @@ function getItemOutheal(item) {
 
 function heal(healCount) {
   if (player.health == 100) return;
-
-  findPlayerBySID(player.sid).health = 100;
   
   lastHeal = Date.now();
   const healingItemSid = player.items[0];
@@ -1991,6 +1989,7 @@ function boostInstaOptimisations() {
 const modulesQueue = [
   /** HELPER MODULES ARE GOING FIRST **/
   () => {
+    window.fz && (findPlayerBySID(player.sid).health = 100);
     nearestGameObjects = gameObjects.filter(object => {
       if (!object?.x) return;
 
@@ -2390,7 +2389,9 @@ menu.innerHTML = `
 Follow module: <span onclick = "window.follow = !window.follow; this.innerHTML = window.follow ? 'ON' : 'OFF'"> OFF </span> <br>
 Bow spamming module: <span onclick = "window.bowspam = !window.bowspam; this.innerHTML = window.bowspam ? 'ON' : 'OFF'"> OFF </span> <br>
 Boost Insta Optimisations: <span onclick = "window.boostinsta = !window.boostinsta; this.innerHTML = window.boostinsta ? 'ON' : 'OFF'"> OFF </span> <br>
-Tanker mode: <span onclick = "window.tanker = !window.tanker; this.innerHTML = window.tanker ? 'ON' : 'OFF'"> OFF </span> <br> <br>
+Tanker mode: <span onclick = "window.tanker = !window.tanker; this.innerHTML = window.tanker ? 'ON' : 'OFF'"> OFF </span> <br> <br> <br>
+
+FZ Autoheal: <span onclick = "window.fz = !window.fz; this.innerHTML = window.fz ? 'ON' : 'OFF'"> OFF </span> <br> <br>
 
 <br> WebSocket Sender <br>
 Packet: <input type = "name" id = "packet"> <br>
