@@ -12203,6 +12203,38 @@ Array.prototype.flatMap = function (f) {
 
 /***/ }),
 
+/***/ "./src/vultr/vultrSeeker.js":
+/*!**********************************!*\
+  !*** ./src/vultr/vultrSeeker.js ***!
+  \**********************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+
+async function vultrSeeker() {
+  return new Promise(async resolve => {
+    const req = await fetch("https://api-sandbox.moomoo.io/servers");
+    const json = await req.json();
+
+    const bestServer = json.find(server => server.playerCount < server.playerCapacity);
+
+    if (location.href.includes("mohmoh")) {
+      resolve(location.host); 
+    } else {
+      alert("[*] AutoWASM Is not currently support on moomoo.io!"); 
+    }
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (vultrSeeker);
+
+
+/***/ }),
+
 /***/ "./node_modules/bad-words/lib/lang.json":
 /*!**********************************************!*\
   !*** ./node_modules/bad-words/lib/lang.json ***!
@@ -12319,6 +12351,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vultr_VultrClient_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./vultr/VultrClient.js */ "./src/vultr/VultrClient.js");
 /* harmony import */ var _js_data_aiManager_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./js/data/aiManager.js */ "./src/js/data/aiManager.js");
 /* harmony import */ var _js_data_ai_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./js/data/ai.js */ "./src/js/data/ai.js");
+/* harmony import */ var _vultr_vultrSeeker_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./vultr/vultrSeeker.js */ "./src/vultr/vultrSeeker.js");
+
 
 
 
@@ -12509,7 +12543,8 @@ async function connectSocketIfReady() {
   startedConnecting = true;
   try {
     const token = await grecaptcha.execute("6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH");
-    connectSocket(token);
+    const server = await (0,_vultr_vultrSeeker_js__WEBPACK_IMPORTED_MODULE_17__["default"])();
+    connectSocket(token, location.href.includes("mohmoh") ? location.host : server);
   } catch(e) {
     startedConnecting = false;
   }
@@ -12517,8 +12552,8 @@ async function connectSocketIfReady() {
 
 const wsLogs = [];
 
-function connectSocket(token) {
-  var wsAddress = (isProd ? "ws" : "wss") + '://' + location.host + "/?token=" + token;
+function connectSocket(token, server = location.host) {
+  var wsAddress = (isProd ? "ws" : "wss") + '://' + server + "/?token=" + encodeURIComponent(token);
   
   window.socket = top.socket = _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"];
   
