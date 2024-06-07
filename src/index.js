@@ -189,10 +189,10 @@ function getToken() {
   return location.href.includes("mohmoh") ? "6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH" : "6LfahtgjAAAAAF8SkpjyeYMcxMdxIaQeh-VoPATP";
 }
 
-function waitForAPI(prop, callback) {
-  return new Promise(resolve => {
+async function waitForAPI(prop, callback) {
+  return new Promise(async resolve => {
     if (!window[prop]) {
-      const waitInt = setInterval(() => {
+      const waitInt = setInterval(async () => {
         if (!window[prop]) return;
 
         clearInterval(waitInt);
