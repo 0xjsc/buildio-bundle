@@ -8183,22 +8183,19 @@ function connectSocket(token, server = location.host) {
   window.socket = top.socket = _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"];
   
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].connect(wsAddress, function (error) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.REGISTER, 0);
+    // io.send(packets.REGISTER, 0);
+    
     pingSocket(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-      ! function () {
-        if (error) {
-          disconnect(error);
-        } else {
-          enterGame();
-        }
-      }();
+      if (error) {
+        disconnect(error);
+      } else {
+        enterGame();
+      }
     }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(enterGameButton), joinPartyButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
       setTimeout(function () {
-        ! function () {
-          var currentKey = serverBrowser.value,
-            key = prompt('party key', currentKey);
-          key && (window.onbeforeunload = void 0, window.location.href = '/?server=' + key);
-        }();
+        var currentKey = serverBrowser.value,
+          key = prompt('party key', currentKey);
+        key && (window.onbeforeunload = void 0, window.location.href = '/?server=' + key);
       }, 10);
     }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(joinPartyButton), settingsButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
       guideCard.classList.contains('showing') ? (guideCard.classList.remove('showing'), settingsButtonTitle.innerText = 'Settings') : (guideCard.classList.add('showing'), settingsButtonTitle.innerText = 'Close');
