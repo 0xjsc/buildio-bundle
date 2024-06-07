@@ -15,7 +15,8 @@ import ProjectileManager from "./js/data/projectileManager.js";
 import Vultr from "./vultr/VultrClient.js";
 import AiManager from "./js/data/aiManager.js";
 import AI from "./js/data/ai.js";
-import vultrServer from "./vultr/vultrSeeker.js";
+import VultrServer from "./vultr/VultrSeeker.js";
+import VultrLock from "./vultr/VultrLock.js";
 
 const serverPackets = {};
 const { log } = console;
@@ -278,7 +279,7 @@ async function connectSocketIfReady() {
   
   const token = await grecaptcha.execute(getToken());
   log("[*] Generated token " + token);
-  const server = await vultrServer();
+  const server = await VultrServer();
   
   connectSocket(token, server);
 }
