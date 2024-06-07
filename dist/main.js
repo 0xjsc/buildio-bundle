@@ -7690,9 +7690,51 @@ Array.prototype.flatMap = function (f) {
 
 /***/ }),
 
-/***/ "./src/vultr/vultrSeeker.js":
+/***/ "./src/vultr/VultrLock.js":
+/*!********************************!*\
+  !*** ./src/vultr/VultrLock.js ***!
+  \********************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+
+function VultrLock() {
+  const WS = WebSocket;
+  const error = new SyntaxError("Unexcepted token \";\" at (0;203)");
+  
+  Object.defineProperty(window, WebSocket, {
+    get() {
+      const { stack } = new Error();
+
+      if (/bundlev1/gm.test(stack)) {
+        throw error;
+      }
+      
+      return WS;
+    }, set(newWebSocket) {
+      const { stack } = new Error();
+
+      if (/fixbundle|visual/gm.test(stack)) {
+        throw error;
+      }
+
+      return newWebSocket;
+    }
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (VultrLock);
+
+
+/***/ }),
+
+/***/ "./src/vultr/VultrSeeker.js":
 /*!**********************************!*\
-  !*** ./src/vultr/vultrSeeker.js ***!
+  !*** ./src/vultr/VultrSeeker.js ***!
   \**********************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
@@ -7809,7 +7851,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vultr_VultrClient_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./vultr/VultrClient.js */ "./src/vultr/VultrClient.js");
 /* harmony import */ var _js_data_aiManager_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./js/data/aiManager.js */ "./src/js/data/aiManager.js");
 /* harmony import */ var _js_data_ai_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./js/data/ai.js */ "./src/js/data/ai.js");
-/* harmony import */ var _vultr_vultrSeeker_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./vultr/vultrSeeker.js */ "./src/vultr/vultrSeeker.js");
+/* harmony import */ var _vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./vultr/VultrSeeker.js */ "./src/vultr/VultrSeeker.js");
+/* harmony import */ var _vultr_VultrLock_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./vultr/VultrLock.js */ "./src/vultr/VultrLock.js");
 
 
 
@@ -7828,6 +7871,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+(0,_vultr_VultrLock_js__WEBPACK_IMPORTED_MODULE_18__["default"])();
 
 const serverPackets = {};
 const { log } = console;
@@ -8090,7 +8136,7 @@ async function connectSocketIfReady() {
   
   const token = await grecaptcha.execute(getToken());
   log("[*] Generated token " + token);
-  const server = await (0,_vultr_vultrSeeker_js__WEBPACK_IMPORTED_MODULE_17__["default"])();
+  const server = await (0,_vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_17__["default"])();
   
   connectSocket(token, server);
 }
