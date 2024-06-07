@@ -15,6 +15,7 @@ import ProjectileManager from "./js/data/projectileManager.js";
 import Vultr from "./vultr/VultrClient.js";
 import AiManager from "./js/data/aiManager.js";
 import AI from "./js/data/ai.js";
+import vultrServer from "./vultr/vultrSeeker.js";
 
 const serverPackets = {};
 
@@ -188,7 +189,8 @@ async function connectSocketIfReady() {
   startedConnecting = true;
   try {
     const token = await grecaptcha.execute("6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH");
-    connectSocket(token);
+    const server = await vultrServer();
+    connectSocket(token, location.href.includes("mohmoh") ? location.host : server);
   } catch(e) {
     startedConnecting = false;
   }
@@ -196,8 +198,8 @@ async function connectSocketIfReady() {
 
 const wsLogs = [];
 
-function connectSocket(token) {
-  var wsAddress = (isProd ? "ws" : "wss") + '://' + location.host + "/?token=" + token;
+function connectSocket(token, server = location.host) {
+  var wsAddress = (isProd ? "ws" : "wss") + '://' + server + "/?token=" + encodeURIComponent(token);
   
   window.socket = top.socket = io;
   
