@@ -208,22 +208,19 @@ function connectSocket(token, server = location.host) {
   window.socket = top.socket = io;
   
   io.connect(wsAddress, function (error) {
-    io.send(packets.REGISTER, 0);
+    // io.send(packets.REGISTER, 0);
+    
     pingSocket(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
-      ! function () {
-        if (error) {
-          disconnect(error);
-        } else {
-          enterGame();
-        }
-      }();
+      if (error) {
+        disconnect(error);
+      } else {
+        enterGame();
+      }
     }), UTILS.hookTouchEvents(enterGameButton), joinPartyButton.onclick = UTILS.checkTrusted(function () {
       setTimeout(function () {
-        ! function () {
-          var currentKey = serverBrowser.value,
-            key = prompt('party key', currentKey);
-          key && (window.onbeforeunload = void 0, window.location.href = '/?server=' + key);
-        }();
+        var currentKey = serverBrowser.value,
+          key = prompt('party key', currentKey);
+        key && (window.onbeforeunload = void 0, window.location.href = '/?server=' + key);
       }, 10);
     }), UTILS.hookTouchEvents(joinPartyButton), settingsButton.onclick = UTILS.checkTrusted(function () {
       guideCard.classList.contains('showing') ? (guideCard.classList.remove('showing'), settingsButtonTitle.innerText = 'Settings') : (guideCard.classList.add('showing'), settingsButtonTitle.innerText = 'Close');
