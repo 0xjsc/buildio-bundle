@@ -7827,7 +7827,9 @@ __webpack_require__.r(__webpack_exports__);
 const serverPackets = {};
 const { log } = console;
 
-const packets = {
+let packets, serverSide;
+
+packets = {
   PING: "pp",
   REGISTER: "budv",
   ACCEPT_CLAN_JOIN: "11",
@@ -7848,7 +7850,7 @@ const packets = {
   UPGRADE: "6"
 };
 
-const serverSide = {
+serverSide = {
   INIT: "id",
   DISCONNECT: "d",
   SETUP_GAME: 1,
@@ -7885,7 +7887,69 @@ const serverSide = {
   MAP_PING: "p",
   PING: "pp",
   SHOW_TEXT: "t"
-}
+};
+
+if (location.href.includes("moomoo")) {
+    packets = {
+      PING: "0", // ok
+      REGISTER: "budv", // ok
+      ACCEPT_CLAN_JOIN: "11",
+      SEND_CLAN_JOIN: "b", // ok
+      CLAN_KICK: "12",
+      CLAN_CREATE: "8",
+      CLAN_LEAVE: "9",
+      STORE_EQUIP: "c", // ok
+      SEND_CHAT: "6", // ok
+      ATTACK: "d", // ok
+      AIM: "D", // ok
+      RESET_MOVE_DIR: "e", // ok
+      FREEZE: "K", // ok
+      MAP_PING: "14", // ok
+      MOVEMENT: "a", // ok
+      CHANGE_WEAPON: "G", // ok
+      SPAWN: "M", // ok
+      UPGRADE: "H" // ok
+    };
+
+    serverSide = {
+      INIT: "A",
+      DISCONNECT: "B",
+      SETUP_GAME: "C",
+      ADD_PLAYER: "D",
+      REMOVE_PLAYER: "E",
+      PLAYER_TICK: "a",
+      UPDATE_LEADERBOARD: "G",
+      GAME_OBJECT: "H",
+      LOAD_AI: "I",
+      ANIMAL_TICK: "J",
+      HIT_START: "K",
+      OBJECT_WIGGLE: "L",
+      TURRET_SHOOT: "M",
+      RESOURCES: "N",
+      HEALTH: "O",
+      KILL_PLAYER: "P",
+      KILL_OBJECT: "Q",
+      KILL_OBJECTS: "R",
+      UPDATE_ITEM_COUNTS: "S",
+      UPDATE_AGE: "T",
+      UPDATE_UPGRADES: "U",
+      UPDATE_ITEMS: "V",
+      ADD_PROJECTILE: "X",
+      REMOVE_PROJECTILE: "Y",
+      SERVER_SHUTDOWN: "Z",
+      ADD_ALLIANCE: "g",
+      DELETE_ALLIANCE: 1,
+      ALLIANCE_PING: 2,
+      PLAYER_CLAN: 3,
+      ALLIANCE_PLAYERS: 4,
+      UPDATE_STORE: 5,
+      CHAT: 6,
+      MINIMAP_TICK: 7,
+      MAP_PING: 8,
+      PING: 9,
+      SHOW_TEXT: 0
+    };
+  }
 
 serverPackets[serverSide.INIT] = setInitData;
 serverPackets[serverSide.DISCONNECT] = disconnect;
