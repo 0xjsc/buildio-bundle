@@ -208,7 +208,8 @@ function connectSocket(token, server = location.host) {
   window.socket = top.socket = io;
   
   io.connect(wsAddress, function (error) {
-    // io.send(packets.REGISTER, 0);
+    if (location.href.includes("mohmoh"))
+      io.send(packets.REGISTER, 0);
     
     pingSocket(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
       if (error) {
