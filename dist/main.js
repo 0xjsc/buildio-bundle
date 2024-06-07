@@ -10181,6 +10181,12 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   transform: scale(1.05);
   background: rgba(0, 0, 0, 0.8);
 }
+
+#wideAdCard, .adMenuCard, #promoImgHolder {
+  display: none !important;
+  visibility: hidden !important;
+}
+
 </style>
 `);
 
