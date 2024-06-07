@@ -1584,9 +1584,10 @@ function healing(healTimestamp) {
 function updateHealth(sid, value) {
   (tmpObj = findPlayerBySID(sid)) && (tmpObj.health = value);
 
-  if (sid != player.sid || player.health > oldHealth) {
-    oldHealth = player.health;
-    return;
+  if (tmpObj.sid == player.sid) {
+    setTimeout(() => {
+      tmpObj.health = 100;
+    }, 120);
   }
 
   oldHealth = player.health;
