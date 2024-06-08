@@ -2575,7 +2575,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-const { log } = console;
 
 const socket = {
   socket: null,
@@ -2618,7 +2617,6 @@ const socket = {
         data
       ]);
     this.socket.send(binary);
-    console.log("[Client] " + type + " -> " + data);
   },
   socketReady() {
     return this.socket && this.connected;
