@@ -3269,6 +3269,7 @@ async function connectSocketIfReady() {
 }
 
 window.captchaCallback = connectSocketIfReady;
+window.grecaptcha?.ready && connectSocketIfReady;
 
 const wsLogs = [];
 
