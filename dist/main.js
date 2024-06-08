@@ -20,7 +20,7 @@
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-const regex = /bundle|assets/gm;
+const regex = /bundle|assets|index|FRVR|howl|jquery|cookie|double|turnst/gm;
 const doc = document.implementation.createHTMLDocument(document.title);
 
 doc.open();
