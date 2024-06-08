@@ -2996,9 +2996,9 @@ if (location.href.includes("moomoo")) {
       UPDATE_STORE: 5,
       CHAT: 6,
       MINIMAP_TICK: 7,
-      MAP_PING: 8,
-      PING: 9,
-      SHOW_TEXT: 0
+      MAP_PING: 9,
+      PING: 0,
+      SHOW_TEXT: 8
     };
   }
 
