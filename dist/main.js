@@ -9771,8 +9771,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 
 async function removeBundle(resolve) {
-  const blacklistRegex = /bundle|index|FRVR/gm;
-  const whitelistRegex = /cloud|recap/gm;
+  const blacklistRegex = /bundle|asset|FRVR/gm;
 
   const req = await fetch(location.href);
   const res = await req.text();
@@ -9784,8 +9783,8 @@ async function removeBundle(resolve) {
   for (const script of scripts) {
     const source = script.src;
 
-    if (blacklistRegex.test(source) && !whitelistRegex.test(source)) {
-      /** ToDo: fix **/
+    if (blacklistRegex.test(source)) {
+      script.src = "data:,";
       script.remove();
     };
   };
