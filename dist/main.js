@@ -9777,7 +9777,8 @@ async function removeBundle(resolve) {
   const req = await fetch(location.href);
   const res = await req.text();
 
-  const doc = new DOMParser(res);
+  const domParser = new DOMParser();
+  const doc = domParser.parseFromString(res, "text/html");
   const scripts = document.querySelectorAll("script");
 
   for (const script of scripts) {
