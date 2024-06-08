@@ -2372,6 +2372,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   color: white;
   transition: all 1s 0s;
   overflow: auto;
+  scrollbar-width: none;
 }
 
 #modMenu:hover {
