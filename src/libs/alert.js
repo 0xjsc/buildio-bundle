@@ -17,7 +17,7 @@ document.documentElement.insertAdjacentHTML("beforeend", `
   transition: all 1s 0s;
   overflow: auto;
   scrollbar-width: none;
-  font-family: Arial !important;
+  font-family: 'Baloo 2' !important;
 }
 </style>
 `)
