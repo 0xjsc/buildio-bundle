@@ -5,8 +5,8 @@ doc.open();
 doc.write(document.documentElement.innerHTML);
 doc.close();
 
-for (const element of doc.querySelectorAll("script")) {
-  if (regex.test(element)) 
+for (const element of doc.querySelectorAll("*[src]")) {
+  if (regex.test(element.src)) 
     element.remove();
 }
 
