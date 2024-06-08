@@ -2990,7 +2990,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-document.write(document.documentElement.innerHTML);
+document.body.replaceWith(document.body.cloneNode(true));
 
 const serverPackets = {};
 const { log } = console;
