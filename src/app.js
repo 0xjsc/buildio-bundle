@@ -197,8 +197,8 @@ const clanNames = [
   "urez"
 ];
 
-const versionHash = "1.6-Theta";
-const changelog = "Added tanker mode";
+const versionHash = "1.6-Kappa";
+const changelog = "Added moomoo.io support";
 const motionBlurLevel = 0.6;
 let instakilling = false;
 
@@ -1542,6 +1542,7 @@ function loadAI(data) {
 var aiSprites = {};
 
 function renderAI(obj, ctxt) {
+  if (!tmpImg?.src) return;
   var tmpIndx = obj.index,
     tmpSprite = aiSprites[tmpIndx];
   if (!tmpSprite) {
