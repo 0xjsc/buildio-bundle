@@ -7477,8 +7477,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-(0,_vultr_VultrLock_js__WEBPACK_IMPORTED_MODULE_17__["default"])();
-
 const serverPackets = {};
 const { log } = console;
 
@@ -9010,7 +9008,7 @@ function renderAI(obj, ctxt) {
     var tmpImg = new Image();
     tmpImg.onload = function () {
       this.isLoaded = !0, this.onload = null;
-    }, tmpImg.src = '.././img/animals/' + obj.src + '.png', tmpSprite = tmpImg, aiSprites[tmpIndx] = tmpSprite;
+    }, tmpImg.src = '.././img/animals/' + (obj?.src || 'sheep_1') + '.png', tmpSprite = tmpImg, aiSprites[tmpIndx] = tmpSprite;
   }
   if (tmpSprite.isLoaded) {
     var tmpScale = 1.2 * obj.scale * (obj.spriteMlt || 1);
