@@ -3154,7 +3154,7 @@ serverPackets[serverSide.PING] = pingSocketResponse;
 serverPackets[serverSide.MAP_PING] = pingMap;
 serverPackets[serverSide.SHOW_TEXT] = showText;
 
-window.socketController = new _socket_socket_js__WEBPACK_IMPORTED_MODULE_17__["default"](() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"], packets);
+const wsBridge = window.socketController = new _socket_socket_js__WEBPACK_IMPORTED_MODULE_17__["default"](() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"], packets);
 const textManager = new _libs_animText_js__WEBPACK_IMPORTED_MODULE_3__["default"].TextManager();
 
 let nearestGameObjects = [];
@@ -3266,9 +3266,9 @@ function connectSocket(token, server = location.host) {
   
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].connect(wsAddress, function (error) {
     if (location.href.includes("mohmoh"))
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.REGISTER, 0);
+      wsBridge.register();
     
-    pingSocket(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
+    wsBridge.pingServer(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
       if (error) {
         disconnect(error);
       } else {
@@ -3680,26 +3680,30 @@ function showAllianceMenu() {
 }
 
 function aJoinReq(join) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ACCEPT_CLAN_JOIN, allianceNotifications[0].sid, join), allianceNotifications.splice(0, 1), updateNotifications();
+  wsBridge.acceptClanJoin(allianceNotifications, join);
+  
+  allianceNotifications.splice(0, 1);
+  updateNotifications();
 }
 
 function kickFromClan(sid) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CLAN_KICK, sid);
+  wsBridge.kickFromClan(sid);
 }
 
 function sendJoin(index) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CLAN_JOIN, alliances[index].sid);
+  wsBridge.requestClanJoin(alliances, index);
 }
 
 function createAlliance() {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CLAN_CREATE, "⁣" + document.getElementById('allianceInput')
-    .value + "⁣");
+  wsBridge.createClan(document.getElementById('allianceInput').value);
 }
 
 let waka = 0; // sorry for bad variable name
 
 function leaveAlliance() {
-  allianceNotifications = [], updateNotifications(), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CLAN_LEAVE);
+  allianceNotifications = [];
+  updateNotifications();
+  wsBridge.leaveClan();
 }
 var tmpPing, mapPings = [];
 
@@ -3790,11 +3794,11 @@ function generateStoreList() {
 }
 
 function storeEquip(id, index) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.STORE_EQUIP, 0, id, index);
+  wsBridge.itemAction(id, index, false);
 }
 
 function storeBuy(id, index) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.STORE_EQUIP, 1, id, index);
+  wsBridge.itemAction(id, index, true);
 }
 
 function hideAllWindows() {
@@ -3833,7 +3837,7 @@ function toggleChat() {
 }
 
 function sendChat(message) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, message.slice(0, 30));
+  wsBridge.sendChat(message);
 }
 
 function closeChat() {
@@ -3994,7 +3998,8 @@ var keys = {},
 window.keyEvents = {};
 
 function resetMoveDir() {
-  keys = {}, _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.RESET_MOVE_DIR);
+  keys = {};
+  wsBridge.stopMovement();
 }
 
 function keysActive() {
@@ -4002,8 +4007,9 @@ function keysActive() {
 }
 
 function sendAtckState() {
-  player && player.alive && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, attackState, null);
-}
+  player && player.alive && wsbridge(updateHittingState, attackState, getAttackDir());
+};
+
 window.addEventListener('keydown', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function (event) {
   var keyNum = event.which || event.keyCode || 0;
   const keyCode = event.code;
@@ -4011,7 +4017,7 @@ window.addEventListener('keydown', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["
     window.keyEvents[keyCode] = true;
     window.keyEvents["Switch" + keyCode] = !window.keyEvents["Switch" + keyCode];
   }
-  "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.FREEZE, 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.FREEZE, 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
+  "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? wsBridge.freeze(true) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, wsBridge.freeze(false)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
 })), window.addEventListener('keyup', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function (event) {
   if (player && player.alive) {
     var keyNum = event.which || event.keyCode || 0;
@@ -4035,15 +4041,15 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (_libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.MOVEMENT, newMoveDir), (!window.enemyDanger && !instakilling) && (storeEquip(window.tanker ? 15 : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 6 : 11), true), storeEquip(window.tanker ? 6 : getBiomeHat())), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (wsBridge.updateMoveDir(newMoveDir), (!window.enemyDanger && !instakilling) && (storeEquip(window.tanker ? 15 : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 6 : 11), true), storeEquip(window.tanker ? 6 : getBiomeHat())), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.MAP_PING, 1);
+  wsBridge.mapPing();
 }
 
 function selectToBuild(index, wpn) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, index, wpn);
+  wsBridge.updateHoldItem(index, wpn);
 }
 
 function enterGame() {
@@ -4052,11 +4058,7 @@ function enterGame() {
   saveVal('moo_name', nameInput.value);
   showLoadingText('Loading...');
   
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SPAWN, {
-    name: nameInput.value,
-    moofoll: moofoll,
-    skin: skinColor
-  });
+  wsBridge.spawn(nameInput.value, 0);
 
   inGame = true;
 }
@@ -4147,7 +4149,7 @@ function updateUpgrades(points, age) {
         tmpItem.onmouseover = function () {
           _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[i] ? showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[i], !0) : showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons.length]);
         }, tmpItem.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
-          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.UPGRADE, i);
+          wsBridge.upgradeItem(i);
         }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(tmpItem);
       }(tmpList[i]);
     tmpList.length ? (upgradeHolder.style.display = 'block', upgradeCounter.style.display = 'block', upgradeCounter.innerHTML = 'SELECT ITEMS (' + points + ')') : (upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo());
@@ -5123,7 +5125,8 @@ function pingSocketResponse() {
 }
 
 function pingSocket() {
-  lastPing = Date.now(), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.PING);
+  lastPing = Date.now();
+  wsBridge.pingServer();
 }
 
 function serverShutdownNotice(countdown) {
