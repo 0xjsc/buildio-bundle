@@ -181,7 +181,7 @@ serverPackets[serverSide.PING] = pingSocketResponse;
 serverPackets[serverSide.MAP_PING] = pingMap;
 serverPackets[serverSide.SHOW_TEXT] = showText;
 
-window.socketController = new SocketController(io, packets);
+window.socketController = new SocketController(() => io, packets);
 const textManager = new animText.TextManager();
 
 const hit360 = 1.998715926535898e+272;
