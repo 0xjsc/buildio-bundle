@@ -3152,7 +3152,7 @@ serverPackets[serverSide.PING] = pingSocketResponse;
 serverPackets[serverSide.MAP_PING] = pingMap;
 serverPackets[serverSide.SHOW_TEXT] = showText;
 
-window.socketController = new _socket_socket_js__WEBPACK_IMPORTED_MODULE_17__["default"](_libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"], packets);
+window.socketController = new _socket_socket_js__WEBPACK_IMPORTED_MODULE_17__["default"](() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"], packets);
 const textManager = new _libs_animText_js__WEBPACK_IMPORTED_MODULE_3__["default"].TextManager();
 
 const hit360 = 1.998715926535898e+272;
