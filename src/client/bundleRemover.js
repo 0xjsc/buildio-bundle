@@ -12,3 +12,7 @@ for (const element of doc.querySelectorAll("*[src]")) {
 }
 
 document.replaceChild( document.importNode(doc.documentElement, true), document.documentElement);
+
+if (location.href.includes("moomoo")) {
+  window.turnstile.remove();
+}
