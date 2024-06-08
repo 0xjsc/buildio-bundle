@@ -19,7 +19,7 @@ async function removeBundle(resolve) {
     };
   };
 
-  document.replaceChild(doc, document.documentElement);
+  document.replaceChild(doc.documentElement, document.documentElement);
 
   resolve();
 }
