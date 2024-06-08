@@ -3887,25 +3887,25 @@ function receiveChat(sid, message) {
   }
 
   if (/what\ mod/g.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 530 && player.sid != tmpPlayer.sid) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, "AutoWASM By 0xffabc.");
+    wsBridge.sendChat("AutoWASM By 0xffabc.");
   } else if (message.startsWith("!connect") && player.sid == tmpPlayer.sid) {
     const playerName = message.split("!connect ")[1];
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CLAN_CREATE, clanNames[Math.floor(clanNames.length * Math.random())]);
+    wsBridge.createClan(clanNames[Math.floor(clanNames.length * Math.random())]);
     ownerSid = players.find(e => e && e?.name == playerName)?.sid;
     if (ownerSid) {
-      setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, "[*] Successfully connected to " + playerName + "!"), 1000);
-    } else setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, "[*] Connection failed!"), 1000);
+      setTimeout(() => wsBridge.sendChat("[*] Successfully connected to " + playerName + "!"), 1000);
+    } else setTimeout(() => wsbridge.sendChat("[*] Connection failed!"), 1000);
   } else if (message.startsWith("!disconnect") && (player.sid == tmpPlayer.sid || tmpPlayer.sid == ownerSid)) {
     ownerSid = player.sid;
-    setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, "[*] Successfully disconnected"), 1000);
+    setTimeout(() => wsBridge.sendChat("[*] Successfully disconnected"), 1000);
   } else if (tmpPlayer.sid == ownerSid || tmpPlayer.sid == player.sid) {
     switch (message) {
       case "!follow":
-        setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, `[*] ${window.follow ? "Enabling" : "Disabling"} follow module!`), 1000);
+        setTimeout(() => wsBridge.sendChat(`[*] ${window.follow ? "Enabling" : "Disabling"} follow module!`), 1000);
         window.follow = !window.follow;
         break;
       case "!bowspam":
-        setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, `[*] ${window.bowspam ? "Enabling" : "Disabling"} bowspam module!`), 1000);
+        setTimeout(() => wsBridge.sendChat(`[*] ${window.bowspam ? "Enabling" : "Disabling"} bowspam module!`), 1000);
         window.bowspam = !window.bowspam;
         break;
     }
@@ -4255,7 +4255,7 @@ function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
 
   if (sid == ownerSid && normalInsta() == false) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, true, players.find(p => p && p?.sid == ownerSid).dir); 
+    wsBridge.updateHittingState(true, players.find(p => p && p?.sid == ownerSid).dir); 
   }
   
   if (sid == player.sid) reloads[waka] = 0;
@@ -4567,9 +4567,9 @@ function updatePlayerValue(index, value, updateView) {
 function place(id, angle = getAttackDir(), t = true) {
   if (instakilling) return;
   
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, id, false);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, true, angle);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, (player.weapons[0] != waka && player.weapons[1] != waka) ? (waka = player.weapons[0]) : waka, true);
+  wsBridge.updateHoldItem(id, false);
+  wsBridge.updateHittingState(true, angle);
+  wsBridge.updateHoldItem((player.weapons[0] != waka && player.weapons[1] != waka) ? (waka = player.weapons[0]) : waka, true);
 }
 
 let lastHeal = Date.now();
@@ -4606,7 +4606,7 @@ function heal(healCount) {
   const healingItemSid = player.items[0];
   for (let healingCount = 0; healingCount < healCount; healingCount++) {
     selectToBuild(healingItemSid, false);
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, true, getAttackDir());
+    wsBridge.updateHittingState(true, getAttackDir());
   };
   selectToBuild(player.weaponIndex, true);
 };
@@ -4740,8 +4740,8 @@ function autobreak(trap) {
   breaking = true;
   window.trap = trap;
   
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, true, trapAngle);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, false, trapAngle);
+  wsBridge.updateHittingState(true, trapAngle);
+  wsBridge.updateHittingState(false, trapAngle);
 
   aimOverride = trapAngle;
   
@@ -4760,8 +4760,8 @@ function bowSync() {
   storeEquip(53);
   turretReload = 0;
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, true, angle);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, false, getAttackDir());
+  wsBridge.updateHittingState(true, angle);
+  wsBridge.updateHittingState(false, getAttackDir());
 
   setTimeout(() => {
     storeEquip(getBiomeHat());
@@ -4791,9 +4791,9 @@ function normalInsta() {
   fixInsta();
   storeEquip(7);
   storeEquip(4, true);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, "!sync");
+  wsBridge.sendChat("!sync");
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, true, angle);
+  wsBridge.updateHittingState(true, angle);
   setTimeout(() => {
     angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
     autoclicker = angle;
@@ -4802,10 +4802,10 @@ function normalInsta() {
     turretReload = 0;
     _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
     reloads[player.weapons[1]] = 0;
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, true, angle);
+    wsBridge.updateHittingState(true, angle);
     setTimeout(() => {
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, false, angle);
+      wsBridge.updateHittingState(false, angle);
       storeEquip(getBiomeHat());
       instakilling = false;
       autoclicker = false;
@@ -4830,7 +4830,7 @@ function reverseInsta() {
   fixInsta();
   turretReload = 0;
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, true, angle);
+  wsBridge.updateHittingState(true, angle);
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, "!sync");
   reloads[player.weapons[1]] = 0;
   setTimeout(() => {
@@ -4840,9 +4840,9 @@ function reverseInsta() {
     storeEquip(7);
     storeEquip(4, true);
     _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, true, angle);
+    wsBridge.updateHittingState(true, angle);
     setTimeout(() => {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, false, angle);
+      wsBridge.updateHittingState(false, angle);
       storeEquip(getBiomeHat());
       instakilling = false;
       autoclicker = false;
@@ -4889,7 +4889,7 @@ function botFunctions(tmpPlayer) {
     const lookingY = tmpPlayer.y + Math.sin(tmpPlayer.dir);
     const angle = Math.atan2(lookingY - player.y, lookingX - player.x);
     
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, true, angle);
+    wsBridge.updateHittingState(true, angle);
   }
 };
 
@@ -5013,7 +5013,7 @@ const modulesQueue = [
       breaking = false;
       aimOverride = false;
       
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, false, getAttackDir());
+      wsBridge.updateHittingState(false, getAttackDir());
     }
   
     if (trap) return autobreak(trap);
@@ -5053,9 +5053,9 @@ const modulesQueue = [
     if (instakilling) return;
     
     if (tt?.skinIndex == 26 || tt?.skinIndex == 11) {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, false, getAttackDir());
+      wsBridge.updateHittingState(false, getAttackDir());
     } else if (attackState && tt?.skinIndex != 26 && tt?.skinIndex != 11) {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, true, getAttackDir());
+      wsBridge.updateHittingState(true, getAttackDir());
     }
   }, () => { /** Instakill shouldn't be interrupted **/
     if (window.keyEvents.SwitchKeyR) {
@@ -5065,7 +5065,7 @@ const modulesQueue = [
     }
   }, () => {
     if (autoclicker) {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.ATTACK, true, autoclicker);
+      wsBridge.updateHittingState(true, autoclicker);
     }
   },
   () => {
