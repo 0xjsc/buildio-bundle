@@ -15,6 +15,7 @@ import AiManager from "./js/data/aiManager.js";
 import AI from "./js/data/ai.js";
 import VultrServer from "./vultr/VultrSeeker.js";
 import Dialog from "./libs/alert.js";
+import SocketController from "./socket/socket.js";
 
 const serverPackets = {};
 const { log } = console;
@@ -180,6 +181,7 @@ serverPackets[serverSide.PING] = pingSocketResponse;
 serverPackets[serverSide.MAP_PING] = pingMap;
 serverPackets[serverSide.SHOW_TEXT] = showText;
 
+window.socketController = new SocketController(io, packets);
 const textManager = new animText.TextManager();
 
 const hit360 = 1.998715926535898e+272;
