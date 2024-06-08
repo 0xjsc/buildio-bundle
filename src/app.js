@@ -2100,6 +2100,10 @@ const modulesQueue = [
 
     storeEquip(15, true);
     storeEquip(60);
+
+    if (player.skinIndex != 60) {
+      wsBridge.sendChat("[*] GhostDrone defence broken!");
+    }
   }
 ];
 
@@ -2411,9 +2415,9 @@ menu.innerHTML = `
 
 Follow module: <span onclick = "window.follow = !window.follow; this.innerHTML = window.follow ? 'ON' : 'OFF'"> OFF </span> <br>
 Bow spamming module: <span onclick = "window.bowspam = !window.bowspam; this.innerHTML = window.bowspam ? 'ON' : 'OFF'"> OFF </span> <br>
+Ghost anti-instakill drone turret+secondary dodge system module: <span onclick = "window.ghost = !window.ghost; this.innerHTML = window.ghost ? 'ON' : 'OFF'"> OFF </span> <br>
 Boost Insta Optimisations: <span onclick = "window.boostinsta = !window.boostinsta; this.innerHTML = window.boostinsta ? 'ON' : 'OFF'"> OFF </span> <br>
 Tanker mode: <span onclick = "window.tanker = !window.tanker; this.innerHTML = window.tanker ? 'ON' : 'OFF'"> OFF </span> <br> 
-Ghost mode: <span onclick = "window.ghost = !window.ghost; this.innerHTML = window.ghost ? 'ON' : 'OFF'"> OFF </span> <br>
 FZ Autoheal: <span onclick = "window.fz = !window.fz; this.innerHTML = window.fz ? 'ON' : 'OFF'"> OFF </span> <br>
 Server tester <br>
 Packet Limit tester: <span onclick = "this.innerHTML == 'Start' ? (window.testPacketLimit = true, this.innerHTML = 'Stop') : (window.testPacketLimit = false, this.innerHTML = 'Start')">Start</span> <br>
