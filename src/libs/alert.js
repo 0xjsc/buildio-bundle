@@ -16,6 +16,7 @@ document.documentElement.insertAdjacentHTML("beforeend", `
   color: white;
   transition: all 1s 0s;
   overflow: auto;
+  scrollbar-width: none;
 }
 </style>
 `)
@@ -23,7 +24,7 @@ document.documentElement.insertAdjacentHTML("beforeend", `
 function Dialog(text) {
   const menu = document.createElement("div");
   document.documentElement.appendChild(menu);
-  menu.class = "dialogMM";
+  menu.classList.add("dialogMM");
   menu.innerHTML = text;
   
   return menu;
