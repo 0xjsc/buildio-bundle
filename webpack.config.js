@@ -1,5 +1,6 @@
 export default {
   "target": "web",
   "mode": "development",
-  "devtool": false
+  "devtool": false,
+  "entry": "./src/app.js",
 }
