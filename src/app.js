@@ -15,6 +15,7 @@ import ProjectileManager from "./js/data/projectileManager.js";
 import AiManager from "./js/data/aiManager.js";
 import AI from "./js/data/ai.js";
 import VultrServer from "./vultr/VultrSeeker.js";
+import Dialog from "./libs/alert.js";
 
 const serverPackets = {};
 const { log } = console;
@@ -235,15 +236,12 @@ var isProd = location.origin.includes("http://")
 var startedConnecting = false;
 
 if (localStorage.version !== versionHash) {
-  Swal.fire({
-    position: "top-end",
-    icon: "success",
-    title: "AutoWASM has been updated to version " + versionHash + "!",
-    text: changelog,
-    showConfirmButton: false,
-    timer: 3000,
-    allowOutsideClick: false
-  });
+  const element = Dialog("AutoWASM has been updated to version " + versionHash + "!");
+  element.style.top = "20px";
+  element.style.right = "20px";
+  setTimeout(() => {
+    element.remove();
+  }, 3000);
   localStorage.version = versionHash;
 }
 
@@ -499,16 +497,12 @@ async function disconnect(reason) {
   const req = await fetch("https://api.ipify.org/");
   const ip = await req.text();
   
-  Swal.fire({
-    icon: "error",
-    title: "WebSocket closed",
-    html: `Probably flower or someone other crashed the server. <br>
+  const elem = Dialog(`WebSocket closed <br> Probably flower or someone other crashed the server. <br>
     IP Address: ${ip} <br>
     Reason: ${reason} <br>
     Recaptcha token: ${localStorage._grecaptcha} <br> <br>
-    Contact 0xffabc at mohmoh's server if you have more questions`,
-    showConfirmButton: true,
-  });
+    Contact 0xffabc at mohmoh's server if you have more questions`);
+  element.style.transform = "translate(-50%, -50%)";
 }
 
 function showLoadingText(text) {
