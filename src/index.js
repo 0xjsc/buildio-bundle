@@ -1982,6 +1982,14 @@ function boostInstaOptimisations() {
   }
 }
 
+function autoMills() {
+  const placeAngle = getMoveDir() - Math.PI;
+
+  place(player.items[3], placeAngle);
+  place(player.items[3], placeAngle - Math.PI / 2);
+  place(player.items[3], placeAngle + Math.PI / 2);
+}
+
 const modulesQueue = [
   /** HELPER MODULES ARE GOING FIRST **/
   () => {
@@ -2040,6 +2048,8 @@ const modulesQueue = [
     else if (window.keyEvents.KeyV) place(player.items[2], getAttackDir());
     else if (window.keyEvents.KeyF) place(player.items[4], getAttackDir()); 
     else if (window.keyEvents.KeyZ) boostSpike();
+    else if (window.keyEvents.KeyQ) place(player.items[0], getAttackDir());
+    else if (window.keyEvents.KeyT) autoMills();;
 
     if (window.keyEvents.ArrowUp) offsetCamY -= (deltaHold += 3);
     else if (window.keyEvents.ArrowDown) offsetCamY += (deltaHold += 3);
