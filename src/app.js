@@ -2113,7 +2113,7 @@ const modulesQueue = [
       return;
     }
 
-    wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((Date.now() - endTimeout) / 1000) + "s");
+    wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((endTimeout - Date.now()) / 1000) + "s");
   }
 ];
 
