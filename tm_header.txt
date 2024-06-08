@@ -1,11 +1,61 @@
 // ==UserScript==
-// @name            New script mohmoh.eu
-// @namespace   Violentmonkey Scripts
-// @match           *://www.mohmoh.eu/*
+// @name              AutoWASM
+// @namespace         https://github.com/0xffabc/mohmoh-client/autowasm
+// @match             *://www.mohmoh.eu/*
+// @match             *://*.moomoo.io/*
+// @icon              https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/WebAssembly_Logo.svg/1024px-WebAssembly_Logo.svg.png
 // @grant             none
-// @version          1.0
-// @author            -
-// @description    27.05.2024, 08:40:33
-// @require          https://update.greasyfork.org/scripts/423602/1005014/msgpack.js
+// @version           1.0
+// @author            Build.IO team
+// @unwrap
+// @antifeature       tracking
+// @description       A public mod 
+// @require           https://update.greasyfork.org/scripts/423602/1005014/msgpack.js
 // ==/UserScript==
+
+/**
+  [Moomoo.io support has been finished...]
+  
+  == CONTRIBUTORS ==
+
+  Main author - 0xffabc
+  Main tester - MorningStar
+
+  Special thanks to:
+    - GOD (just_a_hunter.) - autoplace angles suggestions 
+    - Bread god (breadgod0980) - reporting bugs and suggestions 
+    - WaterZ - overall algorithms stuff
+  == KEYBINDS ==
+
+  r - primary-start instakill
+  t - secondary-start instakill
+  v - spike macro
+  f - trap macro
+  g - spawnpad macro
+  == COMMANDS ==
+
+  !connect <username> - connect to a user.
+    This allows better syncing and using for 
+    User you connected to some commands.
+  !pubkey <key> - Set mod tester access key
+    If you're a frequent tester or a trusted person,
+    You can get your own mod's secret key
+    that unblocks some features, that public
+    Users doesn't have.
+
+  <=====COMMANDS AVAILABLE AFTER !CONNECT=====>
+  !follow - follow the user you're connected to
+  !bowspam - start bowspamming at direction of
+    User you're connected to
+  <===========================================>
+  == PRIVACY ==
+
+  This mod collects only your username, shamecount, ping 
+  and weapon reloads at the time of your deaths.
+  Analytics source code are available at 
+
+  https://github.com/0xffabc/mohmoh-client/blob/autowasm/src/libs/aoe32.js
+**/
+
+/** MSGPACK **/
 ;
