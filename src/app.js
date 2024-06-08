@@ -16,6 +16,7 @@ import AI from "./js/data/ai.js";
 import VultrServer from "./vultr/VultrSeeker.js";
 import Dialog from "./libs/alert.js";
 import SocketController from "./socket/socket.js";
+import BundleRemover from "./client/bundleRemover.js";
 
 window.captchaCallback = () => connectSocketIfReady();
 
