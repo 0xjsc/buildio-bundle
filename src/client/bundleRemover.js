@@ -1,4 +1,3 @@
-document.write("<p></p>");
 
 const regex = /bundle|assets|index|FRVR|howl|jquery|cookie|double|turnst|frvr/gm;
 const doc = document.implementation.createHTMLDocument(document.title);
