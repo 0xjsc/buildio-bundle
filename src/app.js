@@ -284,6 +284,8 @@ async function connectSocketIfReady() {
   connectSocket(prefix + token, server);
 }
 
+connectSocketIfReady();
+
 const wsLogs = [];
 
 function connectSocket(token, server = location.host) {
@@ -2423,5 +2425,3 @@ document.getElementById("syncBtn").onclick = function e() {
     this.innerHTML = "Disconnect";
   }
 }
-
-export default connectSocketIfReady;
