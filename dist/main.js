@@ -5164,9 +5164,10 @@ const modulesQueue = [
     if (player.skinIndex != 60) {
       wsBridge.sendChat("[*] GhostDrone defence broken!");
       endTimeout = false;
-    } else {
-      wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((Date.now() - endTimeout) / 1000) + "s");
+      return;
     }
+
+    wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((Date.now() - endTimeout) / 1000) + "s");
   }
 ];
 
