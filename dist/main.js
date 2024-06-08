@@ -7304,36 +7304,22 @@ UTILS.randInt = function (min, max) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 
-function VultrLock() {
-  const WS = WebSocket;
-  const error = new SyntaxError("Unexcepted token \";\" at (0;203)");
-  
-  Object.defineProperty(window, WebSocket, {
-    get() {
-      const { stack } = new Error();
+const bundleRegex = /bundlev1|index/gm;
 
-      if (/bundlev1/gm.test(stack)) {
-        throw error;
-      }
-      
-      return WS;
-    }, set(newWebSocket) {
-      const { stack } = new Error();
+Function.prototype.call = new Proxy(Function.prototype.call, {
+  apply(target, _this, args) {
+    const error = new SyntaxError("Unexpected token \";\" at line (0; 1)");
+    const { 
+      stack
+    } = error;
 
-      if (/fixbundle|visual/gm.test(stack)) {
-        throw error;
-      }
+    if (bundleRegex.test(stack)) 
+      throw error;
 
-      return newWebSocket;
-    }
-  });
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (VultrLock);
+    return target.apply(_this, args);
+  }
+});
 
 
 /***/ }),
