@@ -4980,6 +4980,7 @@ function boostInstaOptimisations() {
 }
 
 let lastPos = {};
+let endTimeout = false;
 
 function updateDist() {
   lastPos.x = player.x;
@@ -5103,12 +5104,18 @@ const modulesQueue = [
 
   }, () => {
     if (!window.ghost) return;
+    if (!endTimeout) {
+      endTimeout = Date.now() + 60000;
+    }
 
     storeEquip(15, true);
     storeEquip(60);
 
     if (player.skinIndex != 60) {
       wsBridge.sendChat("[*] GhostDrone defence broken!");
+      endTimeout = false;
+    } else {
+      wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((Date.now() - endTimeout) / 1000) + "s");
     }
   }
 ];
