@@ -522,10 +522,9 @@ window.onblur = function () {
 }, gameCanvas.oncontextmenu = function () {
   return !1;
 };
-window.onload = () => connectSocketIfReady();
+
 window.captchaCallback = () => connectSocketIfReady();
 didLoad = true;
-connectSocketIfReady();
 
 function setupServerStatus() {
   var altServerText, altServerURL, tmpHTML = '',
@@ -2427,3 +2426,5 @@ document.getElementById("syncBtn").onclick = function e() {
     this.innerHTML = "Disconnect";
   }
 }
+
+export default connectSocketIfReady;
