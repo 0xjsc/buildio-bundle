@@ -5232,7 +5232,7 @@ function render() {
 
       if (players[i]) {
         if (tmpObj.chatCountdown > 0) {
-          tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Hammersmith One';
+          tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Baloo 2';
           var tmpSize = mainContext.measureText(tmpObj.chatMessage);
           mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
           var tmpW = tmpSize.width + 17;
@@ -5243,7 +5243,7 @@ function render() {
 
       var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
       if ('' != tmpText) {
-        if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext
+        if (mainContext.font = (tmpObj.nameScale || 30) + 'px Baloo 2', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext
           .textAlign = 'center', mainContext.lineWidth = tmpObj
           .nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"]
             .nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].nameY), tmpObj.isLeader && iconSprites.crown
@@ -5381,29 +5381,15 @@ menu.id = "modMenu";
 menu.innerHTML = `
 <h2> <center> AutoWASM Sync </center> </h2> <br>
 
-<input type = "text" placeholder = "Player Username" id = "username_"> <button id = "syncBtn"> Connect </button> <br>
+<input type = "text" placeholder = "Player Username" id = "username_" style = "outline: none; background: rgba(0, 0, 0, 0.5); border: 0; color: white"> <span id = "syncBtn"> Connect </span> <br>
 
 Follow module: <span onclick = "window.follow = !window.follow; this.innerHTML = window.follow ? 'ON' : 'OFF'"> OFF </span> <br>
 Bow spamming module: <span onclick = "window.bowspam = !window.bowspam; this.innerHTML = window.bowspam ? 'ON' : 'OFF'"> OFF </span> <br>
 Boost Insta Optimisations: <span onclick = "window.boostinsta = !window.boostinsta; this.innerHTML = window.boostinsta ? 'ON' : 'OFF'"> OFF </span> <br>
-Tanker mode: <span onclick = "window.tanker = !window.tanker; this.innerHTML = window.tanker ? 'ON' : 'OFF'"> OFF </span> <br> <br> <br>
-
-FZ Autoheal: <span onclick = "window.fz = !window.fz; this.innerHTML = window.fz ? 'ON' : 'OFF'"> OFF </span> <br> <br>
-
-<br> WebSocket Sender <br>
-Packet: <input type = "name" id = "packet"> <br>
-<button onclick = "window.socket.send(msgpack.encode(JSON.parse(document.getElementById('packet').value)))"> Send </button> <br>
-<button onclick = "window.intervalSend ? (clearInterval(window.intervalSend), this.innerHTML = 'Interval Send') : (window.intervalSend = setInterval(() => window.socket.send(msgpack.encode(JSON.parse(document.getElementById('packet').value))), parseInt(prompt('Enter delay'))), this.innerHTML = 'Stop interval')"> Interval Send </button> <br>
-<br>
-
+Tanker mode: <span onclick = "window.tanker = !window.tanker; this.innerHTML = window.tanker ? 'ON' : 'OFF'"> OFF </span> <br> 
+FZ Autoheal: <span onclick = "window.fz = !window.fz; this.innerHTML = window.fz ? 'ON' : 'OFF'"> OFF </span> <br>
 Server tester <br>
-Packet Limit tester: <button onclick = "this.innerHTML == 'Start' ? (window.testPacketLimit = true, this.innerHTML = 'Stop') : (window.testPacketLimit = false, this.innerHTML = 'Start')">Start</button> <br>
-
-!connect <username> - Connect to a user to sync with <br>
-!disconnect - Disconnect from the user <br>
-!bowspam - Start bowspam module <br>
-!follow - Follow the player <br>
-
+Packet Limit tester: <span onclick = "this.innerHTML == 'Start' ? (window.testPacketLimit = true, this.innerHTML = 'Stop') : (window.testPacketLimit = false, this.innerHTML = 'Start')">Start</span> <br>
 <div align = "right"> @0xffabc </div>
 `;
 
