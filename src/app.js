@@ -18,7 +18,6 @@ import Dialog from "./libs/alert.js";
 import SocketController from "./socket/socket.js";
 
 window.captchaCallback = () => connectSocketIfReady();
-document.body.replaceWith(document.body.cloneNode(true));
 
 const serverPackets = {};
 const { log } = console;
