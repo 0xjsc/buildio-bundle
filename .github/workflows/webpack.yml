@@ -30,7 +30,7 @@ jobs:
         cat tm_header.txt >> bundle.js
         cat dist/main.js >> bundle.js
         mv bundle.js dist/main.js
-        git config --global user.name 'github-actions[bot]'
+        git config --global user.name 'pankak'
         git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
         git add dist/main.js
         git commit -am 'bye bye :mewing:'
