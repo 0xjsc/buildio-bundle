@@ -3285,8 +3285,6 @@ async function connectSocketIfReady() {
   connectSocket(prefix + token, server);
 }
 
-connectSocketIfReady();
-
 const wsLogs = [];
 
 function connectSocket(token, server = location.host) {
