@@ -181,7 +181,7 @@ serverPackets[serverSide.PING] = pingSocketResponse;
 serverPackets[serverSide.MAP_PING] = pingMap;
 serverPackets[serverSide.SHOW_TEXT] = showText;
 
-window.socketController = new SocketController(() => io, packets);
+const wsBridge = window.socketController = new SocketController(() => io, packets);
 const textManager = new animText.TextManager();
 
 let nearestGameObjects = [];
@@ -293,9 +293,9 @@ function connectSocket(token, server = location.host) {
   
   io.connect(wsAddress, function (error) {
     if (location.href.includes("mohmoh"))
-      io.send(packets.REGISTER, 0);
+      wsBridge.register();
     
-    pingSocket(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
+    wsBridge.pingServer(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
       if (error) {
         disconnect(error);
       } else {
@@ -707,26 +707,30 @@ function showAllianceMenu() {
 }
 
 function aJoinReq(join) {
-  io.send(packets.ACCEPT_CLAN_JOIN, allianceNotifications[0].sid, join), allianceNotifications.splice(0, 1), updateNotifications();
+  wsBridge.acceptClanJoin(allianceNotifications, join);
+  
+  allianceNotifications.splice(0, 1);
+  updateNotifications();
 }
 
 function kickFromClan(sid) {
-  io.send(packets.CLAN_KICK, sid);
+  wsBridge.kickFromClan(sid);
 }
 
 function sendJoin(index) {
-  io.send(packets.SEND_CLAN_JOIN, alliances[index].sid);
+  wsBridge.requestClanJoin(alliances, index);
 }
 
 function createAlliance() {
-  io.send(packets.CLAN_CREATE, "⁣" + document.getElementById('allianceInput')
-    .value + "⁣");
+  wsBridge.createClan(document.getElementById('allianceInput').value);
 }
 
 let waka = 0; // sorry for bad variable name
 
 function leaveAlliance() {
-  allianceNotifications = [], updateNotifications(), io.send(packets.CLAN_LEAVE);
+  allianceNotifications = [];
+  updateNotifications();
+  wsBridge.leaveClan();
 }
 var tmpPing, mapPings = [];
 
@@ -817,11 +821,11 @@ function generateStoreList() {
 }
 
 function storeEquip(id, index) {
-  io.send(packets.STORE_EQUIP, 0, id, index);
+  wsBridge.itemAction(id, index, false);
 }
 
 function storeBuy(id, index) {
-  io.send(packets.STORE_EQUIP, 1, id, index);
+  wsBridge.itemAction(id, index, true);
 }
 
 function hideAllWindows() {
@@ -860,7 +864,7 @@ function toggleChat() {
 }
 
 function sendChat(message) {
-  io.send(packets.SEND_CHAT, message.slice(0, 30));
+  wsBridge.sendChat(message);
 }
 
 function closeChat() {
@@ -1021,7 +1025,8 @@ var keys = {},
 window.keyEvents = {};
 
 function resetMoveDir() {
-  keys = {}, io.send(packets.RESET_MOVE_DIR);
+  keys = {};
+  wsBridge.stopMovement();
 }
 
 function keysActive() {
@@ -1029,8 +1034,9 @@ function keysActive() {
 }
 
 function sendAtckState() {
-  player && player.alive && io.send(packets.ATTACK, attackState, null);
-}
+  player && player.alive && wsbridge(updateHittingState, attackState, getAttackDir());
+};
+
 window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
   var keyNum = event.which || event.keyCode || 0;
   const keyCode = event.code;
@@ -1038,7 +1044,7 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
     window.keyEvents[keyCode] = true;
     window.keyEvents["Switch" + keyCode] = !window.keyEvents["Switch" + keyCode];
   }
-  "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? io.send(packets.FREEZE, 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, io.send(packets.FREEZE, 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
+  "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? wsBridge.freeze(true) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, wsBridge.freeze(false) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
 })), window.addEventListener('keyup', UTILS.checkTrusted(function (event) {
   if (player && player.alive) {
     var keyNum = event.which || event.keyCode || 0;
@@ -1062,15 +1068,15 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : UTILS.fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (io.send(packets.MOVEMENT, newMoveDir), (!window.enemyDanger && !instakilling) && (storeEquip(window.tanker ? 15 : (player.y <= config.snowBiomeTop ? 6 : 11), true), storeEquip(window.tanker ? 6 : getBiomeHat())), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (wsBridge.updateMoveDir(newMoveDir), (!window.enemyDanger && !instakilling) && (storeEquip(window.tanker ? 15 : (player.y <= config.snowBiomeTop ? 6 : 11), true), storeEquip(window.tanker ? 6 : getBiomeHat())), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
-  io.send(packets.MAP_PING, 1);
+  wsBridge.mapPing();
 }
 
 function selectToBuild(index, wpn) {
-  io.send(packets.CHANGE_WEAPON, index, wpn);
+  wsBridge.updateHoldItem(index, wpn);
 }
 
 function enterGame() {
@@ -1079,11 +1085,7 @@ function enterGame() {
   saveVal('moo_name', nameInput.value);
   showLoadingText('Loading...');
   
-  io.send(packets.SPAWN, {
-    name: nameInput.value,
-    moofoll: moofoll,
-    skin: skinColor
-  });
+  wsBridge.spawn(nameInput.value, 0);
 
   inGame = true;
 }
@@ -1174,7 +1176,7 @@ function updateUpgrades(points, age) {
         tmpItem.onmouseover = function () {
           items.weapons[i] ? showItemInfo(items.weapons[i], !0) : showItemInfo(items.list[i - items.weapons.length]);
         }, tmpItem.onclick = UTILS.checkTrusted(function () {
-          io.send(packets.UPGRADE, i);
+          wsBridge.upgradeItem(i);
         }), UTILS.hookTouchEvents(tmpItem);
       }(tmpList[i]);
     tmpList.length ? (upgradeHolder.style.display = 'block', upgradeCounter.style.display = 'block', upgradeCounter.innerHTML = 'SELECT ITEMS (' + points + ')') : (upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo());
@@ -2150,7 +2152,8 @@ function pingSocketResponse() {
 }
 
 function pingSocket() {
-  lastPing = Date.now(), io.send(packets.PING);
+  lastPing = Date.now();
+  wsBridge.pingServer();
 }
 
 function serverShutdownNotice(countdown) {
