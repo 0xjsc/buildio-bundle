@@ -1,3 +1,4 @@
+import app from "./app.js";
 
 const blacklist = /asset|bundlev1/gm;
 
@@ -16,5 +17,5 @@ Function.prototype.call = new Proxy(Function.prototype.call, {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
-  import "./app.js";
+  app();
 });
