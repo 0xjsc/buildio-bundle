@@ -501,7 +501,7 @@ async function disconnect(reason) {
     Reason: ${reason} <br>
     Recaptcha token: ${localStorage._grecaptcha} <br> <br>
     Contact 0xffabc at mohmoh's server if you have more questions`);
-  element.style.transform = "translate(-50%, -50%)";
+  elem.style.transform = "translate(-50%, -50%)";
 }
 
 function showLoadingText(text) {
