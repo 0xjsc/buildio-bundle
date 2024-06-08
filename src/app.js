@@ -1034,7 +1034,7 @@ function keysActive() {
 }
 
 function sendAtckState() {
-  player && player.alive && wsbridge(updateHittingState, attackState, getAttackDir());
+  player && player.alive && wsBridge.updateHittingState(attackState, getAttackDir());
 };
 
 window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
