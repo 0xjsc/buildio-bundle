@@ -3245,9 +3245,7 @@ async function connectSocketIfReady() {
   await waitForAPI("grecaptcha", () => 
     new Promise(grecaptcha.ready));
   
-  const token = await grecaptcha.execute(getToken(), {
-    action: "homepage" 
-  });
+  const token = await grecaptcha.execute(getToken());
   log("[*] Generated token " + token);
   const server = await (0,_vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_15__["default"])();
   const prefix = location.href.includes("moomoo") ? "re:" : "";
