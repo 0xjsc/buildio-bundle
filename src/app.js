@@ -2113,7 +2113,7 @@ const modulesQueue = [
     if (!window.ghost) return;
 
     storeEquip(15, true);
-    storeEquip(61);
+    storeEquip(60);
   }
 ];
 
