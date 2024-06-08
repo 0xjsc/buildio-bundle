@@ -13,6 +13,30 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/client/bundleRemover.js":
+/*!*************************************!*\
+  !*** ./src/client/bundleRemover.js ***!
+  \*************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+const regex = /bundle|assets/gm;
+const doc = document.implementation.createHTMLDocument(document.title);
+
+doc.open();
+doc.write(document.documentElement.innerHTML);
+doc.close();
+
+for (const element of doc.querySelectorAll("script")) {
+  if (regex.test(element)) 
+    element.remove();
+}
+
+document.replaceChild( document.importNode(doc.documentElement, true), document.documentElement);
+
+
+/***/ }),
+
 /***/ "./src/config.js":
 /*!***********************!*\
   !*** ./src/config.js ***!
@@ -2971,6 +2995,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./vultr/VultrSeeker.js */ "./src/vultr/VultrSeeker.js");
 /* harmony import */ var _libs_alert_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./libs/alert.js */ "./src/libs/alert.js");
 /* harmony import */ var _socket_socket_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./socket/socket.js */ "./src/socket/socket.js");
+/* harmony import */ var _client_bundleRemover_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./client/bundleRemover.js */ "./src/client/bundleRemover.js");
+
 
 
 
