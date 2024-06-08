@@ -41,6 +41,7 @@ const socket = {
         data
       ]);
     this.socket.send(binary);
+    console.log("[Client] " + type + " -> " + data);
   },
   socketReady() {
     return this.socket && this.connected;
