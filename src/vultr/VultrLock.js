@@ -1,7 +1,7 @@
 
 async function removeBundle(resolve) {
   const blacklistRegex = /bundle|index|FRVR/gm;
-  const whitelistRegex /cloud|recap/gm;
+  const whitelistRegex = /cloud|recap/gm;
 
   const req = await fetch(location.href);
   const res = await req.text();
