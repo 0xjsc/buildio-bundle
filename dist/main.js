@@ -3058,11 +3058,11 @@ if (location.href.includes("moomoo")) {
     packets = {
       PING: "0", // ok
       REGISTER: "budv", // ok
-      ACCEPT_CLAN_JOIN: "11",
+      ACCEPT_CLAN_JOIN: "P",
       SEND_CLAN_JOIN: "b", // ok
-      CLAN_KICK: "12",
-      CLAN_CREATE: "8",
-      CLAN_LEAVE: "9",
+      CLAN_KICK: "Q", // ok
+      CLAN_CREATE: "L", // ok
+      CLAN_LEAVE: "N", // ok
       STORE_EQUIP: "c", // ok
       SEND_CHAT: "6", // ok
       ATTACK: "d", // ok
