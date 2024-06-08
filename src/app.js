@@ -15,9 +15,6 @@ import ProjectileManager from "./js/data/projectileManager.js";
 import AiManager from "./js/data/aiManager.js";
 import AI from "./js/data/ai.js";
 import VultrServer from "./vultr/VultrSeeker.js";
-import VultrLock from "./vultr/VultrLock.js";
-
-await VultrLock();
 
 const serverPackets = {};
 const { log } = console;
