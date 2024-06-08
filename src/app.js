@@ -2061,7 +2061,7 @@ const modulesQueue = [
     else if (window.keyEvents.KeyF) place(player.items[4], getAttackDir()); 
     else if (window.keyEvents.KeyZ) boostSpike();
     else if (window.keyEvents.KeyQ) place(player.items[0], getAttackDir());
-    else if (window.keyEvents.KeyT) autoMills();;
+    else if (window.keyEvents.KeyH) autoMills();;
 
     if (window.keyEvents.ArrowUp) offsetCamY -= (deltaHold += 3);
     else if (window.keyEvents.ArrowDown) offsetCamY += (deltaHold += 3);
