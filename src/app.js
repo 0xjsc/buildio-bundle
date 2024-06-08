@@ -1981,7 +1981,13 @@ function boostInstaOptimisations() {
   }
 }
 
+let lastPos = {};
+
 function autoMills() {
+  const lastPosDist = Math.hypot(lastPos?.x - player.x, lastPos?.y - player.y);
+
+  if (lastPosDist < 50 && lastPosDist) return;
+  
   const placeAngle = getMoveDir() - Math.PI;
 
   place(player.items[3], placeAngle);
