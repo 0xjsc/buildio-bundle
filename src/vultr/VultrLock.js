@@ -1,5 +1,5 @@
 
-async removeBundle(resolve) {
+async function removeBundle(resolve) {
   const blacklistRegex = /bundle|index|FRVR/gm;
   const whitelistRegex /cloud|recap/gm;
 
