@@ -20,7 +20,6 @@
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-document.write("<p></p>");
 
 const regex = /bundle|assets|index|FRVR|howl|jquery|cookie|double|turnst|frvr/gm;
 const doc = document.implementation.createHTMLDocument(document.title);
