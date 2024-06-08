@@ -1,5 +1,4 @@
 import insert_000000 from "./libs/aoe32.js";
-import Swal from "sweetalert2";
 import io from "./libs/io-client.js";
 import UTILS from "./libs/utils.js";
 import animText from "./libs/animText.js";
