@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              AutoWASM
 // @namespace         https://github.com/0xffabc/mohmoh-client/autowasm
-// @match             *://www.mohmoh.eu/*
+// @match             *://*.mohmoh.eu/*
 // @match             *://*.moomoo.io/*
 // @icon              https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/WebAssembly_Logo.svg/1024px-WebAssembly_Logo.svg.png
 // @grant             none
