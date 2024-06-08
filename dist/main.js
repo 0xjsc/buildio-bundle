@@ -2740,6 +2740,117 @@ UTILS.randInt = function (min, max) {
 
 /***/ }),
 
+/***/ "./src/socket/socket.js":
+/*!******************************!*\
+  !*** ./src/socket/socket.js ***!
+  \******************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const isMohMoh = location.href.includes("mohmoh");
+
+class SocketController {
+
+  constructor(io, packets) {
+
+    Object.defineProperty(this, "io", {
+      get() {
+        return io();
+      }, set(value) { }
+    });
+    
+    this.packets = packets;
+  };
+
+  send(packetId, ...data) {
+    const packetSid = this.packets[packetId];
+
+    this.io.send(packetSid, ...data);
+  }
+
+  register() {
+    if (!isMohMoh) return;
+
+    this.send("REGISTER", 0);
+  };
+
+  acceptClanJoin(allianceNotifications, join) {
+    this.send("ACCEPT_CLAN_JOIN", allianceNotifications[0].sid, join);
+  };
+
+  kickFromClan(sid) {
+    this.send("CLAN_KICK", sid);
+  };
+
+  requestClanJoin(alliances, sid) {
+    this.send("SEND_CLAN_JOIN", alliances[sid]);
+  };
+
+  createClan(name) {
+    this.send("CLAN_CREATE", name);
+  };
+
+  leaveClan() {
+    this.send("CLAN_LEAVE");
+  };
+
+  itemAction(sid, isCape, actionType) {
+    this.send("STORE_EQUIP", actionType, sid, isCape);
+  };
+
+  sendChat(message) {
+    this.send("SEND_CHAT", message);
+  };
+
+  stopMovement() {
+    this.send("RESET_MOVE_DIR");
+  };
+
+  updateHittingState(isHitting, lookDir = null) {
+    this.send("ATTACK", isHitting, lookDir);
+  };
+
+  freeze(freezeSid) {
+    this.send("FREEZE", freezeSid);
+  };
+
+  updateMoveDir(moveDir) {
+    this.send("MOVEMENT", moveDir);
+  };
+
+  mapPing() {
+    this.send("MAP_PING", true);
+  };
+
+  updateHoldItem(itemSid, isWeapon) {
+    this.send("CHANGE_WEAPON", itemSid, isWeapon);
+  };
+
+  spawn(name, skin) {
+    this.send("SPAWN", {
+      name,
+      skin
+    });
+  };
+
+  upgradeItem(upgradeSid) {
+    this.send("UPGRADE", upgradeSid);
+  };
+
+  pingServer() {
+    this.send("PING");
+  }
+  
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SocketController);
+
+
+/***/ }),
+
 /***/ "./src/vultr/VultrSeeker.js":
 /*!**********************************!*\
   !*** ./src/vultr/VultrSeeker.js ***!
@@ -2857,6 +2968,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_data_ai_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./js/data/ai.js */ "./src/js/data/ai.js");
 /* harmony import */ var _vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./vultr/VultrSeeker.js */ "./src/vultr/VultrSeeker.js");
 /* harmony import */ var _libs_alert_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./libs/alert.js */ "./src/libs/alert.js");
+/* harmony import */ var _socket_socket_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./socket/socket.js */ "./src/socket/socket.js");
+
 
 
 
@@ -3039,6 +3152,7 @@ serverPackets[serverSide.PING] = pingSocketResponse;
 serverPackets[serverSide.MAP_PING] = pingMap;
 serverPackets[serverSide.SHOW_TEXT] = showText;
 
+window.socketController = new _socket_socket_js__WEBPACK_IMPORTED_MODULE_17__["default"](_libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"], packets);
 const textManager = new _libs_animText_js__WEBPACK_IMPORTED_MODULE_3__["default"].TextManager();
 
 const hit360 = 1.998715926535898e+272;
