@@ -3252,7 +3252,7 @@ function getToken() {
 }
 
 async function connectSocketIfReady() {
-  if (startedConnecting) return;
+  if (startedConnecting || !grecaptcha?.ready) return;
   startedConnecting = true;
 
   log("[*] Waiting for grecaptcha ready...");
@@ -3270,7 +3270,8 @@ async function connectSocketIfReady() {
 }
 
 window.captchaCallback = connectSocketIfReady;
-window.grecaptcha?.ready && connectSocketIfReady;
+window.onload = connectSocketIfReady;
+window.grecaptcha?.ready && connectSocketIfReady();
 
 const wsLogs = [];
 
