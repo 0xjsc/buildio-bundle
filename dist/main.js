@@ -3256,7 +3256,11 @@ async function connectSocketIfReady() {
   if (startedConnecting) return;
   startedConnecting = true;
 
+  log("[*] Waiting for grecaptcha ready...");
+
   await new Promise(grecaptcha.ready);
+
+  log("[*] Generating grecaptcha token...");
   
   const token = await grecaptcha.execute(getToken(), recaptchaOpt);
   log("[*] Generated token " + token);
