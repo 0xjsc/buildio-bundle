@@ -272,9 +272,7 @@ async function connectSocketIfReady() {
   await waitForAPI("grecaptcha", () => 
     new Promise(grecaptcha.ready));
   
-  const token = await grecaptcha.execute(getToken(), {
-    action: "homepage" 
-  });
+  const token = await grecaptcha.execute(getToken());
   log("[*] Generated token " + token);
   const server = await VultrServer();
   const prefix = location.href.includes("moomoo") ? "re:" : "";
