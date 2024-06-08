@@ -3155,7 +3155,6 @@ serverPackets[serverSide.SHOW_TEXT] = showText;
 window.socketController = new _socket_socket_js__WEBPACK_IMPORTED_MODULE_17__["default"](() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"], packets);
 const textManager = new _libs_animText_js__WEBPACK_IMPORTED_MODULE_3__["default"].TextManager();
 
-const hit360 = 1.998715926535898e+272;
 let nearestGameObjects = [];
 
 const clanNames = [
@@ -3170,8 +3169,8 @@ const clanNames = [
   "urez"
 ];
 
-const versionHash = "1.6-Kappa";
-const changelog = "Added moomoo.io support";
+const versionHash = "1.6-Sigma";
+const changelog = "Removed useless 360-hit for moomoo.io compactability, preparing to split index.js socket";
 const motionBlurLevel = 0.6;
 let instakilling = false;
 
@@ -3208,7 +3207,7 @@ var isProd = location.origin.includes("http://")
 var startedConnecting = false;
 
 if (localStorage.version !== versionHash) {
-  const element = (0,_libs_alert_js__WEBPACK_IMPORTED_MODULE_16__["default"])("AutoWASM has been updated to version " + versionHash + "!");
+  const element = (0,_libs_alert_js__WEBPACK_IMPORTED_MODULE_16__["default"])(`AutoWASM has been updated to version ${versionHash}! <br> ${changelog}`);
   element.style.top = "20px";
   element.style.right = "20px";
   setTimeout(() => {
