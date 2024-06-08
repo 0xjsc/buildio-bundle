@@ -84,24 +84,24 @@ serverSide = {
 
 if (location.href.includes("moomoo")) {
     packets = {
-      PING: "0", // ok
-      REGISTER: "budv", // ok
+      PING: "0", 
+      REGISTER: "budv", 
       ACCEPT_CLAN_JOIN: "P",
-      SEND_CLAN_JOIN: "b", // ok
-      CLAN_KICK: "Q", // ok
-      CLAN_CREATE: "L", // ok
-      CLAN_LEAVE: "N", // ok
-      STORE_EQUIP: "c", // ok
-      SEND_CHAT: "6", // ok
-      ATTACK: "d", // ok
-      AIM: "D", // ok
-      RESET_MOVE_DIR: "e", // ok
-      FREEZE: "K", // ok
-      MAP_PING: "14", // ok
-      MOVEMENT: "a", // ok
-      CHANGE_WEAPON: "G", // ok
-      SPAWN: "M", // ok
-      UPGRADE: "H" // ok
+      SEND_CLAN_JOIN: "b", 
+      CLAN_KICK: "Q", 
+      CLAN_CREATE: "L", 
+      CLAN_LEAVE: "N", 
+      STORE_EQUIP: "c", 
+      SEND_CHAT: "6", 
+      ATTACK: "d", 
+      AIM: "D", 
+      RESET_MOVE_DIR: "e", 
+      FREEZE: "K", 
+      MAP_PING: "14", 
+      MOVEMENT: "a", 
+      CHANGE_WEAPON: "G",
+      SPAWN: "M",
+      UPGRADE: "H"
     };
 
     serverSide = {
