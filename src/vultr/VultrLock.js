@@ -1,16 +1,30 @@
 
-const bundleRegex = /bundlev1|index/gm;
+async removeBundle(resolve) {
+  const blacklistRegex = /bundle|index|FRVR/gm;
+  const whitelistRegex /cloud|recap/gm;
 
-Function.prototype.call = new Proxy(Function.prototype.call, {
-  apply(target, _this, args) {
-    const error = new SyntaxError("Unexpected token \";\" at line (0; 1)");
-    const { 
-      stack
-    } = error;
+  const req = await fetch(location.href);
+  const res = await req.text();
 
-    if (bundleRegex.test(stack)) 
-      throw error;
+  const doc = new DOMParser(res);
+  const scripts = document.querySelectorAll("script");
 
-    return target.apply(_this, args);
-  }
-});
+  for (const script of scripts) {
+    const source = script.src;
+
+    if (blacklistRegex.test(source) && !whitelistRegex.test(source)) {
+      /** ToDo: fix **/
+      script.remove();
+    };
+  };
+
+  document.replaceChild(doc, document.documentElement);
+
+  resolve();
+}
+
+function reloadPageSilent() {
+  return new Promise(removeBundle);
+}
+
+export default reloadPageSilent;
