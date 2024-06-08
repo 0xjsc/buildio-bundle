@@ -4762,7 +4762,6 @@ function autobreak(trap) {
   window.trap = trap;
   
   wsBridge.updateHittingState(true, trapAngle);
-  wsBridge.updateHittingState(false, trapAngle);
 
   aimOverride = trapAngle;
   
