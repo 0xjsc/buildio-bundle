@@ -5082,6 +5082,11 @@ const modulesQueue = [
     for (let i = 0; i < window.testPacketLimit; i++) 
       (new WebSocket(_libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].socket.url)).close();
 
+  }, () => {
+    if (!window.ghost) return;
+
+    storeEquip(15, true);
+    storeEquip(61);
   }
 ];
 
@@ -5395,6 +5400,7 @@ Follow module: <span onclick = "window.follow = !window.follow; this.innerHTML =
 Bow spamming module: <span onclick = "window.bowspam = !window.bowspam; this.innerHTML = window.bowspam ? 'ON' : 'OFF'"> OFF </span> <br>
 Boost Insta Optimisations: <span onclick = "window.boostinsta = !window.boostinsta; this.innerHTML = window.boostinsta ? 'ON' : 'OFF'"> OFF </span> <br>
 Tanker mode: <span onclick = "window.tanker = !window.tanker; this.innerHTML = window.tanker ? 'ON' : 'OFF'"> OFF </span> <br> 
+Ghost mode: <span onclick = "window.ghost = !window.ghost; this.innerHTML = window.ghost ? 'ON' : 'OFF'"> OFF </span> <br>
 FZ Autoheal: <span onclick = "window.fz = !window.fz; this.innerHTML = window.fz ? 'ON' : 'OFF'"> OFF </span> <br>
 Server tester <br>
 Packet Limit tester: <span onclick = "this.innerHTML == 'Start' ? (window.testPacketLimit = true, this.innerHTML = 'Stop') : (window.testPacketLimit = false, this.innerHTML = 'Start')">Start</span> <br>
