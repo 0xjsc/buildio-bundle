@@ -9393,16 +9393,23 @@ function boostInstaOptimisations() {
 
 let lastPos = {};
 
+function updateDist() {
+  lastPos.x = player.x;
+  lastPos.y - player.y;
+}
+
 function autoMills() {
   const lastPosDist = Math.hypot(lastPos?.x - player.x, lastPos?.y - player.y);
 
-  if (lastPosDist < 50 && lastPosDist) return;
+  if (lastPosDist < 50 && lastPosDist) return updateDist();
   
   const placeAngle = getMoveDir() - Math.PI;
 
   place(player.items[3], placeAngle);
   place(player.items[3], placeAngle - Math.PI / 2);
   place(player.items[3], placeAngle + Math.PI / 2);
+
+  updateDist();
 }
 
 const modulesQueue = [
