@@ -4595,10 +4595,10 @@ if (typeof this !== 'undefined' && this.Sweetalert2){this.swal = this.sweetAlert
 
 /***/ }),
 
-/***/ "./src/config.js":
-/*!***********************!*\
-  !*** ./src/config.js ***!
-  \***********************/
+/***/ "./src/app.js":
+/*!********************!*\
+  !*** ./src/app.js ***!
+  \********************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -4606,118 +4606,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  "maxScreenWidth": 1920
-  , "maxScreenHeight": 1080
-  , "serverUpdateRate": 9
-  , "maxPlayers": 40
-  , "maxPlayersHard": 50
-  , "collisionDepth": 6
-  , "minimapRate": 3000
-  , "colGrid": 10
-  , "clientSendRate": 5
-  , "healthBarWidth": 50
-  , "healthBarPad": 4.5
-  , "iconPadding": 15
-  , "iconPad": 0.9
-  , "deathFadeout": 3000
-  , "crownIconScale": 60
-  , "crownPad": 35
-  , "chatCountdown": 3000
-  , "chatCooldown": 500
-  , "maxAge": 100
-  , "gatherAngle": 1.208304866765305
-  , "gatherWiggle": 10
-  , "hitReturnRatio": 0.25
-  , "hitAngle": 1.5707963267948966
-  , "playerScale": 35
-  , "playerSpeed": 0.0016
-  , "playerDecel": 0.993
-  , "nameY": 34
-  , "skinColors": ["#bf8f54", "#cbb091", "#896c4b", "#fadadc", "#ececec", "#c37373", "#4c4c4c", "#ecaff7", "#738cc3", "#8bc373"]
-  , "animalCount": 7
-  , "aiTurnRandom": 0.06
-  , "cowNames": ["Sid", "Steph", "Bmoe", "Romn", "Jononthecool", "Fiona", "Vince", "Nathan", "Nick", "Flappy", "Ronald", "Otis", "Pepe", "Mc Donald", "Theo",
-    "Fabz", "Oliver", "Jeff", "Jimmy", "Helena", "Reaper", "Ben", "Alan", "Naomi", "XYZ", "Clever", "Jeremy", "Mike", "Destined", "Stallion", "Allison",
-    "Meaty", "Sophia", "Vaja", "Joey", "Pendy", "Murdoch", "Theo", "Jared", "July", "Sonia", "Mel", "Dexter", "Quinn", "Milky"
-  ]
-  , "shieldAngle": 1.0471975511965976
-  , "weaponVariants": [{
-    "id": 0
-    , "src": ""
-    , "xp": 0
-    , "val": 1
-  }, {
-    "id": 1
-    , "src": "_g"
-    , "xp": 3000
-    , "val": 1.1
-  }, {
-    "id": 2
-    , "src": "_d"
-    , "xp": 7000
-    , "val": 1.18
-  }, {
-    "id": 3
-    , "src": "_r"
-    , "poison": true
-    , "xp": 12000
-    , "val": 1.18
-  }, {
-    "id": 4
-    , "src": "_e"
-    , "poison": true
-    , "xp": 15000
-    , "val": 1.21
-  }]
-  , "resourceTypes": ["wood", "food", "stone", "points"]
-  , "areaCount": 7
-  , "treesPerArea": 9
-  , "bushesPerArea": 3
-  , "totalRocks": 32
-  , "goldOres": 7
-  , "riverWidth": 724
-  , "riverPadding": 114
-  , "waterCurrent": 0.0011
-  , "waveSpeed": 0.0001
-  , "waveMax": 1.3
-  , "treeScales": [150, 160, 165, 175]
-  , "bushScales": [80, 85, 95]
-  , "rockScales": [80, 85, 90]
-  , "snowBiomeTop": 2400
-  , "snowSpeed": 0.75
-  , "maxNameLength": 15
-  , "mapScale": 14400
-  , "mapPingScale": 40
-  , "mapPingTime": 2200
-  , "volcanoScale": 320
-  , "innerVolcanoScale": 100
-  , "volcanoAnimalStrength": 2
-  , "volcanoAnimationDuration": 3200
-  , "volcanoAggressionRadius": 1440
-  , "volcanoAggressionPercentage": 0.2
-  , "volcanoDamagePerSecond": -1
-  , "volcanoLocationX": 13960
-  , "volcanoLocationY": 13960
-  , "MAX_ATTACK": 0.6
-  , "MAX_SPAWN_DELAY": 1
-  , "MAX_SPEED": 0.3
-  , "MAX_TURN_SPEED": 0.3
-  , "DAY_INTERVAL": 1440000
-});
-
-
-/***/ }),
-
-/***/ "./src/index.js":
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-/***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
-__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _libs_aoe32_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./libs/aoe32.js */ "./src/libs/aoe32.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./libs/io-client.js */ "./src/libs/io-client.js");
@@ -4735,7 +4623,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_data_aiManager_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./js/data/aiManager.js */ "./src/js/data/aiManager.js");
 /* harmony import */ var _js_data_ai_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./js/data/ai.js */ "./src/js/data/ai.js");
 /* harmony import */ var _vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./vultr/VultrSeeker.js */ "./src/vultr/VultrSeeker.js");
-/* harmony import */ var _vultr_VultrLock_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./vultr/VultrLock.js */ "./src/vultr/VultrLock.js");
 
 
 
@@ -4753,9 +4640,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-await (0,_vultr_VultrLock_js__WEBPACK_IMPORTED_MODULE_17__["default"])();
 
 const serverPackets = {};
 const { log } = console;
@@ -5260,10 +5144,9 @@ window.onblur = function () {
 }, gameCanvas.oncontextmenu = function () {
   return !1;
 };
-window.onload = () => connectSocketIfReady();
+
 window.captchaCallback = () => connectSocketIfReady();
 didLoad = true;
-connectSocketIfReady();
 
 function setupServerStatus() {
   var altServerText, altServerURL, tmpHTML = '',
@@ -7166,8 +7049,122 @@ document.getElementById("syncBtn").onclick = function e() {
   }
 }
 
-__webpack_async_result__();
-} catch(e) { __webpack_async_result__(e); } }, 1);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (connectSocketIfReady);
+
+
+/***/ }),
+
+/***/ "./src/config.js":
+/*!***********************!*\
+  !*** ./src/config.js ***!
+  \***********************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  "maxScreenWidth": 1920
+  , "maxScreenHeight": 1080
+  , "serverUpdateRate": 9
+  , "maxPlayers": 40
+  , "maxPlayersHard": 50
+  , "collisionDepth": 6
+  , "minimapRate": 3000
+  , "colGrid": 10
+  , "clientSendRate": 5
+  , "healthBarWidth": 50
+  , "healthBarPad": 4.5
+  , "iconPadding": 15
+  , "iconPad": 0.9
+  , "deathFadeout": 3000
+  , "crownIconScale": 60
+  , "crownPad": 35
+  , "chatCountdown": 3000
+  , "chatCooldown": 500
+  , "maxAge": 100
+  , "gatherAngle": 1.208304866765305
+  , "gatherWiggle": 10
+  , "hitReturnRatio": 0.25
+  , "hitAngle": 1.5707963267948966
+  , "playerScale": 35
+  , "playerSpeed": 0.0016
+  , "playerDecel": 0.993
+  , "nameY": 34
+  , "skinColors": ["#bf8f54", "#cbb091", "#896c4b", "#fadadc", "#ececec", "#c37373", "#4c4c4c", "#ecaff7", "#738cc3", "#8bc373"]
+  , "animalCount": 7
+  , "aiTurnRandom": 0.06
+  , "cowNames": ["Sid", "Steph", "Bmoe", "Romn", "Jononthecool", "Fiona", "Vince", "Nathan", "Nick", "Flappy", "Ronald", "Otis", "Pepe", "Mc Donald", "Theo",
+    "Fabz", "Oliver", "Jeff", "Jimmy", "Helena", "Reaper", "Ben", "Alan", "Naomi", "XYZ", "Clever", "Jeremy", "Mike", "Destined", "Stallion", "Allison",
+    "Meaty", "Sophia", "Vaja", "Joey", "Pendy", "Murdoch", "Theo", "Jared", "July", "Sonia", "Mel", "Dexter", "Quinn", "Milky"
+  ]
+  , "shieldAngle": 1.0471975511965976
+  , "weaponVariants": [{
+    "id": 0
+    , "src": ""
+    , "xp": 0
+    , "val": 1
+  }, {
+    "id": 1
+    , "src": "_g"
+    , "xp": 3000
+    , "val": 1.1
+  }, {
+    "id": 2
+    , "src": "_d"
+    , "xp": 7000
+    , "val": 1.18
+  }, {
+    "id": 3
+    , "src": "_r"
+    , "poison": true
+    , "xp": 12000
+    , "val": 1.18
+  }, {
+    "id": 4
+    , "src": "_e"
+    , "poison": true
+    , "xp": 15000
+    , "val": 1.21
+  }]
+  , "resourceTypes": ["wood", "food", "stone", "points"]
+  , "areaCount": 7
+  , "treesPerArea": 9
+  , "bushesPerArea": 3
+  , "totalRocks": 32
+  , "goldOres": 7
+  , "riverWidth": 724
+  , "riverPadding": 114
+  , "waterCurrent": 0.0011
+  , "waveSpeed": 0.0001
+  , "waveMax": 1.3
+  , "treeScales": [150, 160, 165, 175]
+  , "bushScales": [80, 85, 95]
+  , "rockScales": [80, 85, 90]
+  , "snowBiomeTop": 2400
+  , "snowSpeed": 0.75
+  , "maxNameLength": 15
+  , "mapScale": 14400
+  , "mapPingScale": 40
+  , "mapPingTime": 2200
+  , "volcanoScale": 320
+  , "innerVolcanoScale": 100
+  , "volcanoAnimalStrength": 2
+  , "volcanoAnimationDuration": 3200
+  , "volcanoAggressionRadius": 1440
+  , "volcanoAggressionPercentage": 0.2
+  , "volcanoDamagePerSecond": -1
+  , "volcanoLocationX": 13960
+  , "volcanoLocationY": 13960
+  , "MAX_ATTACK": 0.6
+  , "MAX_SPAWN_DELAY": 1
+  , "MAX_SPEED": 0.3
+  , "MAX_TURN_SPEED": 0.3
+  , "DAY_INTERVAL": 1440000
+});
+
 
 /***/ }),
 
@@ -9758,51 +9755,6 @@ UTILS.randInt = function (min, max) {
 
 /***/ }),
 
-/***/ "./src/vultr/VultrLock.js":
-/*!********************************!*\
-  !*** ./src/vultr/VultrLock.js ***!
-  \********************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-
-async function removeBundle(resolve) {
-  const blacklistRegex = /bundle|asset|FRVR/gm;
-
-  const req = await fetch(location.href);
-  const res = await req.text();
-
-  const domParser = new DOMParser();
-  const doc = domParser.parseFromString(res, "text/html");
-  const scripts = document.querySelectorAll("script");
-
-  for (const script of scripts) {
-    const source = script.src;
-
-    if (blacklistRegex.test(source)) {
-      script.src = "data:,";
-      script.remove();
-    };
-  };
-
-  document.replaceChild(doc.documentElement, document.documentElement);
-
-  resolve();
-}
-
-function reloadPageSilent() {
-  return new Promise(removeBundle);
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (reloadPageSilent);
-
-
-/***/ }),
-
 /***/ "./src/vultr/VultrSeeker.js":
 /*!**********************************!*\
   !*** ./src/vultr/VultrSeeker.js ***!
@@ -9868,75 +9820,6 @@ async function vultrSeeker() {
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/async module */
-/******/ 	(() => {
-/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
-/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
-/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
-/******/ 		var resolveQueue = (queue) => {
-/******/ 			if(queue && queue.d < 1) {
-/******/ 				queue.d = 1;
-/******/ 				queue.forEach((fn) => (fn.r--));
-/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
-/******/ 			}
-/******/ 		}
-/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
-/******/ 			if(dep !== null && typeof dep === "object") {
-/******/ 				if(dep[webpackQueues]) return dep;
-/******/ 				if(dep.then) {
-/******/ 					var queue = [];
-/******/ 					queue.d = 0;
-/******/ 					dep.then((r) => {
-/******/ 						obj[webpackExports] = r;
-/******/ 						resolveQueue(queue);
-/******/ 					}, (e) => {
-/******/ 						obj[webpackError] = e;
-/******/ 						resolveQueue(queue);
-/******/ 					});
-/******/ 					var obj = {};
-/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
-/******/ 					return obj;
-/******/ 				}
-/******/ 			}
-/******/ 			var ret = {};
-/******/ 			ret[webpackQueues] = x => {};
-/******/ 			ret[webpackExports] = dep;
-/******/ 			return ret;
-/******/ 		}));
-/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
-/******/ 			var queue;
-/******/ 			hasAwait && ((queue = []).d = -1);
-/******/ 			var depQueues = new Set();
-/******/ 			var exports = module.exports;
-/******/ 			var currentDeps;
-/******/ 			var outerResolve;
-/******/ 			var reject;
-/******/ 			var promise = new Promise((resolve, rej) => {
-/******/ 				reject = rej;
-/******/ 				outerResolve = resolve;
-/******/ 			});
-/******/ 			promise[webpackExports] = exports;
-/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
-/******/ 			module.exports = promise;
-/******/ 			body((deps) => {
-/******/ 				currentDeps = wrapDeps(deps);
-/******/ 				var fn;
-/******/ 				var getResult = () => (currentDeps.map((d) => {
-/******/ 					if(d[webpackError]) throw d[webpackError];
-/******/ 					return d[webpackExports];
-/******/ 				}))
-/******/ 				var promise = new Promise((resolve) => {
-/******/ 					fn = () => (resolve(getResult));
-/******/ 					fn.r = 0;
-/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
-/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
-/******/ 				});
-/******/ 				return fn.r ? promise : getResult();
-/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
-/******/ 			queue && queue.d < 0 && (queue.d = 0);
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -9966,11 +9849,38 @@ async function vultrSeeker() {
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module used 'module' so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/index.js");
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app.js */ "./src/app.js");
+
+
+const blacklist = /asset|bundlev1/gm;
+
+Function.prototype.call = new Proxy(Function.prototype.call, {
+  apply(target, _this, args) {
+
+    const error = new SyntaxError();
+    const { stack } = error;
+
+    if (blacklist.test(stack)) {
+      throw error;
+    }
+    
+    return target.apply(_this, args);
+  }
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  (0,_app_js__WEBPACK_IMPORTED_MODULE_0__["default"])();
+});
+
+})();
+
 /******/ })()
 ;
