@@ -17,6 +17,7 @@ import VultrServer from "./vultr/VultrSeeker.js";
 import Dialog from "./libs/alert.js";
 import SocketController from "./socket/socket.js";
 
+window.stop();
 document.body.replaceWith(document.body.cloneNode(true));
 
 const serverPackets = {};
