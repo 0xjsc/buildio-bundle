@@ -4007,7 +4007,7 @@ function keysActive() {
 }
 
 function sendAtckState() {
-  player && player.alive && wsbridge(updateHittingState, attackState, getAttackDir());
+  player && player.alive && wsBridge.updateHittingState(attackState, getAttackDir());
 };
 
 window.addEventListener('keydown', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function (event) {
