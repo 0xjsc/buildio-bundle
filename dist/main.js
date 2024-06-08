@@ -4148,16 +4148,14 @@ function gatherAnimation(sid, didHit, index) {
   storeEquip(window.tanker ? (players.filter(e => Math.hypot(e?.x - player.x, e?.y - player.y) < 180).length > 2 ? 59 : 15) : idleAcc, true);
 
   setTimeout(() => {
-    if (instakilling) return;
     storeEquip(hitHat);
     storeEquip(hitAcc, true);
     setTimeout(() => {
-      if (instakilling) return;
       if (!attackState) {
         storeEquip(window.tanker ? 6 : (idleHat == 53 ? 6 : idleHat));
         storeEquip(window.tanker ? 15 : idleAcc, true);
       }
-    }, average);
+    }, window.pingTime);
   }, speeds[waka] - window.pingTime);
 }
 
