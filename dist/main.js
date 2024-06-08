@@ -3070,7 +3070,7 @@ if (location.href.includes("moomoo")) {
       AIM: "D", 
       RESET_MOVE_DIR: "e", 
       FREEZE: "K", 
-      MAP_PING: "14", 
+      MAP_PING: "S", 
       MOVEMENT: "a", 
       CHANGE_WEAPON: "G",
       SPAWN: "M",
