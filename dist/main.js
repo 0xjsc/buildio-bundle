@@ -5296,6 +5296,8 @@ document.querySelector("#gameName").innerHTML = "AutoWASM";
 
 document.querySelector("body").insertAdjacentHTML("beforeend", `
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap');
+
 .menuCard, .menuText, .menuHeader {
   background: #222222 !important;
   color: #aaaaaa;
@@ -5363,6 +5365,10 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
 #wideAdCard, .adMenuCard, #promoImgHolder {
   display: none !important;
   visibility: hidden !important;
+}
+
+* {
+  font-family: 'Baloo 2';
 }
 
 </style>
