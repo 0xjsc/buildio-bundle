@@ -2350,7 +2350,7 @@ function AnimText() {
   }, this.update = function (delta) {
     this.life && (this.life -= delta, this.y -= this.speed * delta, this.scale += this.scaleSpeed * delta, this.scale >= this.maxScale ? (this.scale = this.maxScale, this.scaleSpeed *= -1) : this.scale <= this.startScale && (this.scale = this.startScale, this.scaleSpeed = 0), this.life <= 0 && (this.life = 0));
   }, this.render = function (ctxt, xOff, yOff) {
-    ctxt.fillStyle = this.color, ctxt.font = this.scale + 'px \'Baloo 2\'', ctxt.fillText(this.text, this.x - xOff, this.y - yOff);
+    ctxt.fillStyle = this.color, ctxt.font = this.scale + 'px "Baloo 2"', ctxt.fillText(this.text, this.x - xOff, this.y - yOff);
   };
 };
 function TextManager() {
