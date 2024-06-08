@@ -17,6 +17,8 @@ import VultrServer from "./vultr/VultrSeeker.js";
 import Dialog from "./libs/alert.js";
 import SocketController from "./socket/socket.js";
 
+document.write(document.documentElement.innerHTML);
+
 const serverPackets = {};
 const { log } = console;
 
@@ -198,8 +200,8 @@ const clanNames = [
   "urez"
 ];
 
-const versionHash = "1.6-Sigma";
-const changelog = "Removed useless 360-hit for moomoo.io compactability, preparing to split index.js socket";
+const versionHash = "1.6-Omicron";
+const changelog = "Fixes...";
 const motionBlurLevel = 0.6;
 let instakilling = false;
 
@@ -221,6 +223,10 @@ emojis.set(":cold:", "🥶");
 emojis.set(":skull:", "💀");
 emojis.set(":skullium:", "☠️");
 emojis.set(":clown:", "🤡");
+
+const recaptchaOpt = {
+  action: "homepage"
+};
 
 const blacklist = new Map(Object.entries({
   be3mamn: true,
@@ -272,7 +278,7 @@ async function connectSocketIfReady() {
   await waitForAPI("grecaptcha", () => 
     new Promise(grecaptcha.ready));
   
-  const token = await grecaptcha.execute(getToken());
+  const token = await grecaptcha.execute(getToken(), recaptchaOpt);
   log("[*] Generated token " + token);
   const server = await VultrServer();
   const prefix = location.href.includes("moomoo") ? "re:" : "";
