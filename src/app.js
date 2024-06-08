@@ -19,6 +19,7 @@ import SocketController from "./socket/socket.js";
 import BundleRemover from "./client/bundleRemover.js";
 
 const serverPackets = {};
+const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
 const { log } = console;
 
 let packets, serverSide;
@@ -974,13 +975,13 @@ function touchEnd(ev) {
 function getAttackDir() {
   return aimOverride ? aimOverride : (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2));
 }
-window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsingTouch(!1), window.setUsingTouch = setUsingTouch, gameCanvas.addEventListener('touchmove', UTILS.checkTrusted(function (ev) {
+window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsingTouch(!1), window.setUsingTouch = setUsingTouch, eventsListener.addEventListener('touchmove', UTILS.checkTrusted(function (ev) {
   ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
   for (var i = 0; i < ev.changedTouches.length; i++) {
     var t = ev.changedTouches[i];
     t.identifier == controllingTouch.id ? (controllingTouch.currentX = t.pageX, controllingTouch.currentY = t.pageY, sendMoveDir()) : t.identifier == attackingTouch.id && (attackingTouch.currentX = t.pageX, attackingTouch.currentY = t.pageY, attackState = 1);
   }
-}), !1), gameCanvas.addEventListener('touchstart', UTILS.checkTrusted(function (ev) {
+}), !1), eventsListener.addEventListener('touchstart', UTILS.checkTrusted(function (ev) {
   if (!inGame)
     return ev.preventDefault(), !1;
   ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
@@ -988,16 +989,16 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
     var t = ev.changedTouches[i];
     t.pageX < document.body.scrollWidth / 2 && -1 == controllingTouch.id ? (controllingTouch.id = t.identifier, controllingTouch.startX = controllingTouch.currentX = t.pageX, controllingTouch.startY = controllingTouch.currentY = t.pageY, sendMoveDir()) : t.pageX > document.body.scrollWidth / 2 && -1 == attackingTouch.id && (attackingTouch.id = t.identifier, attackingTouch.startX = attackingTouch.currentX = t.pageX, attackingTouch.startY = attackingTouch.currentY = t.pageY, player.buildIndex < 0 && (attackState = 1, sendAtckState()));
   }
-}), false), gameCanvas.addEventListener('touchend', UTILS.checkTrusted(touchEnd), !1), gameCanvas.addEventListener('touchcancel', UTILS.checkTrusted(touchEnd), !1), gameCanvas.addEventListener('touchleave', UTILS.checkTrusted(touchEnd), !1), gameCanvas.addEventListener('mousemove', function (e) {
+}), false), eventsListener.addEventListener('touchend', UTILS.checkTrusted(touchEnd), !1), eventsListener.addEventListener('touchcancel', UTILS.checkTrusted(touchEnd), !1), eventsListener.addEventListener('touchleave', UTILS.checkTrusted(touchEnd), !1), eventsListener.addEventListener('mousemove', function (e) {
   e.preventDefault(), e.stopPropagation(), setUsingTouch(!1), mouseX = e.clientX, mouseY = e.clientY;
-}, false), gameCanvas.addEventListener('mousedown', function (e) {
+}, false), eventsListener.addEventListener('mousedown', function (e) {
   aimOverride = false;
   setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
   touch = e.button == 0;
-}, false), gameCanvas.addEventListener('mouseup', function (e) {
+}, false), eventsListener.addEventListener('mouseup', function (e) {
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
 }, false);
-gameCanvas.addEventListener("wheel", function (e) {
+eventsListener.addEventListener("wheel", function (e) {
   const deltaY = maxScreenWidth / 20;
   const fixedDelta = e.deltaY > 0 ? deltaY : -deltaY;
   maxScreenWidth += fixedDelta;
