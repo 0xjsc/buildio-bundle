@@ -4595,2465 +4595,6 @@ if (typeof this !== 'undefined' && this.Sweetalert2){this.swal = this.sweetAlert
 
 /***/ }),
 
-/***/ "./src/app.js":
-/*!********************!*\
-  !*** ./src/app.js ***!
-  \********************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _libs_aoe32_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./libs/aoe32.js */ "./src/libs/aoe32.js");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./libs/io-client.js */ "./src/libs/io-client.js");
-/* harmony import */ var _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./libs/utils.js */ "./src/libs/utils.js");
-/* harmony import */ var _libs_animText_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./libs/animText.js */ "./src/libs/animText.js");
-/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./config.js */ "./src/config.js");
-/* harmony import */ var _js_data_gameObject_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./js/data/gameObject.js */ "./src/js/data/gameObject.js");
-/* harmony import */ var _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./js/data/items.js */ "./src/js/data/items.js");
-/* harmony import */ var _js_data_mapManager_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./js/data/mapManager.js */ "./src/js/data/mapManager.js");
-/* harmony import */ var _js_data_objectManager_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./js/data/objectManager.js */ "./src/js/data/objectManager.js");
-/* harmony import */ var _js_data_player_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./js/data/player.js */ "./src/js/data/player.js");
-/* harmony import */ var _js_data_store_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./js/data/store.js */ "./src/js/data/store.js");
-/* harmony import */ var _js_data_projectile_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./js/data/projectile.js */ "./src/js/data/projectile.js");
-/* harmony import */ var _js_data_projectileManager_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./js/data/projectileManager.js */ "./src/js/data/projectileManager.js");
-/* harmony import */ var _js_data_aiManager_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./js/data/aiManager.js */ "./src/js/data/aiManager.js");
-/* harmony import */ var _js_data_ai_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./js/data/ai.js */ "./src/js/data/ai.js");
-/* harmony import */ var _vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./vultr/VultrSeeker.js */ "./src/vultr/VultrSeeker.js");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const serverPackets = {};
-const { log } = console;
-
-let packets, serverSide;
-
-packets = {
-  PING: "pp",
-  REGISTER: "budv",
-  ACCEPT_CLAN_JOIN: "11",
-  SEND_CLAN_JOIN: "10",
-  CLAN_KICK: "12",
-  CLAN_CREATE: "8",
-  CLAN_LEAVE: "9",
-  STORE_EQUIP: "13c",
-  SEND_CHAT: "ch",
-  ATTACK: "c",
-  AIM: "2",
-  RESET_MOVE_DIR: "rmd",
-  FREEZE: "7",
-  MAP_PING: "14",
-  MOVEMENT: "33",
-  CHANGE_WEAPON: "5",
-  SPAWN: "sp",
-  UPGRADE: "6"
-};
-
-serverSide = {
-  INIT: "id",
-  DISCONNECT: "d",
-  SETUP_GAME: 1,
-  ADD_PLAYER: 2,
-  REMOVE_PLAYER: 4,
-  PLAYER_TICK: 33,
-  UPDATE_LEADERBOARD: 5,
-  GAME_OBJECT: 6,
-  LOAD_AI: "a",
-  ANIMAL_TICK: "aa",
-  HIT_START: 7,
-  OBJECT_WIGGLE: 8,
-  TURRET_SHOOT: "sp",
-  RESOURCES: 9,
-  HEALTH: "h",
-  KILL_PLAYER: 11,
-  KILL_OBJECT: 12,
-  KILL_OBJECTS: 13,
-  UPDATE_ITEM_COUNTS: 14,
-  UPDATE_AGE: 15,
-  UPDATE_UPGRADES: 16,
-  UPDATE_ITEMS: 17,
-  ADD_PROJECTILE: 18,
-  REMOVE_PROJECTILE: 19,
-  SERVER_SHUTDOWN: 20,
-  ADD_ALLIANCE: "ac",
-  DELETE_ALLIANCE: "ad",
-  ALLIANCE_PING: "an",
-  PLAYER_CLAN: "st",
-  ALLIANCE_PLAYERS: "sa",
-  UPDATE_STORE: "us",
-  CHAT: "ch",
-  MINIMAP_TICK: "mm",
-  MAP_PING: "p",
-  PING: "pp",
-  SHOW_TEXT: "t"
-};
-
-if (location.href.includes("moomoo")) {
-    packets = {
-      PING: "0", // ok
-      REGISTER: "budv", // ok
-      ACCEPT_CLAN_JOIN: "11",
-      SEND_CLAN_JOIN: "b", // ok
-      CLAN_KICK: "12",
-      CLAN_CREATE: "8",
-      CLAN_LEAVE: "9",
-      STORE_EQUIP: "c", // ok
-      SEND_CHAT: "6", // ok
-      ATTACK: "d", // ok
-      AIM: "D", // ok
-      RESET_MOVE_DIR: "e", // ok
-      FREEZE: "K", // ok
-      MAP_PING: "14", // ok
-      MOVEMENT: "a", // ok
-      CHANGE_WEAPON: "G", // ok
-      SPAWN: "M", // ok
-      UPGRADE: "H" // ok
-    };
-
-    serverSide = {
-      INIT: "A",
-      DISCONNECT: "B",
-      SETUP_GAME: "C",
-      ADD_PLAYER: "D",
-      REMOVE_PLAYER: "E",
-      PLAYER_TICK: "a",
-      UPDATE_LEADERBOARD: "G",
-      GAME_OBJECT: "H",
-      LOAD_AI: "I",
-      ANIMAL_TICK: "J",
-      HIT_START: "K",
-      OBJECT_WIGGLE: "L",
-      TURRET_SHOOT: "M",
-      RESOURCES: "N",
-      HEALTH: "O",
-      KILL_PLAYER: "P",
-      KILL_OBJECT: "Q",
-      KILL_OBJECTS: "R",
-      UPDATE_ITEM_COUNTS: "S",
-      UPDATE_AGE: "T",
-      UPDATE_UPGRADES: "U",
-      UPDATE_ITEMS: "V",
-      ADD_PROJECTILE: "X",
-      REMOVE_PROJECTILE: "Y",
-      SERVER_SHUTDOWN: "Z",
-      ADD_ALLIANCE: "g",
-      DELETE_ALLIANCE: 1,
-      ALLIANCE_PING: 2,
-      PLAYER_CLAN: 3,
-      ALLIANCE_PLAYERS: 4,
-      UPDATE_STORE: 5,
-      CHAT: 6,
-      MINIMAP_TICK: 7,
-      MAP_PING: 8,
-      PING: 9,
-      SHOW_TEXT: 0
-    };
-  }
-
-serverPackets[serverSide.INIT] = setInitData;
-serverPackets[serverSide.DISCONNECT] = disconnect;
-serverPackets[serverSide.SETUP_GAME] = setupGame;
-serverPackets[serverSide.ADD_PLAYER] = addPlayer;
-serverPackets[serverSide.REMOVE_PLAYER] = removePlayer;
-serverPackets[serverSide.PLAYER_TICK] = updatePlayers;
-serverPackets[serverSide.UPDATE_LEADERBOARD] = updateLeaderboard;
-serverPackets[serverSide.GAME_OBJECT] = loadGameObject;
-serverPackets[serverSide.LOAD_AI] = loadAI;
-serverPackets[serverSide.ANIMAL_TICK] = animateAI;
-serverPackets[serverSide.HIT_START] = gatherAnimation;
-serverPackets[serverSide.OBJECT_WIGGLE] = wiggleGameObject;
-serverPackets[serverSide.TURRET_SHOOT] = shootTurret;
-serverPackets[serverSide.RESOURCES] = updatePlayerValue;
-serverPackets[serverSide.HEALTH] = updateHealth;
-serverPackets[serverSide.KILL_PLAYER] = killPlayer;
-serverPackets[serverSide.KILL_OBJECT] = killObject;
-serverPackets[serverSide.KILL_OBJECTS] = killObjects;
-serverPackets[serverSide.UPDATE_ITEM_COUNTS] = updateItemCounts;
-serverPackets[serverSide.UPDATE_AGE] = updateAge;
-serverPackets[serverSide.UPDATE_UPGRADES] = updateUpgrades;
-serverPackets[serverSide.UPDATE_ITEMS] = updateItems;
-serverPackets[serverSide.ADD_PROJECTILE] = addProjectile;
-serverPackets[serverSide.REMOVE_PROJECTILE] = remProjectile;
-serverPackets[serverSide.SERVER_SHUTDOWN] = serverShutdownNotice;
-serverPackets[serverSide.ADD_ALLIANCE] = addAlliance;
-serverPackets[serverSide.DELETE_ALLIANCE] = deleteAlliance;
-serverPackets[serverSide.ALLIANCE_PING] = allianceNotification;
-serverPackets[serverSide.PLAYER_CLAN] = setPlayerTeam;
-serverPackets[serverSide.ALLIANCE_PLAYERS] = setAlliancePlayers;
-serverPackets[serverSide.UPDATE_STORE] = updateStoreItems;
-serverPackets[serverSide.CHAT] = receiveChat;
-serverPackets[serverSide.MINIMAP_TICK] = updateMinimap;
-serverPackets[serverSide.PING] = pingSocketResponse;
-serverPackets[serverSide.MAP_PING] = pingMap;
-serverPackets[serverSide.SHOW_TEXT] = showText;
-
-const textManager = new _libs_animText_js__WEBPACK_IMPORTED_MODULE_4__["default"].TextManager();
-
-const hit360 = 1.998715926535898e+272;
-let nearestGameObjects = [];
-
-const clanNames = [
-  "ez",
-  "eZ",
-  "EZ",
-  "EZZZ",
-  "ez?",
-  "L",
-  "L ez",
-  "urbad",
-  "urez"
-];
-
-const versionHash = "1.6-Theta";
-const changelog = "Added tanker mode";
-const motionBlurLevel = 0.6;
-let instakilling = false;
-
-let offsetCamX = 0;
-let offsetCamY = 0;
-let deltaHold = 10;
-let ownerSid = null;
-let autoclicker = false;
-
-const emojis = new Map();
-
-emojis.set(":smile:", "😀");
-emojis.set(":laugh:", "😂");
-emojis.set(":wink:", "😉");
-emojis.set(":moan:", "😫");
-emojis.set(":sob:", "😭");
-emojis.set(":hot:", "🥵");
-emojis.set(":cold:", "🥶");
-emojis.set(":skull:", "💀");
-emojis.set(":skullium:", "☠️");
-emojis.set(":clown:", "🤡");
-
-const blacklist = new Map(Object.entries({
-  be3mamn: true,
-  SaVeGe: true,
-  RaZoshi: true,
-  Travis: true,
-  missy: true
-}));
-
-window.loadedScript = true;
-
-var isProd = location.origin.includes("http://")
-var startedConnecting = false;
-
-if (localStorage.version !== versionHash) {
-  sweetalert2__WEBPACK_IMPORTED_MODULE_1__.fire({
-    position: "top-end",
-    icon: "success",
-    title: "AutoWASM has been updated to version " + versionHash + "!",
-    text: changelog,
-    showConfirmButton: false,
-    timer: 3000,
-    allowOutsideClick: false
-  });
-  localStorage.version = versionHash;
-}
-
-function getToken() {
-  return location.href.includes("mohmoh") ? "6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH" : "6LfahtgjAAAAAF8SkpjyeYMcxMdxIaQeh-VoPATP";
-}
-
-async function waitForAPI(prop, callback) {
-  return new Promise(async resolve => {
-    if (!window[prop]) {
-      const waitInt = setInterval(async () => {
-        if (!window[prop]) return;
-
-        clearInterval(waitInt);
-        resolve(
-          await callback()
-        );
-      }, 100);
-    }
-    else resolve(await callback());
-  });
-}
-
-async function connectSocketIfReady() {
-  if (startedConnecting) return;
-  startedConnecting = true;
-
-  await waitForAPI("grecaptcha", () => 
-    new Promise(grecaptcha.ready));
-  
-  const token = await grecaptcha.execute(getToken(), {
-    action: "homepage" 
-  });
-  log("[*] Generated token " + token);
-  const server = await (0,_vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_16__["default"])();
-  const prefix = location.href.includes("moomoo") ? "re:" : "";
-  
-  connectSocket(prefix + token, server);
-}
-
-const wsLogs = [];
-
-function connectSocket(token, server = location.host) {
-  var wsAddress = (isProd ? "ws" : "wss") + '://' + server + "/?token=" + token;
-  
-  window.socket = top.socket = _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"];
-  
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].connect(wsAddress, function (error) {
-    if (location.href.includes("mohmoh"))
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.REGISTER, 0);
-    
-    pingSocket(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-      if (error) {
-        disconnect(error);
-      } else {
-        enterGame();
-      }
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(enterGameButton), joinPartyButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-      setTimeout(function () {
-        var currentKey = serverBrowser.value,
-          key = prompt('party key', currentKey);
-        key && (window.onbeforeunload = void 0, window.location.href = '/?server=' + key);
-      }, 10);
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(joinPartyButton), settingsButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-      guideCard.classList.contains('showing') ? (guideCard.classList.remove('showing'), settingsButtonTitle.innerText = 'Settings') : (guideCard.classList.add('showing'), settingsButtonTitle.innerText = 'Close');
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(settingsButton), allianceButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-      resetMoveDir(), 'block' != allianceMenu.style.display ? showAllianceMenu() : allianceMenu.style.display = 'none';
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(allianceButton), storeButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-      'block' != storeMenu.style.display ? (storeMenu.style.display = 'block', allianceMenu.style.display = 'none', closeChat(), generateStoreList()) : storeMenu.style.display = 'none';
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(storeButton), chatButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-      toggleChat();
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(chatButton), mapDisplay.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-      sendMapPing();
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(mapDisplay), function () {
-      for (var i = 0; i < icons.length; ++i) {
-        var tmpSprite = new Image();
-        tmpSprite.onload = function () {
-          this.isLoaded = !0;
-        }, tmpSprite.src = '.././img/icons/' + icons[i] + '.png', iconSprites[icons[i]] = tmpSprite;
-      }
-    }(), loadingText.style.display = 'none', menuCardHolder.style.display = 'block', nameInput.value = getSavedVal('moo_name') || '', function () {
-      var savedNativeValue = getSavedVal('native_resolution') || true;
-      setUseNativeResolution(savedNativeValue ? 'true' == savedNativeValue : 'undefined' != typeof cordova), showPing = 'true' == getSavedVal('show_ping'), pingDisplay.hidden = !showPing, getSavedVal('moo_moosic'), updateSkinColorPicker(), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(actionBar);
-      for (var i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length + _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list.length; ++i)
-        ! function (i) {
-          _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-            id: 'actionBarItem' + i,
-            class: 'actionBarItem',
-            style: 'display:none',
-            onmouseout: function () {
-              showItemInfo();
-            },
-            parent: actionBar
-          });
-        }(i);
-      for (i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list.length + _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length; ++i)
-        ! function (i) {
-          var tmpCanvas = document.createElement('canvas');
-          tmpCanvas.width = tmpCanvas.height = 66;
-          var tmpContext = tmpCanvas.getContext('2d');
-          if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.imageSmoothingEnabled = !1, tmpContext.webkitImageSmoothingEnabled = !1, tmpContext.mozImageSmoothingEnabled = !1, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i]) {
-            tmpContext.rotate(Math.PI / 4 + Math.PI);
-            var tmpSprite = new Image();
-            toolSprites[_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].src] = tmpSprite, tmpSprite.onload = function () {
-                this.isLoaded = !0;
-                var tmpPad = 1 / (this.height / this.width),
-                  tmpMlt = _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].iPad || 1;
-                tmpContext.drawImage(this, -tmpCanvas.width * tmpMlt * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPad * tmpPad / 2, -tmpCanvas.height * tmpMlt * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPad / 2, tmpCanvas.width * tmpMlt * tmpPad * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPad, tmpCanvas.height * tmpMlt * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPad), tmpContext.fillStyle = 'rgba(0, 0, 70, 0.1)', tmpContext.globalCompositeOperation = 'source-atop', tmpContext.fillRect(-tmpCanvas.width / 2, -tmpCanvas.height / 2, tmpCanvas.width, tmpCanvas.height), document.getElementById('actionBarItem' + i)
-                  .style.backgroundImage = 'url(' + tmpCanvas.toDataURL() + ')';
-              }, tmpSprite.src = '.././img/weapons/' + _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].src + '.png', (tmpUnit = document.getElementById('actionBarItem' + i))
-              .onmouseover = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-                showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i], !0);
-              }), tmpUnit.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-                selectToBuild(i, !0);
-              }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(tmpUnit);
-          } else {
-            tmpSprite = getItemSprite(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length], !0);
-            var tmpUnit, tmpScale = Math.min(tmpCanvas.width - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPadding, tmpSprite.width);
-            tmpContext.globalAlpha = 1, tmpContext.drawImage(tmpSprite, -tmpScale / 2, -tmpScale / 2, tmpScale, tmpScale), tmpContext.fillStyle = 'rgba(0, 0, 70, 0.1)', tmpContext.globalCompositeOperation = 'source-atop', tmpContext.fillRect(-tmpScale / 2, -tmpScale / 2, tmpScale, tmpScale), document.getElementById('actionBarItem' + i)
-              .style.backgroundImage = 'url(' + tmpCanvas.toDataURL() + ')', (tmpUnit = document.getElementById('actionBarItem' + i))
-              .onmouseover = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-                showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length]);
-              }), tmpUnit.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-                selectToBuild(i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length);
-              }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(tmpUnit);
-          }
-        }(i);
-      nameInput.ontouchstart = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (e) {
-        e.preventDefault();
-        var newValue = prompt('enter name', e.currentTarget.value);
-        newValue && (e.currentTarget.value = newValue.slice(0, 15));
-      }), nativeResolutionCheckbox.checked = useNativeResolution, nativeResolutionCheckbox.onchange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (e) {
-        setUseNativeResolution(e.target.checked);
-      }), showPingCheckbox.checked = showPing, showPingCheckbox.onchange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (e) {
-        showPing = showPingCheckbox.checked, pingDisplay.hidden = !showPing, saveVal('show_ping', showPing ? 'true' : 'false');
-      });
-    }());
-  }, serverPackets), setupServerStatus(), setTimeout(() => updateServerList(), 3000);
-}
-var canStore = 0,
-  mathPI = Math.PI,
-  mathPI2 = 2 * mathPI;
-
-function saveVal(name, val) {
-  canStore && localStorage.setItem(name, val);
-}
-
-function getSavedVal(name) {
-  return canStore ? localStorage.getItem(name) : null;
-}
-Math.lerpAngle = function (value1, value2, amount) {
-  Math.abs(value2 - value1) > mathPI && (value1 > value2 ? value2 += mathPI2 : value1 += mathPI2);
-  var value = value2 + (value1 - value2) * amount;
-  return value >= 0 && value <= mathPI2 ? value : value % mathPI2;
-}, CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
-  return w < 2 * r && (r = w / 2), h < 2 * r && (r = h / 2), r < 0 && (r = 0), this.beginPath(), this.moveTo(x + r, y), this.arcTo(x + w, y, x + w, y + h, r), this.arcTo(x + w, y + h, x, y + h, r), this.arcTo(x, y + h, x, y, r), this.arcTo(x, y, x + w, y, r), this.closePath(), this;
-}, 'undefined' != typeof Storage && (canStore = !0); //,// getSavedVal("consent") || (consentBlock.style.display="block"),window.checkTerms=function(e){e?(consentBlock.style.display="none",saveVal("consent",1)):$("#consentShake").effect("shake")};
-var useNativeResolution, showPing, delta, now, lastSent, attackState, player, playerSID, tmpObj, camX = 100, camY = 100, tmpDir, screenWidth, screenHeight, moofoll = getSavedVal('moofoll'),
-  pixelDensity = 1,
-  lastUpdate = Date.now(),
-  ais = [],
-  players = [],
-  alliances = [],
-  gameObjects = [],
-  projectiles = [],
-  projectileManager = new _js_data_projectileManager_js__WEBPACK_IMPORTED_MODULE_13__["default"](_js_data_projectile_js__WEBPACK_IMPORTED_MODULE_12__["default"], projectiles, players, ais, objectManager, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"]),
-  aiManager = new _js_data_aiManager_js__WEBPACK_IMPORTED_MODULE_14__["default"](ais, _js_data_ai_js__WEBPACK_IMPORTED_MODULE_15__["default"], players, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"], null, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"]),
-  waterMult = 1,
-  waterPlus = 0,
-  mouseX = 0,
-  mouseY = 0,
-  controllingTouch = {
-    id: -1,
-    startX: 0,
-    startY: 0,
-    currentX: 0,
-    currentY: 0
-  },
-  attackingTouch = {
-    id: -1,
-    startX: 0,
-    startY: 0,
-    currentX: 0,
-    currentY: 0
-  },
-  skinColor = 0,
-  maxScreenWidth = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].maxScreenWidth,
-  maxScreenHeight = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].maxScreenHeight,
-  gridDelta = maxScreenHeight / 18,
-  inGame = !1,
-  mainMenu = (document.getElementById('ad-container'), document.getElementById('mainMenu')),
-  enterGameButton = document.getElementById('enterGame'),
-  promoImageButton = document.getElementById('promoImg'),
-  partyButton = document.getElementById('partyButton'),
-  joinPartyButton = document.getElementById('joinPartyButton'),
-  settingsButton = document.getElementById('settingsButton'),
-  settingsButtonTitle = settingsButton.getElementsByTagName('span')[0],
-  allianceButton = document.getElementById('allianceButton'),
-  storeButton = document.getElementById('storeButton'),
-  chatButton = document.getElementById('chatButton'),
-  gameCanvas = document.getElementById('gameCanvas'),
-  mainContext = gameCanvas.getContext('2d'),
-  serverBrowser = document.getElementById('serverBrowser'),
-  nativeResolutionCheckbox = document.getElementById('nativeResolution'),
-  showPingCheckbox = document.getElementById('showPing'),
-  pingDisplay = (document.getElementById('playMusic'), document.getElementById('pingDisplay')),
-  shutdownDisplay = document.getElementById('shutdownDisplay'),
-  menuCardHolder = document.getElementById('menuCardHolder'),
-  guideCard = document.getElementById('guideCard'),
-  loadingText = document.getElementById('loadingText'),
-  gameUI = document.getElementById('gameUI'),
-  actionBar = document.getElementById('actionBar'),
-  scoreDisplay = document.getElementById('scoreDisplay'),
-  foodDisplay = document.getElementById('foodDisplay'),
-  woodDisplay = document.getElementById('woodDisplay'),
-  stoneDisplay = document.getElementById('stoneDisplay'),
-  killCounter = document.getElementById('killCounter'),
-  leaderboardData = document.getElementById('leaderboardData'),
-  nameInput = document.getElementById('nameInput'),
-  itemInfoHolder = document.getElementById('itemInfoHolder'),
-  ageText = document.getElementById('ageText'),
-  ageBarBody = document.getElementById('ageBarBody'),
-  upgradeHolder = document.getElementById('upgradeHolder'),
-  upgradeCounter = document.getElementById('upgradeCounter'),
-  allianceMenu = document.getElementById('allianceMenu'),
-  allianceHolder = document.getElementById('allianceHolder'),
-  allianceManager = document.getElementById('allianceManager'),
-  mapDisplay = document.getElementById('mapDisplay'),
-  diedText = document.getElementById('diedText'),
-  skinColorHolder = document.getElementById('skinColorHolder'),
-  mapContext = mapDisplay.getContext('2d');
-mapDisplay.width = 300, mapDisplay.height = 300;
-var storeMenu = document.getElementById('storeMenu'),
-  storeHolder = document.getElementById('storeHolder'),
-  noticationDisplay = document.getElementById('noticationDisplay'),
-  hats = _js_data_store_js__WEBPACK_IMPORTED_MODULE_11__["default"].hats,
-  accessories = _js_data_store_js__WEBPACK_IMPORTED_MODULE_11__["default"].accessories,
-  objectManager = new _js_data_objectManager_js__WEBPACK_IMPORTED_MODULE_9__["default"](_js_data_gameObject_js__WEBPACK_IMPORTED_MODULE_6__["default"], gameObjects, _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"]),
-  outlineColor = '#525252',
-  darkOutlineColor = '#3d3f42';
-
-function setInitData(data) {
-  alliances = data.teams;
-}
-
-var inWindow = !0,
-  didLoad = !1,
-  captchaReady = !1;
-
-async function disconnect(reason) {
-  const req = await fetch("https://api.ipify.org/");
-  const ip = await req.text();
-  
-  sweetalert2__WEBPACK_IMPORTED_MODULE_1__.fire({
-    icon: "error",
-    title: "WebSocket closed",
-    html: `Probably flower or someone other crashed the server. <br>
-    IP Address: ${ip} <br>
-    Reason: ${reason} <br>
-    Recaptcha token: ${localStorage._grecaptcha} <br> <br>
-    Contact 0xffabc at mohmoh's server if you have more questions`,
-    showConfirmButton: true,
-  });
-}
-
-function showLoadingText(text) {
-  mainMenu.style.display = 'block', gameUI.style.display = 'none', menuCardHolder.style.display = 'none', diedText.style.display = 'none', loadingText.style.display = 'block', loadingText.innerHTML = text + '<a href=\'javascript:window.location.href=window.location.href\' class=\'ytLink\'>reload</a>';
-}
-window.onblur = function () {
-  inWindow = !1;
-}, window.onfocus = function () {
-  inWindow = !0, player && player.alive && resetMoveDir();
-}, gameCanvas.oncontextmenu = function () {
-  return !1;
-};
-
-window.captchaCallback = () => connectSocketIfReady();
-didLoad = true;
-
-function setupServerStatus() {
-  var altServerText, altServerURL, tmpHTML = '',
-    overallTotal = 0;
-  tmpHTML += '<option disabled>All Servers - 100 players</option>', serverBrowser.innerHTML = tmpHTML, 'mohmoh.eu' == location.hostname ? (altServerText = 'Back to MohMoh', altServerURL = '//mohmoh.eu/') : (altServerText = 'Try the sandbox', altServerURL = '//mohmoh.eu/'), document.getElementById('altServer')
-    .innerHTML = '<a href=\'' + altServerURL + '\'>' + altServerText + '<i class=\'material-icons\' style=\'font-size:10px;vertical-align:middle\'>arrow_forward_ios</i></a>';
-}
-
-function updateServerList() { }
-
-function showItemInfo(item, isWeapon, isStoreItem) {
-  if (player && item)
-    if (_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(itemInfoHolder), itemInfoHolder.classList.add('visible'), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-        id: 'itemInfoName',
-        text: _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].capitalizeFirst(item.name),
-        parent: itemInfoHolder
-      }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-        id: 'itemInfoDesc',
-        text: item.desc,
-        parent: itemInfoHolder
-      }), isStoreItem);
-    else if (isWeapon)
-    _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-      class: 'itemInfoReq',
-      text: item.type ? 'secondary' : 'primary',
-      parent: itemInfoHolder
-    });
-  else {
-    for (var i = 0; i < item.req.length; i += 2)
-      _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-        class: 'itemInfoReq',
-        html: item.req[i] + '<span class=\'itemInfoReqVal\'> x' + item.req[i + 1] + '</span>',
-        parent: itemInfoHolder
-      });
-    item.group.limit && _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-      class: 'itemInfoLmt',
-      text: (player.itemCounts[item.group.id] || 0) + '/' + item.group.limit,
-      parent: itemInfoHolder
-    });
-  } else
-    itemInfoHolder.classList.remove('visible');
-}
-
-var lastDeath, minimapData, mapMarker, allianceNotifications = [],
-  alliancePlayers = [];
-
-function allianceNotification(sid, name) {
-  allianceNotifications.push({
-    sid: sid,
-    name: name
-  }), updateNotifications();
-}
-
-function updateNotifications() {
-  if (allianceNotifications[0]) {
-    var tmpN = allianceNotifications[0];
-    _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(noticationDisplay), noticationDisplay.style.display = 'block', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-      class: 'notificationText',
-      text: tmpN.name,
-      parent: noticationDisplay
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-      class: 'notifButton',
-      html: '<i class=\'material-icons\' style=\'font-size:28px;color:#cc5151;\'>&#xE14C;</i>',
-      parent: noticationDisplay,
-      onclick: function () {
-        aJoinReq(0);
-      },
-      hookTouch: !0
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-      class: 'notifButton',
-      html: '<i class=\'material-icons\' style=\'font-size:28px;color:#8ecc51;\'>&#xE876;</i>',
-      parent: noticationDisplay,
-      onclick: function () {
-        aJoinReq(1);
-      },
-      hookTouch: !0
-    });
-  } else
-    noticationDisplay.style.display = 'none';
-}
-
-function addAlliance(data) {
-  alliances.push(data), 'block' == allianceMenu.style.display && showAllianceMenu();
-}
-
-function setPlayerTeam(team, isOwner) {
-  player && (player.team = team, player.isOwner = isOwner, 'block' == allianceMenu.style.display && showAllianceMenu());
-}
-
-function setAlliancePlayers(data) {
-  alliancePlayers = data, 'block' == allianceMenu.style.display && showAllianceMenu();
-}
-
-function deleteAlliance(sid) {
-  for (var i = alliances.length - 1; i >= 0; i--)
-    alliances[i].sid == sid && alliances.splice(i, 1);
-  'block' == allianceMenu.style.display && showAllianceMenu();
-}
-
-function showAllianceMenu() {
-  if (player && player.alive) {
-    if (closeChat(), storeMenu.style.display = 'none', allianceMenu.style.display = 'block', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(allianceHolder), player.team)
-      for (var i = 0; i < alliancePlayers.length; i += 2)
-        ! function (i) {
-          var tmp = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-            class: 'allianceItem',
-            style: 'color:' + (alliancePlayers[i] == player.sid ? '#fff' : 'rgba(255,255,255,0.6)'),
-            text: alliancePlayers[i + 1],
-            parent: allianceHolder
-          });
-          player.isOwner && alliancePlayers[i] != player.sid && _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-            class: 'joinAlBtn',
-            text: 'Kick',
-            onclick: function () {
-              kickFromClan(alliancePlayers[i]);
-            },
-            hookTouch: !0,
-            parent: tmp
-          });
-        }(i);
-    else if (alliances.length)
-      for (i = 0; i < alliances.length; ++i)
-        ! function (i) {
-          var tmp = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-            class: 'allianceItem',
-            style: 'color:' + (alliances[i].sid == player.team ? '#fff' : 'rgba(255,255,255,0.6)'),
-            text: alliances[i].sid,
-            parent: allianceHolder
-          });
-          _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-            class: 'joinAlBtn',
-            text: 'Join',
-            onclick: function () {
-              sendJoin(i);
-            },
-            hookTouch: !0,
-            parent: tmp
-          });
-        }(i);
-    else
-      _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-        class: 'allianceItem',
-        text: 'No Tribes Yet',
-        parent: allianceHolder
-      });
-    _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(allianceManager), player.team ? _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-      class: 'allianceButtonM',
-      style: 'width: 360px',
-      text: player.isOwner ? 'Delete Tribe' : 'Leave Tribe',
-      onclick: function () {
-        leaveAlliance();
-      },
-      hookTouch: !0,
-      parent: allianceManager
-    }) : (_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-      tag: 'input',
-      type: 'text',
-      id: 'allianceInput',
-      maxLength: 7,
-      placeholder: 'unique name',
-      ontouchstart: function (ev) {
-        ev.preventDefault();
-        var newValue = prompt('unique name', ev.currentTarget.value);
-        ev.currentTarget.value = newValue.slice(0, 7);
-      },
-      parent: allianceManager
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-      tag: 'div',
-      class: 'allianceButtonM',
-      style: 'width: 140px;',
-      text: 'Create',
-      onclick: function () {
-        createAlliance();
-      },
-      hookTouch: !0,
-      parent: allianceManager
-    }));
-  }
-}
-
-function aJoinReq(join) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ACCEPT_CLAN_JOIN, allianceNotifications[0].sid, join), allianceNotifications.splice(0, 1), updateNotifications();
-}
-
-function kickFromClan(sid) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CLAN_KICK, sid);
-}
-
-function sendJoin(index) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CLAN_JOIN, alliances[index].sid);
-}
-
-function createAlliance() {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CLAN_CREATE, "⁣" + document.getElementById('allianceInput')
-    .value + "⁣");
-}
-
-let waka = 0; // sorry for bad variable name
-
-function leaveAlliance() {
-  allianceNotifications = [], updateNotifications(), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CLAN_LEAVE);
-}
-var tmpPing, mapPings = [];
-
-function pingMap(x, y) {
-  for (var i = 0; i < mapPings.length; ++i)
-    if (!mapPings[i].active) {
-      tmpPing = mapPings[i];
-      break;
-    }
-  tmpPing || (tmpPing = new function () {
-    this.init = function (x, y) {
-      this.scale = 0, this.x = x, this.y = y, this.active = !0;
-    }, this.update = function (ctxt, delta) {
-      this.active && (this.scale += 0.05 * delta, this.scale >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapPingScale ? this.active = !1 : (ctxt.globalAlpha = 1 - Math.max(0, this.scale / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapPingScale), ctxt.beginPath(), ctxt.arc(this.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, this.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, this.scale, 0, 2 * Math.PI), ctxt.stroke()));
-    };
-  }(), mapPings.push(tmpPing)), tmpPing.init(x, y);
-}
-
-function updateMinimap(data) {
-  minimapData = data;
-}
-var currentStoreIndex = 0;
-
-function updateStoreItems(type, id, index) {
-  index ? type ? player.tailIndex = id : player.tails[id] = 1 : type ? player.skinIndex = id : player.skins[id] = 1, 'block' == storeMenu.style.display && generateStoreList();
-}
-
-function generateStoreList() {
-  if (player) {
-    _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(storeHolder);
-    for (var index = currentStoreIndex, tmpArray = index ? accessories : hats, i = 0; i < tmpArray.length; ++i)
-      tmpArray[i].dontSell || function (i) {
-        var tmp = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-          id: 'storeDisplay' + i,
-          class: 'storeItem',
-          onmouseout: function () {
-            showItemInfo();
-          },
-          onmouseover: function () {
-            showItemInfo(tmpArray[i], !1, !0);
-          },
-          parent: storeHolder
-        });
-        _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(tmp, !0), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-          tag: 'img',
-          class: 'hatPreview',
-          src: '../img/' + (index ? 'accessories/access_' : 'hats/hat_') + tmpArray[i].id + (tmpArray[i].topSprite ? '_p' : '') + '.png',
-          parent: tmp
-        }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-          tag: 'span',
-          text: tmpArray[i].name,
-          parent: tmp
-        }), (index ? player.tails[tmpArray[i].id] : player.skins[tmpArray[i].id]) ? (index ? player.tailIndex : player.skinIndex) == tmpArray[i].id ? _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-          class: 'joinAlBtn',
-          style: 'margin-top: 5px',
-          text: 'Unequip',
-          onclick: function () {
-            storeEquip(0, index);
-          },
-          hookTouch: !0,
-          parent: tmp
-        }) : _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-          class: 'joinAlBtn',
-          style: 'margin-top: 5px',
-          text: 'Equip',
-          onclick: function () {
-            storeEquip(tmpArray[i].id, index);
-          },
-          hookTouch: !0,
-          parent: tmp
-        }) : (_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-          class: 'joinAlBtn',
-          style: 'margin-top: 5px',
-          text: 'Buy',
-          onclick: function () {
-            storeBuy(tmpArray[i].id, index);
-          },
-          hookTouch: !0,
-          parent: tmp
-        }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-          tag: 'span',
-          class: 'itemPrice',
-          text: tmpArray[i].price,
-          parent: tmp
-        }));
-      }(i);
-  }
-}
-
-function storeEquip(id, index) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.STORE_EQUIP, 0, id, index);
-}
-
-function storeBuy(id, index) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.STORE_EQUIP, 1, id, index);
-}
-
-function hideAllWindows() {
-  storeMenu.style.display = 'none', allianceMenu.style.display = 'none', closeChat();
-}
-
-function updateItems(data, wpn) {
-  data && (wpn ? player.weapons = data : player.items = data);
-  for (var i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list.length; ++i) {
-    var tmpI = _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length + i;
-    document.getElementById('actionBarItem' + tmpI)
-      .style.display = player.items.indexOf(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i].id) >= 0 ? 'inline-block' : 'none';
-  }
-  for (i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length; ++i)
-    document.getElementById('actionBarItem' + i)
-    .style.display = player.weapons[_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].type] == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].id ? 'inline-block' : 'none';
-}
-
-function setUseNativeResolution(useNative) {
-  useNativeResolution = useNative, pixelDensity = useNative && window.devicePixelRatio || 1, nativeResolutionCheckbox.checked = useNative, saveVal('native_resolution', useNative.toString()), resize();
-}
-
-function updateSkinColorPicker() {
-  for (var tmpHTML = '', i = 0; i < _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].skinColors.length; ++i)
-    tmpHTML += i == skinColor ? '<div class=\'skinColorItem activeSkin\' style=\'background-color:' + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].skinColors[i] + '\' onclick=\'selectSkinColor(' + i + ')\'></div>' : '<div class=\'skinColorItem\' style=\'background-color:' + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].skinColors[i] + '\' onclick=\'selectSkinColor(' + i + ')\'></div>';
-  skinColorHolder.innerHTML = tmpHTML;
-}
-var chatBox = document.getElementById('chatBox'),
-  chatHolder = document.getElementById('chatHolder');
-
-function toggleChat() {
-  usingTouch ? setTimeout(function () {
-    var chatMessage = prompt('chat message');
-    chatMessage && sendChat(chatMessage);
-  }, 1) : 'block' == chatHolder.style.display ? (chatBox.value && sendChat(chatBox.value), closeChat()) : (storeMenu.style.display = 'none', allianceMenu.style.display = 'none', chatHolder.style.display = 'block', chatBox.focus(), resetMoveDir()), chatBox.value = '';
-}
-
-function sendChat(message) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, message.slice(0, 30));
-}
-
-function closeChat() {
-  chatBox.value = '', chatHolder.style.display = 'none';
-}
-var usingTouch, lastDir, profanityList = [
-  'cunt',
-  'whore',
-  'fuck',
-  'shit',
-  'faggot',
-  'nigger',
-  'nigga',
-  'dick',
-  'vagina',
-  'minge',
-  'cock',
-  'rape',
-  'cum',
-  'sex',
-  'tits',
-  'penis',
-  'clit',
-  'pussy',
-  'meatcurtain',
-  'jizz',
-  'prune',
-  'douche',
-  'wanker',
-  'damn',
-  'bitch',
-  'dick',
-  'fag',
-  'bastard'
-];
-
-const syncChats = new Map(Object.entries({
-  "DROP DEAD NO TRACE": "DROP DEAD NO TRACE",
-  "!sync": "!op"
-  }));
-
-function receiveChat(sid, message) {
-  var tmpPlayer = findPlayerBySID(sid);
-
-  for (const [key, value] of emojis) {
-    message = message.replaceAll(key, value);
-  }
-
-  if (/what\ mod/g.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 530 && player.sid != tmpPlayer.sid) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "AutoWASM By 0xffabc.");
-  } else if (message.startsWith("!connect") && player.sid == tmpPlayer.sid) {
-    const playerName = message.split("!connect ")[1];
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CLAN_CREATE, clanNames[Math.floor(clanNames.length * Math.random())]);
-    ownerSid = players.find(e => e && e?.name == playerName)?.sid;
-    if (ownerSid) {
-      setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "[*] Successfully connected to " + playerName + "!"), 1000);
-    } else setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "[*] Connection failed!"), 1000);
-  } else if (message.startsWith("!disconnect") && (player.sid == tmpPlayer.sid || tmpPlayer.sid == ownerSid)) {
-    ownerSid = player.sid;
-    setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "[*] Successfully disconnected"), 1000);
-  } else if (tmpPlayer.sid == ownerSid || tmpPlayer.sid == player.sid) {
-    switch (message) {
-      case "!follow":
-        setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, `[*] ${window.follow ? "Enabling" : "Disabling"} follow module!`), 1000);
-        window.follow = !window.follow;
-        break;
-      case "!bowspam":
-        setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, `[*] ${window.bowspam ? "Enabling" : "Disabling"} bowspam module!`), 1000);
-        window.bowspam = !window.bowspam;
-        break;
-    }
-  }
-
-  if (syncChats.has(message) && tmpPlayer && sid != player.sid) {
-    if (tmpPlayer.weaponIndex == tmpPlayer.weapons[1]) reverseInsta();
-    else normalInsta();
-  } else if (syncChats.has(message) && sid == player.sid) return;
-
-  if (message == "!Synchronize") {
-    return bowSync();
-  }
-
-  tmpPlayer && (tmpPlayer.chatMessage = function (text) {
-    for (var tmpString, i = 0; i < profanityList.length; ++i)
-      if (text.indexOf(profanityList[i]) > -1) {
-        tmpString = '';
-        for (var y = 0; y < profanityList[i].length; ++y)
-          tmpString += tmpString.length ? 'o' : 'M';
-        var re = new RegExp(profanityList[i], 'g');
-        text = text.replace(re, tmpString);
-      }
-    return text;
-  }(message), tmpPlayer.chatCountdown = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].chatCountdown);
-}
-
-function resize() {
-  gridDelta = maxScreenHeight / 18;
-  screenWidth = window.innerWidth, screenHeight = window.innerHeight;
-  var scaleFillNative = Math.max(screenWidth / maxScreenWidth, screenHeight / maxScreenHeight) * pixelDensity;
-  gameCanvas.width = screenWidth * pixelDensity, gameCanvas.height = screenHeight * pixelDensity, gameCanvas.style.width = screenWidth + 'px', gameCanvas.style.height = screenHeight + 'px', mainContext.setTransform(scaleFillNative, 0, 0, scaleFillNative, (screenWidth * pixelDensity - maxScreenWidth * scaleFillNative) / 2, (screenHeight * pixelDensity - maxScreenHeight * scaleFillNative) / 2);
-}
-
-function setUsingTouch(using) {
-  (usingTouch = using) ? guideCard.classList.add('touch'): guideCard.classList.remove('touch');
-}
-
-function touchEnd(ev) {
-  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
-  for (var i = 0; i < ev.changedTouches.length; i++) {
-    var t = ev.changedTouches[i];
-    t.identifier == controllingTouch.id ? (controllingTouch.id = -1, sendMoveDir()) : t.identifier == attackingTouch.id && (attackingTouch.id = -1, player.buildIndex >= 0 && (attackState = 1, sendAtckState()), attackState = 0, sendAtckState());
-  }
-}
-
-function getAttackDir() {
-  return aimOverride ? aimOverride : (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2));
-}
-window.addEventListener('resize', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(resize)), resize(), setUsingTouch(!1), window.setUsingTouch = setUsingTouch, gameCanvas.addEventListener('touchmove', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (ev) {
-  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
-  for (var i = 0; i < ev.changedTouches.length; i++) {
-    var t = ev.changedTouches[i];
-    t.identifier == controllingTouch.id ? (controllingTouch.currentX = t.pageX, controllingTouch.currentY = t.pageY, sendMoveDir()) : t.identifier == attackingTouch.id && (attackingTouch.currentX = t.pageX, attackingTouch.currentY = t.pageY, attackState = 1);
-  }
-}), !1), gameCanvas.addEventListener('touchstart', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (ev) {
-  if (!inGame)
-    return ev.preventDefault(), !1;
-  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
-  for (var i = 0; i < ev.changedTouches.length; i++) {
-    var t = ev.changedTouches[i];
-    t.pageX < document.body.scrollWidth / 2 && -1 == controllingTouch.id ? (controllingTouch.id = t.identifier, controllingTouch.startX = controllingTouch.currentX = t.pageX, controllingTouch.startY = controllingTouch.currentY = t.pageY, sendMoveDir()) : t.pageX > document.body.scrollWidth / 2 && -1 == attackingTouch.id && (attackingTouch.id = t.identifier, attackingTouch.startX = attackingTouch.currentX = t.pageX, attackingTouch.startY = attackingTouch.currentY = t.pageY, player.buildIndex < 0 && (attackState = 1, sendAtckState()));
-  }
-}), false), gameCanvas.addEventListener('touchend', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(touchEnd), !1), gameCanvas.addEventListener('touchcancel', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(touchEnd), !1), gameCanvas.addEventListener('touchleave', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(touchEnd), !1), gameCanvas.addEventListener('mousemove', function (e) {
-  e.preventDefault(), e.stopPropagation(), setUsingTouch(!1), mouseX = e.clientX, mouseY = e.clientY;
-}, false), gameCanvas.addEventListener('mousedown', function (e) {
-  aimOverride = false;
-  setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
-  touch = e.button == 0;
-}, false), gameCanvas.addEventListener('mouseup', function (e) {
-  setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
-}, false);
-gameCanvas.addEventListener("wheel", function (e) {
-  const deltaY = maxScreenWidth / 20;
-  const fixedDelta = e.deltaY > 0 ? deltaY : -deltaY;
-  maxScreenWidth += fixedDelta;
-  maxScreenHeight += fixedDelta;
-  
-  resize();
-}, false);
-  let touch = 0;
-var keys = {},
-  moveKeys = {
-    KeyW: [0, -1],
-    KeyS: [0, 1],
-    KeyA: [-1, 0],
-    KeyD: [1, 0]
-  };
-
-window.keyEvents = {};
-
-function resetMoveDir() {
-  keys = {}, _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.RESET_MOVE_DIR);
-}
-
-function keysActive() {
-  return 'block' != allianceMenu.style.display && 'block' != chatHolder.style.display;
-}
-
-function sendAtckState() {
-  player && player.alive && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, attackState, null);
-}
-window.addEventListener('keydown', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (event) {
-  var keyNum = event.which || event.keyCode || 0;
-  const keyCode = event.code;
-  if (document.activeElement.tagName !== "INPUT") {
-    window.keyEvents[keyCode] = true;
-    window.keyEvents["Switch" + keyCode] = !window.keyEvents["Switch" + keyCode];
-  }
-  "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.FREEZE, 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.FREEZE, 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
-})), window.addEventListener('keyup', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (event) {
-  if (player && player.alive) {
-    var keyNum = event.which || event.keyCode || 0;
-    const keyCode = event.code;
-    "Enter" == keyCode ? toggleChat() : keysActive() && keys[keyCode] && (keys[keyCode] = 0, moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 0, sendAtckState()));
-    window.keyEvents[keyCode] = false;
-  }
-}));
-var lastMoveDir = void 0;
-
-function sendMoveDir() {
-  var newMoveDir = function () {
-    var dx = 0,
-      dy = 0;
-    if (-1 != controllingTouch.id)
-      dx += controllingTouch.currentX - controllingTouch.startX, dy += controllingTouch.currentY - controllingTouch.startY;
-    else
-      for (var key in moveKeys) {
-        var tmpDir = moveKeys[key];
-        dx += !!keys[key] * tmpDir[0], dy += !!keys[key] * tmpDir[1];
-      }
-    return 0 == dx && 0 == dy ? void 0 : _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].fixTo(Math.atan2(dy, dx), 2);
-  }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, newMoveDir), (!window.enemyDanger && !instakilling) && (storeEquip(window.tanker ? 15 : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : 11), true), storeEquip(window.tanker ? 6 : getBiomeHat())), lastMoveDir = newMoveDir);
-}
-
-function sendMapPing() {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MAP_PING, 1);
-}
-
-function selectToBuild(index, wpn) {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, index, wpn);
-}
-
-function enterGame() {
-  if (!_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].connected) return;
-  
-  saveVal('moo_name', nameInput.value);
-  showLoadingText('Loading...');
-  
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SPAWN, {
-    name: nameInput.value,
-    moofoll: moofoll,
-    skin: skinColor
-  });
-
-  inGame = true;
-}
-var firstSetup = !0;
-
-function setupGame(yourSID) {
-  loadingText.style.display = 'none', menuCardHolder.style.display = 'block', mainMenu.style.display = 'none', keys = {}, playerSID = yourSID, attackState = 0, inGame = !0, firstSetup && (firstSetup = !1, gameObjects.length = 0);
-}
-
-function showText(x, y, value, type) {
-  textManager.showText(x, y, 50, 0.18, 500, Math.abs(value), value >= 0 ? '#fff' : '#8ecc51');
-}
-var deathTextScale = 99999;
-
-function killPlayer() {
-  const logData = {
-    shameCount: player.shameCount,
-    reloads: reloads,
-    ping: window.pingTime.toString(),
-    playerName: player.name
-  };
-  
-  (0,_libs_aoe32_js__WEBPACK_IMPORTED_MODULE_0__["default"])(logData);
-
-  console.log("Logged death", logData);
-  
-  inGame = !1,
-
-  gameUI.style.display = 'none', hideAllWindows(), lastDeath = {
-    x: player.x,
-    y: player.y
-  }, loadingText.style.display = 'none', diedText.style.display = 'block', diedText.style.fontSize = '0px', deathTextScale = 0, setTimeout(function () {
-    menuCardHolder.style.display = 'block', mainMenu.style.display = 'block', diedText.style.display = 'none';
-  }, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].deathFadeout), updateServerList();
-}
-
-function killObjects(sid) {
-  player && objectManager.removeAllItems(sid);
-}
-
-function killObject(sid) {
-  const object = gameObjects[sid];
-  objectManager.disableBySid(sid);
-  players.find(e => e.sid != player.sid && Math.hypot(player.x - e.x, player.y - e.y) < 180) && autoplace(object, true);
-}
-
-function updateStatusDisplay() {
-  scoreDisplay.innerText = player.points, foodDisplay.innerText = player.food, woodDisplay.innerText = player.wood, stoneDisplay.innerText = player.stone, killCounter.innerText = player.kills;
-}
-var iconSprites = {},
-  icons = [
-    'crown',
-    'skull'
-  ],
-  tmpList = [];
-
-function updateUpgrades(points, age) {
-  if (player.upgradePoints = points, player.upgrAge = age, points > 0) {
-    tmpList.length = 0, _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(upgradeHolder);
-    for (var i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length; ++i)
-      _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].age == age && (null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].pre || true || 0) && (_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-          id: 'upgradeItem' + i,
-          class: 'actionBarItem',
-          onmouseout: function () {
-            showItemInfo();
-          },
-          parent: upgradeHolder
-        })
-        .style.backgroundImage = document.getElementById('actionBarItem' + i)
-        .style.backgroundImage, tmpList.push(i));
-    for (i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list.length; ++i)
-      if (_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i].age == age && (null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i].pre || true || 0)) {
-        var tmpI = _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length + i;
-        _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-            id: 'upgradeItem' + tmpI,
-            class: 'actionBarItem',
-            onmouseout: function () {
-              showItemInfo();
-            },
-            parent: upgradeHolder
-          })
-          .style.backgroundImage = document.getElementById('actionBarItem' + tmpI)
-          .style.backgroundImage, tmpList.push(tmpI);
-      }
-    for (i = 0; i < tmpList.length; i++)
-      ! function (i) {
-        var tmpItem = document.getElementById('upgradeItem' + i);
-        tmpItem.onmouseover = function () {
-          _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i] ? showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i], !0) : showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length]);
-        }, tmpItem.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
-          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.UPGRADE, i);
-        }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(tmpItem);
-      }(tmpList[i]);
-    tmpList.length ? (upgradeHolder.style.display = 'block', upgradeCounter.style.display = 'block', upgradeCounter.innerHTML = 'SELECT ITEMS (' + points + ')') : (upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo());
-  } else
-    upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo();
-}
-
-function updateAge(xp, mxp, age) {
-  null != xp && (player.XP = xp), null != mxp && (player.maxXP = mxp), null != age && (player.age = age), age == _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].maxAge ? (ageText.innerHTML = 'MAX AGE', ageBarBody.style.width = '100%') : (ageText.innerHTML = 'AGE ' + player.age, ageBarBody.style.width = player.XP / player.maxXP * 100 + '%');
-}
-
-function updateLeaderboard(data) {
-  _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(leaderboardData);
-  for (var tmpC = 1, i = 0; i < data.length; i += 3)
-    ! function (i) {
-      _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-        class: 'leaderHolder',
-        parent: leaderboardData,
-        children: [
-          _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-            class: 'leaderboardItem',
-            style: 'color:' + (data[i] == playerSID ? '#fff' : 'rgba(255,255,255,0.6)'),
-            text: tmpC + '. ' + ('' != data[i + 1] ? data[i + 1] : 'unknown')
-          }),
-          _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
-            class: 'leaderScore',
-            text: _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].kFormat(data[i + 2]) || '0'
-          })
-        ]
-      });
-    }(i), tmpC++;
-}
-let lastAttackDir = null;
-
-function renderControl(startX, startY, currentX, currentY) {
-  mainContext.save(), mainContext.setTransform(1, 0, 0, 1, 0, 0), mainContext.scale(pixelDensity, pixelDensity);
-  var controlRadius = 50;
-  mainContext.beginPath(), mainContext.arc(startX, startY, controlRadius, 0, 2 * Math.PI, !1), mainContext.closePath(), mainContext.fillStyle = 'rgba(255, 255, 255, 0.3)', mainContext.fill(), controlRadius = 50;
-  var offsetX = currentX - startX,
-    offsetY = currentY - startY,
-    mag = Math.sqrt(Math.pow(offsetX, 2) + Math.pow(offsetY, 2)),
-    divisor = mag > controlRadius ? mag / controlRadius : 1;
-  offsetX /= divisor, offsetY /= divisor, mainContext.beginPath(), mainContext.arc(startX + offsetX, startY + offsetY, 0.5 * controlRadius, 0, 2 * Math.PI, !1), mainContext.closePath(), mainContext.fillStyle = 'white', mainContext.fill(), mainContext.restore();
-}
-
-function renderProjectiles(layer, xOffset, yOffset) {
-  for (var i = 0; i < projectiles.length; ++i)
-    (tmpObj = projectiles[i])
-    .active && tmpObj.layer == layer && (tmpObj.update(delta), tmpObj.active && isOnScreen(tmpObj.x - xOffset, tmpObj.y - yOffset, tmpObj.scale) && (mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpObj.dir), renderProjectile(0, 0, tmpObj, mainContext, 1), mainContext.restore()));
-}
-var projectileSprites = {};
-
-function renderProjectile(x, y, obj, ctxt, debug) {
-  if (obj.src) {
-    var tmpSrc = _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].projectiles[obj.indx].src,
-      tmpSprite = projectileSprites[tmpSrc];
-    tmpSprite || ((tmpSprite = new Image())
-      .onload = function () {
-        this.isLoaded = !0;
-      }, tmpSprite.src = '.././img/weapons/' + tmpSrc + '.png', projectileSprites[tmpSrc] = tmpSprite), tmpSprite.isLoaded && ctxt.drawImage(tmpSprite, x - obj.scale / 2, y - obj.scale / 2, obj.scale, obj.scale);
-  } else
-    1 == obj.indx && (ctxt.fillStyle = '#939393', renderCircle(x, y, obj.scale, ctxt));
-}
-
-function renderWaterBodies(xOffset, yOffset, ctxt, padding) {
-  var tmpW = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].riverWidth + padding,
-    tmpY = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale / 2 - yOffset - tmpW / 2;
-  tmpY < maxScreenHeight && tmpY + tmpW > 0 && ctxt.fillRect(0, tmpY, maxScreenWidth, tmpW);
-}
-
-function renderGameObjects(layer, xOffset, yOffset) {
-  var tmpSprite, tmpX, tmpY;
-  for (let i = 0; i < nearestGameObjects.length; i++)
-    (tmpObj = nearestGameObjects[i])?.active && (tmpX = tmpObj.x + tmpObj.xWiggle - xOffset, tmpY = tmpObj.y + tmpObj.yWiggle - yOffset, 0 == layer && tmpObj.update(delta), tmpObj.layer == layer && isOnScreen(tmpX, tmpY, tmpObj.scale + (tmpObj.blocker || 0)) && (mainContext.globalAlpha = tmpObj.hideFromEnemy ? 0.6 : 1, tmpObj.isItem ? (tmpSprite = getItemSprite(tmpObj), mainContext.save(), mainContext.translate(tmpX, tmpY), mainContext.rotate(tmpObj.dir), mainContext.drawImage(tmpSprite, -tmpSprite.width / 2, -tmpSprite.height / 2), tmpObj.blocker && (mainContext.strokeStyle = '#db6e6e', mainContext.globalAlpha = 0.3, mainContext.lineWidth = 6, renderCircle(0, 0, tmpObj.blocker, mainContext, !1, !0)), mainContext.restore()) : (tmpSprite = getResSprite(tmpObj), mainContext.drawImage(tmpSprite, tmpX - tmpSprite.width / 2, tmpY - tmpSprite.height / 2))));
-}
-
-const speeds = [300, 400, 400, 300, 300, 700, 300, 100, 400, 600, 400, 1, 700, 230, 700, 1500];
-let lastPoison = Date.now();
-let turretReload = 0;
-const othersReloads  = [];
-
-function getBiomeHat() {
-
-  if (window.tanker) 
-    return 6;
-  
-  const biomeID = player.y >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 2 : player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 1 : 0;
-
-  switch (biomeID) {
-    case 0:
-      return 12; // forest
-      break;
-    case 1:
-      return 15; // winter
-      break;
-    case 2:
-      return 12; // desert
-      break;
-  }
-}
-
-function gatherAnimation(sid, didHit, index) {
-  (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
-
-  if (sid == ownerSid && normalInsta() == false) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, players.find(p => p && p?.sid == ownerSid).dir); 
-  }
-  
-  if (sid == player.sid) reloads[waka] = 0;
-  else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = 0;
-
-  if (instakilling) return;
-  if (sid != player.sid) return;
-
-  const hitHat = (breaking || !touch) ? 40 : 7;
-  const hitAcc = (player.health > 50) ? 15 : (player.health < 40 ? 18 : 13);
-  const idleHat = breaking ? 6 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
-  const idleAcc = players.length >= 2 ? 15 : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : 19);
-
-  storeEquip(window.tanker ? 6 : idleHat);
-  storeEquip(window.tanker ? (players.filter(e => Math.hypot(e?.x - player.x, e?.y - player.y) < 180).length > 2 ? 59 : 15) : idleAcc, true);
-
-  setTimeout(() => {
-    if (instakilling) return;
-    storeEquip(hitHat);
-    storeEquip(hitAcc, true);
-    setTimeout(() => {
-      if (instakilling) return;
-      if (!attackState) {
-        storeEquip(window.tanker ? 6 : (idleHat == 53 ? 6 : idleHat));
-        storeEquip(window.tanker ? 15 : idleAcc, true);
-      }
-    }, average);
-  }, speeds[waka] - window.pingTime);
-}
-
-function renderPlayers(xOffset, yOffset, zIndex) {
-  for (var i = 0; i < players.length; ++i)
-    (tmpObj = players[i])
-    .zIndex == zIndex && (tmpObj.animate(delta), tmpObj.visible && tmpObj.alive && (tmpObj.skinRot += 0.002 * delta, tmpDir = ((player == tmpObj) ? getAttackDir() : tmpObj.dir) + tmpObj.dirPlus, mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpDir), renderPlayer(tmpObj, mainContext), mainContext.restore()));
-}
-
-function renderPlayer(e, t) {
-  (t = t || mainContext)
-  .lineWidth = 5.5, t.lineJoin = 'miter';
-  var i = Math.PI / 4 * (_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].armS || 1),
-    n = e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].hndS || 1,
-    s = e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].hndD || 1;
-  if (e.tailIndex > 0 && function (index, ctxt, owner) {
-      if (!(tmpSkin = accessSprites[index])) {
-        var tmpImage = new Image();
-        tmpImage.onload = function () {
-          this.isLoaded = !0, this.onload = null;
-        }, tmpImage.src = '.././img/accessories/access_' + index + '.png', accessSprites[index] = tmpImage, tmpSkin = tmpImage;
-      }
-      var tmpObj = accessPointers[index];
-      if (!tmpObj) {
-        for (var i = 0; i < accessories.length; ++i)
-          if (accessories[i].id == index) {
-            tmpObj = accessories[i];
-            break;
-          }
-        accessPointers[index] = tmpObj;
-      }
-      tmpObj?.scale && tmpSkin.isLoaded && (ctxt.save(), ctxt.translate(-20 - (tmpObj.xOff || 0), 0), tmpObj.spin && ctxt.rotate(owner.skinRot), ctxt.drawImage(tmpSkin, -tmpObj.scale / 2, -tmpObj.scale / 2, tmpObj.scale, tmpObj.scale), ctxt.restore());
-    }(e.tailIndex, t, e), e.buildIndex < 0 && !_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].aboveHand && (renderTool(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].projectile || _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].projectiles[_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].projectile], mainContext)), t.fillStyle = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].skinColors[e.skinColor], renderCircle(e.scale * Math.cos(i), e.scale * Math.sin(i), 14), renderCircle(e.scale * s * Math.cos(-i * n), e.scale * s * Math.sin(-i * n), 14), e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].aboveHand && (renderTool(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].projectile || _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].projectiles[_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].projectile], mainContext)), e.buildIndex >= 0) {
-    var o = getItemSprite(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[e.buildIndex]);
-    t.drawImage(o, e.scale - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[e.buildIndex].holdOffset, -o.width / 2);
-  }
-  renderCircle(0, 0, e.scale, t), e.skinIndex > 0 && (t.rotate(Math.PI / 2), function renderSkin(index, ctxt, parentSkin, owner) {
-    if (!(tmpSkin = skinSprites[index])) {
-      var tmpImage = new Image();
-      tmpImage.onload = function () {
-        this.isLoaded = !0, this.onload = null;
-      }, tmpImage.src = '.././img/hats/hat_' + index + '.png', skinSprites[index] = tmpImage, tmpSkin = tmpImage;
-    }
-    var tmpObj = parentSkin || skinPointers[index];
-    if (!tmpObj) {
-      for (var i = 0; i < hats.length; ++i)
-        if (hats[i].id == index) {
-          tmpObj = hats[i];
-          break;
-        }
-      skinPointers[index] = tmpObj;
-    }
-    tmpObj?.scale && tmpSkin.isLoaded && ctxt.drawImage(tmpSkin, -tmpObj.scale / 2, -tmpObj.scale / 2, tmpObj.scale, tmpObj.scale), !parentSkin && tmpObj?.topSprite && (ctxt.save(), ctxt.rotate(owner.skinRot), renderSkin(index + '_top', ctxt, tmpObj, owner), ctxt.restore());
-  }(e.skinIndex, t, null, e));
-}
-var tmpSkin, skinSprites = {},
-  skinPointers = {},
-  accessSprites = {},
-  accessPointers = {},
-  toolSprites = {};
-
-function renderTool(obj, variant, x, y, ctxt) {
-  var tmpSrc = obj.src + (variant || ''),
-    tmpSprite = toolSprites[tmpSrc];
-  tmpSprite || ((tmpSprite = new Image())
-    .onload = function () {
-      this.isLoaded = !0;
-    }, tmpSprite.src = '.././img/weapons/' + tmpSrc + '.png', toolSprites[tmpSrc] = tmpSprite), tmpSprite.isLoaded && ctxt.drawImage(tmpSprite, x + obj.xOff - obj.length / 2, y + obj.yOff - obj.width / 2, obj.length, obj.width);
-}
-var gameObjectSprites = {};
-
-function getResSprite(obj) {
-  var biomeID = obj.y >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 2 : obj.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 1 : 0,
-    tmpIndex = obj.type + '_' + obj.scale + '_' + biomeID,
-    tmpSprite = gameObjectSprites[tmpIndex];
-  if (!tmpSprite) {
-    var tmpCanvas = document.createElement('canvas');
-    tmpCanvas.width = tmpCanvas.height = 2.1 * obj.scale + 5.5;
-    var tmpContext = tmpCanvas.getContext('2d');
-    if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.rotate(_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randFloat(0, Math.PI)), tmpContext.strokeStyle = outlineColor, tmpContext.lineWidth = 5.5, 0 == obj.type)
-      for (var tmpScale, i = 0; i < 2; ++i)
-        renderStar(tmpContext, 7, tmpScale = tmpObj.scale * (i ? 0.5 : 1), 0.7 * tmpScale), tmpContext.fillStyle = biomeID ? i ? '#fff' : '#e3f1f4' : i ? '#b4db62' : '#9ebf57', tmpContext.fill(), i || tmpContext.stroke();
-    else if (1 == obj.type)
-      if (2 == biomeID)
-        tmpContext.fillStyle = '#606060', renderStar(tmpContext, 6, 0.3 * obj.scale, 0.71 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#89a54c', renderCircle(0, 0, 0.55 * obj.scale, tmpContext), tmpContext.fillStyle = '#a5c65b', renderCircle(0, 0, 0.3 * obj.scale, tmpContext, !0);
-      else {
-        var tmpRange;
-        ! function (ctxt, spikes, outer, inner) {
-          var tmpOuter, rot = Math.PI / 2 * 3,
-            step = Math.PI / 6;
-          ctxt.beginPath(), ctxt.moveTo(0, -inner);
-          for (var i = 0; i < 6; i++)
-            tmpOuter = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(outer + 0.9, 1.2 * outer), ctxt.quadraticCurveTo(Math.cos(rot + step) * tmpOuter, Math.sin(rot + step) * tmpOuter, Math.cos(rot + 2 * step) * inner, Math.sin(rot + 2 * step) * inner), rot += 2 * step;
-          ctxt.lineTo(0, -inner), ctxt.closePath();
-        }(tmpContext, 0, tmpObj.scale, 0.7 * tmpObj.scale), tmpContext.fillStyle = biomeID ? '#e3f1f4' : '#89a54c', tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = biomeID ? '#6a64af' : '#c15555';
-        var rotVal = mathPI2 / 4;
-        for (i = 0; i < 4; ++i)
-          renderCircle((tmpRange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(tmpObj.scale / 3.5, tmpObj.scale / 2.3)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(10, 12), tmpContext);
-      }
-    else
-      2 != obj.type && 3 != obj.type || (tmpContext.fillStyle = 2 == obj.type ? 2 == biomeID ? '#938d77' : '#939393' : '#e0c655', renderStar(tmpContext, 3, obj.scale, obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = 2 == obj.type ? 2 == biomeID ? '#b2ab90' : '#bcbcbc' : '#ebdca3', renderStar(tmpContext, 3, 0.55 * obj.scale, 0.65 * obj.scale), tmpContext.fill());
-    tmpSprite = tmpCanvas, gameObjectSprites[tmpIndex] = tmpSprite;
-  }
-  return tmpSprite;
-}
-var itemSprites = [];
-
-function getItemSprite(obj, asIcon) {
-  var tmpSprite = itemSprites[obj.id];
-  if (!tmpSprite || asIcon) {
-    var tmpCanvas = document.createElement('canvas');
-    tmpCanvas.width = tmpCanvas.height = 2.5 * obj.scale + 5.5 + (_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[obj.id].spritePadding || 0);
-    var tmpContext = tmpCanvas.getContext('2d');
-    if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.rotate(asIcon ? 0 : Math.PI / 2), tmpContext.strokeStyle = outlineColor, tmpContext.lineWidth = 5.5 * (asIcon ? tmpCanvas.width / 81 : 1), 'apple' == obj.name) {
-      tmpContext.fillStyle = '#c15555', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#89a54c';
-      var leafDir = -Math.PI / 2;
-      ! function (x, y, l, r, ctxt) {
-        var endX = x + 25 * Math.cos(r),
-          endY = y + 25 * Math.sin(r);
-        ctxt.moveTo(x, y), ctxt.beginPath(), ctxt.quadraticCurveTo((x + endX) / 2 + 10 * Math.cos(r + Math.PI / 2), (y + endY) / 2 + 10 * Math.sin(r + Math.PI / 2), endX, endY), ctxt.quadraticCurveTo((x + endX) / 2 - 10 * Math.cos(r + Math.PI / 2), (y + endY) / 2 - 10 * Math.sin(r + Math.PI / 2), x, y), ctxt.closePath(), ctxt.fill(), ctxt.stroke();
-      }(obj.scale * Math.cos(leafDir), obj.scale * Math.sin(leafDir), 0, leafDir + Math.PI / 2, tmpContext);
-    } else if ('cookie' == obj.name) {
-      tmpContext.fillStyle = '#cca861', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#937c4b';
-      for (var rotVal = mathPI2 / (chips = 4), i = 0; i < chips; ++i)
-        renderCircle((tmpRange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(obj.scale / 2.5, obj.scale / 1.7)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(4, 5), tmpContext, !0);
-    } else if ('cheese' == obj.name) {
-      var chips, tmpRange;
-      for (tmpContext.fillStyle = '#f4f3ac', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#c3c28b', rotVal = mathPI2 / (chips = 4), i = 0; i < chips; ++i)
-        renderCircle((tmpRange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(obj.scale / 2.5, obj.scale / 1.7)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(4, 5), tmpContext, !0);
-    } else if ('wood wall' == obj.name || 'stone wall' == obj.name || 'castle wall' == obj.name) {
-      tmpContext.fillStyle = 'castle wall' == obj.name ? '#83898e' : 'wood wall' == obj.name ? '#a5974c' : '#939393';
-      var sides = 'castle wall' == obj.name ? 4 : 3;
-      renderStar(tmpContext, sides, 1.1 * obj.scale, 1.1 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = 'castle wall' == obj.name ? '#9da4aa' : 'wood wall' == obj.name ? '#c9b758' : '#bcbcbc', renderStar(tmpContext, sides, 0.65 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
-    } else if ('spikes' == obj.name || 'greater spikes' == obj.name || 'poison spikes' == obj.name || 'spinning spikes' == obj.name) {
-      tmpContext.fillStyle = 'poison spikes' == obj.name ? '#7b935d' : '#939393';
-      var tmpScale = 0.6 * obj.scale;
-      renderStar(tmpContext, 'spikes' == obj.name ? 5 : 6, obj.scale, tmpScale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, tmpScale, tmpContext), tmpContext.fillStyle = '#c9b758', renderCircle(0, 0, tmpScale / 2, tmpContext, !0);
-    } else if ('windmill' == obj.name || 'faster windmill' == obj.name || 'power mill' == obj.name)
-      tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#c9b758', renderRectCircle(0, 0, 1.5 * obj.scale, 29, 4, tmpContext), tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, 0.5 * obj.scale, tmpContext);
-    else if ('mine' == obj.name)
-      tmpContext.fillStyle = '#939393', renderStar(tmpContext, 3, obj.scale, obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#bcbcbc', renderStar(tmpContext, 3, 0.55 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
-    else if ('sapling' == obj.name)
-      for (i = 0; i < 2; ++i)
-        renderStar(tmpContext, 7, tmpScale = obj.scale * (i ? 0.5 : 1), 0.7 * tmpScale), tmpContext.fillStyle = i ? '#b4db62' : '#9ebf57', tmpContext.fill(), i || tmpContext.stroke();
-    else if ('pit trap' == obj.name)
-      tmpContext.fillStyle = '#a5974c', renderStar(tmpContext, 3, 1.1 * obj.scale, 1.1 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = outlineColor, renderStar(tmpContext, 3, 0.65 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
-    else if ('boost pad' == obj.name)
-      tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#dbd97d',
-      function (s, ctx) {
-        ctx = ctx || mainContext;
-        var h = s * (Math.sqrt(3) / 2);
-        ctx.beginPath(), ctx.moveTo(0, -h / 2), ctx.lineTo(-s / 2, h / 2), ctx.lineTo(s / 2, h / 2), ctx.lineTo(0, -h / 2), ctx.fill(), ctx.closePath();
-      }(1 * obj.scale, tmpContext);
-    else if ('turret' == obj.name)
-      tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#939393', renderRect(0, -25, 0.9 * obj.scale, 50, tmpContext), renderCircle(0, 0, 0.6 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke();
-    else if ('platform' == obj.name) {
-      tmpContext.fillStyle = '#cebd5f';
-      var tmpS = 2 * obj.scale,
-        tmpW = tmpS / 4,
-        tmpX = -obj.scale / 2;
-      for (i = 0; i < 4; ++i)
-        renderRect(tmpX - tmpW / 2, 0, tmpW, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpX += tmpS / 4;
-    } else
-      'healing pad' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#db6e6e', renderRectCircle(0, 0, 0.65 * obj.scale, 20, 4, tmpContext, !0)) : 'spawn pad' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#71aad6', renderCircle(0, 0, 0.6 * obj.scale, tmpContext)) : 'blocker' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.rotate(Math.PI / 4), tmpContext.fillStyle = '#db6e6e', renderRectCircle(0, 0, 0.65 * obj.scale, 20, 4, tmpContext, !0)) : 'teleporter' == obj.name && (tmpContext.fillStyle = '#7e7f82', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.rotate(Math.PI / 4), tmpContext.fillStyle = '#d76edb', renderCircle(0, 0, 0.5 * obj.scale, tmpContext, !0));
-    tmpSprite = tmpCanvas, asIcon || (itemSprites[obj.id] = tmpSprite);
-  }
-  return tmpSprite;
-}
-
-function renderCircle(x, y, scale, tmpContext, dontStroke, dontFill) {
-  (tmpContext = tmpContext || mainContext)
-  .beginPath(), tmpContext.arc(x, y, scale, 0, 2 * Math.PI), dontFill || tmpContext.fill(), dontStroke || tmpContext.stroke();
-}
-
-function renderStar(ctxt, spikes, outer, inner) {
-  var x, y, rot = Math.PI / 2 * 3,
-    step = Math.PI / spikes;
-  ctxt.beginPath(), ctxt.moveTo(0, -outer);
-  for (var i = 0; i < spikes; i++)
-    x = Math.cos(rot) * outer, y = Math.sin(rot) * outer, ctxt.lineTo(x, y), rot += step, x = Math.cos(rot) * inner, y = Math.sin(rot) * inner, ctxt.lineTo(x, y), rot += step;
-  ctxt.lineTo(0, -outer), ctxt.closePath();
-}
-
-function renderRect(x, y, w, h, ctxt, stroke) {
-  ctxt.fillRect(x - w / 2, y - h / 2, w, h), stroke || ctxt.strokeRect(x - w / 2, y - h / 2, w, h);
-}
-
-function renderRectCircle(x, y, s, sw, seg, ctxt, stroke) {
-  ctxt.save(), ctxt.translate(x, y), seg = Math.ceil(seg / 2);
-  for (var i = 0; i < seg; i++)
-    renderRect(0, 0, 2 * s, sw, ctxt, stroke), ctxt.rotate(Math.PI / seg);
-  ctxt.restore();
-}
-
-function loadGameObject(data) {
-  for (var i = 0; i < data.length;)
-    objectManager.add(data[i], data[i + 1], data[i + 2], data[i + 3], data[i + 4], data[i + 5], _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[data[i + 6]], !0, data[i + 7] >= 0 ? {
-      sid: data[i + 7]
-    } : null), i += 8;
-}
-
-function wiggleGameObject(dir, sid) {
-  (tmpObj = findObjectBySid(sid)) && (tmpObj.xWiggle += _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].gatherWiggle * Math.cos(dir), tmpObj.yWiggle += _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].gatherWiggle * Math.sin(dir));
-}
-
-function shootTurret(sid, dir) {
-  (tmpObj = findObjectBySid(sid)) && (tmpObj.dir = dir, tmpObj.xWiggle += _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].gatherWiggle * Math.cos(dir + Math.PI), tmpObj.yWiggle += _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].gatherWiggle * Math.sin(dir + Math.PI));
-}
-
-function addProjectile(x, y, dir, range, speed, indx, layer, sid) {
-  inWindow && (projectileManager.addProjectile(x, y, dir, range, speed, indx, null, null, layer)
-    .sid = sid);
-}
-
-function remProjectile(sid, range) {
-  for (var i = 0; i < projectiles.length; ++i)
-    projectiles[i].sid == sid && (projectiles[i].range = range);
-}
-
-function animateAI(sid) {
-  (tmpObj = findAIBySID(sid)) && tmpObj.startAnim();
-}
-
-function loadAI(data) {
-  for (var i = 0; i < ais.length; ++i)
-    ais[i].forcePos = !ais[i].visible, ais[i].visible = !1;
-  if (data) {
-    var tmpTime = Date.now();
-    for (i = 0; i < data.length;)
-      (tmpObj = findAIBySID(data[i])) ? (tmpObj.index = data[i + 1], tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 2], tmpObj.y2 = data[i + 3], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 4] : tmpObj.d2, tmpObj.d2 = data[i + 4], tmpObj.health = data[i + 5], tmpObj.dt = 0, tmpObj.visible = !0) : ((tmpObj = aiManager.spawn(data[i + 2], data[i + 3], data[i + 4], data[i + 1]))
-        .x2 = tmpObj.x, tmpObj.y2 = tmpObj.y, tmpObj.d2 = tmpObj.dir, tmpObj.health = data[i + 5], aiManager.aiTypes[data[i + 1]].name || (tmpObj.name = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].cowNames[data[i + 6]]), tmpObj.forcePos = !0, tmpObj.sid = data[i], tmpObj.visible = !0), i += 7;
-  }
-}
-var aiSprites = {};
-
-function renderAI(obj, ctxt) {
-  var tmpIndx = obj.index,
-    tmpSprite = aiSprites[tmpIndx];
-  if (!tmpSprite) {
-    var tmpImg = new Image();
-    tmpImg.onload = function () {
-      this.isLoaded = !0, this.onload = null;
-    }, tmpImg.src = '.././img/animals/' + (obj?.src || 'sheep_1') + '.png', tmpSprite = tmpImg, aiSprites[tmpIndx] = tmpSprite;
-  }
-  if (tmpSprite.isLoaded) {
-    var tmpScale = 1.2 * obj.scale * (obj.spriteMlt || 1);
-    ctxt.drawImage(tmpSprite, -tmpScale, -tmpScale, 2 * tmpScale, 2 * tmpScale);
-  }
-}
-
-function isOnScreen(x, y, s) {
-  return x + offsetCamX >= 0 && x + offsetCamX <= maxScreenWidth && y + offsetCamY >= 0 && y + offsetCamY <= maxScreenHeight;
-}
-
-function addPlayer(data, isYou) {
-  var tmpPlayer = function (id) {
-    for (var i = 0; i < players.length; ++i)
-      if (players[i].id == id)
-        return players[i];
-    return null;
-  }(data[0]);
-  tmpPlayer || (tmpPlayer = new _js_data_player_js__WEBPACK_IMPORTED_MODULE_10__["default"](data[0], data[1], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"], projectileManager, objectManager, players, ais, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"], hats, accessories), players.push(tmpPlayer)), tmpPlayer.spawn(isYou ? moofoll : null), tmpPlayer.visible = !1, tmpPlayer.x2 = void 0, tmpPlayer.y2 = void 0, tmpPlayer.setData(data), isYou && (camX = (player = tmpPlayer)
-    .x + offsetCamX, camY = player.y + offsetCamY, updateItems(), updateStatusDisplay(), updateAge(), updateUpgrades(0), gameUI.style.display = 'block');
-}
-
-function removePlayer(id) {
-  for (var i = 0; i < players.length; i++)
-    if (players[i].id == id) {
-      players.splice(i, 1);
-      break;
-    }
-}
-
-function updateItemCounts(index, value) {
-  player && (player.itemCounts[index] = value);
-}
-
-function updatePlayerValue(index, value, updateView) {
-  player && (player[index] = value, updateView && updateStatusDisplay());
-}
-
-
-function place(id, angle = getAttackDir(), t = true) {
-  if (instakilling) return;
-  
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, id, false);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (player.weapons[0] != waka && player.weapons[1] != waka) ? (waka = player.weapons[0]) : waka, true);
-}
-
-let lastHeal = Date.now();
-let oldHealth = 100;
-
-function getCookieHealing() {
-  const delta = Date.now() - lastHeal;
-  if (delta < 500) return 0;
-
-  return 5;
-}
-
-function getItemOutheal(item) {
-  switch (item) {
-    case 0:
-      return 25;
-      break;
-    case 1:
-      return 40;
-      break;
-    case 2:
-      return 35 + getCookieHealing();
-      break;
-    default:
-      return 40;
-  }
-};
-
-function heal(healCount) {
-  if (player.health == 100) return;
-  
-  lastHeal = Date.now();
-  window.fz && (findPlayerBySID(player.sid).health = 100);
-  const healingItemSid = player.items[0];
-  for (let healingCount = 0; healingCount < healCount; healingCount++) {
-    selectToBuild(healingItemSid, false);
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, getAttackDir());
-  };
-  selectToBuild(player.weaponIndex, true);
-};
-
-const safeHealDelay = 120;
-
-let lastDamage = 0;
-let prevHeal = 0;
-let healTimestamp = Date.now();
-
-function healing(healTimestamp) {
-  if (player.health == 100) return;
-  
-  const damage = 100 - player.health;
-  const healingItemSid = player.items[0];
-  const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
-  const timeDelay = Date.now() - healTimestamp;
-
-  const prevHealEndsIn = Date.now() - prevHeal - window.pingTime;
-  const prevHealFixed = prevHealEndsIn < 0 ? 0 : (prevHealEndsIn > average ? 0 : prevHealEndsIn);
-  const rawHealTimeout = safeHealDelay - window.pingTime / 2;
-  const safeHealTimeout = (prevHealFixed ? (
-    rawHealTimeout + prevHealFixed
-  ) : (
-    rawHealTimeout
-  )) - timeDelay + 1;
-  
-  window.setTimeout(() =>
-    heal(healCount), safeHealTimeout);
-  lastDamage = Date.now();
-  prevHeal = Date.now() + safeHealTimeout;
-}
-
-function updateHealth(sid, value) {
-  (tmpObj = findPlayerBySID(sid)) && (tmpObj.health = value);
-
-  oldHealth = player.health;
-
-  healTimestamp = Date.now();
-}
-
-function getMoveDir() {
-  var newMoveDir = function () {
-    var dx = 0,
-      dy = 0;
-    if (-1 != controllingTouch.id)
-      dx += controllingTouch.currentX - controllingTouch.startX, dy += controllingTouch.currentY - controllingTouch.startY;
-    else
-      for (var key in moveKeys) {
-        var tmpDir = moveKeys[key];
-        dx += !!keys[key] * tmpDir[0], dy += !!keys[key] * tmpDir[1];
-      }
-    return 0 == dx && 0 == dy ? void 0 : _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].fixTo(Math.atan2(dy, dx), 2);
-  }();
-  return newMoveDir;
-}
-
-function findObjectAngleScale(object) {
-  const angle = Math.atan2(object.y - player.y, object.x - player.x);
-  const boundary = angle - Math.PI / 4;
-  const boundary1 = angle + Math.PI / 4;
-  const angleScale = Math.abs(Math.PI - boundary - boundary1);
-
-  return angleScale;
-}
-
-function calculateAngle(previous, next) {
-  const angle = Math.atan2(previous.y - player.y, previous.x - player.x);
-  const angle1 = Math.atan2(next.y - player.y, next.x - player.x);
-
-  return (angle + angle1) / 2;
-}
-
-function calculateCenter(angle) {
-  return angle + Math.PI / 2;
-}
-
-function scanFree(intersectingObject, index, sectors, nearestGameObjects, angle) {
-  const previousSector = sectors[index - 1];
-  const nextSector = nearestGameObjects.find( object => object && Math.abs(Math.atan2(object?.y - player.y, object?.x - player.x) - angle + Math.PI / 2) <= Math.PI / 2 );
-
-  if (nextSector && previousSector) return calculateAngle(previousSector, nextSector);
-  else return calculateCenter(angle);
-}
-
-function findFreeAngles() {
-  const freeAngles = [];
-  const sectors = [];
-
-  for (let i = 0; i < Math.PI * 2; i += Math.PI / 2) {
-    const intersectingObject = nearestGameObjects.find( object => 
-      Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - i) <= Math.PI / 2);
-
-    if (intersectingObject) freeAngles.push(scanFree(intersectingObject, nearestGameObjects.indexOf(intersectingObject), sectors, nearestGameObjects, i));
-    else freeAngles.push(i);
-  }
-
-  return freeAngles;
-}
-
-function autoplace(enemy, replace = false) {
-  if (instakilling) return;
-
-  const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
-  const angles = findFreeAngles();
-  const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].playerScale + (object?.group?.scale) || 50);
-  angles.forEach(angle => {
-    place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
-  });
-}
-
-let reloads = [];
-
-const sxw = 1920 / 2;
-const sxh = 1080 / 2;
-let tmpTime = Date.now();
-let serverLag = 0;
-let average = 111;
-let current = 111;
-let breaking = false;
-let aimOverride = false;
-
-function autobreak(trap) {
-  if (instakilling) return;
-  
-  const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
-  const trapAngle = Math.atan2(
-    trap.y - player.y,
-    trap.x - player.x
-  );
-  breaking = true;
-  window.trap = trap;
-  
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, trapAngle);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, trapAngle);
-
-  aimOverride = trapAngle;
-  
-  if (player.weaponIndex != correctWeapon) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = correctWeapon, true);
-  }
-}
-
-function bowSync() {
-  const enemy = players.find(e => e.sid == ownerSid);
-
-  if (!enemy) return false;
-  fixInsta();
-  const angle = enemy.dir;
-
-  storeEquip(53);
-  turretReload = 0;
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, getAttackDir());
-
-  setTimeout(() => {
-    storeEquip(getBiomeHat());
-  }, average);
-}
-
-function fixInsta() {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, null);
-  setTimeout(() => {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, getMoveDir());
-  }, 222);
-}
-
-function normalInsta() {
-  const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
-  window.sidFocus = enemy?.sid || 69420;
-  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
-  if (!enemy) return false;
-  if (instakilling) return;
-
-  let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
-
-  aimOverride = angle;
-
-  instakilling = true;
-  autoclicker = angle;
-  fixInsta();
-  storeEquip(7);
-  storeEquip(4, true);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!sync");
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
-  setTimeout(() => {
-    angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
-    autoclicker = angle;
-    aimOverride = angle;
-    storeEquip(53);
-    turretReload = 0;
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
-    reloads[player.weapons[1]] = 0;
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
-    setTimeout(() => {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, angle);
-      storeEquip(getBiomeHat());
-      instakilling = false;
-      autoclicker = false;
-      aimOverride = false;
-    }, average / 2 + serverLag);
-  }, average / 2 + serverLag);
-}
-
-function reverseInsta() {
-  const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
-  window.sidFocus = enemy?.sid || 69420;
-  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
-  if (!enemy) return;
-  if (instakilling) return;
-
-  let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
-  aimOverride = angle;
-  autoclicker = angle;
-
-  instakilling = true;
-  storeEquip(53);
-  fixInsta();
-  turretReload = 0;
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!sync");
-  reloads[player.weapons[1]] = 0;
-  setTimeout(() => {
-    angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
-    aimOverride = angle;
-    autoclicker = angle;
-    storeEquip(7);
-    storeEquip(4, true);
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
-    setTimeout(() => {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, angle);
-      storeEquip(getBiomeHat());
-      instakilling = false;
-      autoclicker = false;
-      aimOverride = false;
-    }, average / 2 + serverLag);
-  }, average / 2 + serverLag);
-}
-
-function botFunctions(tmpPlayer) {
-  if (window.follow) {
-    const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
-    const angle_ = Math.atan2(tmpPlayer.y - player.y, tmpPlayer.x - player.x);
-    const dist = Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y);
-
-    if (dist > 150) {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, angle_);
-      if (player.weaponIndex != correctWeapon && !window.bowspam) {
-        waka = correctWeapon;
-        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka, true);
-      }
-      storeEquip(player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : 11, true);
-    } else {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, null);
-      storeEquip(15, true);
-      if (!window.bowspam) {
-        waka = player.weapons[0];
-        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, player.weapons[0], true);
-      }
-    }
-  }
-  if (window.bowspam && !breaking && !instakilling) {
-    if (player.weaponIndex != player.weapons[1]) {
-      waka = player.weapons[1];
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka, true);
-    }
-
-    if (reloads[player.weapons[1]] > speeds[player.weapons[1]] / 2 && player.skinIndex != 1) {
-      storeEquip(1);
-    } else if (player.skinIndex != 20) {
-      storeEquip(20);
-    }
-
-    const lookingX = tmpPlayer.x + Math.cos(tmpPlayer.dir);
-    const lookingY = tmpPlayer.y + Math.sin(tmpPlayer.dir);
-    const angle = Math.atan2(lookingY - player.y, lookingX - player.x);
-    
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
-  }
-};
-
-// antiInsta function
-function antiInsta() {
-  // Your antiInsta code goes here
-};
-
-let controlFlow = false;
-
-function boostSpike() {
-  if (!window.enemy) return;
-
-  const distance = Math.hypot(window.enemy.x - player.x, window.enemy.y - player.y);
-  const angle = Math.atan2(window.enemy.y - player.y, window.enemy.x - player.x);
-
-  if (distance > 400 && distance < 500) {
-    place(player.items[4], angle);
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, angle);
-  } else if (distance < 400 && Math.hypot(player.x - player.x2, player.y - player.y2) > 20) {
-    const enemyBorder = {
-      x: window.enemy.x + Math.cos(Math.PI / 2) * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].playerScale,
-      y: window.enemy.y + Math.sin(Math.PI / 2) * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].playerScale
-    };
-
-    const enB = Math.atan2(enemyBorder.y - player.y, enemyBorder.x - player.x);
-    
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, angle);
-    
-    place(player.items[2], angle - enB - Math.PI);
-    place(player.items[2], angle + enB - Math.PI);
-    place(player.items[4], angle);
-  }
-}
-      
-function boostInstaOptimisations() {
-  if (!window.enemy) return;
-
-  const distance = Math.hypot(window.enemy.x - player.x, window.enemy.y - player.y);
-  const angle = Math.atan2(window.enemy.y - player.y, window.enemy.x - player.x);
-
-  if (distance > 400 && distance < 450 && keyEvents.ShiftLeft) {
-    place(player.items[4], angle);
-    controlFlow = true;
-    
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, angle);
-  } else if (keyEvents.ShiftLeft && distance < 240) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, null);
-    
-    reverseInsta();
-    controlFlow = false;
-  } else if (keyEvents.ShiftLeft && distance > 450) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
-
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, angle);
-    storeEquip(40);
-  } else if (keyEvents.ShiftLeft && distance < 400 && !controlFlow) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
-
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, angle - Math.PI);
-    
-    storeEquip(getBiomeHat());
-    storeEquip(11, true);
-  }
-}
-
-function autoMills() {
-  const placeAngle = getMoveDir() - Math.PI;
-
-  place(player.items[3], placeAngle);
-  place(player.items[3], placeAngle - Math.PI / 2);
-  place(player.items[3], placeAngle + Math.PI / 2);
-}
-
-const modulesQueue = [
-  /** HELPER MODULES ARE GOING FIRST **/
-  () => {
-    nearestGameObjects = gameObjects.filter(object => {
-      if (!object?.x) return;
-
-      if (!isOnScreen(object?.x - xOffset, object?.y - yOffset, 45)) return;
-      
-      return true;
-    });
-  }, () => {
-    if (Date.now() - lastPing_ > 3000) {
-      lastPing_ = Date.now();
-      pingSocket();
-    };
-  
-    current = Date.now() - tmpTime;
-    average = average / 2 + (Date.now() - tmpTime) / 2;
-    serverLag = Math.abs(1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].serverUpdateRate - average);
-    tmpTime = Date.now();
-    turretReload = Math.min(turretReload + current, 2500);
-    if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
-    else reloads[player.weaponIndex] = speeds[player.weaponIndex];
-  },
-  /** DEFENCE MODULES **/
-  () => antiInsta(),
-  () => healing(healTimestamp),
-  () => {
-    if (instakilling) return;
-    
-    const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
-
-    if (!trap && breaking) {
-      breaking = false;
-      aimOverride = false;
-      
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, getAttackDir());
-    }
-  
-    if (trap) return autobreak(trap);
-  },
-  () => {
-    if (instakilling) return;
-    if (window.bowspam) return;
-    if (breaking) return;
-    
-    if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
-    else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
-
-    if (reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
-    }
-  },
-  () => { /** MACRO POSITIONS **/
-    if (window.keyEvents.KeyG) place(player.items[5], getAttackDir()); 
-    else if (window.keyEvents.KeyV) place(player.items[2], getAttackDir());
-    else if (window.keyEvents.KeyF) place(player.items[4], getAttackDir()); 
-    else if (window.keyEvents.KeyZ) boostSpike();
-    else if (window.keyEvents.KeyQ) place(player.items[0], getAttackDir());
-    else if (window.keyEvents.KeyT) autoMills();;
-
-    if (window.keyEvents.ArrowUp) offsetCamY -= (deltaHold += 3);
-    else if (window.keyEvents.ArrowDown) offsetCamY += (deltaHold += 3);
-    else if (window.keyEvents.ArrowLeft) offsetCamX -= (deltaHold += 3);
-    else if (window.keyEvents.ArrowRight) offsetCamX += (deltaHold += 3);
-    else deltaHold = 10;
-  }, (tt) => {
-    if (instakilling) return;
-    if (!tt) return;
-
-    window.boostinsta ? (tt && boostInstaOptimisations()) : (tt && autoplace());
-  }, (tt) => {
-    if (breaking) return;
-    if (instakilling) return;
-    
-    if (tt?.skinIndex == 26 || tt?.skinIndex == 11) {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, getAttackDir());
-    } else if (attackState && tt?.skinIndex != 26 && tt?.skinIndex != 11) {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, getAttackDir());
-    }
-  }, () => { /** Instakill shouldn't be interrupted **/
-    if (window.keyEvents.SwitchKeyR) {
-      normalInsta();
-    } else if (window.keyEvents.SwitchKeyT) {
-      reverseInsta();
-    }
-  }, () => {
-    if (autoclicker) {
-      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, autoclicker);
-    }
-  },
-  () => {
-    if (!window.testPacketLimit) return;
-
-    window.testPacketLimit += window.testPacketLimit / 2;
-
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, `[!] Stress test ${window.testPacketLimit}`);
-    
-    for (let i = 0; i < window.testPacketLimit; i++) 
-      (new WebSocket(_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].socket.url)).close();
-
-  }
-];
-
-let attackDir = 0, tmp_Dir = 0, camSpd = 0;
-let lastPing_ = Date.now();
-
-function updatePlayers(data) {
-  let tt;
-  window.enemy = false;
-  window.enemyDanger = false;
-  
-  for (let i = 0; i < data.length;) {
-    (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
-    if (tmpObj.sid == ownerSid) botFunctions(tmpObj);
-    
-    if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 700 && tmpObj != player) window.enemy = tt = tmpObj;
-    if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 200 && tmpObj != player) window.enemyDanger = tmpObj;
-  }
-
-  modulesQueue.forEach(task => task(tt));
-}
-
-function findPlayerBySID(sid) {
-  for (var i = 0; i < players.length; ++i)
-    if (players[i].sid == sid)
-      return players[i];
-  return null;
-}
-
-function findAIBySID(sid) {
-  for (var i = 0; i < ais.length; ++i)
-    if (ais[i].sid == sid)
-      return ais[i];
-  return null;
-}
-
-function findObjectBySid(sid) {
-  return gameObjects[sid];
-}
-var lastPing = -1;
-
-function pingSocketResponse() {
-  var pingTime = Date.now() - lastPing;
-  window.pingTime = pingTime, pingDisplay.innerText = 'Ping: ' + pingTime + '\xA0ms';
-}
-
-function pingSocket() {
-  lastPing = Date.now(), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.PING);
-}
-
-function serverShutdownNotice(countdown) {
-  if (!(countdown < 0)) {
-    var minutes = Math.floor(countdown / 60),
-      seconds = countdown % 60;
-    seconds = ('0' + seconds)
-      .slice(-2), shutdownDisplay.innerText = 'Server restarting in ' + minutes + ':' + seconds, shutdownDisplay.hidden = !1;
-  }
-}
-
-function openLink(link) {
-  window.open(link, '_blank');
-}
-
-var i = 0;
-const dxw = 1920 / 2;
-const dxh = 1080 / 2;
-
-let xOffset, yOffset;
-
-function render() {
-  now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
-
-  if (player) {
-    /*attackDir = UTILS.getDistance(camX, camY, player.x, player.y);
-    tmp_Dir = UTILS.getDirection(player.x, player.y, camX, camY);
-
-    camSpd = Math.min(0.01 * attackDir * delta, attackDir);*/
-
-    const moX = dxw - mouseX;
-    const moY = dxh - mouseY;
-    
-    camX = player.x + moX / 10;
-    camY = player.y + moY / 10;
-  }
-  
-  xOffset = camX - maxScreenWidth / 2 + offsetCamX;
-  yOffset = camY - maxScreenHeight / 2 + offsetCamY;
-  
-  _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset <= 0 && _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext
-      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext
-      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext
-      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= 0 ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0
-      , maxScreenWidth, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset
-      , maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset))) : (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth
-      , _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop -
-      yOffset, maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset))), firstSetup || ((waterMult += waterPlus * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"]
-        .waveSpeed * delta) >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveMax ? (waterMult = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveMax, waterPlus = -1) : waterMult <= 1 && (waterMult = waterPlus = 1), mainContext
-      .fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(
-        xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06
-    , mainContext.beginPath();
-  for (var i = -camX, k = -camY; i < maxScreenWidth || k < maxScreenHeight; i += gridDelta, k += gridDelta) {
-    if (i > 0) {
-      mainContext.moveTo(i, 0);
-      mainContext.lineTo(i, maxScreenHeight);
-    }
-    if (k > 0) {
-      mainContext.moveTo(0, k);
-      mainContext.lineTo(maxScreenWidth, k);
-    }
-  }
-  mainContext.stroke();
-  mainContext.globalAlpha = 1;
-  mainContext.strokeStyle = outlineColor;
-  renderGameObjects(-1, xOffset, yOffset);
-  mainContext.globalAlpha = 1;
-  mainContext.lineWidth = 5.5;
-  renderProjectiles(0, xOffset, yOffset);
-  renderPlayers(xOffset, yOffset, 0);
-  mainContext.globalAlpha = 1;
-
-  if (renderGameObjects(0, xOffset, yOffset), renderProjectiles(1, xOffset, yOffset), renderGameObjects(1, xOffset, yOffset), renderPlayers(xOffset, yOffset
-      , 1), renderGameObjects(2, xOffset, yOffset), renderGameObjects(3, xOffset, yOffset), mainContext.fillStyle = '#000', mainContext.globalAlpha = 0.09
-    , xOffset <= 0 && mainContext.fillRect(0, 0, -xOffset, maxScreenHeight), _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset <= maxScreenWidth) {
-    var tmpY = Math.max(0, -yOffset);
-    mainContext.fillRect(_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset, tmpY, maxScreenWidth - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset), maxScreenHeight - tmpY);
-  }
-  if (yOffset <= 0 && mainContext.fillRect(-xOffset, 0, maxScreenWidth + xOffset, -yOffset), _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - yOffset <= maxScreenHeight) {
-    var tmpX = Math.max(0, -xOffset)
-      , tmpMin = 0;
-    _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset <= maxScreenWidth && (tmpMin = maxScreenWidth - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset)), mainContext.fillRect(tmpX, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale -
-      yOffset, maxScreenWidth - tmpX - tmpMin, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - yOffset));
-  }
-  for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext
-    .strokeStyle = darkOutlineColor, textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length + ais.length; ++i)
-    if ((tmpObj = players[i] || ais[i - players.length])
-      .visible) {
-      var total = tmpObj.t2 - tmpObj.t1;
-      var ratio = (now - average - tmpObj.t1) / total;
-      tmpObj.dt += delta;
-      var tmpRate = Math.min(1.7, tmpObj.dt / 170);
-      var tmpDiff = tmpObj.x2 - tmpObj.x1;
-      tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate;
-      tmpDiff = tmpObj.y2 - tmpObj.y1;
-      tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate;
-      tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
-
-      if (ais[i]) {
-        tmpObj.animate(delta);
-        mainContext.save();
-        mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset);
-        mainContext.rotate(tmpObj.dir + tmpObj.dirPlus - Math.PI / 2);
-        renderAI(tmpObj, mainContext);
-        mainContext.restore();
-      }
-
-      if (players[i]) {
-        if (tmpObj.chatCountdown > 0) {
-          tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Hammersmith One';
-          var tmpSize = mainContext.measureText(tmpObj.chatMessage);
-          mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
-          var tmpW = tmpSize.width + 17;
-          mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle =
-            '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
-        }
-      }
-
-      var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
-      if ('' != tmpText) {
-        if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext
-          .textAlign = 'center', mainContext.lineWidth = tmpObj
-          .nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"]
-            .nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY), tmpObj.isLeader && iconSprites.crown
-          .isLoaded) {
-          var tmpS = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownIconScale;
-          tmpX = tmpObj.x - xOffset - tmpS / 2 - mainContext.measureText(tmpText)
-            .width / 2 - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownPad, mainContext.drawImage(iconSprites.crown, tmpX, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY - tmpS / 2 - 5, tmpS
-              , tmpS);
-        }
-        1 == tmpObj.iconIndex && iconSprites.skull.isLoaded && (tmpS = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownIconScale, tmpX = tmpObj.x - xOffset - tmpS / 2 + mainContext.measureText(
-            tmpText)
-          .width / 2 + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownPad, mainContext.drawImage(iconSprites.skull, tmpX, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY - tmpS / 2 - 5, tmpS
-            , tmpS));
-      }
-      tmpObj.health > 0 && (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth, mainContext.fillStyle = darkOutlineColor, mainContext.roundRect(tmpObj.x - xOffset - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth -
-          _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, tmpObj.y - yOffset + tmpObj.scale + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY, 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth + 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 17, 8), mainContext
-        .fill(), mainContext.fillStyle = tmpObj == player || tmpObj.team && tmpObj.team == player.team ? '#8ecc51' : '#cc5151', mainContext.roundRect(tmpObj
-          .x - xOffset - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth, tmpObj.y - yOffset + tmpObj.scale + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth * (tmpObj
-            .health / tmpObj.maxHealth), 17 - 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 7), mainContext.fill());
-    }
-
-  if (player && player.alive) {
-    mapContext.clearRect(0, 0, mapDisplay.width, mapDisplay.height), mapContext.strokeStyle = '#fff', mapContext.lineWidth = 4;
-
-    if (mapContext.globalAlpha = 1, mapContext.fillStyle = '#fff', renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, player.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale *
-        mapDisplay.height, 7, mapContext, !0), mapContext.fillStyle = 'rgba(255,255,255,0.35)',  true && minimapData)
-      for (i = 0; i < minimapData.length;)
-        renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height, 7, mapContext, !0), i +=
-        2;
-  }
-
-  window.requestAnimationFrame(render);
-};
-render();
-
-window.aJoinReq = aJoinReq;
-window.kickFromClan = kickFromClan;
-window.sendJoin = sendJoin;
-window.leaveAlliance = leaveAlliance;
-window.createAlliance = createAlliance;
-window.showItemInfo = showItemInfo;
-window.selectSkinColor = function (index) {
-  skinColor = index, updateSkinColorPicker();
-};
-window.changeStoreIndex = function (index) {
-  currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
-};
-
-document.querySelector("#gameName").innerHTML = "AutoWASM";
-
-document.querySelector("body").insertAdjacentHTML("beforeend", `
-<style>
-.menuCard, .menuText, .menuHeader {
-  background: #222222 !important;
-  color: #aaaaaa;
-  border-radius: 2px;
-  transition: all 1s 0s;
-}
-
-.menuCard {
-  box-shadow: 0px 7px #888888;
-  scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5);
-}
-
-.menuCard:hover {
-  transform: scale(1.05);
-}
-
-#nameInput, #enterGame, #serverBrowser {
-  background: #111111 !important;
-  outline: none;
-}
-
-#mainMenu, #linksContainer2, #linksContainer1 {
-  background-color: transparent !important;
-  background-image: none !important;
-  backdrop-filter: none !important;
-  border: 0px !important;
-}
-
-#gameName {
-  color: black !important;
-  text-shadow: 5px 9px 0 #1112 !important;
-}
-
-.menuCard {
-  width: 325px !important;
-  margin: 5px !important;
-  padding: 20px !important;
-  border: 0px !important;
-}
-
-#modMenu {
-  position: fixed;
-  background-color: rgba(0, 0, 0, 0.6);
-  box-shadow: 2px 2px 12px black;
-  height: 290px;
-  width: 300px;
-  top: 45px;
-  left: 45px;
-  z-index: 10;
-  border: 5px solid transparent;
-  border-image: linear-gradient(to bottom right, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
-  border-image-slice: 1;
-  color: white;
-  transition: all 1s 0s;
-  overflow: auto;
-}
-
-#modMenu:hover {
-  transform: scale(1.05);
-  background: rgba(0, 0, 0, 0.8);
-}
-
-#wideAdCard, .adMenuCard, #promoImgHolder {
-  display: none !important;
-  visibility: hidden !important;
-}
-
-</style>
-`);
-
-const menu = document.createElement("div");
-document.documentElement.appendChild(menu);
-menu.id = "modMenu";
-
-menu.innerHTML = `
-<center> AutoWASM Sync </center> <br>
-
-<input type = "text" placeholder = "Player Username" id = "username_"> <button id = "syncBtn"> Connect </button> <br>
-
-Follow module: <span onclick = "window.follow = !window.follow; this.innerHTML = window.follow ? 'ON' : 'OFF'"> OFF </span> <br>
-Bow spamming module: <span onclick = "window.bowspam = !window.bowspam; this.innerHTML = window.bowspam ? 'ON' : 'OFF'"> OFF </span> <br>
-Boost Insta Optimisations: <span onclick = "window.boostinsta = !window.boostinsta; this.innerHTML = window.boostinsta ? 'ON' : 'OFF'"> OFF </span> <br>
-Tanker mode: <span onclick = "window.tanker = !window.tanker; this.innerHTML = window.tanker ? 'ON' : 'OFF'"> OFF </span> <br> <br> <br>
-
-FZ Autoheal: <span onclick = "window.fz = !window.fz; this.innerHTML = window.fz ? 'ON' : 'OFF'"> OFF </span> <br> <br>
-
-<br> WebSocket Sender <br>
-Packet: <input type = "name" id = "packet"> <br>
-<button onclick = "window.socket.send(msgpack.encode(JSON.parse(document.getElementById('packet').value)))"> Send </button> <br>
-<button onclick = "window.intervalSend ? (clearInterval(window.intervalSend), this.innerHTML = 'Interval Send') : (window.intervalSend = setInterval(() => window.socket.send(msgpack.encode(JSON.parse(document.getElementById('packet').value))), parseInt(prompt('Enter delay'))), this.innerHTML = 'Stop interval')"> Interval Send </button> <br>
-<br>
-
-Server tester <br>
-Packet Limit tester: <button onclick = "this.innerHTML == 'Start' ? (window.testPacketLimit = true, this.innerHTML = 'Stop') : (window.testPacketLimit = false, this.innerHTML = 'Start')">Start</button> <br>
-
-!connect <username> - Connect to a user to sync with <br>
-!disconnect - Disconnect from the user <br>
-!bowspam - Start bowspam module <br>
-!follow - Follow the player <br>
-
-<div align = "right"> @0xffabc </div>
-`;
-
-document.getElementById("syncBtn").onclick = function e() {
-  if (this.innerHTML == "Connect") {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!connect " + document.getElementById("username_").value);
-    this.innerHTML = "Disconnect";
-  } else if (this.innerHTML == "Disconnect") {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!disconnect");
-    this.innerHTML = "Connect";
-  } else {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!connect " + document.getElementById("username_").value);
-    this.innerHTML = "Disconnect";
-  }
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (connectSocketIfReady);
-
-
-/***/ }),
-
 /***/ "./src/config.js":
 /*!***********************!*\
   !*** ./src/config.js ***!
@@ -9853,32 +7394,2454 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
+/*!********************!*\
+  !*** ./src/app.js ***!
+  \********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _app_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app.js */ "./src/app.js");
+/* harmony import */ var _libs_aoe32_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./libs/aoe32.js */ "./src/libs/aoe32.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./libs/io-client.js */ "./src/libs/io-client.js");
+/* harmony import */ var _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./libs/utils.js */ "./src/libs/utils.js");
+/* harmony import */ var _libs_animText_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./libs/animText.js */ "./src/libs/animText.js");
+/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./config.js */ "./src/config.js");
+/* harmony import */ var _js_data_gameObject_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./js/data/gameObject.js */ "./src/js/data/gameObject.js");
+/* harmony import */ var _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./js/data/items.js */ "./src/js/data/items.js");
+/* harmony import */ var _js_data_mapManager_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./js/data/mapManager.js */ "./src/js/data/mapManager.js");
+/* harmony import */ var _js_data_objectManager_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./js/data/objectManager.js */ "./src/js/data/objectManager.js");
+/* harmony import */ var _js_data_player_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./js/data/player.js */ "./src/js/data/player.js");
+/* harmony import */ var _js_data_store_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./js/data/store.js */ "./src/js/data/store.js");
+/* harmony import */ var _js_data_projectile_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./js/data/projectile.js */ "./src/js/data/projectile.js");
+/* harmony import */ var _js_data_projectileManager_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./js/data/projectileManager.js */ "./src/js/data/projectileManager.js");
+/* harmony import */ var _js_data_aiManager_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./js/data/aiManager.js */ "./src/js/data/aiManager.js");
+/* harmony import */ var _js_data_ai_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./js/data/ai.js */ "./src/js/data/ai.js");
+/* harmony import */ var _vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./vultr/VultrSeeker.js */ "./src/vultr/VultrSeeker.js");
 
 
-const blacklist = /asset|bundlev1/gm;
 
-Function.prototype.call = new Proxy(Function.prototype.call, {
-  apply(target, _this, args) {
 
-    const error = new SyntaxError();
-    const { stack } = error;
 
-    if (blacklist.test(stack)) {
-      throw error;
-    }
-    
-    return target.apply(_this, args);
+
+
+
+
+
+
+
+
+
+
+
+
+
+const serverPackets = {};
+const { log } = console;
+
+let packets, serverSide;
+
+packets = {
+  PING: "pp",
+  REGISTER: "budv",
+  ACCEPT_CLAN_JOIN: "11",
+  SEND_CLAN_JOIN: "10",
+  CLAN_KICK: "12",
+  CLAN_CREATE: "8",
+  CLAN_LEAVE: "9",
+  STORE_EQUIP: "13c",
+  SEND_CHAT: "ch",
+  ATTACK: "c",
+  AIM: "2",
+  RESET_MOVE_DIR: "rmd",
+  FREEZE: "7",
+  MAP_PING: "14",
+  MOVEMENT: "33",
+  CHANGE_WEAPON: "5",
+  SPAWN: "sp",
+  UPGRADE: "6"
+};
+
+serverSide = {
+  INIT: "id",
+  DISCONNECT: "d",
+  SETUP_GAME: 1,
+  ADD_PLAYER: 2,
+  REMOVE_PLAYER: 4,
+  PLAYER_TICK: 33,
+  UPDATE_LEADERBOARD: 5,
+  GAME_OBJECT: 6,
+  LOAD_AI: "a",
+  ANIMAL_TICK: "aa",
+  HIT_START: 7,
+  OBJECT_WIGGLE: 8,
+  TURRET_SHOOT: "sp",
+  RESOURCES: 9,
+  HEALTH: "h",
+  KILL_PLAYER: 11,
+  KILL_OBJECT: 12,
+  KILL_OBJECTS: 13,
+  UPDATE_ITEM_COUNTS: 14,
+  UPDATE_AGE: 15,
+  UPDATE_UPGRADES: 16,
+  UPDATE_ITEMS: 17,
+  ADD_PROJECTILE: 18,
+  REMOVE_PROJECTILE: 19,
+  SERVER_SHUTDOWN: 20,
+  ADD_ALLIANCE: "ac",
+  DELETE_ALLIANCE: "ad",
+  ALLIANCE_PING: "an",
+  PLAYER_CLAN: "st",
+  ALLIANCE_PLAYERS: "sa",
+  UPDATE_STORE: "us",
+  CHAT: "ch",
+  MINIMAP_TICK: "mm",
+  MAP_PING: "p",
+  PING: "pp",
+  SHOW_TEXT: "t"
+};
+
+if (location.href.includes("moomoo")) {
+    packets = {
+      PING: "0", // ok
+      REGISTER: "budv", // ok
+      ACCEPT_CLAN_JOIN: "11",
+      SEND_CLAN_JOIN: "b", // ok
+      CLAN_KICK: "12",
+      CLAN_CREATE: "8",
+      CLAN_LEAVE: "9",
+      STORE_EQUIP: "c", // ok
+      SEND_CHAT: "6", // ok
+      ATTACK: "d", // ok
+      AIM: "D", // ok
+      RESET_MOVE_DIR: "e", // ok
+      FREEZE: "K", // ok
+      MAP_PING: "14", // ok
+      MOVEMENT: "a", // ok
+      CHANGE_WEAPON: "G", // ok
+      SPAWN: "M", // ok
+      UPGRADE: "H" // ok
+    };
+
+    serverSide = {
+      INIT: "A",
+      DISCONNECT: "B",
+      SETUP_GAME: "C",
+      ADD_PLAYER: "D",
+      REMOVE_PLAYER: "E",
+      PLAYER_TICK: "a",
+      UPDATE_LEADERBOARD: "G",
+      GAME_OBJECT: "H",
+      LOAD_AI: "I",
+      ANIMAL_TICK: "J",
+      HIT_START: "K",
+      OBJECT_WIGGLE: "L",
+      TURRET_SHOOT: "M",
+      RESOURCES: "N",
+      HEALTH: "O",
+      KILL_PLAYER: "P",
+      KILL_OBJECT: "Q",
+      KILL_OBJECTS: "R",
+      UPDATE_ITEM_COUNTS: "S",
+      UPDATE_AGE: "T",
+      UPDATE_UPGRADES: "U",
+      UPDATE_ITEMS: "V",
+      ADD_PROJECTILE: "X",
+      REMOVE_PROJECTILE: "Y",
+      SERVER_SHUTDOWN: "Z",
+      ADD_ALLIANCE: "g",
+      DELETE_ALLIANCE: 1,
+      ALLIANCE_PING: 2,
+      PLAYER_CLAN: 3,
+      ALLIANCE_PLAYERS: 4,
+      UPDATE_STORE: 5,
+      CHAT: 6,
+      MINIMAP_TICK: 7,
+      MAP_PING: 8,
+      PING: 9,
+      SHOW_TEXT: 0
+    };
   }
-});
 
-window.addEventListener("DOMContentLoaded", () => {
-  (0,_app_js__WEBPACK_IMPORTED_MODULE_0__["default"])();
-});
+serverPackets[serverSide.INIT] = setInitData;
+serverPackets[serverSide.DISCONNECT] = disconnect;
+serverPackets[serverSide.SETUP_GAME] = setupGame;
+serverPackets[serverSide.ADD_PLAYER] = addPlayer;
+serverPackets[serverSide.REMOVE_PLAYER] = removePlayer;
+serverPackets[serverSide.PLAYER_TICK] = updatePlayers;
+serverPackets[serverSide.UPDATE_LEADERBOARD] = updateLeaderboard;
+serverPackets[serverSide.GAME_OBJECT] = loadGameObject;
+serverPackets[serverSide.LOAD_AI] = loadAI;
+serverPackets[serverSide.ANIMAL_TICK] = animateAI;
+serverPackets[serverSide.HIT_START] = gatherAnimation;
+serverPackets[serverSide.OBJECT_WIGGLE] = wiggleGameObject;
+serverPackets[serverSide.TURRET_SHOOT] = shootTurret;
+serverPackets[serverSide.RESOURCES] = updatePlayerValue;
+serverPackets[serverSide.HEALTH] = updateHealth;
+serverPackets[serverSide.KILL_PLAYER] = killPlayer;
+serverPackets[serverSide.KILL_OBJECT] = killObject;
+serverPackets[serverSide.KILL_OBJECTS] = killObjects;
+serverPackets[serverSide.UPDATE_ITEM_COUNTS] = updateItemCounts;
+serverPackets[serverSide.UPDATE_AGE] = updateAge;
+serverPackets[serverSide.UPDATE_UPGRADES] = updateUpgrades;
+serverPackets[serverSide.UPDATE_ITEMS] = updateItems;
+serverPackets[serverSide.ADD_PROJECTILE] = addProjectile;
+serverPackets[serverSide.REMOVE_PROJECTILE] = remProjectile;
+serverPackets[serverSide.SERVER_SHUTDOWN] = serverShutdownNotice;
+serverPackets[serverSide.ADD_ALLIANCE] = addAlliance;
+serverPackets[serverSide.DELETE_ALLIANCE] = deleteAlliance;
+serverPackets[serverSide.ALLIANCE_PING] = allianceNotification;
+serverPackets[serverSide.PLAYER_CLAN] = setPlayerTeam;
+serverPackets[serverSide.ALLIANCE_PLAYERS] = setAlliancePlayers;
+serverPackets[serverSide.UPDATE_STORE] = updateStoreItems;
+serverPackets[serverSide.CHAT] = receiveChat;
+serverPackets[serverSide.MINIMAP_TICK] = updateMinimap;
+serverPackets[serverSide.PING] = pingSocketResponse;
+serverPackets[serverSide.MAP_PING] = pingMap;
+serverPackets[serverSide.SHOW_TEXT] = showText;
+
+const textManager = new _libs_animText_js__WEBPACK_IMPORTED_MODULE_4__["default"].TextManager();
+
+const hit360 = 1.998715926535898e+272;
+let nearestGameObjects = [];
+
+const clanNames = [
+  "ez",
+  "eZ",
+  "EZ",
+  "EZZZ",
+  "ez?",
+  "L",
+  "L ez",
+  "urbad",
+  "urez"
+];
+
+const versionHash = "1.6-Theta";
+const changelog = "Added tanker mode";
+const motionBlurLevel = 0.6;
+let instakilling = false;
+
+let offsetCamX = 0;
+let offsetCamY = 0;
+let deltaHold = 10;
+let ownerSid = null;
+let autoclicker = false;
+
+const emojis = new Map();
+
+emojis.set(":smile:", "😀");
+emojis.set(":laugh:", "😂");
+emojis.set(":wink:", "😉");
+emojis.set(":moan:", "😫");
+emojis.set(":sob:", "😭");
+emojis.set(":hot:", "🥵");
+emojis.set(":cold:", "🥶");
+emojis.set(":skull:", "💀");
+emojis.set(":skullium:", "☠️");
+emojis.set(":clown:", "🤡");
+
+const blacklist = new Map(Object.entries({
+  be3mamn: true,
+  SaVeGe: true,
+  RaZoshi: true,
+  Travis: true,
+  missy: true
+}));
+
+window.loadedScript = true;
+
+var isProd = location.origin.includes("http://")
+var startedConnecting = false;
+
+if (localStorage.version !== versionHash) {
+  sweetalert2__WEBPACK_IMPORTED_MODULE_1__.fire({
+    position: "top-end",
+    icon: "success",
+    title: "AutoWASM has been updated to version " + versionHash + "!",
+    text: changelog,
+    showConfirmButton: false,
+    timer: 3000,
+    allowOutsideClick: false
+  });
+  localStorage.version = versionHash;
+}
+
+function getToken() {
+  return location.href.includes("mohmoh") ? "6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH" : "6LfahtgjAAAAAF8SkpjyeYMcxMdxIaQeh-VoPATP";
+}
+
+async function waitForAPI(prop, callback) {
+  return new Promise(async resolve => {
+    if (!window[prop]) {
+      const waitInt = setInterval(async () => {
+        if (!window[prop]) return;
+
+        clearInterval(waitInt);
+        resolve(
+          await callback()
+        );
+      }, 100);
+    }
+    else resolve(await callback());
+  });
+}
+
+async function connectSocketIfReady() {
+  if (startedConnecting) return;
+  startedConnecting = true;
+
+  await waitForAPI("grecaptcha", () => 
+    new Promise(grecaptcha.ready));
+  
+  const token = await grecaptcha.execute(getToken(), {
+    action: "homepage" 
+  });
+  log("[*] Generated token " + token);
+  const server = await (0,_vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_16__["default"])();
+  const prefix = location.href.includes("moomoo") ? "re:" : "";
+  
+  connectSocket(prefix + token, server);
+}
+
+connectSocketIfReady();
+
+const wsLogs = [];
+
+function connectSocket(token, server = location.host) {
+  var wsAddress = (isProd ? "ws" : "wss") + '://' + server + "/?token=" + token;
+  
+  window.socket = top.socket = _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"];
+  
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].connect(wsAddress, function (error) {
+    if (location.href.includes("mohmoh"))
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.REGISTER, 0);
+    
+    pingSocket(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      if (error) {
+        disconnect(error);
+      } else {
+        enterGame();
+      }
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(enterGameButton), joinPartyButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      setTimeout(function () {
+        var currentKey = serverBrowser.value,
+          key = prompt('party key', currentKey);
+        key && (window.onbeforeunload = void 0, window.location.href = '/?server=' + key);
+      }, 10);
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(joinPartyButton), settingsButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      guideCard.classList.contains('showing') ? (guideCard.classList.remove('showing'), settingsButtonTitle.innerText = 'Settings') : (guideCard.classList.add('showing'), settingsButtonTitle.innerText = 'Close');
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(settingsButton), allianceButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      resetMoveDir(), 'block' != allianceMenu.style.display ? showAllianceMenu() : allianceMenu.style.display = 'none';
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(allianceButton), storeButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      'block' != storeMenu.style.display ? (storeMenu.style.display = 'block', allianceMenu.style.display = 'none', closeChat(), generateStoreList()) : storeMenu.style.display = 'none';
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(storeButton), chatButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      toggleChat();
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(chatButton), mapDisplay.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+      sendMapPing();
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(mapDisplay), function () {
+      for (var i = 0; i < icons.length; ++i) {
+        var tmpSprite = new Image();
+        tmpSprite.onload = function () {
+          this.isLoaded = !0;
+        }, tmpSprite.src = '.././img/icons/' + icons[i] + '.png', iconSprites[icons[i]] = tmpSprite;
+      }
+    }(), loadingText.style.display = 'none', menuCardHolder.style.display = 'block', nameInput.value = getSavedVal('moo_name') || '', function () {
+      var savedNativeValue = getSavedVal('native_resolution') || true;
+      setUseNativeResolution(savedNativeValue ? 'true' == savedNativeValue : 'undefined' != typeof cordova), showPing = 'true' == getSavedVal('show_ping'), pingDisplay.hidden = !showPing, getSavedVal('moo_moosic'), updateSkinColorPicker(), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(actionBar);
+      for (var i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length + _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list.length; ++i)
+        ! function (i) {
+          _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            id: 'actionBarItem' + i,
+            class: 'actionBarItem',
+            style: 'display:none',
+            onmouseout: function () {
+              showItemInfo();
+            },
+            parent: actionBar
+          });
+        }(i);
+      for (i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list.length + _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length; ++i)
+        ! function (i) {
+          var tmpCanvas = document.createElement('canvas');
+          tmpCanvas.width = tmpCanvas.height = 66;
+          var tmpContext = tmpCanvas.getContext('2d');
+          if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.imageSmoothingEnabled = !1, tmpContext.webkitImageSmoothingEnabled = !1, tmpContext.mozImageSmoothingEnabled = !1, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i]) {
+            tmpContext.rotate(Math.PI / 4 + Math.PI);
+            var tmpSprite = new Image();
+            toolSprites[_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].src] = tmpSprite, tmpSprite.onload = function () {
+                this.isLoaded = !0;
+                var tmpPad = 1 / (this.height / this.width),
+                  tmpMlt = _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].iPad || 1;
+                tmpContext.drawImage(this, -tmpCanvas.width * tmpMlt * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPad * tmpPad / 2, -tmpCanvas.height * tmpMlt * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPad / 2, tmpCanvas.width * tmpMlt * tmpPad * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPad, tmpCanvas.height * tmpMlt * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPad), tmpContext.fillStyle = 'rgba(0, 0, 70, 0.1)', tmpContext.globalCompositeOperation = 'source-atop', tmpContext.fillRect(-tmpCanvas.width / 2, -tmpCanvas.height / 2, tmpCanvas.width, tmpCanvas.height), document.getElementById('actionBarItem' + i)
+                  .style.backgroundImage = 'url(' + tmpCanvas.toDataURL() + ')';
+              }, tmpSprite.src = '.././img/weapons/' + _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].src + '.png', (tmpUnit = document.getElementById('actionBarItem' + i))
+              .onmouseover = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+                showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i], !0);
+              }), tmpUnit.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+                selectToBuild(i, !0);
+              }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(tmpUnit);
+          } else {
+            tmpSprite = getItemSprite(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length], !0);
+            var tmpUnit, tmpScale = Math.min(tmpCanvas.width - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].iconPadding, tmpSprite.width);
+            tmpContext.globalAlpha = 1, tmpContext.drawImage(tmpSprite, -tmpScale / 2, -tmpScale / 2, tmpScale, tmpScale), tmpContext.fillStyle = 'rgba(0, 0, 70, 0.1)', tmpContext.globalCompositeOperation = 'source-atop', tmpContext.fillRect(-tmpScale / 2, -tmpScale / 2, tmpScale, tmpScale), document.getElementById('actionBarItem' + i)
+              .style.backgroundImage = 'url(' + tmpCanvas.toDataURL() + ')', (tmpUnit = document.getElementById('actionBarItem' + i))
+              .onmouseover = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+                showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length]);
+              }), tmpUnit.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+                selectToBuild(i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length);
+              }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(tmpUnit);
+          }
+        }(i);
+      nameInput.ontouchstart = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (e) {
+        e.preventDefault();
+        var newValue = prompt('enter name', e.currentTarget.value);
+        newValue && (e.currentTarget.value = newValue.slice(0, 15));
+      }), nativeResolutionCheckbox.checked = useNativeResolution, nativeResolutionCheckbox.onchange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (e) {
+        setUseNativeResolution(e.target.checked);
+      }), showPingCheckbox.checked = showPing, showPingCheckbox.onchange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (e) {
+        showPing = showPingCheckbox.checked, pingDisplay.hidden = !showPing, saveVal('show_ping', showPing ? 'true' : 'false');
+      });
+    }());
+  }, serverPackets), setupServerStatus(), setTimeout(() => updateServerList(), 3000);
+}
+var canStore = 0,
+  mathPI = Math.PI,
+  mathPI2 = 2 * mathPI;
+
+function saveVal(name, val) {
+  canStore && localStorage.setItem(name, val);
+}
+
+function getSavedVal(name) {
+  return canStore ? localStorage.getItem(name) : null;
+}
+Math.lerpAngle = function (value1, value2, amount) {
+  Math.abs(value2 - value1) > mathPI && (value1 > value2 ? value2 += mathPI2 : value1 += mathPI2);
+  var value = value2 + (value1 - value2) * amount;
+  return value >= 0 && value <= mathPI2 ? value : value % mathPI2;
+}, CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+  return w < 2 * r && (r = w / 2), h < 2 * r && (r = h / 2), r < 0 && (r = 0), this.beginPath(), this.moveTo(x + r, y), this.arcTo(x + w, y, x + w, y + h, r), this.arcTo(x + w, y + h, x, y + h, r), this.arcTo(x, y + h, x, y, r), this.arcTo(x, y, x + w, y, r), this.closePath(), this;
+}, 'undefined' != typeof Storage && (canStore = !0); //,// getSavedVal("consent") || (consentBlock.style.display="block"),window.checkTerms=function(e){e?(consentBlock.style.display="none",saveVal("consent",1)):$("#consentShake").effect("shake")};
+var useNativeResolution, showPing, delta, now, lastSent, attackState, player, playerSID, tmpObj, camX = 100, camY = 100, tmpDir, screenWidth, screenHeight, moofoll = getSavedVal('moofoll'),
+  pixelDensity = 1,
+  lastUpdate = Date.now(),
+  ais = [],
+  players = [],
+  alliances = [],
+  gameObjects = [],
+  projectiles = [],
+  projectileManager = new _js_data_projectileManager_js__WEBPACK_IMPORTED_MODULE_13__["default"](_js_data_projectile_js__WEBPACK_IMPORTED_MODULE_12__["default"], projectiles, players, ais, objectManager, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"]),
+  aiManager = new _js_data_aiManager_js__WEBPACK_IMPORTED_MODULE_14__["default"](ais, _js_data_ai_js__WEBPACK_IMPORTED_MODULE_15__["default"], players, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"], null, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"]),
+  waterMult = 1,
+  waterPlus = 0,
+  mouseX = 0,
+  mouseY = 0,
+  controllingTouch = {
+    id: -1,
+    startX: 0,
+    startY: 0,
+    currentX: 0,
+    currentY: 0
+  },
+  attackingTouch = {
+    id: -1,
+    startX: 0,
+    startY: 0,
+    currentX: 0,
+    currentY: 0
+  },
+  skinColor = 0,
+  maxScreenWidth = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].maxScreenWidth,
+  maxScreenHeight = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].maxScreenHeight,
+  gridDelta = maxScreenHeight / 18,
+  inGame = !1,
+  mainMenu = (document.getElementById('ad-container'), document.getElementById('mainMenu')),
+  enterGameButton = document.getElementById('enterGame'),
+  promoImageButton = document.getElementById('promoImg'),
+  partyButton = document.getElementById('partyButton'),
+  joinPartyButton = document.getElementById('joinPartyButton'),
+  settingsButton = document.getElementById('settingsButton'),
+  settingsButtonTitle = settingsButton.getElementsByTagName('span')[0],
+  allianceButton = document.getElementById('allianceButton'),
+  storeButton = document.getElementById('storeButton'),
+  chatButton = document.getElementById('chatButton'),
+  gameCanvas = document.getElementById('gameCanvas'),
+  mainContext = gameCanvas.getContext('2d'),
+  serverBrowser = document.getElementById('serverBrowser'),
+  nativeResolutionCheckbox = document.getElementById('nativeResolution'),
+  showPingCheckbox = document.getElementById('showPing'),
+  pingDisplay = (document.getElementById('playMusic'), document.getElementById('pingDisplay')),
+  shutdownDisplay = document.getElementById('shutdownDisplay'),
+  menuCardHolder = document.getElementById('menuCardHolder'),
+  guideCard = document.getElementById('guideCard'),
+  loadingText = document.getElementById('loadingText'),
+  gameUI = document.getElementById('gameUI'),
+  actionBar = document.getElementById('actionBar'),
+  scoreDisplay = document.getElementById('scoreDisplay'),
+  foodDisplay = document.getElementById('foodDisplay'),
+  woodDisplay = document.getElementById('woodDisplay'),
+  stoneDisplay = document.getElementById('stoneDisplay'),
+  killCounter = document.getElementById('killCounter'),
+  leaderboardData = document.getElementById('leaderboardData'),
+  nameInput = document.getElementById('nameInput'),
+  itemInfoHolder = document.getElementById('itemInfoHolder'),
+  ageText = document.getElementById('ageText'),
+  ageBarBody = document.getElementById('ageBarBody'),
+  upgradeHolder = document.getElementById('upgradeHolder'),
+  upgradeCounter = document.getElementById('upgradeCounter'),
+  allianceMenu = document.getElementById('allianceMenu'),
+  allianceHolder = document.getElementById('allianceHolder'),
+  allianceManager = document.getElementById('allianceManager'),
+  mapDisplay = document.getElementById('mapDisplay'),
+  diedText = document.getElementById('diedText'),
+  skinColorHolder = document.getElementById('skinColorHolder'),
+  mapContext = mapDisplay.getContext('2d');
+mapDisplay.width = 300, mapDisplay.height = 300;
+var storeMenu = document.getElementById('storeMenu'),
+  storeHolder = document.getElementById('storeHolder'),
+  noticationDisplay = document.getElementById('noticationDisplay'),
+  hats = _js_data_store_js__WEBPACK_IMPORTED_MODULE_11__["default"].hats,
+  accessories = _js_data_store_js__WEBPACK_IMPORTED_MODULE_11__["default"].accessories,
+  objectManager = new _js_data_objectManager_js__WEBPACK_IMPORTED_MODULE_9__["default"](_js_data_gameObject_js__WEBPACK_IMPORTED_MODULE_6__["default"], gameObjects, _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"]),
+  outlineColor = '#525252',
+  darkOutlineColor = '#3d3f42';
+
+function setInitData(data) {
+  alliances = data.teams;
+}
+
+var inWindow = !0,
+  didLoad = !1,
+  captchaReady = !1;
+
+async function disconnect(reason) {
+  const req = await fetch("https://api.ipify.org/");
+  const ip = await req.text();
+  
+  sweetalert2__WEBPACK_IMPORTED_MODULE_1__.fire({
+    icon: "error",
+    title: "WebSocket closed",
+    html: `Probably flower or someone other crashed the server. <br>
+    IP Address: ${ip} <br>
+    Reason: ${reason} <br>
+    Recaptcha token: ${localStorage._grecaptcha} <br> <br>
+    Contact 0xffabc at mohmoh's server if you have more questions`,
+    showConfirmButton: true,
+  });
+}
+
+function showLoadingText(text) {
+  mainMenu.style.display = 'block', gameUI.style.display = 'none', menuCardHolder.style.display = 'none', diedText.style.display = 'none', loadingText.style.display = 'block', loadingText.innerHTML = text + '<a href=\'javascript:window.location.href=window.location.href\' class=\'ytLink\'>reload</a>';
+}
+window.onblur = function () {
+  inWindow = !1;
+}, window.onfocus = function () {
+  inWindow = !0, player && player.alive && resetMoveDir();
+}, gameCanvas.oncontextmenu = function () {
+  return !1;
+};
+
+window.captchaCallback = () => connectSocketIfReady();
+didLoad = true;
+
+function setupServerStatus() {
+  var altServerText, altServerURL, tmpHTML = '',
+    overallTotal = 0;
+  tmpHTML += '<option disabled>All Servers - 100 players</option>', serverBrowser.innerHTML = tmpHTML, 'mohmoh.eu' == location.hostname ? (altServerText = 'Back to MohMoh', altServerURL = '//mohmoh.eu/') : (altServerText = 'Try the sandbox', altServerURL = '//mohmoh.eu/'), document.getElementById('altServer')
+    .innerHTML = '<a href=\'' + altServerURL + '\'>' + altServerText + '<i class=\'material-icons\' style=\'font-size:10px;vertical-align:middle\'>arrow_forward_ios</i></a>';
+}
+
+function updateServerList() { }
+
+function showItemInfo(item, isWeapon, isStoreItem) {
+  if (player && item)
+    if (_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(itemInfoHolder), itemInfoHolder.classList.add('visible'), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+        id: 'itemInfoName',
+        text: _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].capitalizeFirst(item.name),
+        parent: itemInfoHolder
+      }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+        id: 'itemInfoDesc',
+        text: item.desc,
+        parent: itemInfoHolder
+      }), isStoreItem);
+    else if (isWeapon)
+    _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      class: 'itemInfoReq',
+      text: item.type ? 'secondary' : 'primary',
+      parent: itemInfoHolder
+    });
+  else {
+    for (var i = 0; i < item.req.length; i += 2)
+      _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+        class: 'itemInfoReq',
+        html: item.req[i] + '<span class=\'itemInfoReqVal\'> x' + item.req[i + 1] + '</span>',
+        parent: itemInfoHolder
+      });
+    item.group.limit && _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      class: 'itemInfoLmt',
+      text: (player.itemCounts[item.group.id] || 0) + '/' + item.group.limit,
+      parent: itemInfoHolder
+    });
+  } else
+    itemInfoHolder.classList.remove('visible');
+}
+
+var lastDeath, minimapData, mapMarker, allianceNotifications = [],
+  alliancePlayers = [];
+
+function allianceNotification(sid, name) {
+  allianceNotifications.push({
+    sid: sid,
+    name: name
+  }), updateNotifications();
+}
+
+function updateNotifications() {
+  if (allianceNotifications[0]) {
+    var tmpN = allianceNotifications[0];
+    _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(noticationDisplay), noticationDisplay.style.display = 'block', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      class: 'notificationText',
+      text: tmpN.name,
+      parent: noticationDisplay
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      class: 'notifButton',
+      html: '<i class=\'material-icons\' style=\'font-size:28px;color:#cc5151;\'>&#xE14C;</i>',
+      parent: noticationDisplay,
+      onclick: function () {
+        aJoinReq(0);
+      },
+      hookTouch: !0
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      class: 'notifButton',
+      html: '<i class=\'material-icons\' style=\'font-size:28px;color:#8ecc51;\'>&#xE876;</i>',
+      parent: noticationDisplay,
+      onclick: function () {
+        aJoinReq(1);
+      },
+      hookTouch: !0
+    });
+  } else
+    noticationDisplay.style.display = 'none';
+}
+
+function addAlliance(data) {
+  alliances.push(data), 'block' == allianceMenu.style.display && showAllianceMenu();
+}
+
+function setPlayerTeam(team, isOwner) {
+  player && (player.team = team, player.isOwner = isOwner, 'block' == allianceMenu.style.display && showAllianceMenu());
+}
+
+function setAlliancePlayers(data) {
+  alliancePlayers = data, 'block' == allianceMenu.style.display && showAllianceMenu();
+}
+
+function deleteAlliance(sid) {
+  for (var i = alliances.length - 1; i >= 0; i--)
+    alliances[i].sid == sid && alliances.splice(i, 1);
+  'block' == allianceMenu.style.display && showAllianceMenu();
+}
+
+function showAllianceMenu() {
+  if (player && player.alive) {
+    if (closeChat(), storeMenu.style.display = 'none', allianceMenu.style.display = 'block', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(allianceHolder), player.team)
+      for (var i = 0; i < alliancePlayers.length; i += 2)
+        ! function (i) {
+          var tmp = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            class: 'allianceItem',
+            style: 'color:' + (alliancePlayers[i] == player.sid ? '#fff' : 'rgba(255,255,255,0.6)'),
+            text: alliancePlayers[i + 1],
+            parent: allianceHolder
+          });
+          player.isOwner && alliancePlayers[i] != player.sid && _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            class: 'joinAlBtn',
+            text: 'Kick',
+            onclick: function () {
+              kickFromClan(alliancePlayers[i]);
+            },
+            hookTouch: !0,
+            parent: tmp
+          });
+        }(i);
+    else if (alliances.length)
+      for (i = 0; i < alliances.length; ++i)
+        ! function (i) {
+          var tmp = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            class: 'allianceItem',
+            style: 'color:' + (alliances[i].sid == player.team ? '#fff' : 'rgba(255,255,255,0.6)'),
+            text: alliances[i].sid,
+            parent: allianceHolder
+          });
+          _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            class: 'joinAlBtn',
+            text: 'Join',
+            onclick: function () {
+              sendJoin(i);
+            },
+            hookTouch: !0,
+            parent: tmp
+          });
+        }(i);
+    else
+      _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+        class: 'allianceItem',
+        text: 'No Tribes Yet',
+        parent: allianceHolder
+      });
+    _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(allianceManager), player.team ? _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      class: 'allianceButtonM',
+      style: 'width: 360px',
+      text: player.isOwner ? 'Delete Tribe' : 'Leave Tribe',
+      onclick: function () {
+        leaveAlliance();
+      },
+      hookTouch: !0,
+      parent: allianceManager
+    }) : (_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      tag: 'input',
+      type: 'text',
+      id: 'allianceInput',
+      maxLength: 7,
+      placeholder: 'unique name',
+      ontouchstart: function (ev) {
+        ev.preventDefault();
+        var newValue = prompt('unique name', ev.currentTarget.value);
+        ev.currentTarget.value = newValue.slice(0, 7);
+      },
+      parent: allianceManager
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+      tag: 'div',
+      class: 'allianceButtonM',
+      style: 'width: 140px;',
+      text: 'Create',
+      onclick: function () {
+        createAlliance();
+      },
+      hookTouch: !0,
+      parent: allianceManager
+    }));
+  }
+}
+
+function aJoinReq(join) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ACCEPT_CLAN_JOIN, allianceNotifications[0].sid, join), allianceNotifications.splice(0, 1), updateNotifications();
+}
+
+function kickFromClan(sid) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CLAN_KICK, sid);
+}
+
+function sendJoin(index) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CLAN_JOIN, alliances[index].sid);
+}
+
+function createAlliance() {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CLAN_CREATE, "⁣" + document.getElementById('allianceInput')
+    .value + "⁣");
+}
+
+let waka = 0; // sorry for bad variable name
+
+function leaveAlliance() {
+  allianceNotifications = [], updateNotifications(), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CLAN_LEAVE);
+}
+var tmpPing, mapPings = [];
+
+function pingMap(x, y) {
+  for (var i = 0; i < mapPings.length; ++i)
+    if (!mapPings[i].active) {
+      tmpPing = mapPings[i];
+      break;
+    }
+  tmpPing || (tmpPing = new function () {
+    this.init = function (x, y) {
+      this.scale = 0, this.x = x, this.y = y, this.active = !0;
+    }, this.update = function (ctxt, delta) {
+      this.active && (this.scale += 0.05 * delta, this.scale >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapPingScale ? this.active = !1 : (ctxt.globalAlpha = 1 - Math.max(0, this.scale / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapPingScale), ctxt.beginPath(), ctxt.arc(this.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, this.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, this.scale, 0, 2 * Math.PI), ctxt.stroke()));
+    };
+  }(), mapPings.push(tmpPing)), tmpPing.init(x, y);
+}
+
+function updateMinimap(data) {
+  minimapData = data;
+}
+var currentStoreIndex = 0;
+
+function updateStoreItems(type, id, index) {
+  index ? type ? player.tailIndex = id : player.tails[id] = 1 : type ? player.skinIndex = id : player.skins[id] = 1, 'block' == storeMenu.style.display && generateStoreList();
+}
+
+function generateStoreList() {
+  if (player) {
+    _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(storeHolder);
+    for (var index = currentStoreIndex, tmpArray = index ? accessories : hats, i = 0; i < tmpArray.length; ++i)
+      tmpArray[i].dontSell || function (i) {
+        var tmp = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          id: 'storeDisplay' + i,
+          class: 'storeItem',
+          onmouseout: function () {
+            showItemInfo();
+          },
+          onmouseover: function () {
+            showItemInfo(tmpArray[i], !1, !0);
+          },
+          parent: storeHolder
+        });
+        _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(tmp, !0), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          tag: 'img',
+          class: 'hatPreview',
+          src: '../img/' + (index ? 'accessories/access_' : 'hats/hat_') + tmpArray[i].id + (tmpArray[i].topSprite ? '_p' : '') + '.png',
+          parent: tmp
+        }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          tag: 'span',
+          text: tmpArray[i].name,
+          parent: tmp
+        }), (index ? player.tails[tmpArray[i].id] : player.skins[tmpArray[i].id]) ? (index ? player.tailIndex : player.skinIndex) == tmpArray[i].id ? _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          class: 'joinAlBtn',
+          style: 'margin-top: 5px',
+          text: 'Unequip',
+          onclick: function () {
+            storeEquip(0, index);
+          },
+          hookTouch: !0,
+          parent: tmp
+        }) : _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          class: 'joinAlBtn',
+          style: 'margin-top: 5px',
+          text: 'Equip',
+          onclick: function () {
+            storeEquip(tmpArray[i].id, index);
+          },
+          hookTouch: !0,
+          parent: tmp
+        }) : (_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          class: 'joinAlBtn',
+          style: 'margin-top: 5px',
+          text: 'Buy',
+          onclick: function () {
+            storeBuy(tmpArray[i].id, index);
+          },
+          hookTouch: !0,
+          parent: tmp
+        }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          tag: 'span',
+          class: 'itemPrice',
+          text: tmpArray[i].price,
+          parent: tmp
+        }));
+      }(i);
+  }
+}
+
+function storeEquip(id, index) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.STORE_EQUIP, 0, id, index);
+}
+
+function storeBuy(id, index) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.STORE_EQUIP, 1, id, index);
+}
+
+function hideAllWindows() {
+  storeMenu.style.display = 'none', allianceMenu.style.display = 'none', closeChat();
+}
+
+function updateItems(data, wpn) {
+  data && (wpn ? player.weapons = data : player.items = data);
+  for (var i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list.length; ++i) {
+    var tmpI = _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length + i;
+    document.getElementById('actionBarItem' + tmpI)
+      .style.display = player.items.indexOf(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i].id) >= 0 ? 'inline-block' : 'none';
+  }
+  for (i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length; ++i)
+    document.getElementById('actionBarItem' + i)
+    .style.display = player.weapons[_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].type] == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].id ? 'inline-block' : 'none';
+}
+
+function setUseNativeResolution(useNative) {
+  useNativeResolution = useNative, pixelDensity = useNative && window.devicePixelRatio || 1, nativeResolutionCheckbox.checked = useNative, saveVal('native_resolution', useNative.toString()), resize();
+}
+
+function updateSkinColorPicker() {
+  for (var tmpHTML = '', i = 0; i < _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].skinColors.length; ++i)
+    tmpHTML += i == skinColor ? '<div class=\'skinColorItem activeSkin\' style=\'background-color:' + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].skinColors[i] + '\' onclick=\'selectSkinColor(' + i + ')\'></div>' : '<div class=\'skinColorItem\' style=\'background-color:' + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].skinColors[i] + '\' onclick=\'selectSkinColor(' + i + ')\'></div>';
+  skinColorHolder.innerHTML = tmpHTML;
+}
+var chatBox = document.getElementById('chatBox'),
+  chatHolder = document.getElementById('chatHolder');
+
+function toggleChat() {
+  usingTouch ? setTimeout(function () {
+    var chatMessage = prompt('chat message');
+    chatMessage && sendChat(chatMessage);
+  }, 1) : 'block' == chatHolder.style.display ? (chatBox.value && sendChat(chatBox.value), closeChat()) : (storeMenu.style.display = 'none', allianceMenu.style.display = 'none', chatHolder.style.display = 'block', chatBox.focus(), resetMoveDir()), chatBox.value = '';
+}
+
+function sendChat(message) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, message.slice(0, 30));
+}
+
+function closeChat() {
+  chatBox.value = '', chatHolder.style.display = 'none';
+}
+var usingTouch, lastDir, profanityList = [
+  'cunt',
+  'whore',
+  'fuck',
+  'shit',
+  'faggot',
+  'nigger',
+  'nigga',
+  'dick',
+  'vagina',
+  'minge',
+  'cock',
+  'rape',
+  'cum',
+  'sex',
+  'tits',
+  'penis',
+  'clit',
+  'pussy',
+  'meatcurtain',
+  'jizz',
+  'prune',
+  'douche',
+  'wanker',
+  'damn',
+  'bitch',
+  'dick',
+  'fag',
+  'bastard'
+];
+
+const syncChats = new Map(Object.entries({
+  "DROP DEAD NO TRACE": "DROP DEAD NO TRACE",
+  "!sync": "!op"
+  }));
+
+function receiveChat(sid, message) {
+  var tmpPlayer = findPlayerBySID(sid);
+
+  for (const [key, value] of emojis) {
+    message = message.replaceAll(key, value);
+  }
+
+  if (/what\ mod/g.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 530 && player.sid != tmpPlayer.sid) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "AutoWASM By 0xffabc.");
+  } else if (message.startsWith("!connect") && player.sid == tmpPlayer.sid) {
+    const playerName = message.split("!connect ")[1];
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CLAN_CREATE, clanNames[Math.floor(clanNames.length * Math.random())]);
+    ownerSid = players.find(e => e && e?.name == playerName)?.sid;
+    if (ownerSid) {
+      setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "[*] Successfully connected to " + playerName + "!"), 1000);
+    } else setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "[*] Connection failed!"), 1000);
+  } else if (message.startsWith("!disconnect") && (player.sid == tmpPlayer.sid || tmpPlayer.sid == ownerSid)) {
+    ownerSid = player.sid;
+    setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "[*] Successfully disconnected"), 1000);
+  } else if (tmpPlayer.sid == ownerSid || tmpPlayer.sid == player.sid) {
+    switch (message) {
+      case "!follow":
+        setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, `[*] ${window.follow ? "Enabling" : "Disabling"} follow module!`), 1000);
+        window.follow = !window.follow;
+        break;
+      case "!bowspam":
+        setTimeout(() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, `[*] ${window.bowspam ? "Enabling" : "Disabling"} bowspam module!`), 1000);
+        window.bowspam = !window.bowspam;
+        break;
+    }
+  }
+
+  if (syncChats.has(message) && tmpPlayer && sid != player.sid) {
+    if (tmpPlayer.weaponIndex == tmpPlayer.weapons[1]) reverseInsta();
+    else normalInsta();
+  } else if (syncChats.has(message) && sid == player.sid) return;
+
+  if (message == "!Synchronize") {
+    return bowSync();
+  }
+
+  tmpPlayer && (tmpPlayer.chatMessage = function (text) {
+    for (var tmpString, i = 0; i < profanityList.length; ++i)
+      if (text.indexOf(profanityList[i]) > -1) {
+        tmpString = '';
+        for (var y = 0; y < profanityList[i].length; ++y)
+          tmpString += tmpString.length ? 'o' : 'M';
+        var re = new RegExp(profanityList[i], 'g');
+        text = text.replace(re, tmpString);
+      }
+    return text;
+  }(message), tmpPlayer.chatCountdown = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].chatCountdown);
+}
+
+function resize() {
+  gridDelta = maxScreenHeight / 18;
+  screenWidth = window.innerWidth, screenHeight = window.innerHeight;
+  var scaleFillNative = Math.max(screenWidth / maxScreenWidth, screenHeight / maxScreenHeight) * pixelDensity;
+  gameCanvas.width = screenWidth * pixelDensity, gameCanvas.height = screenHeight * pixelDensity, gameCanvas.style.width = screenWidth + 'px', gameCanvas.style.height = screenHeight + 'px', mainContext.setTransform(scaleFillNative, 0, 0, scaleFillNative, (screenWidth * pixelDensity - maxScreenWidth * scaleFillNative) / 2, (screenHeight * pixelDensity - maxScreenHeight * scaleFillNative) / 2);
+}
+
+function setUsingTouch(using) {
+  (usingTouch = using) ? guideCard.classList.add('touch'): guideCard.classList.remove('touch');
+}
+
+function touchEnd(ev) {
+  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
+  for (var i = 0; i < ev.changedTouches.length; i++) {
+    var t = ev.changedTouches[i];
+    t.identifier == controllingTouch.id ? (controllingTouch.id = -1, sendMoveDir()) : t.identifier == attackingTouch.id && (attackingTouch.id = -1, player.buildIndex >= 0 && (attackState = 1, sendAtckState()), attackState = 0, sendAtckState());
+  }
+}
+
+function getAttackDir() {
+  return aimOverride ? aimOverride : (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2));
+}
+window.addEventListener('resize', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(resize)), resize(), setUsingTouch(!1), window.setUsingTouch = setUsingTouch, gameCanvas.addEventListener('touchmove', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (ev) {
+  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
+  for (var i = 0; i < ev.changedTouches.length; i++) {
+    var t = ev.changedTouches[i];
+    t.identifier == controllingTouch.id ? (controllingTouch.currentX = t.pageX, controllingTouch.currentY = t.pageY, sendMoveDir()) : t.identifier == attackingTouch.id && (attackingTouch.currentX = t.pageX, attackingTouch.currentY = t.pageY, attackState = 1);
+  }
+}), !1), gameCanvas.addEventListener('touchstart', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (ev) {
+  if (!inGame)
+    return ev.preventDefault(), !1;
+  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
+  for (var i = 0; i < ev.changedTouches.length; i++) {
+    var t = ev.changedTouches[i];
+    t.pageX < document.body.scrollWidth / 2 && -1 == controllingTouch.id ? (controllingTouch.id = t.identifier, controllingTouch.startX = controllingTouch.currentX = t.pageX, controllingTouch.startY = controllingTouch.currentY = t.pageY, sendMoveDir()) : t.pageX > document.body.scrollWidth / 2 && -1 == attackingTouch.id && (attackingTouch.id = t.identifier, attackingTouch.startX = attackingTouch.currentX = t.pageX, attackingTouch.startY = attackingTouch.currentY = t.pageY, player.buildIndex < 0 && (attackState = 1, sendAtckState()));
+  }
+}), false), gameCanvas.addEventListener('touchend', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(touchEnd), !1), gameCanvas.addEventListener('touchcancel', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(touchEnd), !1), gameCanvas.addEventListener('touchleave', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(touchEnd), !1), gameCanvas.addEventListener('mousemove', function (e) {
+  e.preventDefault(), e.stopPropagation(), setUsingTouch(!1), mouseX = e.clientX, mouseY = e.clientY;
+}, false), gameCanvas.addEventListener('mousedown', function (e) {
+  aimOverride = false;
+  setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
+  touch = e.button == 0;
+}, false), gameCanvas.addEventListener('mouseup', function (e) {
+  setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
+}, false);
+gameCanvas.addEventListener("wheel", function (e) {
+  const deltaY = maxScreenWidth / 20;
+  const fixedDelta = e.deltaY > 0 ? deltaY : -deltaY;
+  maxScreenWidth += fixedDelta;
+  maxScreenHeight += fixedDelta;
+  
+  resize();
+}, false);
+  let touch = 0;
+var keys = {},
+  moveKeys = {
+    KeyW: [0, -1],
+    KeyS: [0, 1],
+    KeyA: [-1, 0],
+    KeyD: [1, 0]
+  };
+
+window.keyEvents = {};
+
+function resetMoveDir() {
+  keys = {}, _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.RESET_MOVE_DIR);
+}
+
+function keysActive() {
+  return 'block' != allianceMenu.style.display && 'block' != chatHolder.style.display;
+}
+
+function sendAtckState() {
+  player && player.alive && _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, attackState, null);
+}
+window.addEventListener('keydown', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (event) {
+  var keyNum = event.which || event.keyCode || 0;
+  const keyCode = event.code;
+  if (document.activeElement.tagName !== "INPUT") {
+    window.keyEvents[keyCode] = true;
+    window.keyEvents["Switch" + keyCode] = !window.keyEvents["Switch" + keyCode];
+  }
+  "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.FREEZE, 1) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.FREEZE, 0)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
+})), window.addEventListener('keyup', _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function (event) {
+  if (player && player.alive) {
+    var keyNum = event.which || event.keyCode || 0;
+    const keyCode = event.code;
+    "Enter" == keyCode ? toggleChat() : keysActive() && keys[keyCode] && (keys[keyCode] = 0, moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 0, sendAtckState()));
+    window.keyEvents[keyCode] = false;
+  }
+}));
+var lastMoveDir = void 0;
+
+function sendMoveDir() {
+  var newMoveDir = function () {
+    var dx = 0,
+      dy = 0;
+    if (-1 != controllingTouch.id)
+      dx += controllingTouch.currentX - controllingTouch.startX, dy += controllingTouch.currentY - controllingTouch.startY;
+    else
+      for (var key in moveKeys) {
+        var tmpDir = moveKeys[key];
+        dx += !!keys[key] * tmpDir[0], dy += !!keys[key] * tmpDir[1];
+      }
+    return 0 == dx && 0 == dy ? void 0 : _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].fixTo(Math.atan2(dy, dx), 2);
+  }();
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, newMoveDir), (!window.enemyDanger && !instakilling) && (storeEquip(window.tanker ? 15 : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : 11), true), storeEquip(window.tanker ? 6 : getBiomeHat())), lastMoveDir = newMoveDir);
+}
+
+function sendMapPing() {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MAP_PING, 1);
+}
+
+function selectToBuild(index, wpn) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, index, wpn);
+}
+
+function enterGame() {
+  if (!_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].connected) return;
+  
+  saveVal('moo_name', nameInput.value);
+  showLoadingText('Loading...');
+  
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SPAWN, {
+    name: nameInput.value,
+    moofoll: moofoll,
+    skin: skinColor
+  });
+
+  inGame = true;
+}
+var firstSetup = !0;
+
+function setupGame(yourSID) {
+  loadingText.style.display = 'none', menuCardHolder.style.display = 'block', mainMenu.style.display = 'none', keys = {}, playerSID = yourSID, attackState = 0, inGame = !0, firstSetup && (firstSetup = !1, gameObjects.length = 0);
+}
+
+function showText(x, y, value, type) {
+  textManager.showText(x, y, 50, 0.18, 500, Math.abs(value), value >= 0 ? '#fff' : '#8ecc51');
+}
+var deathTextScale = 99999;
+
+function killPlayer() {
+  const logData = {
+    shameCount: player.shameCount,
+    reloads: reloads,
+    ping: window.pingTime.toString(),
+    playerName: player.name
+  };
+  
+  (0,_libs_aoe32_js__WEBPACK_IMPORTED_MODULE_0__["default"])(logData);
+
+  console.log("Logged death", logData);
+  
+  inGame = !1,
+
+  gameUI.style.display = 'none', hideAllWindows(), lastDeath = {
+    x: player.x,
+    y: player.y
+  }, loadingText.style.display = 'none', diedText.style.display = 'block', diedText.style.fontSize = '0px', deathTextScale = 0, setTimeout(function () {
+    menuCardHolder.style.display = 'block', mainMenu.style.display = 'block', diedText.style.display = 'none';
+  }, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].deathFadeout), updateServerList();
+}
+
+function killObjects(sid) {
+  player && objectManager.removeAllItems(sid);
+}
+
+function killObject(sid) {
+  const object = gameObjects[sid];
+  objectManager.disableBySid(sid);
+  players.find(e => e.sid != player.sid && Math.hypot(player.x - e.x, player.y - e.y) < 180) && autoplace(object, true);
+}
+
+function updateStatusDisplay() {
+  scoreDisplay.innerText = player.points, foodDisplay.innerText = player.food, woodDisplay.innerText = player.wood, stoneDisplay.innerText = player.stone, killCounter.innerText = player.kills;
+}
+var iconSprites = {},
+  icons = [
+    'crown',
+    'skull'
+  ],
+  tmpList = [];
+
+function updateUpgrades(points, age) {
+  if (player.upgradePoints = points, player.upgrAge = age, points > 0) {
+    tmpList.length = 0, _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(upgradeHolder);
+    for (var i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length; ++i)
+      _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].age == age && (null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i].pre || true || 0) && (_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+          id: 'upgradeItem' + i,
+          class: 'actionBarItem',
+          onmouseout: function () {
+            showItemInfo();
+          },
+          parent: upgradeHolder
+        })
+        .style.backgroundImage = document.getElementById('actionBarItem' + i)
+        .style.backgroundImage, tmpList.push(i));
+    for (i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list.length; ++i)
+      if (_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i].age == age && (null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i].pre || true || 0)) {
+        var tmpI = _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length + i;
+        _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            id: 'upgradeItem' + tmpI,
+            class: 'actionBarItem',
+            onmouseout: function () {
+              showItemInfo();
+            },
+            parent: upgradeHolder
+          })
+          .style.backgroundImage = document.getElementById('actionBarItem' + tmpI)
+          .style.backgroundImage, tmpList.push(tmpI);
+      }
+    for (i = 0; i < tmpList.length; i++)
+      ! function (i) {
+        var tmpItem = document.getElementById('upgradeItem' + i);
+        tmpItem.onmouseover = function () {
+          _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i] ? showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[i], !0) : showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons.length]);
+        }, tmpItem.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].checkTrusted(function () {
+          _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.UPGRADE, i);
+        }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].hookTouchEvents(tmpItem);
+      }(tmpList[i]);
+    tmpList.length ? (upgradeHolder.style.display = 'block', upgradeCounter.style.display = 'block', upgradeCounter.innerHTML = 'SELECT ITEMS (' + points + ')') : (upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo());
+  } else
+    upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo();
+}
+
+function updateAge(xp, mxp, age) {
+  null != xp && (player.XP = xp), null != mxp && (player.maxXP = mxp), null != age && (player.age = age), age == _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].maxAge ? (ageText.innerHTML = 'MAX AGE', ageBarBody.style.width = '100%') : (ageText.innerHTML = 'AGE ' + player.age, ageBarBody.style.width = player.XP / player.maxXP * 100 + '%');
+}
+
+function updateLeaderboard(data) {
+  _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].removeAllChildren(leaderboardData);
+  for (var tmpC = 1, i = 0; i < data.length; i += 3)
+    ! function (i) {
+      _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+        class: 'leaderHolder',
+        parent: leaderboardData,
+        children: [
+          _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            class: 'leaderboardItem',
+            style: 'color:' + (data[i] == playerSID ? '#fff' : 'rgba(255,255,255,0.6)'),
+            text: tmpC + '. ' + ('' != data[i + 1] ? data[i + 1] : 'unknown')
+          }),
+          _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].generateElement({
+            class: 'leaderScore',
+            text: _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].kFormat(data[i + 2]) || '0'
+          })
+        ]
+      });
+    }(i), tmpC++;
+}
+let lastAttackDir = null;
+
+function renderControl(startX, startY, currentX, currentY) {
+  mainContext.save(), mainContext.setTransform(1, 0, 0, 1, 0, 0), mainContext.scale(pixelDensity, pixelDensity);
+  var controlRadius = 50;
+  mainContext.beginPath(), mainContext.arc(startX, startY, controlRadius, 0, 2 * Math.PI, !1), mainContext.closePath(), mainContext.fillStyle = 'rgba(255, 255, 255, 0.3)', mainContext.fill(), controlRadius = 50;
+  var offsetX = currentX - startX,
+    offsetY = currentY - startY,
+    mag = Math.sqrt(Math.pow(offsetX, 2) + Math.pow(offsetY, 2)),
+    divisor = mag > controlRadius ? mag / controlRadius : 1;
+  offsetX /= divisor, offsetY /= divisor, mainContext.beginPath(), mainContext.arc(startX + offsetX, startY + offsetY, 0.5 * controlRadius, 0, 2 * Math.PI, !1), mainContext.closePath(), mainContext.fillStyle = 'white', mainContext.fill(), mainContext.restore();
+}
+
+function renderProjectiles(layer, xOffset, yOffset) {
+  for (var i = 0; i < projectiles.length; ++i)
+    (tmpObj = projectiles[i])
+    .active && tmpObj.layer == layer && (tmpObj.update(delta), tmpObj.active && isOnScreen(tmpObj.x - xOffset, tmpObj.y - yOffset, tmpObj.scale) && (mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpObj.dir), renderProjectile(0, 0, tmpObj, mainContext, 1), mainContext.restore()));
+}
+var projectileSprites = {};
+
+function renderProjectile(x, y, obj, ctxt, debug) {
+  if (obj.src) {
+    var tmpSrc = _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].projectiles[obj.indx].src,
+      tmpSprite = projectileSprites[tmpSrc];
+    tmpSprite || ((tmpSprite = new Image())
+      .onload = function () {
+        this.isLoaded = !0;
+      }, tmpSprite.src = '.././img/weapons/' + tmpSrc + '.png', projectileSprites[tmpSrc] = tmpSprite), tmpSprite.isLoaded && ctxt.drawImage(tmpSprite, x - obj.scale / 2, y - obj.scale / 2, obj.scale, obj.scale);
+  } else
+    1 == obj.indx && (ctxt.fillStyle = '#939393', renderCircle(x, y, obj.scale, ctxt));
+}
+
+function renderWaterBodies(xOffset, yOffset, ctxt, padding) {
+  var tmpW = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].riverWidth + padding,
+    tmpY = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale / 2 - yOffset - tmpW / 2;
+  tmpY < maxScreenHeight && tmpY + tmpW > 0 && ctxt.fillRect(0, tmpY, maxScreenWidth, tmpW);
+}
+
+function renderGameObjects(layer, xOffset, yOffset) {
+  var tmpSprite, tmpX, tmpY;
+  for (let i = 0; i < nearestGameObjects.length; i++)
+    (tmpObj = nearestGameObjects[i])?.active && (tmpX = tmpObj.x + tmpObj.xWiggle - xOffset, tmpY = tmpObj.y + tmpObj.yWiggle - yOffset, 0 == layer && tmpObj.update(delta), tmpObj.layer == layer && isOnScreen(tmpX, tmpY, tmpObj.scale + (tmpObj.blocker || 0)) && (mainContext.globalAlpha = tmpObj.hideFromEnemy ? 0.6 : 1, tmpObj.isItem ? (tmpSprite = getItemSprite(tmpObj), mainContext.save(), mainContext.translate(tmpX, tmpY), mainContext.rotate(tmpObj.dir), mainContext.drawImage(tmpSprite, -tmpSprite.width / 2, -tmpSprite.height / 2), tmpObj.blocker && (mainContext.strokeStyle = '#db6e6e', mainContext.globalAlpha = 0.3, mainContext.lineWidth = 6, renderCircle(0, 0, tmpObj.blocker, mainContext, !1, !0)), mainContext.restore()) : (tmpSprite = getResSprite(tmpObj), mainContext.drawImage(tmpSprite, tmpX - tmpSprite.width / 2, tmpY - tmpSprite.height / 2))));
+}
+
+const speeds = [300, 400, 400, 300, 300, 700, 300, 100, 400, 600, 400, 1, 700, 230, 700, 1500];
+let lastPoison = Date.now();
+let turretReload = 0;
+const othersReloads  = [];
+
+function getBiomeHat() {
+
+  if (window.tanker) 
+    return 6;
+  
+  const biomeID = player.y >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 2 : player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 1 : 0;
+
+  switch (biomeID) {
+    case 0:
+      return 12; // forest
+      break;
+    case 1:
+      return 15; // winter
+      break;
+    case 2:
+      return 12; // desert
+      break;
+  }
+}
+
+function gatherAnimation(sid, didHit, index) {
+  (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
+
+  if (sid == ownerSid && normalInsta() == false) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, players.find(p => p && p?.sid == ownerSid).dir); 
+  }
+  
+  if (sid == player.sid) reloads[waka] = 0;
+  else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = 0;
+
+  if (instakilling) return;
+  if (sid != player.sid) return;
+
+  const hitHat = (breaking || !touch) ? 40 : 7;
+  const hitAcc = (player.health > 50) ? 15 : (player.health < 40 ? 18 : 13);
+  const idleHat = breaking ? 6 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
+  const idleAcc = players.length >= 2 ? 15 : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : 19);
+
+  storeEquip(window.tanker ? 6 : idleHat);
+  storeEquip(window.tanker ? (players.filter(e => Math.hypot(e?.x - player.x, e?.y - player.y) < 180).length > 2 ? 59 : 15) : idleAcc, true);
+
+  setTimeout(() => {
+    if (instakilling) return;
+    storeEquip(hitHat);
+    storeEquip(hitAcc, true);
+    setTimeout(() => {
+      if (instakilling) return;
+      if (!attackState) {
+        storeEquip(window.tanker ? 6 : (idleHat == 53 ? 6 : idleHat));
+        storeEquip(window.tanker ? 15 : idleAcc, true);
+      }
+    }, average);
+  }, speeds[waka] - window.pingTime);
+}
+
+function renderPlayers(xOffset, yOffset, zIndex) {
+  for (var i = 0; i < players.length; ++i)
+    (tmpObj = players[i])
+    .zIndex == zIndex && (tmpObj.animate(delta), tmpObj.visible && tmpObj.alive && (tmpObj.skinRot += 0.002 * delta, tmpDir = ((player == tmpObj) ? getAttackDir() : tmpObj.dir) + tmpObj.dirPlus, mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpDir), renderPlayer(tmpObj, mainContext), mainContext.restore()));
+}
+
+function renderPlayer(e, t) {
+  (t = t || mainContext)
+  .lineWidth = 5.5, t.lineJoin = 'miter';
+  var i = Math.PI / 4 * (_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].armS || 1),
+    n = e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].hndS || 1,
+    s = e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].hndD || 1;
+  if (e.tailIndex > 0 && function (index, ctxt, owner) {
+      if (!(tmpSkin = accessSprites[index])) {
+        var tmpImage = new Image();
+        tmpImage.onload = function () {
+          this.isLoaded = !0, this.onload = null;
+        }, tmpImage.src = '.././img/accessories/access_' + index + '.png', accessSprites[index] = tmpImage, tmpSkin = tmpImage;
+      }
+      var tmpObj = accessPointers[index];
+      if (!tmpObj) {
+        for (var i = 0; i < accessories.length; ++i)
+          if (accessories[i].id == index) {
+            tmpObj = accessories[i];
+            break;
+          }
+        accessPointers[index] = tmpObj;
+      }
+      tmpObj?.scale && tmpSkin.isLoaded && (ctxt.save(), ctxt.translate(-20 - (tmpObj.xOff || 0), 0), tmpObj.spin && ctxt.rotate(owner.skinRot), ctxt.drawImage(tmpSkin, -tmpObj.scale / 2, -tmpObj.scale / 2, tmpObj.scale, tmpObj.scale), ctxt.restore());
+    }(e.tailIndex, t, e), e.buildIndex < 0 && !_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].aboveHand && (renderTool(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].projectile || _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].projectiles[_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].projectile], mainContext)), t.fillStyle = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].skinColors[e.skinColor], renderCircle(e.scale * Math.cos(i), e.scale * Math.sin(i), 14), renderCircle(e.scale * s * Math.cos(-i * n), e.scale * s * Math.sin(-i * n), 14), e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].aboveHand && (renderTool(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].projectile || _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].projectiles[_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].weapons[e.weaponIndex].projectile], mainContext)), e.buildIndex >= 0) {
+    var o = getItemSprite(_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[e.buildIndex]);
+    t.drawImage(o, e.scale - _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[e.buildIndex].holdOffset, -o.width / 2);
+  }
+  renderCircle(0, 0, e.scale, t), e.skinIndex > 0 && (t.rotate(Math.PI / 2), function renderSkin(index, ctxt, parentSkin, owner) {
+    if (!(tmpSkin = skinSprites[index])) {
+      var tmpImage = new Image();
+      tmpImage.onload = function () {
+        this.isLoaded = !0, this.onload = null;
+      }, tmpImage.src = '.././img/hats/hat_' + index + '.png', skinSprites[index] = tmpImage, tmpSkin = tmpImage;
+    }
+    var tmpObj = parentSkin || skinPointers[index];
+    if (!tmpObj) {
+      for (var i = 0; i < hats.length; ++i)
+        if (hats[i].id == index) {
+          tmpObj = hats[i];
+          break;
+        }
+      skinPointers[index] = tmpObj;
+    }
+    tmpObj?.scale && tmpSkin.isLoaded && ctxt.drawImage(tmpSkin, -tmpObj.scale / 2, -tmpObj.scale / 2, tmpObj.scale, tmpObj.scale), !parentSkin && tmpObj?.topSprite && (ctxt.save(), ctxt.rotate(owner.skinRot), renderSkin(index + '_top', ctxt, tmpObj, owner), ctxt.restore());
+  }(e.skinIndex, t, null, e));
+}
+var tmpSkin, skinSprites = {},
+  skinPointers = {},
+  accessSprites = {},
+  accessPointers = {},
+  toolSprites = {};
+
+function renderTool(obj, variant, x, y, ctxt) {
+  var tmpSrc = obj.src + (variant || ''),
+    tmpSprite = toolSprites[tmpSrc];
+  tmpSprite || ((tmpSprite = new Image())
+    .onload = function () {
+      this.isLoaded = !0;
+    }, tmpSprite.src = '.././img/weapons/' + tmpSrc + '.png', toolSprites[tmpSrc] = tmpSprite), tmpSprite.isLoaded && ctxt.drawImage(tmpSprite, x + obj.xOff - obj.length / 2, y + obj.yOff - obj.width / 2, obj.length, obj.width);
+}
+var gameObjectSprites = {};
+
+function getResSprite(obj) {
+  var biomeID = obj.y >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 2 : obj.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 1 : 0,
+    tmpIndex = obj.type + '_' + obj.scale + '_' + biomeID,
+    tmpSprite = gameObjectSprites[tmpIndex];
+  if (!tmpSprite) {
+    var tmpCanvas = document.createElement('canvas');
+    tmpCanvas.width = tmpCanvas.height = 2.1 * obj.scale + 5.5;
+    var tmpContext = tmpCanvas.getContext('2d');
+    if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.rotate(_libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randFloat(0, Math.PI)), tmpContext.strokeStyle = outlineColor, tmpContext.lineWidth = 5.5, 0 == obj.type)
+      for (var tmpScale, i = 0; i < 2; ++i)
+        renderStar(tmpContext, 7, tmpScale = tmpObj.scale * (i ? 0.5 : 1), 0.7 * tmpScale), tmpContext.fillStyle = biomeID ? i ? '#fff' : '#e3f1f4' : i ? '#b4db62' : '#9ebf57', tmpContext.fill(), i || tmpContext.stroke();
+    else if (1 == obj.type)
+      if (2 == biomeID)
+        tmpContext.fillStyle = '#606060', renderStar(tmpContext, 6, 0.3 * obj.scale, 0.71 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#89a54c', renderCircle(0, 0, 0.55 * obj.scale, tmpContext), tmpContext.fillStyle = '#a5c65b', renderCircle(0, 0, 0.3 * obj.scale, tmpContext, !0);
+      else {
+        var tmpRange;
+        ! function (ctxt, spikes, outer, inner) {
+          var tmpOuter, rot = Math.PI / 2 * 3,
+            step = Math.PI / 6;
+          ctxt.beginPath(), ctxt.moveTo(0, -inner);
+          for (var i = 0; i < 6; i++)
+            tmpOuter = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(outer + 0.9, 1.2 * outer), ctxt.quadraticCurveTo(Math.cos(rot + step) * tmpOuter, Math.sin(rot + step) * tmpOuter, Math.cos(rot + 2 * step) * inner, Math.sin(rot + 2 * step) * inner), rot += 2 * step;
+          ctxt.lineTo(0, -inner), ctxt.closePath();
+        }(tmpContext, 0, tmpObj.scale, 0.7 * tmpObj.scale), tmpContext.fillStyle = biomeID ? '#e3f1f4' : '#89a54c', tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = biomeID ? '#6a64af' : '#c15555';
+        var rotVal = mathPI2 / 4;
+        for (i = 0; i < 4; ++i)
+          renderCircle((tmpRange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(tmpObj.scale / 3.5, tmpObj.scale / 2.3)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(10, 12), tmpContext);
+      }
+    else
+      2 != obj.type && 3 != obj.type || (tmpContext.fillStyle = 2 == obj.type ? 2 == biomeID ? '#938d77' : '#939393' : '#e0c655', renderStar(tmpContext, 3, obj.scale, obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = 2 == obj.type ? 2 == biomeID ? '#b2ab90' : '#bcbcbc' : '#ebdca3', renderStar(tmpContext, 3, 0.55 * obj.scale, 0.65 * obj.scale), tmpContext.fill());
+    tmpSprite = tmpCanvas, gameObjectSprites[tmpIndex] = tmpSprite;
+  }
+  return tmpSprite;
+}
+var itemSprites = [];
+
+function getItemSprite(obj, asIcon) {
+  var tmpSprite = itemSprites[obj.id];
+  if (!tmpSprite || asIcon) {
+    var tmpCanvas = document.createElement('canvas');
+    tmpCanvas.width = tmpCanvas.height = 2.5 * obj.scale + 5.5 + (_js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[obj.id].spritePadding || 0);
+    var tmpContext = tmpCanvas.getContext('2d');
+    if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.rotate(asIcon ? 0 : Math.PI / 2), tmpContext.strokeStyle = outlineColor, tmpContext.lineWidth = 5.5 * (asIcon ? tmpCanvas.width / 81 : 1), 'apple' == obj.name) {
+      tmpContext.fillStyle = '#c15555', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#89a54c';
+      var leafDir = -Math.PI / 2;
+      ! function (x, y, l, r, ctxt) {
+        var endX = x + 25 * Math.cos(r),
+          endY = y + 25 * Math.sin(r);
+        ctxt.moveTo(x, y), ctxt.beginPath(), ctxt.quadraticCurveTo((x + endX) / 2 + 10 * Math.cos(r + Math.PI / 2), (y + endY) / 2 + 10 * Math.sin(r + Math.PI / 2), endX, endY), ctxt.quadraticCurveTo((x + endX) / 2 - 10 * Math.cos(r + Math.PI / 2), (y + endY) / 2 - 10 * Math.sin(r + Math.PI / 2), x, y), ctxt.closePath(), ctxt.fill(), ctxt.stroke();
+      }(obj.scale * Math.cos(leafDir), obj.scale * Math.sin(leafDir), 0, leafDir + Math.PI / 2, tmpContext);
+    } else if ('cookie' == obj.name) {
+      tmpContext.fillStyle = '#cca861', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#937c4b';
+      for (var rotVal = mathPI2 / (chips = 4), i = 0; i < chips; ++i)
+        renderCircle((tmpRange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(obj.scale / 2.5, obj.scale / 1.7)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(4, 5), tmpContext, !0);
+    } else if ('cheese' == obj.name) {
+      var chips, tmpRange;
+      for (tmpContext.fillStyle = '#f4f3ac', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#c3c28b', rotVal = mathPI2 / (chips = 4), i = 0; i < chips; ++i)
+        renderCircle((tmpRange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(obj.scale / 2.5, obj.scale / 1.7)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].randInt(4, 5), tmpContext, !0);
+    } else if ('wood wall' == obj.name || 'stone wall' == obj.name || 'castle wall' == obj.name) {
+      tmpContext.fillStyle = 'castle wall' == obj.name ? '#83898e' : 'wood wall' == obj.name ? '#a5974c' : '#939393';
+      var sides = 'castle wall' == obj.name ? 4 : 3;
+      renderStar(tmpContext, sides, 1.1 * obj.scale, 1.1 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = 'castle wall' == obj.name ? '#9da4aa' : 'wood wall' == obj.name ? '#c9b758' : '#bcbcbc', renderStar(tmpContext, sides, 0.65 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
+    } else if ('spikes' == obj.name || 'greater spikes' == obj.name || 'poison spikes' == obj.name || 'spinning spikes' == obj.name) {
+      tmpContext.fillStyle = 'poison spikes' == obj.name ? '#7b935d' : '#939393';
+      var tmpScale = 0.6 * obj.scale;
+      renderStar(tmpContext, 'spikes' == obj.name ? 5 : 6, obj.scale, tmpScale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, tmpScale, tmpContext), tmpContext.fillStyle = '#c9b758', renderCircle(0, 0, tmpScale / 2, tmpContext, !0);
+    } else if ('windmill' == obj.name || 'faster windmill' == obj.name || 'power mill' == obj.name)
+      tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#c9b758', renderRectCircle(0, 0, 1.5 * obj.scale, 29, 4, tmpContext), tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, 0.5 * obj.scale, tmpContext);
+    else if ('mine' == obj.name)
+      tmpContext.fillStyle = '#939393', renderStar(tmpContext, 3, obj.scale, obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#bcbcbc', renderStar(tmpContext, 3, 0.55 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
+    else if ('sapling' == obj.name)
+      for (i = 0; i < 2; ++i)
+        renderStar(tmpContext, 7, tmpScale = obj.scale * (i ? 0.5 : 1), 0.7 * tmpScale), tmpContext.fillStyle = i ? '#b4db62' : '#9ebf57', tmpContext.fill(), i || tmpContext.stroke();
+    else if ('pit trap' == obj.name)
+      tmpContext.fillStyle = '#a5974c', renderStar(tmpContext, 3, 1.1 * obj.scale, 1.1 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = outlineColor, renderStar(tmpContext, 3, 0.65 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
+    else if ('boost pad' == obj.name)
+      tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#dbd97d',
+      function (s, ctx) {
+        ctx = ctx || mainContext;
+        var h = s * (Math.sqrt(3) / 2);
+        ctx.beginPath(), ctx.moveTo(0, -h / 2), ctx.lineTo(-s / 2, h / 2), ctx.lineTo(s / 2, h / 2), ctx.lineTo(0, -h / 2), ctx.fill(), ctx.closePath();
+      }(1 * obj.scale, tmpContext);
+    else if ('turret' == obj.name)
+      tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#939393', renderRect(0, -25, 0.9 * obj.scale, 50, tmpContext), renderCircle(0, 0, 0.6 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke();
+    else if ('platform' == obj.name) {
+      tmpContext.fillStyle = '#cebd5f';
+      var tmpS = 2 * obj.scale,
+        tmpW = tmpS / 4,
+        tmpX = -obj.scale / 2;
+      for (i = 0; i < 4; ++i)
+        renderRect(tmpX - tmpW / 2, 0, tmpW, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpX += tmpS / 4;
+    } else
+      'healing pad' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#db6e6e', renderRectCircle(0, 0, 0.65 * obj.scale, 20, 4, tmpContext, !0)) : 'spawn pad' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#71aad6', renderCircle(0, 0, 0.6 * obj.scale, tmpContext)) : 'blocker' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.rotate(Math.PI / 4), tmpContext.fillStyle = '#db6e6e', renderRectCircle(0, 0, 0.65 * obj.scale, 20, 4, tmpContext, !0)) : 'teleporter' == obj.name && (tmpContext.fillStyle = '#7e7f82', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.rotate(Math.PI / 4), tmpContext.fillStyle = '#d76edb', renderCircle(0, 0, 0.5 * obj.scale, tmpContext, !0));
+    tmpSprite = tmpCanvas, asIcon || (itemSprites[obj.id] = tmpSprite);
+  }
+  return tmpSprite;
+}
+
+function renderCircle(x, y, scale, tmpContext, dontStroke, dontFill) {
+  (tmpContext = tmpContext || mainContext)
+  .beginPath(), tmpContext.arc(x, y, scale, 0, 2 * Math.PI), dontFill || tmpContext.fill(), dontStroke || tmpContext.stroke();
+}
+
+function renderStar(ctxt, spikes, outer, inner) {
+  var x, y, rot = Math.PI / 2 * 3,
+    step = Math.PI / spikes;
+  ctxt.beginPath(), ctxt.moveTo(0, -outer);
+  for (var i = 0; i < spikes; i++)
+    x = Math.cos(rot) * outer, y = Math.sin(rot) * outer, ctxt.lineTo(x, y), rot += step, x = Math.cos(rot) * inner, y = Math.sin(rot) * inner, ctxt.lineTo(x, y), rot += step;
+  ctxt.lineTo(0, -outer), ctxt.closePath();
+}
+
+function renderRect(x, y, w, h, ctxt, stroke) {
+  ctxt.fillRect(x - w / 2, y - h / 2, w, h), stroke || ctxt.strokeRect(x - w / 2, y - h / 2, w, h);
+}
+
+function renderRectCircle(x, y, s, sw, seg, ctxt, stroke) {
+  ctxt.save(), ctxt.translate(x, y), seg = Math.ceil(seg / 2);
+  for (var i = 0; i < seg; i++)
+    renderRect(0, 0, 2 * s, sw, ctxt, stroke), ctxt.rotate(Math.PI / seg);
+  ctxt.restore();
+}
+
+function loadGameObject(data) {
+  for (var i = 0; i < data.length;)
+    objectManager.add(data[i], data[i + 1], data[i + 2], data[i + 3], data[i + 4], data[i + 5], _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"].list[data[i + 6]], !0, data[i + 7] >= 0 ? {
+      sid: data[i + 7]
+    } : null), i += 8;
+}
+
+function wiggleGameObject(dir, sid) {
+  (tmpObj = findObjectBySid(sid)) && (tmpObj.xWiggle += _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].gatherWiggle * Math.cos(dir), tmpObj.yWiggle += _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].gatherWiggle * Math.sin(dir));
+}
+
+function shootTurret(sid, dir) {
+  (tmpObj = findObjectBySid(sid)) && (tmpObj.dir = dir, tmpObj.xWiggle += _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].gatherWiggle * Math.cos(dir + Math.PI), tmpObj.yWiggle += _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].gatherWiggle * Math.sin(dir + Math.PI));
+}
+
+function addProjectile(x, y, dir, range, speed, indx, layer, sid) {
+  inWindow && (projectileManager.addProjectile(x, y, dir, range, speed, indx, null, null, layer)
+    .sid = sid);
+}
+
+function remProjectile(sid, range) {
+  for (var i = 0; i < projectiles.length; ++i)
+    projectiles[i].sid == sid && (projectiles[i].range = range);
+}
+
+function animateAI(sid) {
+  (tmpObj = findAIBySID(sid)) && tmpObj.startAnim();
+}
+
+function loadAI(data) {
+  for (var i = 0; i < ais.length; ++i)
+    ais[i].forcePos = !ais[i].visible, ais[i].visible = !1;
+  if (data) {
+    var tmpTime = Date.now();
+    for (i = 0; i < data.length;)
+      (tmpObj = findAIBySID(data[i])) ? (tmpObj.index = data[i + 1], tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 2], tmpObj.y2 = data[i + 3], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 4] : tmpObj.d2, tmpObj.d2 = data[i + 4], tmpObj.health = data[i + 5], tmpObj.dt = 0, tmpObj.visible = !0) : ((tmpObj = aiManager.spawn(data[i + 2], data[i + 3], data[i + 4], data[i + 1]))
+        .x2 = tmpObj.x, tmpObj.y2 = tmpObj.y, tmpObj.d2 = tmpObj.dir, tmpObj.health = data[i + 5], aiManager.aiTypes[data[i + 1]].name || (tmpObj.name = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].cowNames[data[i + 6]]), tmpObj.forcePos = !0, tmpObj.sid = data[i], tmpObj.visible = !0), i += 7;
+  }
+}
+var aiSprites = {};
+
+function renderAI(obj, ctxt) {
+  var tmpIndx = obj.index,
+    tmpSprite = aiSprites[tmpIndx];
+  if (!tmpSprite) {
+    var tmpImg = new Image();
+    tmpImg.onload = function () {
+      this.isLoaded = !0, this.onload = null;
+    }, tmpImg.src = '.././img/animals/' + (obj?.src || 'sheep_1') + '.png', tmpSprite = tmpImg, aiSprites[tmpIndx] = tmpSprite;
+  }
+  if (tmpSprite.isLoaded) {
+    var tmpScale = 1.2 * obj.scale * (obj.spriteMlt || 1);
+    ctxt.drawImage(tmpSprite, -tmpScale, -tmpScale, 2 * tmpScale, 2 * tmpScale);
+  }
+}
+
+function isOnScreen(x, y, s) {
+  return x + offsetCamX >= 0 && x + offsetCamX <= maxScreenWidth && y + offsetCamY >= 0 && y + offsetCamY <= maxScreenHeight;
+}
+
+function addPlayer(data, isYou) {
+  var tmpPlayer = function (id) {
+    for (var i = 0; i < players.length; ++i)
+      if (players[i].id == id)
+        return players[i];
+    return null;
+  }(data[0]);
+  tmpPlayer || (tmpPlayer = new _js_data_player_js__WEBPACK_IMPORTED_MODULE_10__["default"](data[0], data[1], _config_js__WEBPACK_IMPORTED_MODULE_5__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"], projectileManager, objectManager, players, ais, _js_data_items_js__WEBPACK_IMPORTED_MODULE_7__["default"], hats, accessories), players.push(tmpPlayer)), tmpPlayer.spawn(isYou ? moofoll : null), tmpPlayer.visible = !1, tmpPlayer.x2 = void 0, tmpPlayer.y2 = void 0, tmpPlayer.setData(data), isYou && (camX = (player = tmpPlayer)
+    .x + offsetCamX, camY = player.y + offsetCamY, updateItems(), updateStatusDisplay(), updateAge(), updateUpgrades(0), gameUI.style.display = 'block');
+}
+
+function removePlayer(id) {
+  for (var i = 0; i < players.length; i++)
+    if (players[i].id == id) {
+      players.splice(i, 1);
+      break;
+    }
+}
+
+function updateItemCounts(index, value) {
+  player && (player.itemCounts[index] = value);
+}
+
+function updatePlayerValue(index, value, updateView) {
+  player && (player[index] = value, updateView && updateStatusDisplay());
+}
+
+
+function place(id, angle = getAttackDir(), t = true) {
+  if (instakilling) return;
+  
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, id, false);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (player.weapons[0] != waka && player.weapons[1] != waka) ? (waka = player.weapons[0]) : waka, true);
+}
+
+let lastHeal = Date.now();
+let oldHealth = 100;
+
+function getCookieHealing() {
+  const delta = Date.now() - lastHeal;
+  if (delta < 500) return 0;
+
+  return 5;
+}
+
+function getItemOutheal(item) {
+  switch (item) {
+    case 0:
+      return 25;
+      break;
+    case 1:
+      return 40;
+      break;
+    case 2:
+      return 35 + getCookieHealing();
+      break;
+    default:
+      return 40;
+  }
+};
+
+function heal(healCount) {
+  if (player.health == 100) return;
+  
+  lastHeal = Date.now();
+  window.fz && (findPlayerBySID(player.sid).health = 100);
+  const healingItemSid = player.items[0];
+  for (let healingCount = 0; healingCount < healCount; healingCount++) {
+    selectToBuild(healingItemSid, false);
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, getAttackDir());
+  };
+  selectToBuild(player.weaponIndex, true);
+};
+
+const safeHealDelay = 120;
+
+let lastDamage = 0;
+let prevHeal = 0;
+let healTimestamp = Date.now();
+
+function healing(healTimestamp) {
+  if (player.health == 100) return;
+  
+  const damage = 100 - player.health;
+  const healingItemSid = player.items[0];
+  const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
+  const timeDelay = Date.now() - healTimestamp;
+
+  const prevHealEndsIn = Date.now() - prevHeal - window.pingTime;
+  const prevHealFixed = prevHealEndsIn < 0 ? 0 : (prevHealEndsIn > average ? 0 : prevHealEndsIn);
+  const rawHealTimeout = safeHealDelay - window.pingTime / 2;
+  const safeHealTimeout = (prevHealFixed ? (
+    rawHealTimeout + prevHealFixed
+  ) : (
+    rawHealTimeout
+  )) - timeDelay + 1;
+  
+  window.setTimeout(() =>
+    heal(healCount), safeHealTimeout);
+  lastDamage = Date.now();
+  prevHeal = Date.now() + safeHealTimeout;
+}
+
+function updateHealth(sid, value) {
+  (tmpObj = findPlayerBySID(sid)) && (tmpObj.health = value);
+
+  oldHealth = player.health;
+
+  healTimestamp = Date.now();
+}
+
+function getMoveDir() {
+  var newMoveDir = function () {
+    var dx = 0,
+      dy = 0;
+    if (-1 != controllingTouch.id)
+      dx += controllingTouch.currentX - controllingTouch.startX, dy += controllingTouch.currentY - controllingTouch.startY;
+    else
+      for (var key in moveKeys) {
+        var tmpDir = moveKeys[key];
+        dx += !!keys[key] * tmpDir[0], dy += !!keys[key] * tmpDir[1];
+      }
+    return 0 == dx && 0 == dy ? void 0 : _libs_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].fixTo(Math.atan2(dy, dx), 2);
+  }();
+  return newMoveDir;
+}
+
+function findObjectAngleScale(object) {
+  const angle = Math.atan2(object.y - player.y, object.x - player.x);
+  const boundary = angle - Math.PI / 4;
+  const boundary1 = angle + Math.PI / 4;
+  const angleScale = Math.abs(Math.PI - boundary - boundary1);
+
+  return angleScale;
+}
+
+function calculateAngle(previous, next) {
+  const angle = Math.atan2(previous.y - player.y, previous.x - player.x);
+  const angle1 = Math.atan2(next.y - player.y, next.x - player.x);
+
+  return (angle + angle1) / 2;
+}
+
+function calculateCenter(angle) {
+  return angle + Math.PI / 2;
+}
+
+function scanFree(intersectingObject, index, sectors, nearestGameObjects, angle) {
+  const previousSector = sectors[index - 1];
+  const nextSector = nearestGameObjects.find( object => object && Math.abs(Math.atan2(object?.y - player.y, object?.x - player.x) - angle + Math.PI / 2) <= Math.PI / 2 );
+
+  if (nextSector && previousSector) return calculateAngle(previousSector, nextSector);
+  else return calculateCenter(angle);
+}
+
+function findFreeAngles() {
+  const freeAngles = [];
+  const sectors = [];
+
+  for (let i = 0; i < Math.PI * 2; i += Math.PI / 2) {
+    const intersectingObject = nearestGameObjects.find( object => 
+      Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - i) <= Math.PI / 2);
+
+    if (intersectingObject) freeAngles.push(scanFree(intersectingObject, nearestGameObjects.indexOf(intersectingObject), sectors, nearestGameObjects, i));
+    else freeAngles.push(i);
+  }
+
+  return freeAngles;
+}
+
+function autoplace(enemy, replace = false) {
+  if (instakilling) return;
+
+  const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
+  const angles = findFreeAngles();
+  const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].playerScale + (object?.group?.scale) || 50);
+  angles.forEach(angle => {
+    place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
+  });
+}
+
+let reloads = [];
+
+const sxw = 1920 / 2;
+const sxh = 1080 / 2;
+let tmpTime = Date.now();
+let serverLag = 0;
+let average = 111;
+let current = 111;
+let breaking = false;
+let aimOverride = false;
+
+function autobreak(trap) {
+  if (instakilling) return;
+  
+  const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
+  const trapAngle = Math.atan2(
+    trap.y - player.y,
+    trap.x - player.x
+  );
+  breaking = true;
+  window.trap = trap;
+  
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, trapAngle);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, trapAngle);
+
+  aimOverride = trapAngle;
+  
+  if (player.weaponIndex != correctWeapon) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = correctWeapon, true);
+  }
+}
+
+function bowSync() {
+  const enemy = players.find(e => e.sid == ownerSid);
+
+  if (!enemy) return false;
+  fixInsta();
+  const angle = enemy.dir;
+
+  storeEquip(53);
+  turretReload = 0;
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, getAttackDir());
+
+  setTimeout(() => {
+    storeEquip(getBiomeHat());
+  }, average);
+}
+
+function fixInsta() {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, null);
+  setTimeout(() => {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, getMoveDir());
+  }, 222);
+}
+
+function normalInsta() {
+  const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+  window.sidFocus = enemy?.sid || 69420;
+  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
+  if (!enemy) return false;
+  if (instakilling) return;
+
+  let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+
+  aimOverride = angle;
+
+  instakilling = true;
+  autoclicker = angle;
+  fixInsta();
+  storeEquip(7);
+  storeEquip(4, true);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!sync");
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
+  setTimeout(() => {
+    angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+    autoclicker = angle;
+    aimOverride = angle;
+    storeEquip(53);
+    turretReload = 0;
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
+    reloads[player.weapons[1]] = 0;
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
+    setTimeout(() => {
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, angle);
+      storeEquip(getBiomeHat());
+      instakilling = false;
+      autoclicker = false;
+      aimOverride = false;
+    }, average / 2 + serverLag);
+  }, average / 2 + serverLag);
+}
+
+function reverseInsta() {
+  const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+  window.sidFocus = enemy?.sid || 69420;
+  if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
+  if (!enemy) return;
+  if (instakilling) return;
+
+  let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+  aimOverride = angle;
+  autoclicker = angle;
+
+  instakilling = true;
+  storeEquip(53);
+  fixInsta();
+  turretReload = 0;
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!sync");
+  reloads[player.weapons[1]] = 0;
+  setTimeout(() => {
+    angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+    aimOverride = angle;
+    autoclicker = angle;
+    storeEquip(7);
+    storeEquip(4, true);
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
+    setTimeout(() => {
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, angle);
+      storeEquip(getBiomeHat());
+      instakilling = false;
+      autoclicker = false;
+      aimOverride = false;
+    }, average / 2 + serverLag);
+  }, average / 2 + serverLag);
+}
+
+function botFunctions(tmpPlayer) {
+  if (window.follow) {
+    const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
+    const angle_ = Math.atan2(tmpPlayer.y - player.y, tmpPlayer.x - player.x);
+    const dist = Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y);
+
+    if (dist > 150) {
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, angle_);
+      if (player.weaponIndex != correctWeapon && !window.bowspam) {
+        waka = correctWeapon;
+        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka, true);
+      }
+      storeEquip(player.y <= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop ? 6 : 11, true);
+    } else {
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, null);
+      storeEquip(15, true);
+      if (!window.bowspam) {
+        waka = player.weapons[0];
+        _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, player.weapons[0], true);
+      }
+    }
+  }
+  if (window.bowspam && !breaking && !instakilling) {
+    if (player.weaponIndex != player.weapons[1]) {
+      waka = player.weapons[1];
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, waka, true);
+    }
+
+    if (reloads[player.weapons[1]] > speeds[player.weapons[1]] / 2 && player.skinIndex != 1) {
+      storeEquip(1);
+    } else if (player.skinIndex != 20) {
+      storeEquip(20);
+    }
+
+    const lookingX = tmpPlayer.x + Math.cos(tmpPlayer.dir);
+    const lookingY = tmpPlayer.y + Math.sin(tmpPlayer.dir);
+    const angle = Math.atan2(lookingY - player.y, lookingX - player.x);
+    
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, angle);
+  }
+};
+
+// antiInsta function
+function antiInsta() {
+  // Your antiInsta code goes here
+};
+
+let controlFlow = false;
+
+function boostSpike() {
+  if (!window.enemy) return;
+
+  const distance = Math.hypot(window.enemy.x - player.x, window.enemy.y - player.y);
+  const angle = Math.atan2(window.enemy.y - player.y, window.enemy.x - player.x);
+
+  if (distance > 400 && distance < 500) {
+    place(player.items[4], angle);
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, angle);
+  } else if (distance < 400 && Math.hypot(player.x - player.x2, player.y - player.y2) > 20) {
+    const enemyBorder = {
+      x: window.enemy.x + Math.cos(Math.PI / 2) * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].playerScale,
+      y: window.enemy.y + Math.sin(Math.PI / 2) * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].playerScale
+    };
+
+    const enB = Math.atan2(enemyBorder.y - player.y, enemyBorder.x - player.x);
+    
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, angle);
+    
+    place(player.items[2], angle - enB - Math.PI);
+    place(player.items[2], angle + enB - Math.PI);
+    place(player.items[4], angle);
+  }
+}
+      
+function boostInstaOptimisations() {
+  if (!window.enemy) return;
+
+  const distance = Math.hypot(window.enemy.x - player.x, window.enemy.y - player.y);
+  const angle = Math.atan2(window.enemy.y - player.y, window.enemy.x - player.x);
+
+  if (distance > 400 && distance < 450 && keyEvents.ShiftLeft) {
+    place(player.items[4], angle);
+    controlFlow = true;
+    
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, angle);
+  } else if (keyEvents.ShiftLeft && distance < 240) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, null);
+    
+    reverseInsta();
+    controlFlow = false;
+  } else if (keyEvents.ShiftLeft && distance > 450) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
+
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, angle);
+    storeEquip(40);
+  } else if (keyEvents.ShiftLeft && distance < 400 && !controlFlow) {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
+
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.MOVEMENT, angle - Math.PI);
+    
+    storeEquip(getBiomeHat());
+    storeEquip(11, true);
+  }
+}
+
+function autoMills() {
+  const placeAngle = getMoveDir() - Math.PI;
+
+  place(player.items[3], placeAngle);
+  place(player.items[3], placeAngle - Math.PI / 2);
+  place(player.items[3], placeAngle + Math.PI / 2);
+}
+
+const modulesQueue = [
+  /** HELPER MODULES ARE GOING FIRST **/
+  () => {
+    nearestGameObjects = gameObjects.filter(object => {
+      if (!object?.x) return;
+
+      if (!isOnScreen(object?.x - xOffset, object?.y - yOffset, 45)) return;
+      
+      return true;
+    });
+  }, () => {
+    if (Date.now() - lastPing_ > 3000) {
+      lastPing_ = Date.now();
+      pingSocket();
+    };
+  
+    current = Date.now() - tmpTime;
+    average = average / 2 + (Date.now() - tmpTime) / 2;
+    serverLag = Math.abs(1000 / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].serverUpdateRate - average);
+    tmpTime = Date.now();
+    turretReload = Math.min(turretReload + current, 2500);
+    if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
+    else reloads[player.weaponIndex] = speeds[player.weaponIndex];
+  },
+  /** DEFENCE MODULES **/
+  () => antiInsta(),
+  () => healing(healTimestamp),
+  () => {
+    if (instakilling) return;
+    
+    const trap = nearestGameObjects.find(obj => obj?.active && obj?.trap && obj?.owner?.sid != player.sid && Math.hypot(obj?.x - player.x, obj?.y - player.y) < obj?.scale && !alliancePlayers.includes(obj?.owner?.sid));
+
+    if (!trap && breaking) {
+      breaking = false;
+      aimOverride = false;
+      
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, getAttackDir());
+    }
+  
+    if (trap) return autobreak(trap);
+  },
+  () => {
+    if (instakilling) return;
+    if (window.bowspam) return;
+    if (breaking) return;
+    
+    if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
+    else if (reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
+
+    if (reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
+    }
+  },
+  () => { /** MACRO POSITIONS **/
+    if (window.keyEvents.KeyG) place(player.items[5], getAttackDir()); 
+    else if (window.keyEvents.KeyV) place(player.items[2], getAttackDir());
+    else if (window.keyEvents.KeyF) place(player.items[4], getAttackDir()); 
+    else if (window.keyEvents.KeyZ) boostSpike();
+    else if (window.keyEvents.KeyQ) place(player.items[0], getAttackDir());
+    else if (window.keyEvents.KeyT) autoMills();;
+
+    if (window.keyEvents.ArrowUp) offsetCamY -= (deltaHold += 3);
+    else if (window.keyEvents.ArrowDown) offsetCamY += (deltaHold += 3);
+    else if (window.keyEvents.ArrowLeft) offsetCamX -= (deltaHold += 3);
+    else if (window.keyEvents.ArrowRight) offsetCamX += (deltaHold += 3);
+    else deltaHold = 10;
+  }, (tt) => {
+    if (instakilling) return;
+    if (!tt) return;
+
+    window.boostinsta ? (tt && boostInstaOptimisations()) : (tt && autoplace());
+  }, (tt) => {
+    if (breaking) return;
+    if (instakilling) return;
+    
+    if (tt?.skinIndex == 26 || tt?.skinIndex == 11) {
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, false, getAttackDir());
+    } else if (attackState && tt?.skinIndex != 26 && tt?.skinIndex != 11) {
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, getAttackDir());
+    }
+  }, () => { /** Instakill shouldn't be interrupted **/
+    if (window.keyEvents.SwitchKeyR) {
+      normalInsta();
+    } else if (window.keyEvents.SwitchKeyT) {
+      reverseInsta();
+    }
+  }, () => {
+    if (autoclicker) {
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.ATTACK, true, autoclicker);
+    }
+  },
+  () => {
+    if (!window.testPacketLimit) return;
+
+    window.testPacketLimit += window.testPacketLimit / 2;
+
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, `[!] Stress test ${window.testPacketLimit}`);
+    
+    for (let i = 0; i < window.testPacketLimit; i++) 
+      (new WebSocket(_libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].socket.url)).close();
+
+  }
+];
+
+let attackDir = 0, tmp_Dir = 0, camSpd = 0;
+let lastPing_ = Date.now();
+
+function updatePlayers(data) {
+  let tt;
+  window.enemy = false;
+  window.enemyDanger = false;
+  
+  for (let i = 0; i < data.length;) {
+    (tmpObj = findPlayerBySID(data[i])) && (tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 1], tmpObj.y2 = data[i + 2], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 3] : tmpObj.d2, tmpObj.d2 = data[i + 3], tmpObj.dt = 0, tmpObj.buildIndex = data[i + 4], tmpObj.weaponIndex = data[i + 5], tmpObj.weaponVariant = data[i + 6], tmpObj.team = data[i + 7], tmpObj.isLeader = data[i + 8], tmpObj.skinIndex = data[i + 9], tmpObj.tailIndex = data[i + 10], tmpObj.iconIndex = data[i + 11], tmpObj.zIndex = data[i + 12], tmpObj.visible = !0), i += 13;
+    if (tmpObj.sid == ownerSid) botFunctions(tmpObj);
+    
+    if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 700 && tmpObj != player) window.enemy = tt = tmpObj;
+    if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 200 && tmpObj != player) window.enemyDanger = tmpObj;
+  }
+
+  modulesQueue.forEach(task => task(tt));
+}
+
+function findPlayerBySID(sid) {
+  for (var i = 0; i < players.length; ++i)
+    if (players[i].sid == sid)
+      return players[i];
+  return null;
+}
+
+function findAIBySID(sid) {
+  for (var i = 0; i < ais.length; ++i)
+    if (ais[i].sid == sid)
+      return ais[i];
+  return null;
+}
+
+function findObjectBySid(sid) {
+  return gameObjects[sid];
+}
+var lastPing = -1;
+
+function pingSocketResponse() {
+  var pingTime = Date.now() - lastPing;
+  window.pingTime = pingTime, pingDisplay.innerText = 'Ping: ' + pingTime + '\xA0ms';
+}
+
+function pingSocket() {
+  lastPing = Date.now(), _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.PING);
+}
+
+function serverShutdownNotice(countdown) {
+  if (!(countdown < 0)) {
+    var minutes = Math.floor(countdown / 60),
+      seconds = countdown % 60;
+    seconds = ('0' + seconds)
+      .slice(-2), shutdownDisplay.innerText = 'Server restarting in ' + minutes + ':' + seconds, shutdownDisplay.hidden = !1;
+  }
+}
+
+function openLink(link) {
+  window.open(link, '_blank');
+}
+
+var i = 0;
+const dxw = 1920 / 2;
+const dxh = 1080 / 2;
+
+let xOffset, yOffset;
+
+function render() {
+  now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
+
+  if (player) {
+    /*attackDir = UTILS.getDistance(camX, camY, player.x, player.y);
+    tmp_Dir = UTILS.getDirection(player.x, player.y, camX, camY);
+
+    camSpd = Math.min(0.01 * attackDir * delta, attackDir);*/
+
+    const moX = dxw - mouseX;
+    const moY = dxh - mouseY;
+    
+    camX = player.x + moX / 10;
+    camY = player.y + moY / 10;
+  }
+  
+  xOffset = camX - maxScreenWidth / 2 + offsetCamX;
+  yOffset = camY - maxScreenHeight / 2 + offsetCamY;
+  
+  _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset <= 0 && _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext
+      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext
+      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext
+      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset >= 0 ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0
+      , maxScreenWidth, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset
+      , maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset))) : (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth
+      , _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop -
+      yOffset, maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].snowBiomeTop - yOffset))), firstSetup || ((waterMult += waterPlus * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"]
+        .waveSpeed * delta) >= _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveMax ? (waterMult = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].waveMax, waterPlus = -1) : waterMult <= 1 && (waterMult = waterPlus = 1), mainContext
+      .fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(
+        xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06
+    , mainContext.beginPath();
+  for (var i = -camX, k = -camY; i < maxScreenWidth || k < maxScreenHeight; i += gridDelta, k += gridDelta) {
+    if (i > 0) {
+      mainContext.moveTo(i, 0);
+      mainContext.lineTo(i, maxScreenHeight);
+    }
+    if (k > 0) {
+      mainContext.moveTo(0, k);
+      mainContext.lineTo(maxScreenWidth, k);
+    }
+  }
+  mainContext.stroke();
+  mainContext.globalAlpha = 1;
+  mainContext.strokeStyle = outlineColor;
+  renderGameObjects(-1, xOffset, yOffset);
+  mainContext.globalAlpha = 1;
+  mainContext.lineWidth = 5.5;
+  renderProjectiles(0, xOffset, yOffset);
+  renderPlayers(xOffset, yOffset, 0);
+  mainContext.globalAlpha = 1;
+
+  if (renderGameObjects(0, xOffset, yOffset), renderProjectiles(1, xOffset, yOffset), renderGameObjects(1, xOffset, yOffset), renderPlayers(xOffset, yOffset
+      , 1), renderGameObjects(2, xOffset, yOffset), renderGameObjects(3, xOffset, yOffset), mainContext.fillStyle = '#000', mainContext.globalAlpha = 0.09
+    , xOffset <= 0 && mainContext.fillRect(0, 0, -xOffset, maxScreenHeight), _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset <= maxScreenWidth) {
+    var tmpY = Math.max(0, -yOffset);
+    mainContext.fillRect(_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset, tmpY, maxScreenWidth - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset), maxScreenHeight - tmpY);
+  }
+  if (yOffset <= 0 && mainContext.fillRect(-xOffset, 0, maxScreenWidth + xOffset, -yOffset), _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - yOffset <= maxScreenHeight) {
+    var tmpX = Math.max(0, -xOffset)
+      , tmpMin = 0;
+    _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset <= maxScreenWidth && (tmpMin = maxScreenWidth - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - xOffset)), mainContext.fillRect(tmpX, _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale -
+      yOffset, maxScreenWidth - tmpX - tmpMin, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale - yOffset));
+  }
+  for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext
+    .strokeStyle = darkOutlineColor, textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length + ais.length; ++i)
+    if ((tmpObj = players[i] || ais[i - players.length])
+      .visible) {
+      var total = tmpObj.t2 - tmpObj.t1;
+      var ratio = (now - average - tmpObj.t1) / total;
+      tmpObj.dt += delta;
+      var tmpRate = Math.min(1.7, tmpObj.dt / 170);
+      var tmpDiff = tmpObj.x2 - tmpObj.x1;
+      tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate;
+      tmpDiff = tmpObj.y2 - tmpObj.y1;
+      tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate;
+      tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
+
+      if (ais[i]) {
+        tmpObj.animate(delta);
+        mainContext.save();
+        mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset);
+        mainContext.rotate(tmpObj.dir + tmpObj.dirPlus - Math.PI / 2);
+        renderAI(tmpObj, mainContext);
+        mainContext.restore();
+      }
+
+      if (players[i]) {
+        if (tmpObj.chatCountdown > 0) {
+          tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Hammersmith One';
+          var tmpSize = mainContext.measureText(tmpObj.chatMessage);
+          mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
+          var tmpW = tmpSize.width + 17;
+          mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle =
+            '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
+        }
+      }
+
+      var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
+      if ('' != tmpText) {
+        if (mainContext.font = (tmpObj.nameScale || 30) + 'px Hammersmith One', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext
+          .textAlign = 'center', mainContext.lineWidth = tmpObj
+          .nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"]
+            .nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY), tmpObj.isLeader && iconSprites.crown
+          .isLoaded) {
+          var tmpS = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownIconScale;
+          tmpX = tmpObj.x - xOffset - tmpS / 2 - mainContext.measureText(tmpText)
+            .width / 2 - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownPad, mainContext.drawImage(iconSprites.crown, tmpX, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY - tmpS / 2 - 5, tmpS
+              , tmpS);
+        }
+        1 == tmpObj.iconIndex && iconSprites.skull.isLoaded && (tmpS = _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownIconScale, tmpX = tmpObj.x - xOffset - tmpS / 2 + mainContext.measureText(
+            tmpText)
+          .width / 2 + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].crownPad, mainContext.drawImage(iconSprites.skull, tmpX, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY - tmpS / 2 - 5, tmpS
+            , tmpS));
+      }
+      tmpObj.health > 0 && (_config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth, mainContext.fillStyle = darkOutlineColor, mainContext.roundRect(tmpObj.x - xOffset - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth -
+          _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, tmpObj.y - yOffset + tmpObj.scale + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY, 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth + 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 17, 8), mainContext
+        .fill(), mainContext.fillStyle = tmpObj == player || tmpObj.team && tmpObj.team == player.team ? '#8ecc51' : '#cc5151', mainContext.roundRect(tmpObj
+          .x - xOffset - _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth, tmpObj.y - yOffset + tmpObj.scale + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].nameY + _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarWidth * (tmpObj
+            .health / tmpObj.maxHealth), 17 - 2 * _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].healthBarPad, 7), mainContext.fill());
+    }
+
+  if (player && player.alive) {
+    mapContext.clearRect(0, 0, mapDisplay.width, mapDisplay.height), mapContext.strokeStyle = '#fff', mapContext.lineWidth = 4;
+
+    if (mapContext.globalAlpha = 1, mapContext.fillStyle = '#fff', renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, player.y / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale *
+        mapDisplay.height, 7, mapContext, !0), mapContext.fillStyle = 'rgba(255,255,255,0.35)',  true && minimapData)
+      for (i = 0; i < minimapData.length;)
+        renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.width, minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_5__["default"].mapScale * mapDisplay.height, 7, mapContext, !0), i +=
+        2;
+  }
+
+  window.requestAnimationFrame(render);
+};
+render();
+
+window.aJoinReq = aJoinReq;
+window.kickFromClan = kickFromClan;
+window.sendJoin = sendJoin;
+window.leaveAlliance = leaveAlliance;
+window.createAlliance = createAlliance;
+window.showItemInfo = showItemInfo;
+window.selectSkinColor = function (index) {
+  skinColor = index, updateSkinColorPicker();
+};
+window.changeStoreIndex = function (index) {
+  currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
+};
+
+document.querySelector("#gameName").innerHTML = "AutoWASM";
+
+document.querySelector("body").insertAdjacentHTML("beforeend", `
+<style>
+.menuCard, .menuText, .menuHeader {
+  background: #222222 !important;
+  color: #aaaaaa;
+  border-radius: 2px;
+  transition: all 1s 0s;
+}
+
+.menuCard {
+  box-shadow: 0px 7px #888888;
+  scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5);
+}
+
+.menuCard:hover {
+  transform: scale(1.05);
+}
+
+#nameInput, #enterGame, #serverBrowser {
+  background: #111111 !important;
+  outline: none;
+}
+
+#mainMenu, #linksContainer2, #linksContainer1 {
+  background-color: transparent !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  border: 0px !important;
+}
+
+#gameName {
+  color: black !important;
+  text-shadow: 5px 9px 0 #1112 !important;
+}
+
+.menuCard {
+  width: 325px !important;
+  margin: 5px !important;
+  padding: 20px !important;
+  border: 0px !important;
+}
+
+#modMenu {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.6);
+  box-shadow: 2px 2px 12px black;
+  height: 290px;
+  width: 300px;
+  top: 45px;
+  left: 45px;
+  z-index: 10;
+  border: 5px solid transparent;
+  border-image: linear-gradient(to bottom right, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
+  border-image-slice: 1;
+  color: white;
+  transition: all 1s 0s;
+  overflow: auto;
+}
+
+#modMenu:hover {
+  transform: scale(1.05);
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#wideAdCard, .adMenuCard, #promoImgHolder {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+</style>
+`);
+
+const menu = document.createElement("div");
+document.documentElement.appendChild(menu);
+menu.id = "modMenu";
+
+menu.innerHTML = `
+<center> AutoWASM Sync </center> <br>
+
+<input type = "text" placeholder = "Player Username" id = "username_"> <button id = "syncBtn"> Connect </button> <br>
+
+Follow module: <span onclick = "window.follow = !window.follow; this.innerHTML = window.follow ? 'ON' : 'OFF'"> OFF </span> <br>
+Bow spamming module: <span onclick = "window.bowspam = !window.bowspam; this.innerHTML = window.bowspam ? 'ON' : 'OFF'"> OFF </span> <br>
+Boost Insta Optimisations: <span onclick = "window.boostinsta = !window.boostinsta; this.innerHTML = window.boostinsta ? 'ON' : 'OFF'"> OFF </span> <br>
+Tanker mode: <span onclick = "window.tanker = !window.tanker; this.innerHTML = window.tanker ? 'ON' : 'OFF'"> OFF </span> <br> <br> <br>
+
+FZ Autoheal: <span onclick = "window.fz = !window.fz; this.innerHTML = window.fz ? 'ON' : 'OFF'"> OFF </span> <br> <br>
+
+<br> WebSocket Sender <br>
+Packet: <input type = "name" id = "packet"> <br>
+<button onclick = "window.socket.send(msgpack.encode(JSON.parse(document.getElementById('packet').value)))"> Send </button> <br>
+<button onclick = "window.intervalSend ? (clearInterval(window.intervalSend), this.innerHTML = 'Interval Send') : (window.intervalSend = setInterval(() => window.socket.send(msgpack.encode(JSON.parse(document.getElementById('packet').value))), parseInt(prompt('Enter delay'))), this.innerHTML = 'Stop interval')"> Interval Send </button> <br>
+<br>
+
+Server tester <br>
+Packet Limit tester: <button onclick = "this.innerHTML == 'Start' ? (window.testPacketLimit = true, this.innerHTML = 'Stop') : (window.testPacketLimit = false, this.innerHTML = 'Start')">Start</button> <br>
+
+!connect <username> - Connect to a user to sync with <br>
+!disconnect - Disconnect from the user <br>
+!bowspam - Start bowspam module <br>
+!follow - Follow the player <br>
+
+<div align = "right"> @0xffabc </div>
+`;
+
+document.getElementById("syncBtn").onclick = function e() {
+  if (this.innerHTML == "Connect") {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!connect " + document.getElementById("username_").value);
+    this.innerHTML = "Disconnect";
+  } else if (this.innerHTML == "Disconnect") {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!disconnect");
+    this.innerHTML = "Connect";
+  } else {
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_2__["default"].send(packets.SEND_CHAT, "!connect " + document.getElementById("username_").value);
+    this.innerHTML = "Disconnect";
+  }
+}
 
 })();
 
