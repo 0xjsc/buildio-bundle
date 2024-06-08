@@ -1,4 +1,3 @@
-const { log } = console;
 
 const socket = {
   socket: null,
@@ -41,7 +40,6 @@ const socket = {
         data
       ]);
     this.socket.send(binary);
-    console.log("[Client] " + type + " -> " + data);
   },
   socketReady() {
     return this.socket && this.connected;
