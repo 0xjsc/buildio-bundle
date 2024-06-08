@@ -3016,8 +3016,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-window.captchaCallback = () => connectSocketIfReady();
-
 const serverPackets = {};
 const { log } = console;
 
@@ -3254,11 +3252,11 @@ function getToken() {
   return location.href.includes("mohmoh") ? "6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH" : "6LfahtgjAAAAAF8SkpjyeYMcxMdxIaQeh-VoPATP";
 }
 
-async function waitForAPI(prop, callback) {
+async function waitForAPI(prop, prop2, callback) {
   return new Promise(async resolve => {
-    if (!window[prop]) {
+    if (!window[prop] || !window[prop][prop2]) {
       const waitInt = setInterval(async () => {
-        if (!window[prop]) return;
+        if (!window[prop] || !window[prop][prop2]) return;
 
         clearInterval(waitInt);
         resolve(
@@ -3274,7 +3272,7 @@ async function connectSocketIfReady() {
   if (startedConnecting) return;
   startedConnecting = true;
 
-  await waitForAPI("grecaptcha", () => 
+  await waitForAPI("grecaptcha", "execute", () => 
     new Promise(grecaptcha.ready));
   
   const token = await grecaptcha.execute(getToken(), recaptchaOpt);
@@ -3284,6 +3282,8 @@ async function connectSocketIfReady() {
   
   connectSocket(prefix + token, server);
 }
+
+connectSocketIfReady();
 
 const wsLogs = [];
 
