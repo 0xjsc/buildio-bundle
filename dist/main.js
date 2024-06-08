@@ -5352,6 +5352,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   transition: all 1s 0s;
   overflow: auto;
   scrollbar-width: none;
+  font-family: Arial !important;
 }
 
 #modMenu:hover {
