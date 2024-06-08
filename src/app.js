@@ -2260,7 +2260,7 @@ function render() {
 
       if (players[i]) {
         if (tmpObj.chatCountdown > 0) {
-          tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px Baloo 2';
+          tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px \'Baloo 2'\';
           var tmpSize = mainContext.measureText(tmpObj.chatMessage);
           mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
           var tmpW = tmpSize.width + 17;
@@ -2271,7 +2271,7 @@ function render() {
 
       var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
       if ('' != tmpText) {
-        if (mainContext.font = (tmpObj.nameScale || 30) + 'px Baloo 2', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext
+        if (mainContext.font = (tmpObj.nameScale || 30) + 'px \'Baloo 2\'', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext
           .textAlign = 'center', mainContext.lineWidth = tmpObj
           .nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config
             .nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown
