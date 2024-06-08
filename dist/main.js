@@ -2297,6 +2297,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 
 document.documentElement.insertAdjacentHTML("beforeend", `
+<style>
 .dialogMM {
   position: fixed;
   background-color: rgba(0, 0, 0, 0.6);
@@ -2313,6 +2314,7 @@ document.documentElement.insertAdjacentHTML("beforeend", `
   transition: all 1s 0s;
   overflow: auto;
 }
+</style>
 `)
 
 function Dialog(text) {
