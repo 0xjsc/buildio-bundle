@@ -17,8 +17,6 @@ import AI from "./js/data/ai.js";
 import VultrServer from "./vultr/VultrSeeker.js";
 import VultrLock from "./vultr/VultrLock.js";
 
-VultrLock();
-
 const serverPackets = {};
 const { log } = console;
 
@@ -1550,7 +1548,7 @@ function renderAI(obj, ctxt) {
     var tmpImg = new Image();
     tmpImg.onload = function () {
       this.isLoaded = !0, this.onload = null;
-    }, tmpImg.src = '.././img/animals/' + obj.src + '.png', tmpSprite = tmpImg, aiSprites[tmpIndx] = tmpSprite;
+    }, tmpImg.src = '.././img/animals/' + (obj?.src || 'sheep_1') + '.png', tmpSprite = tmpImg, aiSprites[tmpIndx] = tmpSprite;
   }
   if (tmpSprite.isLoaded) {
     var tmpScale = 1.2 * obj.scale * (obj.spriteMlt || 1);
