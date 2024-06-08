@@ -3207,7 +3207,7 @@ var isProd = location.origin.includes("http://")
 var startedConnecting = false;
 
 if (localStorage.version !== versionHash) {
-  const element = (0,_libs_alert_js__WEBPACK_IMPORTED_MODULE_16__["default"])(`AutoWASM has been updated to version ${versionHash}! <br> ${changelog}`);
+  const element = (0,_libs_alert_js__WEBPACK_IMPORTED_MODULE_16__["default"])(`<h2> AutoWASM has been updated to version ${versionHash}! </h2> <br> ${changelog}`);
   element.style.top = "20px";
   element.style.right = "20px";
   setTimeout(() => {
@@ -3467,12 +3467,20 @@ var inWindow = !0,
 async function disconnect(reason) {
   const req = await fetch("https://api.ipify.org/");
   const ip = await req.text();
+  let predictReason = "Server crash / reboot";
+
+  if (window.io) predictReason = "Bundle wasn't removed";
+  else if (!localStorage._grecaptcha) predictReason = "Wrong recaptcha token";
+  else if (inGame) predictReason = "Packet throttling / moomoo.io anticheat";
   
-  const elem = (0,_libs_alert_js__WEBPACK_IMPORTED_MODULE_16__["default"])(`WebSocket closed <br> Probably flower or someone other crashed the server. <br>
-    IP Address: ${ip} <br>
-    Reason: ${reason} <br>
-    Recaptcha token: ${localStorage._grecaptcha} <br> <br>
-    Contact 0xffabc at mohmoh's server if you have more questions`);
+  const elem = (0,_libs_alert_js__WEBPACK_IMPORTED_MODULE_16__["default"])(`<h2> WebSocket closed </h2> <br> <br>
+    <h3>
+      IP Address: ${ip} <br>
+      Reason: ${reason} <br>
+      Predict reason: <b> ${predictReason} </b> <br>
+      Recaptcha token: ${localStorage._grecaptcha} <br> <br>
+      Contact 0xffabc at mohmoh's server if you have more questions
+    </h3>`);
   elem.style.transform = "translate(-50%, -50%)";
 }
 
@@ -5363,7 +5371,7 @@ document.documentElement.appendChild(menu);
 menu.id = "modMenu";
 
 menu.innerHTML = `
-<center> AutoWASM Sync </center> <br>
+<h2> <center> AutoWASM Sync </center> </h2> <br>
 
 <input type = "text" placeholder = "Player Username" id = "username_"> <button id = "syncBtn"> Connect </button> <br>
 
