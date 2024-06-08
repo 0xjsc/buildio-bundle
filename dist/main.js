@@ -20,6 +20,7 @@
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
+const { log } = console;
 const html = document.documentElement.innerHTML;
 const regex = /bundle|assets|index|FRVR|howl|jquery|cookie|double|turnst|frvr/gm;
 const doc = document.implementation.createHTMLDocument(document.title);
@@ -29,11 +30,13 @@ doc.write(html);
 doc.close();
 
 for (const element of doc.querySelectorAll("*[src]")) {
-  if (regex.test(element.src)) 
-    element.remove();
+  if (!regex.test(element.src)) continue;
+
+  log("[*] Removing element ", element);
+  element.remove();
 }
 
-document.replaceChild( document.importNode(doc.documentElement, true), document.documentElement);
+document.replaceChild(document.importNode(doc.documentElement, true), document.documentElement);
 
 if (location.href.includes("moomoo")) {
   window.turnstile.remove();
