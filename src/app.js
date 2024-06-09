@@ -24,6 +24,10 @@ const { log } = console;
 
 let packets, serverSide;
 
+const hit360 = Number(
+  199871592653589792171177631498931686031281669589442211709791690215455978209410508293026261119265370230936153240360026347462449376754846791234307902747653227578310433809475993341322854294818292437842268106508769947533062086396136846277710511436997007404745373491372264259584n
+);
+
 packets = {
   PING: "pp",
   REGISTER: "budv",
@@ -1779,42 +1783,57 @@ function fixInsta() {
 }
 
 function normalInsta() {
-  const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+  const enemies = players.filter(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid))
+    .sort((a, b) => Math.hypot(a?.x - b?.x, a?.y - b?.y));
+  
+  const enemy = enemies[0];
+  const enemy1 = enemies[1] || enemy;
+  
   window.sidFocus = enemy?.sid || 69420;
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
   if (!enemy) return false;
   if (instakilling) return;
 
-  let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
+  let angle = Math.atan2(enemy?.y2 - player.y2, enemy?.x2 - player.x2);
+  let angle1 = Math.atan2(enemy1?.y2 - player.y2, enemy1?.x2 - player.x2);
 
-  aimOverride = angle;
+  /** 180sx insta **/
 
   instakilling = true;
-  autoclicker = angle;
+
   fixInsta();
-  storeEquip(7);
-  storeEquip(4, true);
-  wsBridge.sendChat("!sync");
-  io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
-  wsBridge.updateHittingState(true, angle);
+  storeEquip(53);
+
   setTimeout(() => {
-    angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
-    autoclicker = angle;
+    storeEquip(7);
+    storeEquip(4, true);
+    
+    selectToBuild(player.weapons[0], true);
+    sendAtckState(true, hit360);
     aimOverride = angle;
-    storeEquip(53);
-    turretReload = 0;
-    io.send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
-    reloads[player.weapons[1]] = 0;
-    wsBridge.updateHittingState(true, angle);
+    autoclicker = angle;
+
     setTimeout(() => {
-      io.send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
-      wsBridge.updateHittingState(false, angle);
-      storeEquip(getBiomeHat());
-      instakilling = false;
-      autoclicker = false;
-      aimOverride = false;
-    }, average / 2 + serverLag);
-  }, average / 2 + serverLag);
+      sendAtckState(true, angle1);
+      aimOverride = angle1;
+      autoclicker = angle1;
+      storeEquip(6);
+      storeEquip(15, true);
+      selectToBuild(player.weapons[1], true);
+      setTimeout(() => {
+        aimOverride = false;
+        autoclicker = false;
+        instakilling = false;
+        selectToBuild(player.weapons[0], true);
+
+        reloads[player.weapons[1]] = 0;
+        reloads[player.weapons[0]] = 0;
+        turretReload = 0;
+
+        wsBridge.sendChat("Nah I'd win");
+      }, average);
+    }, average);
+  }, average);
 }
 
 function reverseInsta() {
