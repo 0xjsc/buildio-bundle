@@ -1280,28 +1280,6 @@ function gatherAnimation(sid, didHit, index) {
   
   if (sid == player.sid) reloads[waka] = 0;
   else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = 0;
-
-  if (instakilling) return;
-  if (sid != player.sid) return;
-
-  const hitHat = (breaking || !touch) ? 40 : 7;
-  const hitAcc = (player.health > 50) ? 15 : (player.health < 40 ? 18 : 13);
-  const idleHat = breaking ? 6 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
-  const idleAcc = players.length >= 2 ? 15 : (player.y <= config.snowBiomeTop ? 6 : 19);
-
-  storeEquip(window.tanker ? 6 : idleHat);
-  storeEquip(window.tanker ? (players.filter(e => Math.hypot(e?.x - player.x, e?.y - player.y) < 180).length > 2 ? 59 : 15) : idleAcc, true);
-
-  setTimeout(() => {
-    storeEquip(hitHat);
-    storeEquip(hitAcc, true);
-    setTimeout(() => {
-      if (!attackState) {
-        storeEquip(window.tanker ? 6 : (idleHat == 53 ? 6 : idleHat));
-        storeEquip(window.tanker ? 15 : idleAcc, true);
-      }
-    }, window.pingTime);
-  }, speeds[waka] - window.pingTime);
 }
 
 function renderPlayers(xOffset, yOffset, zIndex) {
@@ -2120,6 +2098,22 @@ const modulesQueue = [
     }
 
     wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((endTimeout - Date.now()) / 1000) + "s");
+  }, () => {
+    const hitHat = (breaking || !touch) ? 40 : 7;
+    const hitAcc = (player.health > 50) ? 15 : (player.health < 40 ? 18 : 13);
+    const idleHat = breaking ? 6 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6);
+    const idleAcc = players.length >= 2 ? 15 : (player.y <= config.snowBiomeTop ? 6 : 19);
+    const tankerHat = 6;
+    const tankerAcc = players.filter(e => Math.hypot(e?.x - player.x, e?.y - player.y) < 180).length > 2 ? 59 : 15;
+
+    if (reloads[waka || player.weaponIndex] < speeds[waka || player.weaponIndex] - window.pingTime) {
+      storeEquip(window.tanker ? tankerHat : idleHat);
+      storeEquip(window.tanker ? tankerAcc : idleAcc, true);
+    } else {
+      storeEquip(hitHat);
+      storeEquip(hitAcc, true);
+    }
+    
   }
 ];
 
