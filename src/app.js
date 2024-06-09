@@ -1733,6 +1733,7 @@ function toAngles(objects) {
 
 function autoplace(enemy, replace = false) {
   if (instakilling) return;
+  if (breaking) return;
 
   const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
   const angles = findFreeAngles();
