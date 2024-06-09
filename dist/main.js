@@ -5381,16 +5381,17 @@ function render() {
     }
 
   if (player?.alive) {
+    const mapOffY = maxScreenHeight - 200;
     mainContext.fillStyle = "rgba(0, 0, 0, 0.3)";
     mainContext.fillRect(0, 0, 300, 300);
     mainContext.fill();
     mainContext.fillStyle = '#fff';
-    renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 300, player.y / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale *
-        300, 7, mainContext, true);
+    renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 200, mapOffY + player.y / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale *
+        200, 7, mainContext, true);
     mainContext.fillStyle = 'rgba(255, 255, 255, 0.35)';
     if (minimapData) {
       for (i = 0; i < minimapData.length;) {
-        renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 300, minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 300, 7, mainContext, true);
+        renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 200, mapOffY + minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 200, 7, mainContext, true);
         i += 2;
       }
     }
