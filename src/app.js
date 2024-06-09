@@ -983,7 +983,7 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
   aimOverride = false;
   setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
   touch = e.button == 0;
-  waka = touch ? player.weapons[0] : player.weapons[1];
+  waka = touch ? player.weapons[0] : (10 == player.weapons[1] ? 10 : player.weapons[0]);
 }, false), eventsListener.addEventListener('mouseup', function (e) {
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
 }, false);
@@ -2053,7 +2053,7 @@ const modulesQueue = [
     } else if (reloads[player.weapons[0]] == speeds[player.weapons[0]] && reloads[player.weapons[1]] != speeds[player.weapons[1]]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
 
     if (reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != waka) {
-      waka = touch ? player.weapons[0] : player.weapons[1];
+      waka = touch ? player.weapons[0] : (10 == player.weapons[1] ? 10 : player.weapons[0]);
       io.send(packets.CHANGE_WEAPON, waka, true);
     }
   },
