@@ -5364,7 +5364,7 @@ function render() {
     }
 
   if (player?.alive) {
-    mainContext.filStyle = "rgba(0, 0, 0, 0.3)";
+    mainContext.fillStyle = "rgba(0, 0, 0, 0.3)";
     mainContext.fillRect(0, 0, mapDisplay.width, mapDisplay.height);
     mainContext.fill();
     mainContext.fillStyle = '#fff';
@@ -5448,7 +5448,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   box-shadow: 2px 2px 12px black;
   height: 290px;
   width: 300px;
-  top: 120px;
+  top: 300px;
   left: 45px;
   z-index: 10;
   border: 5px solid transparent;
