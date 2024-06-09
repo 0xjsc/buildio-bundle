@@ -16,7 +16,7 @@ import AI from "./js/data/ai.js";
 import VultrServer from "./vultr/VultrSeeker.js";
 import Dialog from "./libs/alert.js";
 import SocketController from "./socket/socket.js";
-import BundleRemover from "./client/bundleRemover.js";
+// import BundleRemover from "./client/bundleRemover.js";
 
 const serverPackets = {};
 const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
