@@ -5160,7 +5160,7 @@ const modulesQueue = [
     const tankerHat = 6;
     const tankerAcc = 15;
     const weapon = waka || player.weaponIndex;
-    const preparingForHit = reloads[weapon] > speeds[weapon] - window.pingTime;
+    const preparingForHit = reloads[weapon] > speeds[weapon] - average - window.pingTime;
     
     const alreadyWearsHit = player.skinIndex == hitHat && player.tailIndex == hitAcc;
     const alreadyWearsIdle = player.skinIndex == idleHat && player.tailIndex == idleAcc;
@@ -5168,7 +5168,7 @@ const modulesQueue = [
     if (preparingForHit && !alreadyWearsHit && (attackState || breaking)) {
       storeEquip(hitHat);
       storeEquip(hitAcc, true);
-    } else if (!alreadyWearsIdle) {
+    } else if (!alreadyWearsIdle && !preparingForHit) {
       storeEquip(window.tanker ? tankerHat : idleHat);
       storeEquip(window.tanker ? tankerAcc : idleAcc, true);
     }
