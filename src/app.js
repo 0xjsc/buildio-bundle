@@ -1774,7 +1774,7 @@ function fixInsta() {
 }
 
 function normalInsta() {
-  const enemies = players.filter(e => e?.alive && Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid))
+  const enemies = players.filter(e => e?.alive && e?.health > 0 && Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid))
     .sort((a, b) => Math.hypot(a?.x - b?.x, a?.y - b?.y));
   
   const enemy = enemies[0];
@@ -1834,7 +1834,7 @@ function normalInsta() {
 }
 
 function reverseInsta() {
-  const enemy = players.find(e => e?.alive && Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+  const enemy = players.find(e => e?.alive && e?.health > 0 && Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
   window.sidFocus = enemy?.sid || 69420;
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
   if (!enemy) return;
@@ -2275,8 +2275,8 @@ function render() {
       yOffset, maxScreenWidth - tmpX - tmpMin, maxScreenHeight - (config.mapScale - yOffset));
   }
   for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext
-    .strokeStyle = darkOutlineColor, textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length + ais.length; ++i)
-    if ((tmpObj = players[i] || ais[i - players.length])
+    .strokeStyle = darkOutlineColor, textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length; ++i)
+    if ((tmpObj = players[i])
       .visible) {
       var total = tmpObj.t2 - tmpObj.t1;
       var ratio = (now - average - tmpObj.t1) / total;
@@ -2288,24 +2288,13 @@ function render() {
       tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate;
       tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
 
-      if (ais[i]) {
-        tmpObj.animate(delta);
-        mainContext.save();
-        mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset);
-        mainContext.rotate(tmpObj.dir + tmpObj.dirPlus - Math.PI / 2);
-        renderAI(tmpObj, mainContext);
-        mainContext.restore();
-      }
-
-      if (players[i]) {
-        if (tmpObj.chatCountdown > 0) {
-          tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px "Baloo 2"';
-          var tmpSize = mainContext.measureText(tmpObj.chatMessage);
-          mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
-          var tmpW = tmpSize.width + 17;
-          mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle =
-            '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
-        }
+      if (players[i] && tmpObj.chatCountdown) {
+        tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px "Baloo 2"';
+        var tmpSize = mainContext.measureText(tmpObj.chatMessage);
+        mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
+        var tmpW = tmpSize.width + 17;
+        mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle =
+          '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
       }
 
       var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
