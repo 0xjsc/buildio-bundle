@@ -4791,7 +4791,7 @@ function autoplace(enemy, replace = false) {
   const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
   const angles = findFreeAngles();
   const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale + (object?.group?.scale) || 50);
-  [...toAngles(replacableObjects), ...angles].forEach(angle => {
+  [...toAngles(preplacableObjects), ...angles].forEach(angle => {
     place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
   });
 }
