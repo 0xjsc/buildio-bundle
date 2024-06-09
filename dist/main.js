@@ -4037,6 +4037,7 @@ window.addEventListener('resize', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["d
   aimOverride = false;
   setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
   touch = e.button == 0;
+  waka = touch ? player.weapons[0] : player.weapons[1];
 }, false), eventsListener.addEventListener('mouseup', function (e) {
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
 }, false);
@@ -5480,13 +5481,9 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   background: rgba(0, 0, 0, 0.8);
 }
 
-#wideAdCard, .adMenuCard, #promoImgHolder, #mapDisplay {
+#wideAdCard, .adMenuCard, #promoImgHolder, #mapDisplay, #scoreDisplay {
   display: none !important;
   visibility: hidden !important;
-}
-
-#scoreDisplay {
-  right: 0 !important;
 }
 
 * {
