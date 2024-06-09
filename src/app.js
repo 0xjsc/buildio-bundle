@@ -2433,8 +2433,12 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   visibility: hidden !important;
 }
 
-.actionBarItem, #stoneDisplay, #woodDisplay, #foodDisplay {
-  border-radius: 20px !important;
+.actionBarItem, #stoneDisplay, #woodDisplay, #foodDisplay, #leaderboard, .gameButton {
+  border-radius: 10px !important;
+}
+
+.gameButton, .actionBarItem {
+  box-shadow: 0px 0px 4px 3px rgb(15, 10, 12);
 }
 
 * {
