@@ -1700,8 +1700,8 @@ function findFreeAngles() {
 
     if (intersectingObject) {
       const anglew = scanFree(intersectingObject, nearestGameObjects.indexOf(intersectingObject), sectors, nearestGameObjects, i);
-      checkValid(anglew, freeAngles) && freeAngles.push(anglew);
-    } else if (checkValid(i, freeAngles)) freeAngles.push(i);
+      freeAngles.push(anglew);
+    } else freeAngles.push(i);
   }
 
   return freeAngles;
@@ -1718,9 +1718,10 @@ function autoplace(enemy, replace = false) {
   const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
   const angles = findFreeAngles();
   const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < config.playerScale + (object?.group?.scale) || 50);
+  const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y, (enemy || window.enemyDanger)?.x - player.x);
   [...toAngles(preplacableObjects), ...angles].forEach((angle, i) => {
     const preplace = i < preplacableObjects.length;
-    place(player.items[((preplace || replace) && Math.abs(Math.atan2((enemy || window.enemyDanger)?.y - player.y, (enemy || window.enemyDanger)?.x - player.x) - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
+    place(player.items[((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
   });
 }
 
