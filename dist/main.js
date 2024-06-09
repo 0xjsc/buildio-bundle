@@ -4705,16 +4705,24 @@ function scanFree(intersectingObject, index, sectors, nearestGameObjects, angle)
   else return calculateCenter(angle);
 }
 
+function checkValid(angle, angles) {
+  return !angles.find(e => Math.abs(angle - e) < Math.PI / 2);
+}
+
 function findFreeAngles() {
   const freeAngles = [];
   const sectors = [];
 
-  for (let i = 0; i < Math.PI * 2; i += Math.PI / 2 + Math.sin(Date.now())) {
+  for (let i = -Math.sin(Date.now()); i < Math.PI * 2; i += Math.PI / 2) {
+    if (i < 0) continue;
+
     const intersectingObject = nearestGameObjects.find( object => 
       Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - i) <= Math.PI / 2);
 
-    if (intersectingObject) freeAngles.push(scanFree(intersectingObject, nearestGameObjects.indexOf(intersectingObject), sectors, nearestGameObjects, i));
-    else freeAngles.push(i);
+    if (intersectingObject) {
+      const anglew = scanFree(intersectingObject, nearestGameObjects.indexOf(intersectingObject), sectors, nearestGameObjects, i);
+      checkValid(anglew, freeAngles) && freeAngles.push(anglew);
+    } else if (checkValid(i, freeAngles)) freeAngles.push(i);
   }
 
   return freeAngles;
@@ -4733,7 +4741,7 @@ function autoplace(enemy, replace = false) {
   const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale + (object?.group?.scale) || 50);
   [...toAngles(preplacableObjects), ...angles].forEach((angle, i) => {
     const preplace = i < preplacableObjects.length;
-    place(player.items[(preplace && Math.abs(Math.atan2((enemy || window.enemyDanger)?.y - player.y, (enemy || window.enemyDanger)?.x - player.x) - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
+    place(player.items[((preplace || replace) && Math.abs(Math.atan2((enemy || window.enemyDanger)?.y - player.y, (enemy || window.enemyDanger)?.x - player.x) - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
   });
 }
 
