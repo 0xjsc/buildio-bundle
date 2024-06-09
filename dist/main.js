@@ -5162,11 +5162,14 @@ const modulesQueue = [
     const weapon = waka || player.weaponIndex;
     const preparingForHit = reloads[weapon] > speeds[weapon] - window.pingTime;
     const alreadyHit = reloads[weapon] < window.pingTime;
+    
+    const alreadyWearsHit = player.skinIndex == hitHat && player.tailIndex == hitAcc;
+    const alreadyWearsIdle = player.skinIndex == idleHat && player.tailIndex == idleAcc;
 
-    if (preparingForHit || alreadyHit) {
+    if ((preparingForHit || alreadyHit) && !alreadyWearsHit && attackState) {
       storeEquip(hitHat);
       storeEquip(hitAcc, true);
-    } else {
+    } else if (!alreadyWearsIdle) {
       storeEquip(window.tanker ? tankerHat : idleHat);
       storeEquip(window.tanker ? tankerAcc : idleAcc, true);
     }
