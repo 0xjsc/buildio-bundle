@@ -469,7 +469,7 @@ var useNativeResolution, showPing, delta, now, lastSent, attackState, player, pl
   allianceHolder = document.getElementById('allianceHolder'),
   allianceManager = document.getElementById('allianceManager'),
   diedText = document.getElementById('diedText'),
-  skinColorHolder = document.getElementById('skinColorHolder'),
+  skinColorHolder = document.getElementById('skinColorHolder');
   var storeMenu = document.getElementById('storeMenu'),
   storeHolder = document.getElementById('storeHolder'),
   noticationDisplay = document.getElementById('noticationDisplay'),
