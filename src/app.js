@@ -2113,9 +2113,8 @@ const modulesQueue = [
 
     if (preparingForHit && !alreadyWearsHit && (attackState || breaking)) {
       storeEquip(hitHat);
-      
-      return storeEquip(hitAcc, true);
-    } else if (!alreadyWearsIdle) {
+      storeEquip(hitAcc, true);
+    } else if (!alreadyWearsIdle && !preparingForHit) {
       storeEquip(window.tanker ? tankerHat : idleHat);
       storeEquip(window.tanker ? tankerAcc : idleAcc, true);
     }
