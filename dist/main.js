@@ -5096,14 +5096,11 @@ const modulesQueue = [
     if (instakilling) return;
     if (window.bowspam) return;
     if (breaking) return;
-
-    let alreadyWorking = false;
     
     if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
-      alreadyWorking = true;
     }
-    else if (!alreadyWorking && reloads[player.weapons[1]] !== speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
+    else if (reloads[player.weapons[0]] == speeds[player.weapons[0]] && reloads[player.weapons[1]] == speeds[player.weapons[1]] && player.weaponIndex != player.weapons[1]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
 
     if (reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != player.weapons[0]) {
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
