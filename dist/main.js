@@ -4772,7 +4772,7 @@ function autoplace(enemy, replace = false) {
   const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale + (object?.group?.scale) || 50);
   [...toAngles(preplacableObjects), ...angles].forEach((angle, i) => {
     const preplace = i < preplacableObjects.length;
-    place(player.items[preplace ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
+    place(player.items[(preplace && Math.abs(Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2) - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
   });
 }
 
