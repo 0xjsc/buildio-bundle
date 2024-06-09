@@ -2327,16 +2327,17 @@ function render() {
     }
 
   if (player?.alive) {
+    const mapOffY = maxScreenHeight - 200;
     mainContext.fillStyle = "rgba(0, 0, 0, 0.3)";
     mainContext.fillRect(0, 0, 300, 300);
     mainContext.fill();
     mainContext.fillStyle = '#fff';
-    renderCircle(player.x / config.mapScale * 300, player.y / config.mapScale *
-        300, 7, mainContext, true);
+    renderCircle(player.x / config.mapScale * 200, mapOffY + player.y / config.mapScale *
+        200, 7, mainContext, true);
     mainContext.fillStyle = 'rgba(255, 255, 255, 0.35)';
     if (minimapData) {
       for (i = 0; i < minimapData.length;) {
-        renderCircle(minimapData[i] / config.mapScale * 300, minimapData[i + 1] / config.mapScale * 300, 7, mainContext, true);
+        renderCircle(minimapData[i] / config.mapScale * 200, mapOffY + minimapData[i + 1] / config.mapScale * 200, 7, mainContext, true);
         i += 2;
       }
     }
