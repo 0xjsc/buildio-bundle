@@ -2309,16 +2309,17 @@ function render() {
             .health / tmpObj.maxHealth), 17 - 2 * config.healthBarPad, 7), mainContext.fill());
     }
 
-  if (player && player.alive) {
+  if (player?.alive) {
     mainContext.fillStyle = '#fff';
     renderCircle(player.x / config.mapScale * mapDisplay.width, player.y / config.mapScale *
         mapDisplay.height, 7, mainContext, true);
-    mainContext.fillStyle = 'rgba(255, 255, 255, 0.35)', 
-    if (minimapData)
+    mainContext.fillStyle = 'rgba(255, 255, 255, 0.35)';
+    if (minimapData) {
       for (i = 0; i < minimapData.length;) {
         renderCircle(minimapData[i] / config.mapScale * mapDisplay.width, minimapData[i + 1] / config.mapScale * mapDisplay.height, 7, mainContext, true);
         i += 2;
       }
+    }
   }
 
   window.requestAnimationFrame(render);
