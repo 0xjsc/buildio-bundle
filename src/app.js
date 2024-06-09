@@ -2107,11 +2107,11 @@ const modulesQueue = [
     const tankerAcc = players.filter(e => Math.hypot(e?.x - player.x, e?.y - player.y) < 180).length > 2 ? 59 : 15;
 
     if (reloads[waka || player.weaponIndex] < speeds[waka || player.weaponIndex] - window.pingTime) {
-      storeEquip(window.tanker ? tankerHat : idleHat);
-      storeEquip(window.tanker ? tankerAcc : idleAcc, true);
-    } else {
       storeEquip(hitHat);
       storeEquip(hitAcc, true);
+    } else {
+      storeEquip(window.tanker ? tankerHat : idleHat);
+      storeEquip(window.tanker ? tankerAcc : idleAcc, true);
     }
     
   }
