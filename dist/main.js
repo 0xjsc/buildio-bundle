@@ -4781,13 +4781,17 @@ function findFreeAngles() {
   return freeAngles;
 }
 
+function toAngles(object) {
+  return Math.atan2(object.y - player.y2, object.x - player.x2);
+}
+
 function autoplace(enemy, replace = false) {
   if (instakilling) return;
 
   const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
   const angles = findFreeAngles();
   const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale + (object?.group?.scale) || 50);
-  angles.forEach(angle => {
+  [...toAngles(replacableObjects), ...angles].forEach(angle => {
     place(player.items[((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4], angle);
   });
 }
