@@ -2310,9 +2310,12 @@ function render() {
     }
 
   if (player?.alive) {
+    mainContext.filStyle = "rgba(0, 0, 0, 0.3)";
+    mainContext.fillRect(0, 0, mapDisplay.width, mapDisplay.height);
+    mainContext.fill();
     mainContext.fillStyle = '#fff';
     renderCircle(player.x / config.mapScale * mapDisplay.width, player.y / config.mapScale *
-        mapDisplay.height, 7, mainContext, true);
+        mapDisplay.height, 3, mainContext, true);
     mainContext.fillStyle = 'rgba(255, 255, 255, 0.35)';
     if (minimapData) {
       for (i = 0; i < minimapData.length;) {
@@ -2391,7 +2394,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   box-shadow: 2px 2px 12px black;
   height: 290px;
   width: 300px;
-  top: 45px;
+  top: 120px;
   left: 45px;
   z-index: 10;
   border: 5px solid transparent;
