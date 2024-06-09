@@ -16,7 +16,6 @@ import AI from "./js/data/ai.js";
 import VultrServer from "./vultr/VultrSeeker.js";
 import Dialog from "./libs/alert.js";
 import SocketController from "./socket/socket.js";
-import BundleRemover from "./client/bundleRemover.js";
 
 const serverPackets = {};
 const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
@@ -2326,7 +2325,7 @@ function render() {
   if (player?.alive) {
     const mapOffY = maxScreenHeight - 200;
     mainContext.fillStyle = "rgba(0, 0, 0, 0.3)";
-    mainContext.fillRect(0, mapOffY, 200, mapOffY + 200);
+    mainContext.roundRect(0, mapOffY, 200, mapOffY + 200, 10);
     mainContext.fill();
     mainContext.fillStyle = '#fff';
     renderCircle(player.x / config.mapScale * 200, mapOffY + player.y / config.mapScale *
@@ -2431,6 +2430,11 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
 #wideAdCard, .adMenuCard, #promoImgHolder, #mapDisplay, #scoreDisplay {
   display: none !important;
   visibility: hidden !important;
+}
+
+.actionBarItem, #stoneDisplay, #woodDisplay, #foodDisplay, #leaderboard, .gameButton {
+  border-radius: 10px !important;
+  box-shadow: 0px 0px 4px 2px rgb(15, 10, 12);
 }
 
 * {
