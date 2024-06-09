@@ -2052,7 +2052,7 @@ const modulesQueue = [
       io.send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
     } else if (reloads[player.weapons[0]] == speeds[player.weapons[0]] && reloads[player.weapons[1]] != speeds[player.weapons[1]]) io.send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
 
-    if (reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != waka) {
+    if (reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]]) {
       waka = touch ? player.weapons[0] : (10 == player.weapons[1] ? 10 : player.weapons[0]);
       io.send(packets.CHANGE_WEAPON, waka, true);
     }
