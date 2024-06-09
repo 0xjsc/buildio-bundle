@@ -5346,6 +5346,7 @@ function render() {
   if (player?.alive) {
     const mapOffY = maxScreenHeight - 200;
     mainContext.fillStyle = "rgba(0, 0, 0, 0.3)";
+    mainContext.shadowBlur = "3px";
     mainContext.roundRect(0, mapOffY, 200, mapOffY + 200, 10);
     mainContext.fill();
     mainContext.fillStyle = '#fff';
@@ -5453,7 +5454,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   visibility: hidden !important;
 }
 
-.actionBarItem, #stoneDisplay, #woodDisplay, #foodDisplay, #leaderboard, .gameButton {
+.actionBarItem, #stoneDisplay, #woodDisplay, #foodDisplay, #leaderboard, .gameButton, #killCounter, .resourceDisplay {
   border-radius: 10px !important;
   box-shadow: 0px 0px 4px 2px rgb(15, 10, 12);
 }
@@ -5497,7 +5498,7 @@ document.getElementById("syncBtn").onclick = function e() {
     this.innerHTML = "Disconnect";
   }
 }
-//
+
 })();
 
 /******/ })()
