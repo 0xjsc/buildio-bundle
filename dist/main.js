@@ -4766,11 +4766,13 @@ function scanFree(intersectingObject, index, sectors, nearestGameObjects, angle)
   else return calculateCenter(angle);
 }
 
+const cplace = Math.PI / 3;
+
 function findFreeAngles() {
   const freeAngles = [];
   const sectors = [];
 
-  for (let i = 0; i < Math.PI * 2; i += Math.PI / 2) {
+  for (let i = 0; i < Math.PI * 2; i += cplace + Math.sin(Date.now())) {
     const intersectingObject = nearestGameObjects.find( object => 
       Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - i) <= Math.PI / 2);
 
