@@ -3368,9 +3368,7 @@ function connectSocket(token, server = location.host) {
       'block' != storeMenu.style.display ? (storeMenu.style.display = 'block', allianceMenu.style.display = 'none', closeChat(), generateStoreList()) : storeMenu.style.display = 'none';
     }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(storeButton), chatButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
       toggleChat();
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(chatButton), mapDisplay.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
-      sendMapPing();
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(mapDisplay), function () {
+    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(chatButton), function () {
       for (var i = 0; i < icons.length; ++i) {
         var tmpSprite = new Image();
         tmpSprite.onload = function () {
@@ -3524,12 +3522,9 @@ var useNativeResolution, showPing, delta, now, lastSent, attackState, player, pl
   allianceMenu = document.getElementById('allianceMenu'),
   allianceHolder = document.getElementById('allianceHolder'),
   allianceManager = document.getElementById('allianceManager'),
-  mapDisplay = document.getElementById('mapDisplay'),
   diedText = document.getElementById('diedText'),
-  skinColorHolder = document.getElementById('skinColorHolder'),
-  mapContext = mapDisplay.getContext('2d');
-mapDisplay.width = 300, mapDisplay.height = 300;
-var storeMenu = document.getElementById('storeMenu'),
+  skinColorHolder = document.getElementById('skinColorHolder');
+  var storeMenu = document.getElementById('storeMenu'),
   storeHolder = document.getElementById('storeHolder'),
   noticationDisplay = document.getElementById('noticationDisplay'),
   hats = _js_data_store_js__WEBPACK_IMPORTED_MODULE_10__["default"].hats,
@@ -3787,20 +3782,7 @@ function leaveAlliance() {
 }
 var tmpPing, mapPings = [];
 
-function pingMap(x, y) {
-  for (var i = 0; i < mapPings.length; ++i)
-    if (!mapPings[i].active) {
-      tmpPing = mapPings[i];
-      break;
-    }
-  tmpPing || (tmpPing = new function () {
-    this.init = function (x, y) {
-      this.scale = 0, this.x = x, this.y = y, this.active = !0;
-    }, this.update = function (ctxt, delta) {
-      this.active && (this.scale += 0.05 * delta, this.scale >= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapPingScale ? this.active = !1 : (ctxt.globalAlpha = 1 - Math.max(0, this.scale / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapPingScale), ctxt.beginPath(), ctxt.arc(this.x / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * mapDisplay.width, this.y / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * mapDisplay.width, this.scale, 0, 2 * Math.PI), ctxt.stroke()));
-    };
-  }(), mapPings.push(tmpPing)), tmpPing.init(x, y);
-}
+function pingMap(x, y) { }
 
 function updateMinimap(data) {
   minimapData = data;
@@ -5390,15 +5372,15 @@ function render() {
 
   if (player?.alive) {
     mainContext.fillStyle = "rgba(0, 0, 0, 0.3)";
-    mainContext.fillRect(0, 0, mapDisplay.width, mapDisplay.height);
+    mainContext.fillRect(0, 0, 300, 300);
     mainContext.fill();
     mainContext.fillStyle = '#fff';
-    renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * mapDisplay.width, player.y / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale *
-        mapDisplay.height, 7, mainContext, true);
+    renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 300, player.y / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale *
+        300, 7, mainContext, true);
     mainContext.fillStyle = 'rgba(255, 255, 255, 0.35)';
     if (minimapData) {
       for (i = 0; i < minimapData.length;) {
-        renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * mapDisplay.width, minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * mapDisplay.height, 7, mainContext, true);
+        renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 300, minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 300, 7, mainContext, true);
         i += 2;
       }
     }
