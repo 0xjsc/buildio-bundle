@@ -1113,8 +1113,20 @@ function killObject(sid) {
   players.find(e => e.sid != player.sid && Math.hypot(player.x - e.x, player.y - e.y) < 180) && autoplace(object, true);
 }
 
+let oldKills = 0;
+
 function updateStatusDisplay() {
-  scoreDisplay.innerText = player.points, foodDisplay.innerText = player.food, woodDisplay.innerText = player.wood, stoneDisplay.innerText = player.stone, killCounter.innerText = player.kills;
+  scoreDisplay.innerText = player.points;
+  foodDisplay.innerText = player.food;
+  woodDisplay.innerText = player.wood;
+  stoneDisplay.innerText = player.stone;
+  killCounter.innerText = player.kills;
+
+  if (oldKills < player.kills && Date.now() - lastOpInsta < 222 + window.pingTime) {
+    wsBridge.sendChat("goganubiki bistro spat nahui");
+  }
+  
+  oldKills = player.kills;
 }
 var iconSprites = {},
   icons = [
@@ -1720,6 +1732,7 @@ let average = 111;
 let current = 111;
 let breaking = false;
 let aimOverride = false;
+let lastOpInsta = Date.now();
 
 function autobreak(trap) {
   if (instakilling) return;
@@ -1811,7 +1824,9 @@ function normalInsta() {
         aimOverride = false;
         autoclicker = false;
         instakilling = false;
+        sendAtckState(false, getAttackDir());
         selectToBuild(player.weapons[0], true);
+        lastOpInsta = Date.now();
 
         reloads[player.weapons[1]] = 0;
         reloads[player.weapons[0]] = 0;
