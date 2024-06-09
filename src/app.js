@@ -1792,7 +1792,7 @@ function normalInsta() {
   window.sidFocus = enemy?.sid || 69420;
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
   if (!enemy) return false;
-  if (instakilling) return;
+  if (instakilling) return false;
 
   let angle = Math.atan2(enemy?.y2 - player.y2, enemy?.x2 - player.x2);
   let angle1 = Math.atan2(enemy1?.y2 - player.y2, enemy1?.x2 - player.x2);
@@ -1831,9 +1831,9 @@ function normalInsta() {
         turretReload = 0;
 
         wsBridge.sendChat("Nah I'd win");
-      }, average);
-    }, average);
-  }, average);
+      }, average / 2);
+    }, average / 2);
+  }, average / 2);
 }
 
 function reverseInsta() {
