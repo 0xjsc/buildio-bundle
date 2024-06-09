@@ -1804,7 +1804,7 @@ function normalInsta() {
       aimOverride = angle1;
       autoclicker = angle1;
       io.send(packets.AIM, angle1);
-      storeEquip(6);
+      storeEquip(1);
       storeEquip(15, true);
       selectToBuild(player.weapons[1], true);
       setTimeout(() => {
