@@ -2106,8 +2106,10 @@ const modulesQueue = [
     const tankerHat = 6;
     const tankerAcc = 15;
     const weapon = waka || player.weaponIndex;
+    const preparingForHit = reloads[weapon] > speeds[weapon] - window.pingTime;
+    const alreadyHit = reloads[weapon] < window.pingTime;
 
-    if (reloads[weapon] < speeds[weapon] - window.pingTime || reloads[weapon] < window.pingTime) {
+    if (preparingForHit || alreadyHit) {
       storeEquip(hitHat);
       storeEquip(hitAcc, true);
     } else {
