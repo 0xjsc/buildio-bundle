@@ -314,9 +314,7 @@ function connectSocket(token, server = location.host) {
       'block' != storeMenu.style.display ? (storeMenu.style.display = 'block', allianceMenu.style.display = 'none', closeChat(), generateStoreList()) : storeMenu.style.display = 'none';
     }), UTILS.hookTouchEvents(storeButton), chatButton.onclick = UTILS.checkTrusted(function () {
       toggleChat();
-    }), UTILS.hookTouchEvents(chatButton), mapDisplay.onclick = UTILS.checkTrusted(function () {
-      sendMapPing();
-    }), UTILS.hookTouchEvents(mapDisplay), function () {
+    }), UTILS.hookTouchEvents(chatButton), function () {
       for (var i = 0; i < icons.length; ++i) {
         var tmpSprite = new Image();
         tmpSprite.onload = function () {
@@ -470,12 +468,9 @@ var useNativeResolution, showPing, delta, now, lastSent, attackState, player, pl
   allianceMenu = document.getElementById('allianceMenu'),
   allianceHolder = document.getElementById('allianceHolder'),
   allianceManager = document.getElementById('allianceManager'),
-  mapDisplay = document.getElementById('mapDisplay'),
   diedText = document.getElementById('diedText'),
   skinColorHolder = document.getElementById('skinColorHolder'),
-  mapContext = mapDisplay.getContext('2d');
-mapDisplay.width = 300, mapDisplay.height = 300;
-var storeMenu = document.getElementById('storeMenu'),
+  var storeMenu = document.getElementById('storeMenu'),
   storeHolder = document.getElementById('storeHolder'),
   noticationDisplay = document.getElementById('noticationDisplay'),
   hats = store.hats,
@@ -733,20 +728,7 @@ function leaveAlliance() {
 }
 var tmpPing, mapPings = [];
 
-function pingMap(x, y) {
-  for (var i = 0; i < mapPings.length; ++i)
-    if (!mapPings[i].active) {
-      tmpPing = mapPings[i];
-      break;
-    }
-  tmpPing || (tmpPing = new function () {
-    this.init = function (x, y) {
-      this.scale = 0, this.x = x, this.y = y, this.active = !0;
-    }, this.update = function (ctxt, delta) {
-      this.active && (this.scale += 0.05 * delta, this.scale >= config.mapPingScale ? this.active = !1 : (ctxt.globalAlpha = 1 - Math.max(0, this.scale / config.mapPingScale), ctxt.beginPath(), ctxt.arc(this.x / config.mapScale * mapDisplay.width, this.y / config.mapScale * mapDisplay.width, this.scale, 0, 2 * Math.PI), ctxt.stroke()));
-    };
-  }(), mapPings.push(tmpPing)), tmpPing.init(x, y);
-}
+function pingMap(x, y) { }
 
 function updateMinimap(data) {
   minimapData = data;
@@ -2336,15 +2318,15 @@ function render() {
 
   if (player?.alive) {
     mainContext.fillStyle = "rgba(0, 0, 0, 0.3)";
-    mainContext.fillRect(0, 0, mapDisplay.width, mapDisplay.height);
+    mainContext.fillRect(0, 0, 300, 300);
     mainContext.fill();
     mainContext.fillStyle = '#fff';
-    renderCircle(player.x / config.mapScale * mapDisplay.width, player.y / config.mapScale *
-        mapDisplay.height, 7, mainContext, true);
+    renderCircle(player.x / config.mapScale * 300, player.y / config.mapScale *
+        300, 7, mainContext, true);
     mainContext.fillStyle = 'rgba(255, 255, 255, 0.35)';
     if (minimapData) {
       for (i = 0; i < minimapData.length;) {
-        renderCircle(minimapData[i] / config.mapScale * mapDisplay.width, minimapData[i + 1] / config.mapScale * mapDisplay.height, 7, mainContext, true);
+        renderCircle(minimapData[i] / config.mapScale * 300, minimapData[i + 1] / config.mapScale * 300, 7, mainContext, true);
         i += 2;
       }
     }
