@@ -63,38 +63,6 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/client/bundleRemover.js":
-/*!*************************************!*\
-  !*** ./src/client/bundleRemover.js ***!
-  \*************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-const { log } = console;
-const html = document.documentElement.innerHTML;
-const regex = /bundle|assets|index|FRVR|howl|jquery|cookie|double|turnst|frvr/gm;
-const doc = document.implementation.createHTMLDocument(document.title);
-
-doc.open();
-doc.write(html);
-doc.close();
-
-for (const element of doc.querySelectorAll("*[src]")) {
-  if (!regex.test(element.src)) continue;
-
-  log("[*] Removing element ", element);
-  element?.remove && element.remove();
-}
-
-document.replaceChild(document.importNode(doc.documentElement, true), document.documentElement);
-
-if (location.href.includes("moomoo")) {
-  window.turnstile.remove();
-}
-
-
-/***/ }),
-
 /***/ "./src/config.js":
 /*!***********************!*\
   !*** ./src/config.js ***!
@@ -3051,7 +3019,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./vultr/VultrSeeker.js */ "./src/vultr/VultrSeeker.js");
 /* harmony import */ var _libs_alert_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./libs/alert.js */ "./src/libs/alert.js");
 /* harmony import */ var _socket_socket_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./socket/socket.js */ "./src/socket/socket.js");
-/* harmony import */ var _client_bundleRemover_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./client/bundleRemover.js */ "./src/client/bundleRemover.js");
 
 
 
@@ -3070,7 +3037,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
+// import BundleRemover from "./client/bundleRemover.js";
 
 const serverPackets = {};
 const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
