@@ -3037,7 +3037,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// import BundleRemover from "./client/bundleRemover.js";
 
 const serverPackets = {};
 const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
@@ -5347,7 +5346,7 @@ function render() {
   if (player?.alive) {
     const mapOffY = maxScreenHeight - 200;
     mainContext.fillStyle = "rgba(0, 0, 0, 0.3)";
-    mainContext.fillRect(0, mapOffY, 200, mapOffY + 200);
+    mainContext.roundRect(0, mapOffY, 200, mapOffY + 200, 10);
     mainContext.fill();
     mainContext.fillStyle = '#fff';
     renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 200, mapOffY + player.y / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale *
@@ -5456,10 +5455,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
 
 .actionBarItem, #stoneDisplay, #woodDisplay, #foodDisplay, #leaderboard, .gameButton {
   border-radius: 10px !important;
-}
-
-.gameButton, .actionBarItem {
-  box-shadow: 0px 0px 4px 3px rgb(15, 10, 12);
+  box-shadow: 0px 0px 4px 2px rgb(15, 10, 12);
 }
 
 * {
