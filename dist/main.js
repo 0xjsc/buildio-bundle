@@ -5363,14 +5363,17 @@ function render() {
             .health / tmpObj.maxHealth), 17 - 2 * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].healthBarPad, 7), mainContext.fill());
     }
 
-  if (player && player.alive) {
-    mapContext.clearRect(0, 0, mapDisplay.width, mapDisplay.height), mapContext.strokeStyle = '#fff', mapContext.lineWidth = 4;
-
-    if (mapContext.globalAlpha = 1, mapContext.fillStyle = '#fff', renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * mapDisplay.width, player.y / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale *
-        mapDisplay.height, 7, mapContext, !0), mapContext.fillStyle = 'rgba(255,255,255,0.35)',  true && minimapData)
-      for (i = 0; i < minimapData.length;)
-        renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * mapDisplay.width, minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * mapDisplay.height, 7, mapContext, !0), i +=
-        2;
+  if (player?.alive) {
+    mainContext.fillStyle = '#fff';
+    renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * mapDisplay.width, player.y / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale *
+        mapDisplay.height, 7, mainContext, true);
+    mainContext.fillStyle = 'rgba(255, 255, 255, 0.35)';
+    if (minimapData) {
+      for (i = 0; i < minimapData.length;) {
+        renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * mapDisplay.width, minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * mapDisplay.height, 7, mainContext, true);
+        i += 2;
+      }
+    }
   }
 
   window.requestAnimationFrame(render);
