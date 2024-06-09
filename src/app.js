@@ -2310,13 +2310,15 @@ function render() {
     }
 
   if (player && player.alive) {
-    mapContext.clearRect(0, 0, mapDisplay.width, mapDisplay.height), mapContext.strokeStyle = '#fff', mapContext.lineWidth = 4;
-
-    if (mapContext.globalAlpha = 1, mapContext.fillStyle = '#fff', renderCircle(player.x / config.mapScale * mapDisplay.width, player.y / config.mapScale *
-        mapDisplay.height, 7, mapContext, !0), mapContext.fillStyle = 'rgba(255,255,255,0.35)', true && minimapData)
-      for (i = 0; i < minimapData.length;)
-        renderCircle(minimapData[i] / config.mapScale * mapDisplay.width, minimapData[i + 1] / config.mapScale * mapDisplay.height, 7, mapContext, !0), i +=
-        2;
+    mainContext.fillStyle = '#fff';
+    renderCircle(player.x / config.mapScale * mapDisplay.width, player.y / config.mapScale *
+        mapDisplay.height, 7, mainContext, true);
+    mainContext.fillStyle = 'rgba(255, 255, 255, 0.35)', 
+    if (minimapData)
+      for (i = 0; i < minimapData.length;) {
+        renderCircle(minimapData[i] / config.mapScale * mapDisplay.width, minimapData[i + 1] / config.mapScale * mapDisplay.height, 7, mainContext, true);
+        i += 2;
+      }
   }
 
   window.requestAnimationFrame(render);
