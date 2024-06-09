@@ -4175,12 +4175,6 @@ function updateStatusDisplay() {
   woodDisplay.innerText = player.wood;
   stoneDisplay.innerText = player.stone;
   killCounter.innerText = player.kills;
-
-  if (oldKills < player.kills && Date.now() - lastOpInsta < 222 + window.pingTime) {
-    wsBridge.sendChat("goganubiki bistro spat nahui");
-  }
-  
-  oldKills = player.kills;
 }
 var iconSprites = {},
   icons = [
@@ -5399,33 +5393,12 @@ function render() {
         i += 2;
       }
     }
-
-    drawSPoints();
   }
 
   window.requestAnimationFrame(render);
 };
+
 render();
-
-function drawSPoints() {
-  const point1 = satanaInstaPoints[0];
-  const point2 = satanaInstaPoints[1];
-
-  if (!point1 || !satanaInstaPoints || !instakilling) return;
-
-  mainContext.fillStyle = "rgba(0, 0, 0, 0.5)";
-  mainContext.moveTo(player.x - xOffset, player.y - yOffset);
-
-  mainContext.beginPath();
-  mainContext.lineTo(point1?.x || 0 - xOffset, point1?.y || 0 - yOffset);
-  mainContext.closePath();
-  mainContext.fill();
-
-  mainContext.beginPath();
-  mainContext.lineTo(point2?.x || 0 - xOffset, point2?.y || 0 - yOffset);
-  mainContext.closePath();
-  mainContext.fill();
-}
 
 window.aJoinReq = aJoinReq;
 window.kickFromClan = kickFromClan;
@@ -5440,7 +5413,7 @@ window.changeStoreIndex = function (index) {
   currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
 };
 
-document.querySelector("#gameName").innerHTML = "AutoWASM";
+document.querySelector("#gameName").innerHTML = "moomoo";
 
 document.querySelector("body").insertAdjacentHTML("beforeend", `
 <style>
@@ -5510,7 +5483,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   background: rgba(0, 0, 0, 0.8);
 }
 
-#wideAdCard, .adMenuCard, #promoImgHolder {
+#wideAdCard, .adMenuCard, #promoImgHolder, #mapDisplay {
   display: none !important;
   visibility: hidden !important;
 }
