@@ -11,7 +11,7 @@ for (const element of doc.querySelectorAll("*[src]")) {
   if (!regex.test(element.src)) continue;
 
   log("[*] Removing element ", element);
-  element.remove();
+  element?.remove && element.remove();
 }
 
 document.replaceChild(document.importNode(doc.documentElement, true), document.documentElement);
