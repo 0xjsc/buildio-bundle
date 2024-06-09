@@ -3076,6 +3076,8 @@ const serverPackets = {};
 const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
 const { log } = console;
 
+let satanaInstaPoints = [];
+
 let packets, serverSide;
 
 const hit360 = Number(
@@ -4842,6 +4844,8 @@ function normalInsta() {
   
   const enemy = enemies[0];
   const enemy1 = enemies[1] || enemy;
+
+  satanaInstaPoints.push(enemy, enemy1);
   
   window.sidFocus = enemy?.sid || 69420;
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
@@ -4883,6 +4887,7 @@ function normalInsta() {
 
         reloads[player.weapons[1]] = 0;
         reloads[player.weapons[0]] = 0;
+        satanaInstaPoints = [];
         turretReload = 0;
       }, average / 2);
     }, average / 2);
@@ -5397,11 +5402,33 @@ function render() {
         i += 2;
       }
     }
+
+    drawSPoints();
   }
 
   window.requestAnimationFrame(render);
 };
 render();
+
+function drawSPoints() {
+  const point1 = satanaInstaPoints[0];
+  const point2 = satanaInstaPoints[1];
+
+  if (!point1 || !satanaInstaPoints || !instakilling) return;
+
+  mainContext.fillStyle = "rgba(0, 0, 0, 0.5)";
+  mainContext.moveTo(player.x - xOffset, player.y - yOffset);
+
+  mainContext.beginPath();
+  mainContext.lineTo(point1?.x || 0 - xOffset, point1?.y || 0 - yOffset);
+  mainContext.closePath();
+  mainContext.fill();
+
+  mainContext.beginPath();
+  mainContext.lineTo(point2?.x || 0 - xOffset, point2?.y || 0 - yOffset);
+  mainContext.closePath();
+  mainContext.fill();
+}
 
 window.aJoinReq = aJoinReq;
 window.kickFromClan = kickFromClan;
