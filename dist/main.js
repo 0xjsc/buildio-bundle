@@ -63,38 +63,6 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/client/bundleRemover.js":
-/*!*************************************!*\
-  !*** ./src/client/bundleRemover.js ***!
-  \*************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-const { log } = console;
-const html = document.documentElement.innerHTML;
-const regex = /bundle|assets|index|FRVR|howl|jquery|cookie|double|turnst|frvr/gm;
-const doc = document.implementation.createHTMLDocument(document.title);
-
-doc.open();
-doc.write(html);
-doc.close();
-
-for (const element of doc.querySelectorAll("*[src]")) {
-  if (!regex.test(element.src)) continue;
-
-  log("[*] Removing element ", element);
-  element?.remove && element.remove();
-}
-
-document.replaceChild(document.importNode(doc.documentElement, true), document.documentElement);
-
-if (location.href.includes("moomoo")) {
-  window.turnstile.remove();
-}
-
-
-/***/ }),
-
 /***/ "./src/config.js":
 /*!***********************!*\
   !*** ./src/config.js ***!
@@ -3051,8 +3019,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./vultr/VultrSeeker.js */ "./src/vultr/VultrSeeker.js");
 /* harmony import */ var _libs_alert_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./libs/alert.js */ "./src/libs/alert.js");
 /* harmony import */ var _socket_socket_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./socket/socket.js */ "./src/socket/socket.js");
-/* harmony import */ var _client_bundleRemover_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./client/bundleRemover.js */ "./src/client/bundleRemover.js");
-
 
 
 
@@ -5106,7 +5072,7 @@ const modulesQueue = [
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
     } else if (reloads[player.weapons[0]] == speeds[player.weapons[0]] && reloads[player.weapons[1]] != speeds[player.weapons[1]]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
 
-    if (reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]] && player.weaponIndex != waka) {
+    if (reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]]) {
       waka = touch ? player.weapons[0] : (10 == player.weapons[1] ? 10 : player.weapons[0]);
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, waka, true);
     }
@@ -5380,7 +5346,7 @@ function render() {
   if (player?.alive) {
     const mapOffY = maxScreenHeight - 200;
     mainContext.fillStyle = "rgba(0, 0, 0, 0.3)";
-    mainContext.fillRect(0, mapOffY, 200, mapOffY + 200);
+    mainContext.roundRect(0, mapOffY, 200, mapOffY + 200, 10);
     mainContext.fill();
     mainContext.fillStyle = '#fff';
     renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 200, mapOffY + player.y / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale *
@@ -5485,6 +5451,11 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
 #wideAdCard, .adMenuCard, #promoImgHolder, #mapDisplay, #scoreDisplay {
   display: none !important;
   visibility: hidden !important;
+}
+
+.actionBarItem, #stoneDisplay, #woodDisplay, #foodDisplay, #leaderboard, .gameButton {
+  border-radius: 10px !important;
+  box-shadow: 0px 0px 4px 2px rgb(15, 10, 12);
 }
 
 * {
