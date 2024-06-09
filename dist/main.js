@@ -5487,6 +5487,10 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   visibility: hidden !important;
 }
 
+.actionBarItem, #stoneDisplay, #woodDisplay, #foodDisplay {
+  border-radius: 20px !important;
+}
+
 * {
   font-family: 'Baloo 2';
 }
