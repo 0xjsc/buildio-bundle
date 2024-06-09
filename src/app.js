@@ -2111,7 +2111,7 @@ const modulesQueue = [
     const alreadyWearsHit = player.skinIndex == hitHat && player.tailIndex == hitAcc;
     const alreadyWearsIdle = player.skinIndex == idleHat && player.tailIndex == idleAcc;
 
-    if (preparingForHit && !alreadyWearsHit && attackState) {
+    if (preparingForHit && !alreadyWearsHit && (attackState || breaking)) {
       storeEquip(hitHat);
       storeEquip(hitAcc, true);
     } else if (!alreadyWearsIdle) {
