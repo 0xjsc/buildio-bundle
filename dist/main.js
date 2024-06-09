@@ -4883,6 +4883,8 @@ function normalInsta() {
       }, average / 2);
     }, average / 2);
   }, average / 2);
+
+  return true;
 }
 
 function reverseInsta() {
@@ -4922,6 +4924,8 @@ function reverseInsta() {
       aimOverride = false;
     }, average / 2 + serverLag);
   }, average / 2 + serverLag);
+
+  return true;
 }
 
 function botFunctions(tmpPlayer) {
@@ -5134,9 +5138,11 @@ const modulesQueue = [
     }
   }, () => { /** Instakill shouldn't be interrupted **/
     if (window.keyEvents.SwitchKeyR) {
-      normalInsta();
+      if (normalInsta())
+        window.keyEvents.SwitchKeyR = false;
     } else if (window.keyEvents.SwitchKeyT) {
-      reverseInsta();
+      if (reverseInsta())
+        window.keyEvents.SwitchKeyT = false;
     }
   }, () => {
     if (autoclicker) {
