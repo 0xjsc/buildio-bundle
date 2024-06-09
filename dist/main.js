@@ -4781,8 +4781,8 @@ function findFreeAngles() {
   return freeAngles;
 }
 
-function toAngles(object) {
-  return Math.atan2(object.y - player.y2, object.x - player.x2);
+function toAngles(objects) {
+  return objects.map(object => Math.atan2(object.y - player.y2, object.x - player.x2));
 }
 
 function autoplace(enemy, replace = false) {
