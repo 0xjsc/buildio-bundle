@@ -2431,6 +2431,10 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   visibility: hidden !important;
 }
 
+#scoreDisplay {
+  right: 0 !important;
+}
+
 * {
   font-family: 'Baloo 2';
 }
