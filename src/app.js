@@ -1774,7 +1774,7 @@ function fixInsta() {
 }
 
 function normalInsta() {
-  const enemies = players.filter(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid))
+  const enemies = players.filter(e => e?.alive && Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid))
     .sort((a, b) => Math.hypot(a?.x - b?.x, a?.y - b?.y));
   
   const enemy = enemies[0];
@@ -1832,7 +1832,7 @@ function normalInsta() {
 }
 
 function reverseInsta() {
-  const enemy = players.find(e => Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+  const enemy = players.find(e => e?.alive && Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
   window.sidFocus = enemy?.sid || 69420;
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
   if (!enemy) return;
@@ -2329,15 +2329,15 @@ function render() {
   if (player?.alive) {
     const mapOffY = maxScreenHeight - 200;
     mainContext.fillStyle = "rgba(0, 0, 0, 0.3)";
-    mainContext.fillRect(0, 0, 300, 300);
+    mainContext.fillRect(0, mapOffY, 200, mapOffY + 200);
     mainContext.fill();
     mainContext.fillStyle = '#fff';
     renderCircle(player.x / config.mapScale * 200, mapOffY + player.y / config.mapScale *
-        200, 7, mainContext, true);
+        200, 5, mainContext, true);
     mainContext.fillStyle = 'rgba(255, 255, 255, 0.35)';
     if (minimapData) {
       for (i = 0; i < minimapData.length;) {
-        renderCircle(minimapData[i] / config.mapScale * 200, mapOffY + minimapData[i + 1] / config.mapScale * 200, 7, mainContext, true);
+        renderCircle(minimapData[i] / config.mapScale * 200, mapOffY + minimapData[i + 1] / config.mapScale * 200, 5, mainContext, true);
         i += 2;
       }
     }
