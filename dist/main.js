@@ -4871,6 +4871,7 @@ function normalInsta() {
       sendAtckState(true, angle1);
       aimOverride = angle1;
       autoclicker = angle1;
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.AIM, angle1);
       storeEquip(6);
       storeEquip(15, true);
       selectToBuild(player.weapons[1], true);
@@ -4883,8 +4884,6 @@ function normalInsta() {
         reloads[player.weapons[1]] = 0;
         reloads[player.weapons[0]] = 0;
         turretReload = 0;
-
-        wsBridge.sendChat("Nah I'd win");
       }, average / 2);
     }, average / 2);
   }, average / 2);
@@ -4905,6 +4904,7 @@ function reverseInsta() {
   storeEquip(53);
   fixInsta();
   turretReload = 0;
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.AIM, angle);
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[1], true);
   wsBridge.updateHittingState(true, angle);
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, "!sync");
@@ -4916,6 +4916,7 @@ function reverseInsta() {
     storeEquip(7);
     storeEquip(4, true);
     _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, waka = player.weapons[0], true);
+    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.AIM, angle);
     wsBridge.updateHittingState(true, angle);
     setTimeout(() => {
       wsBridge.updateHittingState(false, angle);
