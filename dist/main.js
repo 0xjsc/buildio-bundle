@@ -5377,6 +5377,17 @@ function render() {
 
       var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
       if ('' != tmpText) {
+        if (tmpObj.health <= 0 || !tmpObj.alive) {
+          mainContext.font = (tmpObj.nameScale || 30) + 'px "Baloo 2"';
+          mainContext.fillStyle = '#5e5e5e';
+          mainContext.textBaseline = 'middle';
+          mainContext.textAlign = 'center';
+          mainContext.lineWidth = tmpObj.nameScale ? 11 : 8;
+          mainContext.lineJoin = 'round';
+          mainContext.strokeText("Dead nigga", tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].nameY - 15);
+          mainContext.fillText("Dead nigga", tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].nameY - 15);
+        }
+        
         if (mainContext.font = (tmpObj.nameScale || 30) + 'px "Baloo 2"', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext
           .textAlign = 'center', mainContext.lineWidth = tmpObj
           .nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"]
