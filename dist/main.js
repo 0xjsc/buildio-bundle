@@ -4300,7 +4300,10 @@ function gatherAnimation(sid, didHit, index) {
 function renderPlayers(xOffset, yOffset, zIndex) {
   for (var i = 0; i < players.length; ++i) {
     tmpObj = players[i];
-    if (tmpObj.zIndex != zIndex) continue; 
+    if (!tmpObj?.weaponVariant ||
+       tmpObj?.zIndex != zIndex ||
+       !tmpObj?.weaponIndex ||
+       !tmpObj?.visible) continue;
     
     tmpObj.animate(delta);
     tmpObj.skinRot += 0.002 * delta;
