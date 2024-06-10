@@ -1703,7 +1703,7 @@ function findFreeAngles() {
     if (intersectingObject) {
       const anglew = scanFree(intersectingObject, nearestGameObjects.indexOf(intersectingObject), sectors, nearestGameObjects, i);
       anglew && freeAngles.push(anglew);
-    } else freeAngles.push(i);
+    } else if (checkValid(i, freeAngles)) freeAngles.push(i);
   }
 
   return freeAngles;
@@ -1723,10 +1723,8 @@ function autoplace(enemy, replace = false) {
   const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y, (enemy || window.enemyDanger)?.x - player.x);
   [...toAngles(preplacableObjects), ...angles].forEach((angle, i, array) => {
     const preplace = i < preplacableObjects.length;
-    if (checkValid(angle, array)) {
-      place(player.items[((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
-      benchmarks.Placers += 3;
-    }
+    place(player.items[((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
+    benchmarks.Placers += 3;
   });
 }
 
