@@ -4692,52 +4692,13 @@ function getMoveDir() {
   return newMoveDir;
 }
 
-function findObjectAngleScale(object) {
-  const angle = Math.atan2(object.y - player.y, object.x - player.x);
-  const boundary = angle - Math.PI / 4;
-  const boundary1 = angle + Math.PI / 4;
-  const angleScale = Math.abs(Math.PI - boundary - boundary1);
-
-  return angleScale;
-}
-
-function calculateAngle(previous, next) {
-  const angle = Math.atan2(previous.y - player.y, previous.x - player.x);
-  const angle1 = Math.atan2(next.y - player.y, next.x - player.x);
-
-  return (angle + angle1) / 2;
-}
-
-function calculateCenter(angle) {
-  return angle + Math.PI / 2;
-}
-
-function scanFree(intersectingObject, index, sectors, nearestGameObjects, angle) {
-  const previousSector = sectors[index - 1];
-  const nextSector = nearestGameObjects.find( object => object && Math.abs(Math.atan2(object?.y - player.y, object?.x - player.x) - angle + Math.PI / 2) <= Math.PI / 2 );
-
-  if (nextSector && previousSector) return calculateAngle(previousSector, nextSector);
-  else return null; // Preplace exists for this case
-}
-
-function checkValid(angle, angles) {
-  return !angles.find(e => Math.abs(angle - e) < Math.PI / 3);
-}
-
 function findFreeAngles() {
   const freeAngles = [];
-  const sectors = [];
 
-  for (let i = 0; i < Math.PI * 2; i += Math.PI / 2) {
+  for (let i = -Math.sin(Date.now()); i < Math.PI * 2; i += Math.PI / 2) {
     if (i < 0) continue;
 
-    const intersectingObject = nearestGameObjects.find( object => 
-      Math.abs(Math.atan2(object.y - player.y, object.x - player.x) - i) <= Math.PI / 2);
-
-    if (intersectingObject) {
-      const anglew = scanFree(intersectingObject, nearestGameObjects.indexOf(intersectingObject), sectors, nearestGameObjects, i);
-      anglew && freeAngles.push(anglew);
-    } else if (checkValid(i, freeAngles)) freeAngles.push(i);
+    freeAngles.push(i);
   }
 
   return freeAngles;
