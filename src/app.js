@@ -2234,11 +2234,6 @@ function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
 
   if (player) {
-    /*attackDir = UTILS.getDistance(camX, camY, player.x, player.y);
-    tmp_Dir = UTILS.getDirection(player.x, player.y, camX, camY);
-
-    camSpd = Math.min(0.01 * attackDir * delta, attackDir);*/
-
     const moX = dxw - mouseX;
     const moY = dxh - mouseY;
     
@@ -2318,7 +2313,7 @@ function render() {
 
       var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
       if ('' != tmpText) {
-        if (mainContext.font = (tmpObj.nameScale || 30) + 'px "Baloo 2"', mainContext.fillStyle = (tmpObj.health <= 0 || !tmpObj.alive) ? '#5e5e5e' : '#fff', mainContext.textBaseline = 'middle', mainContext
+        if (mainContext.font = (tmpObj.nameScale || 30) + 'px "Baloo 2"', mainContext.fillStyle = (tmpObj.health <= 0 || !tmpObj.alive) ? '#7E7E7E' : '#fff', mainContext.textBaseline = 'middle', mainContext
           .textAlign = 'center', mainContext.lineWidth = tmpObj
           .nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config
             .nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY), tmpObj.isLeader && iconSprites.crown
