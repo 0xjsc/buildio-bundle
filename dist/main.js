@@ -5077,6 +5077,7 @@ const modulesQueue = [
     if (instakilling) return;
     if (window.bowspam) return;
     if (breaking) return;
+    if (!player || !player?.weaponIndex) return;
     
     if (reloads[player.weapons[0]] !== speeds[player.weapons[0]]) {
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
@@ -5345,8 +5346,8 @@ function render() {
           mainContext.textAlign = 'center';
           mainContext.lineWidth = tmpObj.nameScale ? 11 : 8;
           mainContext.lineJoin = 'round';
-          mainContext.strokeText("Dead nigga", tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].nameY - 15);
-          mainContext.fillText("Dead nigga", tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].nameY - 15);
+          mainContext.strokeText("Dead nigga", tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].nameY + 20);
+          mainContext.fillText("Dead nigga", tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].nameY + 20);
         }
         
         if (mainContext.font = (tmpObj.nameScale || 30) + 'px "Baloo 2"', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext
