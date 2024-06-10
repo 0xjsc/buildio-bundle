@@ -4708,7 +4708,7 @@ function scanFree(intersectingObject, index, sectors, nearestGameObjects, angle)
 }
 
 function checkValid(angle, angles) {
-  return !angles.find(e => Math.abs(angle - e) < Math.PI / 2);
+  return !angles.find(e => Math.abs(angle - e) < Math.PI / 3);
 }
 
 function findFreeAngles() {
@@ -4744,8 +4744,10 @@ function autoplace(enemy, replace = false) {
   const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y, (enemy || window.enemyDanger)?.x - player.x);
   [...toAngles(preplacableObjects), ...angles].forEach((angle, i, array) => {
     const preplace = i < preplacableObjects.length;
-    checkValid(angle, array) && place(player.items[((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
-    benchmarks.Placers += 3;
+    if (checkValid(angle, array)) {
+      place(player.items[((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
+      benchmarks.Placers += 3;
+    }
   });
 }
 
