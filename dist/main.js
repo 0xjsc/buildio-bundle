@@ -5031,6 +5031,17 @@ function autoMills() {
   updateDist();
 }
 
+const boughtHats = [];
+const hatsList = [
+  { acc: 11, cost: 2000, isAcc: 1 },
+  { hat: 6, cost: 4000, isAcc: 0 },
+  { hat: 7, cost: 6000, isAcc: 0 },
+  { hat: 11, cost: 10000, isAcc: 0},
+  { hat: 40, cost: 15000, isAcc: 0 },
+  { acc: 13, cost: 16000, isAcc: 1 },
+  { acc: 21, cost: 20000, isAcc: 1 }
+];
+
 const modulesQueue = [
   /** HELPER MODULES ARE GOING FIRST **/
   () => {
@@ -5172,6 +5183,19 @@ const modulesQueue = [
       storeEquip(window.tanker ? tankerHat : idleHat);
       storeEquip(window.tanker ? tankerAcc : idleAcc, true);
     }
+  }, () => {
+    if (!hatsList) {
+      modulesQueue.splice(modulesQueue.length - 1, 1);
+    };
+    
+    hatsList.forEach((item, index) => {
+      const property = item?.isAcc ? "acc" : "hat";
+      if (item.cost < player.points) {
+        storeBuy(item[property], property == "acc");
+        boughtHats.push(item[property]);
+        hatsList.splice(index, 1);
+      }
+    });
   }
 ];
 
