@@ -1279,9 +1279,7 @@ function gatherAnimation(sid, didHit, index) {
 function renderPlayers(xOffset, yOffset, zIndex) {
   for (var i = 0; i < players.length; ++i) {
     tmpObj = players[i];
-    if (!tmpObj?.weaponVariant ||
-       tmpObj?.zIndex != zIndex ||
-       !tmpObj?.weaponIndex ||
+    if (tmpObj?.zIndex != zIndex ||
        !tmpObj?.visible) continue;
     
     tmpObj.animate(delta);
