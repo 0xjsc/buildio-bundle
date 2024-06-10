@@ -2171,7 +2171,7 @@ const modulesQueue = [
     const tankerHat = breaking ? 17 : 6;
     const tankerAcc = 15;
     const weapon = waka || player.weaponIndex;
-    const preparingForHit = reloads[weapon] > speeds[weapon] - window.pingTime;
+    const preparingForHit = reloads[weapon] + average > speeds[weapon] - window.pingTime;
     
     const alreadyWearsHit = player.skinIndex == hitHat && player.tailIndex == hitAcc;
     const alreadyWearsIdle = player.skinIndex == idleHat && player.tailIndex == idleAcc;
