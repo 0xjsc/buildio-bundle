@@ -1683,7 +1683,7 @@ function scanFree(intersectingObject, index, sectors, nearestGameObjects, angle)
   const nextSector = nearestGameObjects.find( object => object && Math.abs(Math.atan2(object?.y - player.y, object?.x - player.x) - angle + Math.PI / 2) <= Math.PI / 2 );
 
   if (nextSector && previousSector) return calculateAngle(previousSector, nextSector);
-  else return calculateCenter(angle);
+  else return null; // Preplace exists for this case
 }
 
 function checkValid(angle, angles) {
@@ -1694,7 +1694,7 @@ function findFreeAngles() {
   const freeAngles = [];
   const sectors = [];
 
-  for (let i = -Math.sin(Date.now()); i < Math.PI * 2; i += Math.PI / 2) {
+  for (let i = 0; i < Math.PI * 2; i += Math.PI * 2 / 3) {
     if (i < 0) continue;
 
     const intersectingObject = nearestGameObjects.find( object => 
@@ -1702,7 +1702,7 @@ function findFreeAngles() {
 
     if (intersectingObject) {
       const anglew = scanFree(intersectingObject, nearestGameObjects.indexOf(intersectingObject), sectors, nearestGameObjects, i);
-      freeAngles.push(anglew);
+      anglew && freeAngles.push(anglew);
     } else freeAngles.push(i);
   }
 
