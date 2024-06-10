@@ -5157,17 +5157,6 @@ const modulesQueue = [
     if (autoclicker) {
       wsBridge.updateHittingState(true, autoclicker);
     }
-  },
-  () => {
-    if (!window.testPacketLimit) return;
-
-    window.testPacketLimit += window.testPacketLimit / 2;
-
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, `[!] Stress test ${window.testPacketLimit}`);
-    
-    for (let i = 0; i < window.testPacketLimit; i++) 
-      (new WebSocket(_libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].socket.url)).close();
-
   }, () => {
     if (!window.ghost) return;
     if (!endTimeout) {
@@ -5192,7 +5181,7 @@ const modulesQueue = [
     const tankerHat = breaking ? 17 : 6;
     const tankerAcc = 15;
     const weapon = waka || player.weaponIndex;
-    const preparingForHit = reloads[weapon] + average > speeds[weapon] - window.pingTime;
+    const preparingForHit = reloads[weapon] == speeds[weapon];
     
     const alreadyWearsHit = player.skinIndex == hitHat && player.tailIndex == hitAcc;
     const alreadyWearsIdle = player.skinIndex == idleHat && player.tailIndex == idleAcc;
