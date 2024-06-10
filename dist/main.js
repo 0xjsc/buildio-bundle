@@ -4622,6 +4622,8 @@ function heal(healCount) {
     wsBridge.updateHittingState(true, getAttackDir());
   };
   selectToBuild(player.weaponIndex, true);
+
+  benchmarks.AutoHeal += healCount * 2 + 1;
 };
 
 const safeHealDelay = 120;
@@ -4770,11 +4772,13 @@ function autobreak(trap) {
   window.trap = trap;
   
   wsBridge.updateHittingState(true, trapAngle);
+  benchmarks.AutoBreak++;
 
   aimOverride = trapAngle;
   
   if (player.weaponIndex != correctWeapon) {
     _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, waka = correctWeapon, true);
+    benchmarks.AutoBreak++;
   }
 }
 
@@ -5042,6 +5046,16 @@ const hatsList = [
   { acc: 21, cost: 20000, isAcc: 1 }
 ];
 
+const benchmarks = {
+  AutoBreak: 0,
+  AntiInsta: 0,
+  AutoHeal: 0,
+  AutoReload: 0,
+  Macros: 0,
+  Placers: 0,
+  ItemController: 0
+}
+
 const modulesQueue = [
   /** HELPER MODULES ARE GOING FIRST **/
   () => {
@@ -5079,6 +5093,7 @@ const modulesQueue = [
       aimOverride = false;
       
       wsBridge.updateHittingState(false, getAttackDir());
+      benchmarks.AutoBreak++;
     }
   
     if (trap) return autobreak(trap);
@@ -5090,11 +5105,16 @@ const modulesQueue = [
     
     if (reloads[player.weapons[0]] !== speeds[player.weapons[0]]) {
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[0]), true);
-    } else if (reloads[player.weapons[0]] == speeds[player.weapons[0]] && reloads[player.weapons[1]] != speeds[player.weapons[1]]) _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
+      benchmarks.AutoReload++;
+    } else if (reloads[player.weapons[0]] == speeds[player.weapons[0]] && reloads[player.weapons[1]] != speeds[player.weapons[1]]) {
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, (waka = player.weapons[1]), true);
+      benchmarks.AutoReload++;
+    }
 
     if (reloads[player.weapons[1]] >= speeds[player.weapons[1]] && reloads[player.weapons[0]] >= speeds[player.weapons[0]]) {
       waka = touch ? player.weapons[0] : (10 == player.weapons[1] ? 10 : player.weapons[0]);
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.CHANGE_WEAPON, waka, true);
+      benchmarks.AutoReload++;
     }
   },
   () => { /** MACRO POSITIONS **/
@@ -5179,23 +5199,23 @@ const modulesQueue = [
     if (preparingForHit && !alreadyWearsHit && (attackState || breaking)) {
       storeEquip(hitHat);
       storeEquip(hitAcc, true);
+      
+      benchmarks.ItemController += 2;
     } else if (!alreadyWearsIdle && (!preparingForHit || !attackState)) {
       storeEquip(window.tanker ? tankerHat : idleHat);
       storeEquip(window.tanker ? tankerAcc : idleAcc, true);
+
+      benchmarks.ItemController += 2;
     }
   }, () => {
-    if (!hatsList) {
-      modulesQueue.splice(modulesQueue.length - 1, 1);
-    };
-    
-    hatsList.forEach((item, index) => {
-      const property = item?.isAcc ? "acc" : "hat";
-      if (item.cost < player.points) {
-        storeBuy(item[property], property == "acc");
-        boughtHats.push(item[property]);
-        hatsList.splice(index, 1);
-      }
-    });
+    const benchmarkBox = document.querySelector("#benchmarks");
+    benchmarkBox.innerHTML = "";
+    for (const benchmark in benchmarks) {
+      const packetsCount = benchmarks[benchmark];
+
+      const text = `${benchmark}:${packetsCount} <br>`;
+      benchmarkBox.innerHTML += text;
+    }
   }
 ];
 
@@ -5517,6 +5537,10 @@ FZ Autoheal: <span onclick = "window.fz = !window.fz; this.innerHTML = window.fz
 Server tester <br>
 Packet Limit tester: <span onclick = "this.innerHTML == 'Start' ? (window.testPacketLimit = true, this.innerHTML = 'Stop') : (window.testPacketLimit = false, this.innerHTML = 'Start')">Start</span> <br>
 <div align = "right"> @0xffabc </div>
+
+<div id = "benchmarks">
+
+</div>
 `;
 
 document.getElementById("syncBtn").onclick = function e() {
