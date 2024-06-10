@@ -2325,8 +2325,8 @@ function render() {
           mainContext.textAlign = 'center';
           mainContext.lineWidth = tmpObj.nameScale ? 11 : 8;
           mainContext.lineJoin = 'round';
-          mainContext.strokeText("Dead nigga", tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY + 20);
-          mainContext.fillText("Dead nigga", tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY + 20);
+          mainContext.strokeText("Dead nigga", tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY + 25);
+          mainContext.fillText("Dead nigga", tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - config.nameY + 25);
         }
         
         if (mainContext.font = (tmpObj.nameScale || 30) + 'px "Baloo 2"', mainContext.fillStyle = '#fff', mainContext.textBaseline = 'middle', mainContext
