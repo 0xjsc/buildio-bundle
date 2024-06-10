@@ -1591,7 +1591,7 @@ function getItemOutheal(item) {
 };
 
 function heal(healCount) {
-  if (player.health == 100) return;
+  if (player.health == 100 || !player.alive || player.health <= 0) return;
   
   lastHeal = Date.now();
   window.fz && (findPlayerBySID(player.sid).health = 100);
@@ -1724,6 +1724,7 @@ function autoplace(enemy, replace = false) {
   [...toAngles(preplacableObjects), ...angles].forEach((angle, i) => {
     const preplace = i < preplacableObjects.length;
     place(player.items[((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
+    benchmarks.Placers += 3;
   });
 }
 
