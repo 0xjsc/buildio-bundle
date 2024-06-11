@@ -3042,8 +3042,6 @@ const serverPackets = {};
 const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
 const { log } = console;
 
-let satanaInstaPoints = [];
-
 let packets, serverSide;
 
 const hit360 = Number(
@@ -4772,8 +4770,6 @@ function normalInsta() {
   
   const enemy = enemies[0];
   const enemy1 = enemies[1] || enemy;
-
-  satanaInstaPoints.push(enemy, enemy1);
   
   window.sidFocus = enemy?.sid || 69420;
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return false;
@@ -4794,34 +4790,33 @@ function normalInsta() {
     storeEquip(7);
     storeEquip(4, true);
     
-    selectToBuild(player.weapons[0], true);
-    sendAtckState(true, hit360);
+    wsBridge.updateHoldItem(player.weapons[0], true);
+    wsBridge.updateHittingState(true, hit360);
     aimOverride = angle;
     autoclicker = angle;
 
     setTimeout(() => {
-      sendAtckState(true, angle1);
+      wsBridge.updateHittingState(true, angle1);
       aimOverride = angle1;
       autoclicker = angle1;
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.AIM, angle1);
       storeEquip(1);
       storeEquip(15, true);
-      selectToBuild(player.weapons[1], true);
+      wsBridge.updateHoldItem(player.weapons[1], true);
       setTimeout(() => {
         aimOverride = false;
         autoclicker = false;
         instakilling = false;
-        sendAtckState(false, getAttackDir());
-        selectToBuild(player.weapons[0], true);
+        wsBridge.updateHittingState(false, getAttackDir());
+        wsBridge.updateHoldItem(player.weapons[0], true);
         lastOpInsta = Date.now();
 
         reloads[player.weapons[1]] = 0;
         reloads[player.weapons[0]] = 0;
-        satanaInstaPoints = [];
         turretReload = 0;
-      }, average / 2);
-    }, average / 2);
-  }, average / 2);
+      }, average / 2 + serverLag);
+    }, average / 2 + serverLag);
+  }, average / 2 + serverLag);
 
   return true;
 }
