@@ -1,15 +1,8 @@
 // ==UserScript==
-// @name              AutoWASM
-// @namespace         https://github.com/0xffabc/mohmoh-client/autowasm
+// @name              Tuvan
 // @match             *://*.mohmoh.eu/*
 // @match             *://*.moomoo.io/*
-// @icon              https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/WebAssembly_Logo.svg/1024px-WebAssembly_Logo.svg.png
-// @grant             none
-// @version           1.0
-// @author            Build.IO team
-// @unwrap
-// @antifeature       tracking
-// @description       A public mod 
+// @description       Private.
 // @require           https://update.greasyfork.org/scripts/423602/1005014/msgpack.js
 // ==/UserScript==
 
