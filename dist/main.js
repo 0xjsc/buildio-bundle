@@ -5036,6 +5036,8 @@ const modulesQueue = [
     serverLag = Math.abs(1000 / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].serverUpdateRate - average);
     tmpTime = Date.now();
     turretReload = Math.min(turretReload + current, 2500);
+    if (!player?.weaponIndex) return;
+    
     if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
     else reloads[player.weaponIndex] = speeds[player.weaponIndex];
   },
@@ -5135,7 +5137,7 @@ const modulesQueue = [
   }, () => {
     const hitHat = (breaking || !touch) ? 40 : 7;
     const hitAcc = (player.health > 50) ? 15 : (player.health < 40 ? 18 : 13);
-    const idleHat = window.enemyDanger ? (breaking ? 17 : (turretReload >= 2500 ? (turretReload = 0, 53) : 6)) : getBiomeHat();
+    const idleHat = window.enemyDanger ? (breaking ? 17 : 6) : getBiomeHat();
     const idleAcc = window.enemyDanger ? 15 : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 6 : 11);
     const tankerHat = breaking ? 17 : 6;
     const tankerAcc = 15;
