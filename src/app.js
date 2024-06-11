@@ -2340,7 +2340,7 @@ function render() {
   window.requestAnimationFrame(render);
 };
 
-render();
+//render();
 
 window.aJoinReq = aJoinReq;
 window.kickFromClan = kickFromClan;
