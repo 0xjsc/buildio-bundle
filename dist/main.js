@@ -2995,8 +2995,6 @@ async function vultrSeeker() {
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
 /*!********************!*\
   !*** ./src/app.js ***!
   \********************/
@@ -3423,8 +3421,8 @@ var useNativeResolution, showPing, delta, now, lastSent, attackState, player, pl
   players = [],
   alliances = [],
   gameObjects = [],
-  projectiles = [],
-  projectileManager = new _js_data_projectileManager_js__WEBPACK_IMPORTED_MODULE_12__["default"](_js_data_projectile_js__WEBPACK_IMPORTED_MODULE_11__["default"], projectiles, players, ais, objectManager, _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"], _config_js__WEBPACK_IMPORTED_MODULE_4__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"]),
+  app_projectiles = [],
+  projectileManager = new _js_data_projectileManager_js__WEBPACK_IMPORTED_MODULE_12__["default"](_js_data_projectile_js__WEBPACK_IMPORTED_MODULE_11__["default"], app_projectiles, players, ais, objectManager, _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"], _config_js__WEBPACK_IMPORTED_MODULE_4__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"]),
   aiManager = new _js_data_aiManager_js__WEBPACK_IMPORTED_MODULE_13__["default"](ais, _js_data_ai_js__WEBPACK_IMPORTED_MODULE_14__["default"], players, _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"], null, _config_js__WEBPACK_IMPORTED_MODULE_4__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"]),
   waterMult = 1,
   waterPlus = 0,
@@ -4213,8 +4211,8 @@ function renderControl(startX, startY, currentX, currentY) {
 }
 
 function renderProjectiles(layer, xOffset, yOffset) {
-  for (var i = 0; i < projectiles.length; ++i)
-    (tmpObj = projectiles[i])
+  for (var i = 0; i < app_projectiles.length; ++i)
+    (tmpObj = app_projectiles[i])
     .active && tmpObj.layer == layer && (tmpObj.update(delta), tmpObj.active && isOnScreen(tmpObj.x - xOffset, tmpObj.y - yOffset, tmpObj.scale) && (mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpObj.dir), renderProjectile(0, 0, tmpObj, mainContext, 1), mainContext.restore()));
 }
 var projectileSprites = {};
@@ -4504,8 +4502,8 @@ function addProjectile(x, y, dir, range, speed, indx, layer, sid) {
 }
 
 function remProjectile(sid, range) {
-  for (var i = 0; i < projectiles.length; ++i)
-    projectiles[i].sid == sid && (projectiles[i].range = range);
+  for (var i = 0; i < app_projectiles.length; ++i)
+    app_projectiles[i].sid == sid && (app_projectiles[i].range = range);
 }
 
 function animateAI(sid) {
@@ -5462,45 +5460,6 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
 
 </style>
 `);
-
-const menu = document.createElement("div");
-document.documentElement.appendChild(menu);
-menu.id = "modMenu";
-
-menu.innerHTML = `
-<h2> <center> AutoWASM Sync </center> </h2> <br>
-
-<input type = "text" placeholder = "Player Username" id = "username_" style = "outline: none; background: rgba(0, 0, 0, 0.5); border: 0; color: white"> <span id = "syncBtn"> Connect </span> <br>
-
-Follow module: <span onclick = "window.follow = !window.follow; this.innerHTML = window.follow ? 'ON' : 'OFF'"> OFF </span> <br>
-Bow spamming module: <span onclick = "window.bowspam = !window.bowspam; this.innerHTML = window.bowspam ? 'ON' : 'OFF'"> OFF </span> <br>
-Ghost anti-instakill drone turret+secondary dodge system module: <span onclick = "window.ghost = !window.ghost; this.innerHTML = window.ghost ? 'ON' : 'OFF'"> OFF </span> <br>
-Boost Insta Optimisations: <span onclick = "window.boostinsta = !window.boostinsta; this.innerHTML = window.boostinsta ? 'ON' : 'OFF'"> OFF </span> <br>
-Tanker mode: <span onclick = "window.tanker = !window.tanker; this.innerHTML = window.tanker ? 'ON' : 'OFF'"> OFF </span> <br> 
-FZ Autoheal: <span onclick = "window.fz = !window.fz; this.innerHTML = window.fz ? 'ON' : 'OFF'"> OFF </span> <br>
-Server tester <br>
-Packet Limit tester: <span onclick = "this.innerHTML == 'Start' ? (window.testPacketLimit = true, this.innerHTML = 'Stop') : (window.testPacketLimit = false, this.innerHTML = 'Start')">Start</span> <br>
-<div align = "right"> @0xffabc </div>
-
-<div id = "benchmarks">
-
-</div>
-`;
-
-document.getElementById("syncBtn").onclick = function e() {
-  if (this.innerHTML == "Connect") {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, "!connect " + document.getElementById("username_").value);
-    this.innerHTML = "Disconnect";
-  } else if (this.innerHTML == "Disconnect") {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, "!disconnect");
-    this.innerHTML = "Connect";
-  } else {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, "!connect " + document.getElementById("username_").value);
-    this.innerHTML = "Disconnect";
-  }
-}
-
-})();
 
 /******/ })()
 ;
