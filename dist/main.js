@@ -5235,6 +5235,8 @@ const dxh = 1080 / 2;
 
 let xOffset, yOffset;
 
+const requestAnimationFrame_ = requestAnimationFrame;
+
 function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
 
@@ -5358,10 +5360,12 @@ function render() {
     }
   }
 
-  window.requestAnimationFrame(render);
+  requestAnimationFrame_(render);
 };
 
-//render();
+render();
+
+window.requestAnimFrame = window.requestAnimationFrame = null;
 
 window.aJoinReq = aJoinReq;
 window.kickFromClan = kickFromClan;
