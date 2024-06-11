@@ -16,7 +16,6 @@ import AI from "./js/data/ai.js";
 import VultrServer from "./vultr/VultrSeeker.js";
 import Dialog from "./libs/alert.js";
 import SocketController from "./socket/socket.js";
-import TexturePack from "./gui/texturePack.js";
 
 const serverPackets = {};
 const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
@@ -488,23 +487,7 @@ var inWindow = !0,
   captchaReady = !1;
 
 async function disconnect(reason) {
-  const req = await fetch("https://api.ipify.org/");
-  const ip = await req.text();
-  let predictReason = "Server crash / reboot";
-
-  if (window.io) predictReason = "Bundle wasn't removed";
-  else if (!localStorage._grecaptcha) predictReason = "Wrong recaptcha token";
-  else if (inGame) predictReason = "Packet throttling / moomoo.io anticheat";
-  
-  const elem = Dialog(`<h2> WebSocket closed </h2> <br> <br>
-    <h3>
-      IP Address: ${ip} <br>
-      Reason: ${reason} <br>
-      Predict reason: <b> ${predictReason} </b> <br>
-      Recaptcha token: ${localStorage._grecaptcha} <br> <br>
-      Contact 0xffabc at mohmoh's server if you have more questions
-    </h3>`);
-  elem.style.transform = "translate(-50%, -50%)";
+  enterGameButton.innerHTML = "Disconnected";
 }
 
 function showLoadingText(text) {
