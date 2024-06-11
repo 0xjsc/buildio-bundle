@@ -5323,6 +5323,7 @@ function normalInsta() {
         aimOverride = false;
         autoclicker = false;
         instakilling = false;
+        window.keyEvents.SwitchKeyR = false;
         wsBridge.updateHittingState(false, getAttackDir());
         wsBridge.updateHoldItem(player.weapons[0], true);
         lastOpInsta = Date.now();
@@ -5372,6 +5373,7 @@ function reverseInsta() {
       instakilling = false;
       autoclicker = false;
       aimOverride = false;
+      window.keyEvents.SwitchKeyT = false;
     }, average / 2 + serverLag);
   }, average / 2 + serverLag);
 
@@ -5619,11 +5621,9 @@ const modulesQueue = [
     }
   }, () => { /** Instakill shouldn't be interrupted **/
     if (window.keyEvents.SwitchKeyR) {
-      if (normalInsta())
-        window.keyEvents.SwitchKeyR = false;
+      normalInsta()
     } else if (window.keyEvents.SwitchKeyT) {
-      if (reverseInsta())
-        window.keyEvents.SwitchKeyT = false;
+      reverseInsta();
     }
   }, () => {
     if (autoclicker) {
