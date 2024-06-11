@@ -1,3 +1,4 @@
+import msgpack from "./msgpack.js";
 
 const socket = {
   socket: null,
