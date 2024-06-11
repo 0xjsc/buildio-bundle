@@ -2319,7 +2319,12 @@ function render() {
     }
 
   if (player?.alive) {
-    const mapOffY = maxScreenHeight - 200;
+    mainContext.fillStyle = "white";
+    mainContext.fillText(`180sx 2v1 Insta: ${!!window?.keyEvents?.SwitchKeyR ? "on" : "off"}`, 10, 10);
+    mainContext.fillText(`Classic reverse Insta: ${!!window?.keyEvents?.SwitchKeyT ? "on" : "off"}`, 10, 40);
+    mainContext.fill();
+    
+    const mapOffY = gameCanvas.height - 200;
     mainContext.fillStyle = "rgba(0, 0, 0, 0.3)";
     mainContext.shadowBlur = "3px";
     mainContext.roundRect(0, mapOffY, 200, mapOffY + 200, 10);
