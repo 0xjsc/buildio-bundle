@@ -2157,7 +2157,7 @@ function updatePlayers(data) {
     if (tmpObj.sid == ownerSid) botFunctions(tmpObj);
     
     if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 700 && tmpObj != player) window.enemy = tt = tmpObj;
-    if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 200 && tmpObj != player) window.enemyDanger = tmpObj;
+    if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 300 && tmpObj != player) window.enemyDanger = tmpObj;
   }
 
   modulesQueue.forEach(task => task(tt));
