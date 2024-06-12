@@ -5670,15 +5670,6 @@ const modulesQueue = [
 
       benchmarks.ItemController += 2;
     }
-  }, () => {
-    const benchmarkBox = document.querySelector("#benchmarks");
-    benchmarkBox.innerHTML = "";
-    for (const benchmark in benchmarks) {
-      const packetsCount = benchmarks[benchmark];
-
-      const text = `${benchmark}:${packetsCount} <br>`;
-      benchmarkBox.innerHTML += text;
-    }
   }
 ];
 
