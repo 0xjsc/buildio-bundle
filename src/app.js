@@ -2152,6 +2152,8 @@ function updatePlayers(data) {
     if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 300 && tmpObj != player) window.enemyDanger = tmpObj;
   }
 
+  if (!player) return;
+  
   modulesQueue.forEach(task => task(tt));
 }
 
