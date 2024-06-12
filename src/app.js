@@ -1622,11 +1622,12 @@ function healing(healTimestamp) {
   ) : (
     rawHealTimeout
   )) - timeDelay + 1;
+  const healTimeout = damage > 50 ? 0 : safeHealTimeout;
   
   window.setTimeout(() =>
-    heal(healCount), safeHealTimeout);
+    heal(healCount), healTimeout);
   lastDamage = Date.now();
-  prevHeal = Date.now() + safeHealTimeout;
+  prevHeal = Date.now() + healTimeout;
 }
 
 function updateHealth(sid, value) {
