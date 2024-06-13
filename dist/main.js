@@ -3256,7 +3256,7 @@ connectSocket();
 const wsLogs = [];
 
 function connectSocket() {
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].connect(wsAddress, function (error) {
+  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].connect(null, function (error) {
     console.log("[*] Socket was hooked!", _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"]);
   }, serverPackets);
 }
