@@ -4022,13 +4022,7 @@ const benchmarks = {
 const modulesQueue = [
   /** HELPER MODULES ARE GOING FIRST **/
   () => {
-    nearestGameObjects = gameObjects.filter(object => {
-      if (!object?.x) return;
-
-      if (!isOnScreen(object?.x - xOffset, object?.y - yOffset, 45)) return;
-      
-      return true;
-    });
+    console.log(gameObjects);
   }
 ];
 
@@ -4044,7 +4038,7 @@ function updatePlayers(data) {
 
   /** ADD YOUR SCRIPTS IN MODULESQUEUE ONLY TO DON'T BREAK EVERYTHING **/
   
-  modulesQueue.forEach(task => task(tt));
+  modulesQueue.forEach(task => task());
 }
 
 function findPlayerBySID(sid) {
