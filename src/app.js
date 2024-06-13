@@ -186,7 +186,7 @@ connectSocket();
 const wsLogs = [];
 
 function connectSocket() {
-  io.connect(wsAddress, function (error) {
+  io.connect(null, function (error) {
     console.log("[*] Socket was hooked!", io);
   }, serverPackets);
 }
