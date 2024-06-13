@@ -519,9 +519,12 @@ let tmpTime = Date.now();
 const modulesQueue = [
   /** HELPER MODULES ARE GOING FIRST **/
   () => {
-    if (reloads[player.sid]) {
-      reloads[player.sid][player.weaponIndex] = Math.min(reloads[player.sid][player.weaponIndex] + 111, speeds[player.weaponIndex]);
-      console.log(reloads[player.sid]);
+    if (players && player?.sid && player?.weaponIndex) {
+      players.forEach(player => {
+        if (!player?.sid || !player?.weaponIndex) return;
+        
+        reloads[player.sid][player.weaponIndex] = Math.min(reloads[player.sid][player.weaponIndex] + 111, speeds[player.weaponIndex]);
+      });
     }
   }
 ];
