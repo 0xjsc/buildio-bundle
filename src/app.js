@@ -181,15 +181,10 @@ let nearestGameObjects = [];
 
 var isProd = location.origin.includes("http://")
 
-connectSocket();
+io.connect(null, function (error) {
+  console.log(io);
+}, serverPackets);
 
-const wsLogs = [];
-
-function connectSocket() {
-  io.connect(null, function (error) {
-    console.log("[*] Socket was hooked!", io);
-  }, serverPackets);
-}
 var canStore = 0,
   mathPI = Math.PI,
   mathPI2 = 2 * mathPI;
@@ -201,13 +196,7 @@ function saveVal(name, val) {
 function getSavedVal(name) {
   return canStore ? localStorage.getItem(name) : null;
 }
-Math.lerpAngle = function (value1, value2, amount) {
-  Math.abs(value2 - value1) > mathPI && (value1 > value2 ? value2 += mathPI2 : value1 += mathPI2);
-  var value = value2 + (value1 - value2) * amount;
-  return value >= 0 && value <= mathPI2 ? value : value % mathPI2;
-}, CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
-  return w < 2 * r && (r = w / 2), h < 2 * r && (r = h / 2), r < 0 && (r = 0), this.beginPath(), this.moveTo(x + r, y), this.arcTo(x + w, y, x + w, y + h, r), this.arcTo(x + w, y + h, x, y + h, r), this.arcTo(x, y + h, x, y, r), this.arcTo(x, y, x + w, y, r), this.closePath(), this;
-}, 'undefined' != typeof Storage && (canStore = !0); //,// getSavedVal("consent") || (consentBlock.style.display="block"),window.checkTerms=function(e){e?(consentBlock.style.display="none",saveVal("consent",1)):$("#consentShake").effect("shake")};
+
 var useNativeResolution, showPing, delta, now, lastSent, attackState, player, playerSID, tmpObj, camX = 100, camY = 100, tmpDir, screenWidth, screenHeight, moofoll = getSavedVal('moofoll'),
   pixelDensity = 1,
   lastUpdate = Date.now(),
@@ -301,15 +290,7 @@ async function disconnect(reason) {
 function showLoadingText(text) {
   mainMenu.style.display = 'block', gameUI.style.display = 'none', menuCardHolder.style.display = 'none', diedText.style.display = 'none', loadingText.style.display = 'block', loadingText.innerHTML = text + '<a href=\'javascript:window.location.href=window.location.href\' class=\'ytLink\'>reload</a>';
 }
-window.onblur = function () {
-  inWindow = !1;
-}, window.onfocus = function () {
-  inWindow = !0, player && player.alive && resetMoveDir();
-}, gameCanvas.oncontextmenu = function () {
-  return !1;
-};
 
-window.captchaCallback = () => connectSocketIfReady();
 didLoad = true;
 
 function setupServerStatus() {
@@ -693,32 +674,16 @@ window.addEventListener('keydown', UTILS.checkTrusted(function (event) {
     window.keyEvents[keyCode] = true;
     window.keyEvents["Switch" + keyCode] = !window.keyEvents["Switch" + keyCode];
   }
-  "Escape" == keyCode ? hideAllWindows() : player && player.alive && keysActive() && (keys[keyCode] || (keys[keyCode] = 1, "KeyX" == keyCode ? wsBridge.freeze(true) : "KeyC" == keyCode ? (mapMarker || (mapMarker = {}), mapMarker.x = player.x, mapMarker.y = player.y) : "KeyZ" == keyCode ? (player.lockDir = player.lockDir ? 0 : 1, wsBridge.freeze(false)) : null != player.weapons[keyNum - 49] ? selectToBuild(player.weapons[keyNum - 49], !0) : null != player.items[keyNum - 49 - player.weapons.length] ? selectToBuild(player.items[keyNum - 49 - player.weapons.length]) : 81 == keyNum ? selectToBuild(player.items[0]) : "KeyR" == keyCode ? sendMapPing() : moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 1, sendAtckState())));
 })), window.addEventListener('keyup', UTILS.checkTrusted(function (event) {
   if (player && player.alive) {
     var keyNum = event.which || event.keyCode || 0;
     const keyCode = event.code;
-    "Enter" == keyCode ? toggleChat() : keysActive() && keys[keyCode] && (keys[keyCode] = 0, moveKeys[keyCode] ? sendMoveDir() : "Space" == keyCode && (attackState = 0, sendAtckState()));
     window.keyEvents[keyCode] = false;
   }
 }));
 var lastMoveDir = void 0;
 
-function sendMoveDir() {
-  var newMoveDir = function () {
-    var dx = 0,
-      dy = 0;
-    if (-1 != controllingTouch.id)
-      dx += controllingTouch.currentX - controllingTouch.startX, dy += controllingTouch.currentY - controllingTouch.startY;
-    else
-      for (var key in moveKeys) {
-        var tmpDir = moveKeys[key];
-        dx += !!keys[key] * tmpDir[0], dy += !!keys[key] * tmpDir[1];
-      }
-    return 0 == dx && 0 == dy ? void 0 : UTILS.fixTo(Math.atan2(dy, dx), 2);
-  }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (wsBridge.updateMoveDir(newMoveDir), (!window.enemyDanger && !instakilling) && (storeEquip(window.tanker ? 15 : (player.y <= config.snowBiomeTop ? 6 : 11), true), storeEquip(window.tanker ? 6 : getBiomeHat())), lastMoveDir = newMoveDir);
-}
+function sendMoveDir() { }
 
 function sendMapPing() {
   wsBridge.mapPing();
