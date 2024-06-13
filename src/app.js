@@ -1,7 +1,6 @@
 import insert_000000 from "./libs/aoe32.js";
 import io from "./libs/io-client.js";
 import UTILS from "./libs/utils.js";
-import animText from "./libs/animText.js";
 import config from "./config.js";
 import GameObject from "./js/data/gameObject.js";
 import items from "./js/data/items.js";
@@ -11,10 +10,6 @@ import Player from "./js/data/player.js";
 import store from "./js/data/store.js";
 import Projectile from "./js/data/projectile.js";
 import ProjectileManager from "./js/data/projectileManager.js";
-import AiManager from "./js/data/aiManager.js";
-import AI from "./js/data/ai.js";
-import VultrServer from "./vultr/VultrSeeker.js";
-import Dialog from "./libs/alert.js";
 import SocketController from "./socket/socket.js";
 
 const serverPackets = {};
@@ -22,10 +17,6 @@ const eventsListener = location.href.includes("mohmoh") ? document.getElementByI
 const { log } = console;
 
 let packets, serverSide;
-
-const hit360 = Number(
-  199871592653589792171177631498931686031281669589442211709791690215455978209410508293026261119265370230936153240360026347462449376754846791234307902747653227578310433809475993341322854294818292437842268106508769947533062086396136846277710511436997007404745373491372264259584n
-);
 
 packets = {
   PING: "pp",
@@ -157,7 +148,6 @@ serverPackets[serverSide.REMOVE_PLAYER] = removePlayer;
 serverPackets[serverSide.PLAYER_TICK] = updatePlayers;
 serverPackets[serverSide.UPDATE_LEADERBOARD] = updateLeaderboard;
 serverPackets[serverSide.GAME_OBJECT] = loadGameObject;
-serverPackets[serverSide.LOAD_AI] = loadAI;
 serverPackets[serverSide.ANIMAL_TICK] = animateAI;
 serverPackets[serverSide.HIT_START] = gatherAnimation;
 serverPackets[serverSide.OBJECT_WIGGLE] = wiggleGameObject;
@@ -186,7 +176,6 @@ serverPackets[serverSide.PING] = pingSocketResponse;
 serverPackets[serverSide.MAP_PING] = pingMap;
 
 const wsBridge = window.socketController = new SocketController(() => io, packets);
-const textManager = new animText.TextManager();
 
 let nearestGameObjects = [];
 
@@ -228,7 +217,6 @@ var useNativeResolution, showPing, delta, now, lastSent, attackState, player, pl
   gameObjects = [],
   projectiles = [],
   projectileManager = new ProjectileManager(Projectile, projectiles, players, ais, objectManager, items, config, UTILS),
-  aiManager = new AiManager(ais, AI, players, items, null, config, UTILS),
   waterMult = 1,
   waterPlus = 0,
   mouseX = 0,
@@ -888,34 +876,6 @@ function remProjectile(sid, range) {
 
 function animateAI(sid) {
   (tmpObj = findAIBySID(sid)) && tmpObj.startAnim();
-}
-
-function loadAI(data) {
-  for (var i = 0; i < ais.length; ++i)
-    ais[i].forcePos = !ais[i].visible, ais[i].visible = !1;
-  if (data) {
-    var tmpTime = Date.now();
-    for (i = 0; i < data.length;)
-      (tmpObj = findAIBySID(data[i])) ? (tmpObj.index = data[i + 1], tmpObj.t1 = void 0 === tmpObj.t2 ? tmpTime : tmpObj.t2, tmpObj.t2 = tmpTime, tmpObj.x1 = tmpObj.x, tmpObj.y1 = tmpObj.y, tmpObj.x2 = data[i + 2], tmpObj.y2 = data[i + 3], tmpObj.d1 = void 0 === tmpObj.d2 ? data[i + 4] : tmpObj.d2, tmpObj.d2 = data[i + 4], tmpObj.health = data[i + 5], tmpObj.dt = 0, tmpObj.visible = !0) : ((tmpObj = aiManager.spawn(data[i + 2], data[i + 3], data[i + 4], data[i + 1]))
-        .x2 = tmpObj.x, tmpObj.y2 = tmpObj.y, tmpObj.d2 = tmpObj.dir, tmpObj.health = data[i + 5], aiManager.aiTypes[data[i + 1]]?.name || (tmpObj.name = "Sheep"), tmpObj.forcePos = !0, tmpObj.sid = data[i], tmpObj.visible = !0), i += 7;
-  }
-}
-var aiSprites = {};
-
-function renderAI(obj, ctxt) {
-  if (!tmpImg?.src) return;
-  var tmpIndx = obj.index,
-    tmpSprite = aiSprites[tmpIndx];
-  if (!tmpSprite) {
-    var tmpImg = new Image();
-    tmpImg.onload = function () {
-      this.isLoaded = !0, this.onload = null;
-    }, tmpImg.src = '.././img/animals/' + (obj?.src || 'sheep_1') + '.png', tmpSprite = tmpImg, aiSprites[tmpIndx] = tmpSprite;
-  }
-  if (tmpSprite.isLoaded) {
-    var tmpScale = 1.2 * obj.scale * (obj.spriteMlt || 1);
-    ctxt.drawImage(tmpSprite, -tmpScale, -tmpScale, 2 * tmpScale, 2 * tmpScale);
-  }
 }
 
 function isOnScreen(x, y, s) {
