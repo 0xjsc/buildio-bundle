@@ -3212,7 +3212,6 @@ serverPackets[serverSide.SETUP_GAME] = setupGame;
 serverPackets[serverSide.ADD_PLAYER] = addPlayer;
 serverPackets[serverSide.REMOVE_PLAYER] = removePlayer;
 serverPackets[serverSide.PLAYER_TICK] = updatePlayers;
-serverPackets[serverSide.UPDATE_LEADERBOARD] = updateLeaderboard;
 serverPackets[serverSide.GAME_OBJECT] = loadGameObject;
 serverPackets[serverSide.ANIMAL_TICK] = animateAI;
 serverPackets[serverSide.HIT_START] = gatherAnimation;
@@ -3229,7 +3228,6 @@ serverPackets[serverSide.UPDATE_UPGRADES] = updateUpgrades;
 serverPackets[serverSide.UPDATE_ITEMS] = updateItems;
 serverPackets[serverSide.ADD_PROJECTILE] = addProjectile;
 serverPackets[serverSide.REMOVE_PROJECTILE] = remProjectile;
-serverPackets[serverSide.SERVER_SHUTDOWN] = serverShutdownNotice;
 serverPackets[serverSide.ADD_ALLIANCE] = addAlliance;
 serverPackets[serverSide.DELETE_ALLIANCE] = deleteAlliance;
 serverPackets[serverSide.ALLIANCE_PING] = allianceNotification;
@@ -3238,8 +3236,6 @@ serverPackets[serverSide.ALLIANCE_PLAYERS] = setAlliancePlayers;
 serverPackets[serverSide.UPDATE_STORE] = updateStoreItems;
 serverPackets[serverSide.CHAT] = receiveChat;
 serverPackets[serverSide.MINIMAP_TICK] = updateMinimap;
-serverPackets[serverSide.PING] = pingSocketResponse;
-serverPackets[serverSide.MAP_PING] = pingMap;
 
 const wsBridge = window.socketController = new _socket_socket_js__WEBPACK_IMPORTED_MODULE_12__["default"](() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"], packets);
 
@@ -3361,8 +3357,6 @@ function leaveAlliance() {
 }
 var tmpPing, mapPings = [];
 
-function pingMap(x, y) { }
-
 function updateMinimap(data) {
   minimapData = data;
 }
@@ -3388,15 +3382,16 @@ function sendChat(message) {
   wsBridge.sendChat(message);
 }
 
-function closeChat() { }
 var usingTouch, lastDir;
 
 const setUsingTouch = e => usingTouch = !!e;
 
-function receiveChat(sid, message) { }
+function receiveChat(sid, message) {
+  console.log("[*] Chat message " + message);
+}
 
 function getAttackDir() {
-  return aimOverride ? aimOverride : (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2));
+  return Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2);
 }
 
 var keys = {},
@@ -3418,20 +3413,20 @@ function sendAtckState() {
   player && player.alive && wsBridge.updateHittingState(attackState, getAttackDir());
 };
 
-window.addEventListener('keydown', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function (event) {
+window.addEventListener('keydown', function (event) {
   var keyNum = event.which || event.keyCode || 0;
   const keyCode = event.code;
   if (document.activeElement.tagName !== "INPUT") {
     window.keyEvents[keyCode] = true;
     window.keyEvents["Switch" + keyCode] = !window.keyEvents["Switch" + keyCode];
   }
-})), window.addEventListener('keyup', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function (event) {
+}), window.addEventListener('keyup', function (event) {
   if (player && player.alive) {
     var keyNum = event.which || event.keyCode || 0;
     const keyCode = event.code;
     window.keyEvents[keyCode] = false;
   }
-}));
+});
 var lastMoveDir = void 0;
 
 function sendMapPing() {
@@ -3482,7 +3477,6 @@ function killObjects(sid) {
 function killObject(sid) {
   const object = gameObjects[sid];
   objectManager.disableBySid(sid);
-  players.find(e => e.sid != player.sid && Math.hypot(player.x - e.x, player.y - e.y) < 180) && autoplace(object, true);
 }
 
 let oldKills = 0;
@@ -3500,10 +3494,10 @@ function updateUpgrades(points, age) {
 }
 
 function updateAge(xp, mxp, age) {
-  null != xp && (player.XP = xp), null != mxp && (player.maxXP = mxp), null != age && (player.age = age), age == _config_js__WEBPACK_IMPORTED_MODULE_3__["default"].maxAge ? (ageText.innerHTML = 'MAX AGE', ageBarBody.style.width = '100%') : (ageText.innerHTML = 'AGE ' + player.age, ageBarBody.style.width = player.XP / player.maxXP * 100 + '%');
+  null != xp && (player.XP = xp);
+  null != mxp && (player.maxXP = mxp);
+  null != age && (player.age = age);
 }
-
-function updateLeaderboard(data) { };
 
 let lastAttackDir = null;
 
@@ -3514,7 +3508,12 @@ const othersReloads  = [];
 
 function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
-  
+
+  if (!reloads[sid]) {
+    reloads[sid] = [];
+  };
+
+  reloads[sid][tmpObj.weaponIndex] = 0;
 }
 
 function loadGameObject(data) {
@@ -3584,12 +3583,14 @@ function updateHealth(sid, value) {
 let reloads = [];
 
 let tmpTime = Date.now();
-let aimOverride = false;
 
 const modulesQueue = [
   /** HELPER MODULES ARE GOING FIRST **/
   () => {
-    console.log(player);
+    if (reloads[player.sid]) {
+      reloads[player.sid][player.weaponIndex] = Math.min(reloads[player.sid][player.weaponIndex] + 111, speeds[player.weaponIndex]);
+      console.log(reloads[player.sid]);
+    }
   }
 ];
 
@@ -3619,23 +3620,6 @@ function findAIBySID(sid) {
 
 function findObjectBySid(sid) {
   return gameObjects[sid];
-}
-var lastPing = -1;
-
-function pingSocketResponse() {
-  var pingTime = Date.now() - lastPing;
-  window.pingTime = pingTime, pingDisplay.innerText = 'Ping: ' + pingTime + '\xA0ms';
-}
-
-function pingSocket() {
-  lastPing = Date.now();
-  wsBridge.pingServer();
-}
-
-function serverShutdownNotice(countdown) { }
-
-function openLink(link) {
-  window.open(link, '_blank');
 }
 
 /******/ })()
