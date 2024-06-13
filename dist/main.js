@@ -3676,198 +3676,22 @@ serverPackets[serverSide.CHAT] = receiveChat;
 serverPackets[serverSide.MINIMAP_TICK] = updateMinimap;
 serverPackets[serverSide.PING] = pingSocketResponse;
 serverPackets[serverSide.MAP_PING] = pingMap;
-serverPackets[serverSide.SHOW_TEXT] = showText;
 
 const wsBridge = window.socketController = new _socket_socket_js__WEBPACK_IMPORTED_MODULE_17__["default"](() => _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"], packets);
 const textManager = new _libs_animText_js__WEBPACK_IMPORTED_MODULE_3__["default"].TextManager();
 
 let nearestGameObjects = [];
 
-const clanNames = [
-  "ez",
-  "eZ",
-  "EZ",
-  "EZZZ",
-  "ez?",
-  "L",
-  "L ez",
-  "urbad",
-  "urez"
-];
-
-const versionHash = "1.6-Omicron";
-const changelog = "Fixes...";
-const motionBlurLevel = 0.6;
-let instakilling = false;
-
-let offsetCamX = 0;
-let offsetCamY = 0;
-let deltaHold = 10;
-let ownerSid = null;
-let autoclicker = false;
-
-const emojis = new Map();
-
-emojis.set(":smile:", "😀");
-emojis.set(":laugh:", "😂");
-emojis.set(":wink:", "😉");
-emojis.set(":moan:", "😫");
-emojis.set(":sob:", "😭");
-emojis.set(":hot:", "🥵");
-emojis.set(":cold:", "🥶");
-emojis.set(":skull:", "💀");
-emojis.set(":skullium:", "☠️");
-emojis.set(":clown:", "🤡");
-
-const recaptchaOpt = {
-  action: "homepage"
-};
-
-const blacklist = new Map(Object.entries({
-  be3mamn: true,
-  SaVeGe: true,
-  RaZoshi: true,
-  Travis: true,
-  missy: true
-}));
-
-window.loadedScript = true;
-
 var isProd = location.origin.includes("http://")
-var startedConnecting = false;
 
-if (localStorage.version !== versionHash) {
-  const element = (0,_libs_alert_js__WEBPACK_IMPORTED_MODULE_16__["default"])(`<h2> AutoWASM has been updated to version ${versionHash}! </h2> <br> ${changelog}`);
-  element.style.top = "20px";
-  element.style.right = "20px";
-  setTimeout(() => {
-    element.remove();
-  }, 3000);
-  localStorage.version = versionHash;
-}
-
-function getToken() {
-  return location.href.includes("mohmoh") ? "6LcuxskpAAAAADyVCDYxrXrKEG4w-utU5skiTBZH" : "6LfahtgjAAAAAF8SkpjyeYMcxMdxIaQeh-VoPATP";
-}
-
-async function connectSocketIfReady() {
-  if (startedConnecting || !grecaptcha?.ready) return;
-  startedConnecting = true;
-
-  log("[*] Waiting for grecaptcha ready...");
-
-  await new Promise(grecaptcha.ready);
-
-  log("[*] Generating grecaptcha token...");
-  
-  const token = await grecaptcha.execute(getToken(), recaptchaOpt);
-  log("[*] Generated token " + token);
-  const server = await (0,_vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_15__["default"])();
-  const prefix = location.href.includes("moomoo") ? "re:" : "";
-  
-  connectSocket(prefix + token, server);
-}
-
-window.captchaCallback = connectSocketIfReady;
-window.onload = connectSocketIfReady;
-window.grecaptcha?.ready && connectSocketIfReady();
+connectSocket();
 
 const wsLogs = [];
 
-function connectSocket(token, server = location.host) {
-  var wsAddress = (isProd ? "ws" : "wss") + '://' + server + "/?token=" + token;
-  
-  window.socket = top.socket = _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"];
-  
+function connectSocket() {
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].connect(wsAddress, function (error) {
-    if (location.href.includes("mohmoh"))
-      wsBridge.register();
-    
-    wsBridge.pingServer(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
-      if (error) {
-        disconnect(error);
-      } else {
-        enterGame();
-      }
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(enterGameButton), joinPartyButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
-      setTimeout(function () {
-        var currentKey = serverBrowser.value,
-          key = prompt('party key', currentKey);
-        key && (window.onbeforeunload = void 0, window.location.href = '/?server=' + key);
-      }, 10);
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(joinPartyButton), settingsButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
-      guideCard.classList.contains('showing') ? (guideCard.classList.remove('showing'), settingsButtonTitle.innerText = 'Settings') : (guideCard.classList.add('showing'), settingsButtonTitle.innerText = 'Close');
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(settingsButton), allianceButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
-      resetMoveDir(), 'block' != allianceMenu.style.display ? showAllianceMenu() : allianceMenu.style.display = 'none';
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(allianceButton), storeButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
-      'block' != storeMenu.style.display ? (storeMenu.style.display = 'block', allianceMenu.style.display = 'none', closeChat(), generateStoreList()) : storeMenu.style.display = 'none';
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(storeButton), chatButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
-      toggleChat();
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(chatButton), function () {
-      for (var i = 0; i < icons.length; ++i) {
-        var tmpSprite = new Image();
-        tmpSprite.onload = function () {
-          this.isLoaded = !0;
-        }, tmpSprite.src = '.././img/icons/' + icons[i] + '.png', iconSprites[icons[i]] = tmpSprite;
-      }
-    }(), loadingText.style.display = 'none', menuCardHolder.style.display = 'block', nameInput.value = getSavedVal('moo_name') || '', function () {
-      var savedNativeValue = getSavedVal('native_resolution') || true;
-      setUseNativeResolution(savedNativeValue ? 'true' == savedNativeValue : 'undefined' != typeof cordova), showPing = 'true' == getSavedVal('show_ping'), pingDisplay.hidden = !showPing, getSavedVal('moo_moosic'), updateSkinColorPicker(), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].removeAllChildren(actionBar);
-      for (var i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons.length + _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list.length; ++i)
-        ! function (i) {
-          _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-            id: 'actionBarItem' + i,
-            class: 'actionBarItem',
-            style: 'display:none',
-            onmouseout: function () {
-              showItemInfo();
-            },
-            parent: actionBar
-          });
-        }(i);
-      for (i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list.length + _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons.length; ++i)
-        ! function (i) {
-          var tmpCanvas = document.createElement('canvas');
-          tmpCanvas.width = tmpCanvas.height = 66;
-          var tmpContext = tmpCanvas.getContext('2d');
-          if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.imageSmoothingEnabled = !1, tmpContext.webkitImageSmoothingEnabled = !1, tmpContext.mozImageSmoothingEnabled = !1, _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[i]) {
-            tmpContext.rotate(Math.PI / 4 + Math.PI);
-            var tmpSprite = new Image();
-            toolSprites[_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[i].src] = tmpSprite, tmpSprite.onload = function () {
-                this.isLoaded = !0;
-                var tmpPad = 1 / (this.height / this.width),
-                  tmpMlt = _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[i].iPad || 1;
-                tmpContext.drawImage(this, -tmpCanvas.width * tmpMlt * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].iconPad * tmpPad / 2, -tmpCanvas.height * tmpMlt * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].iconPad / 2, tmpCanvas.width * tmpMlt * tmpPad * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].iconPad, tmpCanvas.height * tmpMlt * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].iconPad), tmpContext.fillStyle = 'rgba(0, 0, 70, 0.1)', tmpContext.globalCompositeOperation = 'source-atop', tmpContext.fillRect(-tmpCanvas.width / 2, -tmpCanvas.height / 2, tmpCanvas.width, tmpCanvas.height), document.getElementById('actionBarItem' + i)
-                  .style.backgroundImage = 'url(' + tmpCanvas.toDataURL() + ')';
-              }, tmpSprite.src = '.././img/weapons/' + _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[i].src + '.png', (tmpUnit = document.getElementById('actionBarItem' + i))
-              .onmouseover = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
-                showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[i], !0);
-              }), tmpUnit.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
-                selectToBuild(i, !0);
-              }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(tmpUnit);
-          } else {
-            tmpSprite = getItemSprite(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons.length], !0);
-            var tmpUnit, tmpScale = Math.min(tmpCanvas.width - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].iconPadding, tmpSprite.width);
-            tmpContext.globalAlpha = 1, tmpContext.drawImage(tmpSprite, -tmpScale / 2, -tmpScale / 2, tmpScale, tmpScale), tmpContext.fillStyle = 'rgba(0, 0, 70, 0.1)', tmpContext.globalCompositeOperation = 'source-atop', tmpContext.fillRect(-tmpScale / 2, -tmpScale / 2, tmpScale, tmpScale), document.getElementById('actionBarItem' + i)
-              .style.backgroundImage = 'url(' + tmpCanvas.toDataURL() + ')', (tmpUnit = document.getElementById('actionBarItem' + i))
-              .onmouseover = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
-                showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons.length]);
-              }), tmpUnit.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
-                selectToBuild(i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons.length);
-              }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(tmpUnit);
-          }
-        }(i);
-      nameInput.ontouchstart = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function (e) {
-        e.preventDefault();
-        var newValue = prompt('enter name', e.currentTarget.value);
-        newValue && (e.currentTarget.value = newValue.slice(0, 15));
-      }), nativeResolutionCheckbox.checked = useNativeResolution, nativeResolutionCheckbox.onchange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function (e) {
-        setUseNativeResolution(e.target.checked);
-      }), showPingCheckbox.checked = showPing, showPingCheckbox.onchange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function (e) {
-        showPing = showPingCheckbox.checked, pingDisplay.hidden = !showPing, saveVal('show_ping', showPing ? 'true' : 'false');
-      });
-    }());
-  }, serverPackets), setupServerStatus(), setTimeout(() => updateServerList(), 3000);
+    console.log("[*] Socket was hooked!", _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"]);
+  }, serverPackets);
 }
 var canStore = 0,
   mathPI = Math.PI,
@@ -3930,8 +3754,6 @@ var useNativeResolution, showPing, delta, now, lastSent, attackState, player, pl
   allianceButton = document.getElementById('allianceButton'),
   storeButton = document.getElementById('storeButton'),
   chatButton = document.getElementById('chatButton'),
-  gameCanvas = document.getElementById('gameCanvas'),
-  mainContext = gameCanvas.getContext('2d'),
   serverBrowser = document.getElementById('serverBrowser'),
   nativeResolutionCheckbox = document.getElementById('nativeResolution'),
   showPingCheckbox = document.getElementById('showPing'),
@@ -4298,128 +4120,22 @@ function updateItems(data, wpn) {
     .style.display = player.weapons[_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[i].type] == _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[i].id ? 'inline-block' : 'none';
 }
 
-function setUseNativeResolution(useNative) {
-  useNativeResolution = useNative, pixelDensity = useNative && window.devicePixelRatio || 1, nativeResolutionCheckbox.checked = useNative, saveVal('native_resolution', useNative.toString()), resize();
-}
+function setUseNativeResolution(useNative) { }
 
-function updateSkinColorPicker() {
-  for (var tmpHTML = '', i = 0; i < _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].skinColors.length; ++i)
-    tmpHTML += i == skinColor ? '<div class=\'skinColorItem activeSkin\' style=\'background-color:' + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].skinColors[i] + '\' onclick=\'selectSkinColor(' + i + ')\'></div>' : '<div class=\'skinColorItem\' style=\'background-color:' + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].skinColors[i] + '\' onclick=\'selectSkinColor(' + i + ')\'></div>';
-  skinColorHolder.innerHTML = tmpHTML;
-}
+function updateSkinColorPicker() { }
 var chatBox = document.getElementById('chatBox'),
   chatHolder = document.getElementById('chatHolder');
 
-function toggleChat() {
-  usingTouch ? setTimeout(function () {
-    var chatMessage = prompt('chat message');
-    chatMessage && sendChat(chatMessage);
-  }, 1) : 'block' == chatHolder.style.display ? (chatBox.value && sendChat(chatBox.value), closeChat()) : (storeMenu.style.display = 'none', allianceMenu.style.display = 'none', chatHolder.style.display = 'block', chatBox.focus(), resetMoveDir()), chatBox.value = '';
-}
+function toggleChat() { }
 
 function sendChat(message) {
   wsBridge.sendChat(message);
 }
 
-function closeChat() {
-  chatBox.value = '', chatHolder.style.display = 'none';
-}
-var usingTouch, lastDir, profanityList = [
-  'cunt',
-  'whore',
-  'fuck',
-  'shit',
-  'faggot',
-  'nigger',
-  'nigga',
-  'dick',
-  'vagina',
-  'minge',
-  'cock',
-  'rape',
-  'cum',
-  'sex',
-  'tits',
-  'penis',
-  'clit',
-  'pussy',
-  'meatcurtain',
-  'jizz',
-  'prune',
-  'douche',
-  'wanker',
-  'damn',
-  'bitch',
-  'dick',
-  'fag',
-  'bastard'
-];
+function closeChat() { }
+var usingTouch, lastDir;
 
-const syncChats = new Map(Object.entries({
-  "DROP DEAD NO TRACE": "DROP DEAD NO TRACE",
-  "!sync": "!op"
-  }));
-
-function receiveChat(sid, message) {
-  var tmpPlayer = findPlayerBySID(sid);
-
-  for (const [key, value] of emojis) {
-    message = message.replaceAll(key, value);
-  }
-
-  if (/what\ mod/g.test(message) && Math.hypot(player.x - tmpPlayer.x, player.y - tmpPlayer.y) < 530 && player.sid != tmpPlayer.sid) {
-    wsBridge.sendChat("AutoWASM By 0xffabc.");
-  } else if (message.startsWith("!connect") && player.sid == tmpPlayer.sid) {
-    const playerName = message.split("!connect ")[1];
-    wsBridge.createClan(clanNames[Math.floor(clanNames.length * Math.random())]);
-    ownerSid = players.find(e => e && e?.name == playerName)?.sid;
-    if (ownerSid) {
-      setTimeout(() => wsBridge.sendChat("[*] Successfully connected to " + playerName + "!"), 1000);
-    } else setTimeout(() => wsbridge.sendChat("[*] Connection failed!"), 1000);
-  } else if (message.startsWith("!disconnect") && (player.sid == tmpPlayer.sid || tmpPlayer.sid == ownerSid)) {
-    ownerSid = player.sid;
-    setTimeout(() => wsBridge.sendChat("[*] Successfully disconnected"), 1000);
-  } else if (tmpPlayer.sid == ownerSid || tmpPlayer.sid == player.sid) {
-    switch (message) {
-      case "!follow":
-        setTimeout(() => wsBridge.sendChat(`[*] ${window.follow ? "Enabling" : "Disabling"} follow module!`), 1000);
-        window.follow = !window.follow;
-        break;
-      case "!bowspam":
-        setTimeout(() => wsBridge.sendChat(`[*] ${window.bowspam ? "Enabling" : "Disabling"} bowspam module!`), 1000);
-        window.bowspam = !window.bowspam;
-        break;
-    }
-  }
-
-  if (syncChats.has(message) && tmpPlayer && sid != player.sid) {
-    if (tmpPlayer.weaponIndex == tmpPlayer.weapons[1]) reverseInsta();
-    else normalInsta();
-  } else if (syncChats.has(message) && sid == player.sid) return;
-
-  if (message == "!Synchronize") {
-    return bowSync();
-  }
-
-  tmpPlayer && (tmpPlayer.chatMessage = function (text) {
-    for (var tmpString, i = 0; i < profanityList.length; ++i)
-      if (text.indexOf(profanityList[i]) > -1) {
-        tmpString = '';
-        for (var y = 0; y < profanityList[i].length; ++y)
-          tmpString += tmpString.length ? 'o' : 'M';
-        var re = new RegExp(profanityList[i], 'g');
-        text = text.replace(re, tmpString);
-      }
-    return text;
-  }(message), tmpPlayer.chatCountdown = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].chatCountdown);
-}
-
-function resize() {
-  gridDelta = maxScreenHeight / 18;
-  screenWidth = window.innerWidth, screenHeight = window.innerHeight;
-  var scaleFillNative = Math.max(screenWidth / maxScreenWidth, screenHeight / maxScreenHeight) * pixelDensity;
-  gameCanvas.width = screenWidth * pixelDensity, gameCanvas.height = screenHeight * pixelDensity, gameCanvas.style.width = screenWidth + 'px', gameCanvas.style.height = screenHeight + 'px', mainContext.setTransform(scaleFillNative, 0, 0, scaleFillNative, (screenWidth * pixelDensity - maxScreenWidth * scaleFillNative) / 2, (screenHeight * pixelDensity - maxScreenHeight * scaleFillNative) / 2);
-}
+function receiveChat(sid, message) { }
 
 function setUsingTouch(using) {
   (usingTouch = using) ? guideCard.classList.add('touch'): guideCard.classList.remove('touch');
@@ -4436,38 +4152,20 @@ function touchEnd(ev) {
 function getAttackDir() {
   return aimOverride ? aimOverride : (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2));
 }
-window.addEventListener('resize', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(resize)), resize(), setUsingTouch(!1), window.setUsingTouch = setUsingTouch, eventsListener.addEventListener('touchmove', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function (ev) {
-  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
-  for (var i = 0; i < ev.changedTouches.length; i++) {
-    var t = ev.changedTouches[i];
-    t.identifier == controllingTouch.id ? (controllingTouch.currentX = t.pageX, controllingTouch.currentY = t.pageY, sendMoveDir()) : t.identifier == attackingTouch.id && (attackingTouch.currentX = t.pageX, attackingTouch.currentY = t.pageY, attackState = 1);
-  }
-}), !1), eventsListener.addEventListener('touchstart', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function (ev) {
-  if (!inGame)
-    return ev.preventDefault(), !1;
-  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
-  for (var i = 0; i < ev.changedTouches.length; i++) {
-    var t = ev.changedTouches[i];
-    t.pageX < document.body.scrollWidth / 2 && -1 == controllingTouch.id ? (controllingTouch.id = t.identifier, controllingTouch.startX = controllingTouch.currentX = t.pageX, controllingTouch.startY = controllingTouch.currentY = t.pageY, sendMoveDir()) : t.pageX > document.body.scrollWidth / 2 && -1 == attackingTouch.id && (attackingTouch.id = t.identifier, attackingTouch.startX = attackingTouch.currentX = t.pageX, attackingTouch.startY = attackingTouch.currentY = t.pageY, player.buildIndex < 0 && (attackState = 1, sendAtckState()));
-  }
-}), false), eventsListener.addEventListener('touchend', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(touchEnd), !1), eventsListener.addEventListener('touchcancel', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(touchEnd), !1), eventsListener.addEventListener('touchleave', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(touchEnd), !1), eventsListener.addEventListener('mousemove', function (e) {
+
+eventsListener.addEventListener('mousemove', function (e) {
   e.preventDefault(), e.stopPropagation(), setUsingTouch(!1), mouseX = e.clientX, mouseY = e.clientY;
-}, false), eventsListener.addEventListener('mousedown', function (e) {
+});
+eventsListener.addEventListener('mousedown', function (e) {
   aimOverride = false;
   setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
   touch = e.button == 0;
   waka = touch ? player.weapons[0] : (10 == player.weapons[1] ? 10 : player.weapons[0]);
-}, false), eventsListener.addEventListener('mouseup', function (e) {
+});
+eventsListener.addEventListener('mouseup', function (e) {
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
-}, false);
-eventsListener.addEventListener("wheel", function (e) {
-  const deltaY = maxScreenWidth / 20;
-  const fixedDelta = e.deltaY > 0 ? deltaY : -deltaY;
-  maxScreenWidth += fixedDelta;
-  maxScreenHeight += fixedDelta;
-  
-  resize();
-}, false);
+});
+
   let touch = 0;
 var keys = {},
   moveKeys = {
@@ -4547,12 +4245,9 @@ function enterGame() {
 var firstSetup = !0;
 
 function setupGame(yourSID) {
-  loadingText.style.display = 'none', menuCardHolder.style.display = 'block', mainMenu.style.display = 'none', keys = {}, playerSID = yourSID, attackState = 0, inGame = !0, firstSetup && (firstSetup = !1, gameObjects.length = 0);
+  keys = {}, playerSID = yourSID, attackState = 0, inGame = !0, firstSetup && (firstSetup = !1, gameObjects.length = 0);
 }
 
-function showText(x, y, value, type) {
-  textManager.showText(x, y, 50, 0.18, 500, Math.abs(value), value >= 0 ? '#fff' : '#8ecc51');
-}
 var deathTextScale = 99999;
 
 function killPlayer() {
@@ -4567,14 +4262,7 @@ function killPlayer() {
 
   console.log("Logged death", logData);
   
-  inGame = !1,
-
-  gameUI.style.display = 'none', hideAllWindows(), lastDeath = {
-    x: player.x,
-    y: player.y
-  }, loadingText.style.display = 'none', diedText.style.display = 'block', diedText.style.fontSize = '0px', deathTextScale = 0, setTimeout(function () {
-    menuCardHolder.style.display = 'block', mainMenu.style.display = 'block', diedText.style.display = 'none';
-  }, _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].deathFadeout), updateServerList();
+  inGame = false;
 }
 
 function killObjects(sid) {
@@ -4589,13 +4277,7 @@ function killObject(sid) {
 
 let oldKills = 0;
 
-function updateStatusDisplay() {
-  scoreDisplay.innerText = player.points;
-  foodDisplay.innerText = player.food;
-  woodDisplay.innerText = player.wood;
-  stoneDisplay.innerText = player.stone;
-  killCounter.innerText = player.kills;
-}
+function updateStatusDisplay() { }
 var iconSprites = {},
   icons = [
     'crown',
@@ -4604,45 +4286,8 @@ var iconSprites = {},
   tmpList = [];
 
 function updateUpgrades(points, age) {
-  if (player.upgradePoints = points, player.upgrAge = age, points > 0) {
-    tmpList.length = 0, _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].removeAllChildren(upgradeHolder);
-    for (var i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons.length; ++i)
-      _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[i].age == age && (null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[i].pre || true || 0) && (_libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-          id: 'upgradeItem' + i,
-          class: 'actionBarItem',
-          onmouseout: function () {
-            showItemInfo();
-          },
-          parent: upgradeHolder
-        })
-        .style.backgroundImage = document.getElementById('actionBarItem' + i)
-        .style.backgroundImage, tmpList.push(i));
-    for (i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list.length; ++i)
-      if (_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[i].age == age && (null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[i].pre || true || 0)) {
-        var tmpI = _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons.length + i;
-        _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-            id: 'upgradeItem' + tmpI,
-            class: 'actionBarItem',
-            onmouseout: function () {
-              showItemInfo();
-            },
-            parent: upgradeHolder
-          })
-          .style.backgroundImage = document.getElementById('actionBarItem' + tmpI)
-          .style.backgroundImage, tmpList.push(tmpI);
-      }
-    for (i = 0; i < tmpList.length; i++)
-      ! function (i) {
-        var tmpItem = document.getElementById('upgradeItem' + i);
-        tmpItem.onmouseover = function () {
-          _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[i] ? showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[i], !0) : showItemInfo(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[i - _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons.length]);
-        }, tmpItem.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
-          wsBridge.upgradeItem(i);
-        }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(tmpItem);
-      }(tmpList[i]);
-    tmpList.length ? (upgradeHolder.style.display = 'block', upgradeCounter.style.display = 'block', upgradeCounter.innerHTML = 'SELECT ITEMS (' + points + ')') : (upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo());
-  } else
-    upgradeHolder.style.display = 'none', upgradeCounter.style.display = 'none', showItemInfo();
+  player.upgradePoints = points;
+  player.upgrAge = age;
 }
 
 function updateAge(xp, mxp, age) {
@@ -4671,48 +4316,6 @@ function updateLeaderboard(data) {
     }(i), tmpC++;
 }
 let lastAttackDir = null;
-
-function renderControl(startX, startY, currentX, currentY) {
-  mainContext.save(), mainContext.setTransform(1, 0, 0, 1, 0, 0), mainContext.scale(pixelDensity, pixelDensity);
-  var controlRadius = 50;
-  mainContext.beginPath(), mainContext.arc(startX, startY, controlRadius, 0, 2 * Math.PI, !1), mainContext.closePath(), mainContext.fillStyle = 'rgba(255, 255, 255, 0.3)', mainContext.fill(), controlRadius = 50;
-  var offsetX = currentX - startX,
-    offsetY = currentY - startY,
-    mag = Math.sqrt(Math.pow(offsetX, 2) + Math.pow(offsetY, 2)),
-    divisor = mag > controlRadius ? mag / controlRadius : 1;
-  offsetX /= divisor, offsetY /= divisor, mainContext.beginPath(), mainContext.arc(startX + offsetX, startY + offsetY, 0.5 * controlRadius, 0, 2 * Math.PI, !1), mainContext.closePath(), mainContext.fillStyle = 'white', mainContext.fill(), mainContext.restore();
-}
-
-function renderProjectiles(layer, xOffset, yOffset) {
-  for (var i = 0; i < app_projectiles.length; ++i)
-    (tmpObj = app_projectiles[i])
-    .active && tmpObj.layer == layer && (tmpObj.update(delta), tmpObj.active && isOnScreen(tmpObj.x - xOffset, tmpObj.y - yOffset, tmpObj.scale) && (mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpObj.dir), renderProjectile(0, 0, tmpObj, mainContext, 1), mainContext.restore()));
-}
-var projectileSprites = {};
-
-function renderProjectile(x, y, obj, ctxt, debug) {
-  if (obj.src) {
-    var tmpSrc = _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].projectiles[obj.indx].src,
-      tmpSprite = projectileSprites[tmpSrc];
-    tmpSprite || ((tmpSprite = new Image())
-      .onload = function () {
-        this.isLoaded = !0;
-      }, tmpSprite.src = '.././img/weapons/' + tmpSrc + '.png', projectileSprites[tmpSrc] = tmpSprite), tmpSprite.isLoaded && ctxt.drawImage(tmpSprite, x - obj.scale / 2, y - obj.scale / 2, obj.scale, obj.scale);
-  } else
-    1 == obj.indx && (ctxt.fillStyle = '#939393', renderCircle(x, y, obj.scale, ctxt));
-}
-
-function renderWaterBodies(xOffset, yOffset, ctxt, padding) {
-  var tmpW = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].riverWidth + padding,
-    tmpY = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale / 2 - yOffset - tmpW / 2;
-  tmpY < maxScreenHeight && tmpY + tmpW > 0 && ctxt.fillRect(0, tmpY, maxScreenWidth, tmpW);
-}
-
-function renderGameObjects(layer, xOffset, yOffset) {
-  var tmpSprite, tmpX, tmpY;
-  for (let i = 0; i < nearestGameObjects.length; i++)
-    (tmpObj = nearestGameObjects[i])?.active && (tmpX = tmpObj.x + tmpObj.xWiggle - xOffset, tmpY = tmpObj.y + tmpObj.yWiggle - yOffset, 0 == layer && tmpObj.update(delta), tmpObj.layer == layer && isOnScreen(tmpX, tmpY, tmpObj.scale + (tmpObj.blocker || 0)) && (mainContext.globalAlpha = tmpObj.hideFromEnemy ? 0.6 : 1, tmpObj.isItem ? (tmpSprite = getItemSprite(tmpObj), mainContext.save(), mainContext.translate(tmpX, tmpY), mainContext.rotate(tmpObj.dir), mainContext.drawImage(tmpSprite, -tmpSprite.width / 2, -tmpSprite.height / 2), tmpObj.blocker && (mainContext.strokeStyle = '#db6e6e', mainContext.globalAlpha = 0.3, mainContext.lineWidth = 6, renderCircle(0, 0, tmpObj.blocker, mainContext, !1, !0)), mainContext.restore()) : (tmpSprite = getResSprite(tmpObj), mainContext.drawImage(tmpSprite, tmpX - tmpSprite.width / 2, tmpY - tmpSprite.height / 2))));
-}
 
 const speeds = [300, 400, 400, 300, 300, 700, 300, 100, 400, 600, 400, 1, 700, 230, 700, 1500];
 let lastPoison = Date.now();
@@ -4748,210 +4351,6 @@ function gatherAnimation(sid, didHit, index) {
   
   if (sid == player.sid) reloads[waka] = 0;
   else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = 0;
-}
-
-function renderPlayers(xOffset, yOffset, zIndex) {
-  for (var i = 0; i < players.length; ++i) {
-    tmpObj = players[i];
-    if (tmpObj?.zIndex != zIndex ||
-       !tmpObj?.visible) continue;
-    
-    tmpObj.animate(delta);
-    tmpObj.skinRot += 0.002 * delta;
-    tmpDir = ((player == tmpObj) ? getAttackDir() : tmpObj.dir) + tmpObj.dirPlus;
-    
-    mainContext.save();
-    mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset);
-    mainContext.rotate(tmpDir);
-    mainContext.globalAlpha = (tmpObj.health <= 0 || !tmpObj.alive) ? 0.5 : 1;
-    renderPlayer(tmpObj, mainContext);
-    mainContext.restore();
-  }
-}
-
-function renderPlayer(e, t) {
-  (t = t || mainContext)
-  .lineWidth = 5.5, t.lineJoin = 'miter';
-  var i = Math.PI / 4 * (_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].armS || 1),
-    n = e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].hndS || 1,
-    s = e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].hndD || 1;
-  if (e.tailIndex > 0 && function (index, ctxt, owner) {
-      if (!(tmpSkin = accessSprites[index])) {
-        var tmpImage = new Image();
-        tmpImage.onload = function () {
-          this.isLoaded = !0, this.onload = null;
-        }, tmpImage.src = '.././img/accessories/access_' + index + '.png', accessSprites[index] = tmpImage, tmpSkin = tmpImage;
-      }
-      var tmpObj = accessPointers[index];
-      if (!tmpObj) {
-        for (var i = 0; i < accessories.length; ++i)
-          if (accessories[i].id == index) {
-            tmpObj = accessories[i];
-            break;
-          }
-        accessPointers[index] = tmpObj;
-      }
-      tmpObj?.scale && tmpSkin.isLoaded && (ctxt.save(), ctxt.translate(-20 - (tmpObj.xOff || 0), 0), tmpObj.spin && ctxt.rotate(owner.skinRot), ctxt.drawImage(tmpSkin, -tmpObj.scale / 2, -tmpObj.scale / 2, tmpObj.scale, tmpObj.scale), ctxt.restore());
-    }(e.tailIndex, t, e), e.buildIndex < 0 && !_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].aboveHand && (renderTool(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex], _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].projectile || _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].projectiles[_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].projectile], mainContext)), t.fillStyle = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].skinColors[e.skinColor], renderCircle(e.scale * Math.cos(i), e.scale * Math.sin(i), 14), renderCircle(e.scale * s * Math.cos(-i * n), e.scale * s * Math.sin(-i * n), 14), e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].aboveHand && (renderTool(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex], _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].projectile || _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].projectiles[_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].projectile], mainContext)), e.buildIndex >= 0) {
-    var o = getItemSprite(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[e.buildIndex]);
-    t.drawImage(o, e.scale - _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[e.buildIndex].holdOffset, -o.width / 2);
-  }
-  renderCircle(0, 0, e.scale, t), e.skinIndex > 0 && (t.rotate(Math.PI / 2), function renderSkin(index, ctxt, parentSkin, owner) {
-    if (!(tmpSkin = skinSprites[index])) {
-      var tmpImage = new Image();
-      tmpImage.onload = function () {
-        this.isLoaded = !0, this.onload = null;
-      }, tmpImage.src = '.././img/hats/hat_' + index + '.png', skinSprites[index] = tmpImage, tmpSkin = tmpImage;
-    }
-    var tmpObj = parentSkin || skinPointers[index];
-    if (!tmpObj) {
-      for (var i = 0; i < hats.length; ++i)
-        if (hats[i].id == index) {
-          tmpObj = hats[i];
-          break;
-        }
-      skinPointers[index] = tmpObj;
-    }
-    tmpObj?.scale && tmpSkin.isLoaded && ctxt.drawImage(tmpSkin, -tmpObj.scale / 2, -tmpObj.scale / 2, tmpObj.scale, tmpObj.scale), !parentSkin && tmpObj?.topSprite && (ctxt.save(), ctxt.rotate(owner.skinRot), renderSkin(index + '_top', ctxt, tmpObj, owner), ctxt.restore());
-  }(e.skinIndex, t, null, e));
-}
-var tmpSkin, skinSprites = {},
-  skinPointers = {},
-  accessSprites = {},
-  accessPointers = {},
-  toolSprites = {};
-
-function renderTool(obj, variant, x, y, ctxt) {
-  var tmpSrc = obj.src + (variant || ''),
-    tmpSprite = toolSprites[tmpSrc];
-  tmpSprite || ((tmpSprite = new Image())
-    .onload = function () {
-      this.isLoaded = !0;
-    }, tmpSprite.src = '.././img/weapons/' + tmpSrc + '.png', toolSprites[tmpSrc] = tmpSprite), tmpSprite.isLoaded && ctxt.drawImage(tmpSprite, x + obj.xOff - obj.length / 2, y + obj.yOff - obj.width / 2, obj.length, obj.width);
-}
-var gameObjectSprites = {};
-
-function getResSprite(obj) {
-  var biomeID = obj.y >= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 2 : obj.y <= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 1 : 0,
-    tmpIndex = obj.type + '_' + obj.scale + '_' + biomeID,
-    tmpSprite = gameObjectSprites[tmpIndex];
-  if (!tmpSprite) {
-    var tmpCanvas = document.createElement('canvas');
-    tmpCanvas.width = tmpCanvas.height = 2.1 * obj.scale + 5.5;
-    var tmpContext = tmpCanvas.getContext('2d');
-    if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.rotate(_libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].randFloat(0, Math.PI)), tmpContext.strokeStyle = outlineColor, tmpContext.lineWidth = 5.5, 0 == obj.type)
-      for (var tmpScale, i = 0; i < 2; ++i)
-        renderStar(tmpContext, 7, tmpScale = tmpObj.scale * (i ? 0.5 : 1), 0.7 * tmpScale), tmpContext.fillStyle = biomeID ? i ? '#fff' : '#e3f1f4' : i ? '#b4db62' : '#9ebf57', tmpContext.fill(), i || tmpContext.stroke();
-    else if (1 == obj.type)
-      if (2 == biomeID)
-        tmpContext.fillStyle = '#606060', renderStar(tmpContext, 6, 0.3 * obj.scale, 0.71 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#89a54c', renderCircle(0, 0, 0.55 * obj.scale, tmpContext), tmpContext.fillStyle = '#a5c65b', renderCircle(0, 0, 0.3 * obj.scale, tmpContext, !0);
-      else {
-        var tmpRange;
-        ! function (ctxt, spikes, outer, inner) {
-          var tmpOuter, rot = Math.PI / 2 * 3,
-            step = Math.PI / 6;
-          ctxt.beginPath(), ctxt.moveTo(0, -inner);
-          for (var i = 0; i < 6; i++)
-            tmpOuter = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].randInt(outer + 0.9, 1.2 * outer), ctxt.quadraticCurveTo(Math.cos(rot + step) * tmpOuter, Math.sin(rot + step) * tmpOuter, Math.cos(rot + 2 * step) * inner, Math.sin(rot + 2 * step) * inner), rot += 2 * step;
-          ctxt.lineTo(0, -inner), ctxt.closePath();
-        }(tmpContext, 0, tmpObj.scale, 0.7 * tmpObj.scale), tmpContext.fillStyle = biomeID ? '#e3f1f4' : '#89a54c', tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = biomeID ? '#6a64af' : '#c15555';
-        var rotVal = mathPI2 / 4;
-        for (i = 0; i < 4; ++i)
-          renderCircle((tmpRange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].randInt(tmpObj.scale / 3.5, tmpObj.scale / 2.3)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].randInt(10, 12), tmpContext);
-      }
-    else
-      2 != obj.type && 3 != obj.type || (tmpContext.fillStyle = 2 == obj.type ? 2 == biomeID ? '#938d77' : '#939393' : '#e0c655', renderStar(tmpContext, 3, obj.scale, obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = 2 == obj.type ? 2 == biomeID ? '#b2ab90' : '#bcbcbc' : '#ebdca3', renderStar(tmpContext, 3, 0.55 * obj.scale, 0.65 * obj.scale), tmpContext.fill());
-    tmpSprite = tmpCanvas, gameObjectSprites[tmpIndex] = tmpSprite;
-  }
-  return tmpSprite;
-}
-var itemSprites = [];
-
-function getItemSprite(obj, asIcon) {
-  var tmpSprite = itemSprites[obj.id];
-  if (!tmpSprite || asIcon) {
-    var tmpCanvas = document.createElement('canvas');
-    tmpCanvas.width = tmpCanvas.height = 2.5 * obj.scale + 5.5 + (_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[obj.id].spritePadding || 0);
-    var tmpContext = tmpCanvas.getContext('2d');
-    if (tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2), tmpContext.rotate(asIcon ? 0 : Math.PI / 2), tmpContext.strokeStyle = outlineColor, tmpContext.lineWidth = 5.5 * (asIcon ? tmpCanvas.width / 81 : 1), 'apple' == obj.name) {
-      tmpContext.fillStyle = '#c15555', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#89a54c';
-      var leafDir = -Math.PI / 2;
-      ! function (x, y, l, r, ctxt) {
-        var endX = x + 25 * Math.cos(r),
-          endY = y + 25 * Math.sin(r);
-        ctxt.moveTo(x, y), ctxt.beginPath(), ctxt.quadraticCurveTo((x + endX) / 2 + 10 * Math.cos(r + Math.PI / 2), (y + endY) / 2 + 10 * Math.sin(r + Math.PI / 2), endX, endY), ctxt.quadraticCurveTo((x + endX) / 2 - 10 * Math.cos(r + Math.PI / 2), (y + endY) / 2 - 10 * Math.sin(r + Math.PI / 2), x, y), ctxt.closePath(), ctxt.fill(), ctxt.stroke();
-      }(obj.scale * Math.cos(leafDir), obj.scale * Math.sin(leafDir), 0, leafDir + Math.PI / 2, tmpContext);
-    } else if ('cookie' == obj.name) {
-      tmpContext.fillStyle = '#cca861', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#937c4b';
-      for (var rotVal = mathPI2 / (chips = 4), i = 0; i < chips; ++i)
-        renderCircle((tmpRange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].randInt(obj.scale / 2.5, obj.scale / 1.7)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].randInt(4, 5), tmpContext, !0);
-    } else if ('cheese' == obj.name) {
-      var chips, tmpRange;
-      for (tmpContext.fillStyle = '#f4f3ac', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#c3c28b', rotVal = mathPI2 / (chips = 4), i = 0; i < chips; ++i)
-        renderCircle((tmpRange = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].randInt(obj.scale / 2.5, obj.scale / 1.7)) * Math.cos(rotVal * i), tmpRange * Math.sin(rotVal * i), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].randInt(4, 5), tmpContext, !0);
-    } else if ('wood wall' == obj.name || 'stone wall' == obj.name || 'castle wall' == obj.name) {
-      tmpContext.fillStyle = 'castle wall' == obj.name ? '#83898e' : 'wood wall' == obj.name ? '#a5974c' : '#939393';
-      var sides = 'castle wall' == obj.name ? 4 : 3;
-      renderStar(tmpContext, sides, 1.1 * obj.scale, 1.1 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = 'castle wall' == obj.name ? '#9da4aa' : 'wood wall' == obj.name ? '#c9b758' : '#bcbcbc', renderStar(tmpContext, sides, 0.65 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
-    } else if ('spikes' == obj.name || 'greater spikes' == obj.name || 'poison spikes' == obj.name || 'spinning spikes' == obj.name) {
-      tmpContext.fillStyle = 'poison spikes' == obj.name ? '#7b935d' : '#939393';
-      var tmpScale = 0.6 * obj.scale;
-      renderStar(tmpContext, 'spikes' == obj.name ? 5 : 6, obj.scale, tmpScale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, tmpScale, tmpContext), tmpContext.fillStyle = '#c9b758', renderCircle(0, 0, tmpScale / 2, tmpContext, !0);
-    } else if ('windmill' == obj.name || 'faster windmill' == obj.name || 'power mill' == obj.name)
-      tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fillStyle = '#c9b758', renderRectCircle(0, 0, 1.5 * obj.scale, 29, 4, tmpContext), tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, 0.5 * obj.scale, tmpContext);
-    else if ('mine' == obj.name)
-      tmpContext.fillStyle = '#939393', renderStar(tmpContext, 3, obj.scale, obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#bcbcbc', renderStar(tmpContext, 3, 0.55 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
-    else if ('sapling' == obj.name)
-      for (i = 0; i < 2; ++i)
-        renderStar(tmpContext, 7, tmpScale = obj.scale * (i ? 0.5 : 1), 0.7 * tmpScale), tmpContext.fillStyle = i ? '#b4db62' : '#9ebf57', tmpContext.fill(), i || tmpContext.stroke();
-    else if ('pit trap' == obj.name)
-      tmpContext.fillStyle = '#a5974c', renderStar(tmpContext, 3, 1.1 * obj.scale, 1.1 * obj.scale), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = outlineColor, renderStar(tmpContext, 3, 0.65 * obj.scale, 0.65 * obj.scale), tmpContext.fill();
-    else if ('boost pad' == obj.name)
-      tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#dbd97d',
-      function (s, ctx) {
-        ctx = ctx || mainContext;
-        var h = s * (Math.sqrt(3) / 2);
-        ctx.beginPath(), ctx.moveTo(0, -h / 2), ctx.lineTo(-s / 2, h / 2), ctx.lineTo(s / 2, h / 2), ctx.lineTo(0, -h / 2), ctx.fill(), ctx.closePath();
-      }(1 * obj.scale, tmpContext);
-    else if ('turret' == obj.name)
-      tmpContext.fillStyle = '#a5974c', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#939393', renderRect(0, -25, 0.9 * obj.scale, 50, tmpContext), renderCircle(0, 0, 0.6 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke();
-    else if ('platform' == obj.name) {
-      tmpContext.fillStyle = '#cebd5f';
-      var tmpS = 2 * obj.scale,
-        tmpW = tmpS / 4,
-        tmpX = -obj.scale / 2;
-      for (i = 0; i < 4; ++i)
-        renderRect(tmpX - tmpW / 2, 0, tmpW, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpX += tmpS / 4;
-    } else
-      'healing pad' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#db6e6e', renderRectCircle(0, 0, 0.65 * obj.scale, 20, 4, tmpContext, !0)) : 'spawn pad' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderRect(0, 0, 2 * obj.scale, 2 * obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.fillStyle = '#71aad6', renderCircle(0, 0, 0.6 * obj.scale, tmpContext)) : 'blocker' == obj.name ? (tmpContext.fillStyle = '#7e7f82', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.rotate(Math.PI / 4), tmpContext.fillStyle = '#db6e6e', renderRectCircle(0, 0, 0.65 * obj.scale, 20, 4, tmpContext, !0)) : 'teleporter' == obj.name && (tmpContext.fillStyle = '#7e7f82', renderCircle(0, 0, obj.scale, tmpContext), tmpContext.fill(), tmpContext.stroke(), tmpContext.rotate(Math.PI / 4), tmpContext.fillStyle = '#d76edb', renderCircle(0, 0, 0.5 * obj.scale, tmpContext, !0));
-    tmpSprite = tmpCanvas, asIcon || (itemSprites[obj.id] = tmpSprite);
-  }
-  return tmpSprite;
-}
-
-function renderCircle(x, y, scale, tmpContext, dontStroke, dontFill) {
-  (tmpContext = tmpContext || mainContext)
-  .beginPath(), tmpContext.arc(x, y, scale, 0, 2 * Math.PI), dontFill || tmpContext.fill(), dontStroke || tmpContext.stroke();
-}
-
-function renderStar(ctxt, spikes, outer, inner) {
-  var x, y, rot = Math.PI / 2 * 3,
-    step = Math.PI / spikes;
-  ctxt.beginPath(), ctxt.moveTo(0, -outer);
-  for (var i = 0; i < spikes; i++)
-    x = Math.cos(rot) * outer, y = Math.sin(rot) * outer, ctxt.lineTo(x, y), rot += step, x = Math.cos(rot) * inner, y = Math.sin(rot) * inner, ctxt.lineTo(x, y), rot += step;
-  ctxt.lineTo(0, -outer), ctxt.closePath();
-}
-
-function renderRect(x, y, w, h, ctxt, stroke) {
-  ctxt.fillRect(x - w / 2, y - h / 2, w, h), stroke || ctxt.strokeRect(x - w / 2, y - h / 2, w, h);
-}
-
-function renderRectCircle(x, y, s, sw, seg, ctxt, stroke) {
-  ctxt.save(), ctxt.translate(x, y), seg = Math.ceil(seg / 2);
-  for (var i = 0; i < seg; i++)
-    renderRect(0, 0, 2 * s, sw, ctxt, stroke), ctxt.rotate(Math.PI / seg);
-  ctxt.restore();
 }
 
 function loadGameObject(data) {
@@ -5139,170 +4538,11 @@ function pingSocket() {
   wsBridge.pingServer();
 }
 
-function serverShutdownNotice(countdown) {
-  if (!(countdown < 0)) {
-    var minutes = Math.floor(countdown / 60),
-      seconds = countdown % 60;
-    seconds = ('0' + seconds)
-      .slice(-2), shutdownDisplay.innerText = 'Server restarting in ' + minutes + ':' + seconds, shutdownDisplay.hidden = !1;
-  }
-}
+function serverShutdownNotice(countdown) { }
 
 function openLink(link) {
   window.open(link, '_blank');
 }
-
-var i = 0;
-const dxw = 1920 / 2;
-const dxh = 1080 / 2;
-
-let xOffset, yOffset;
-
-const requestAnimationFrame_ = requestAnimationFrame;
-
-function render() {
-  now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
-
-  if (player) {
-    const moX = dxw - mouseX;
-    const moY = dxh - mouseY;
-    
-    camX = player.x + moX / 10;
-    camY = player.y + moY / 10;
-  }
-  
-  xOffset = camX - maxScreenWidth / 2 + offsetCamX;
-  yOffset = camY - maxScreenHeight / 2 + offsetCamY;
-  
-  _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop - yOffset <= 0 && _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#b6db66', mainContext
-      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop - yOffset <= 0 ? (mainContext.fillStyle = '#dbc666', mainContext
-      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop - yOffset >= maxScreenHeight ? (mainContext.fillStyle = '#fff', mainContext
-      .fillRect(0, 0, maxScreenWidth, maxScreenHeight)) : _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop - yOffset >= 0 ? (mainContext.fillStyle = '#fff', mainContext.fillRect(0, 0
-      , maxScreenWidth, _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop - yOffset
-      , maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop - yOffset))) : (mainContext.fillStyle = '#b6db66', mainContext.fillRect(0, 0, maxScreenWidth
-      , _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop - yOffset), mainContext.fillStyle = '#dbc666', mainContext.fillRect(0, _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop -
-      yOffset, maxScreenWidth, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop - yOffset))), firstSetup || ((waterMult += waterPlus * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"]
-        .waveSpeed * delta) >= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].waveMax ? (waterMult = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].waveMax, waterPlus = -1) : waterMult <= 1 && (waterMult = waterPlus = 1), mainContext
-      .fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(
-        xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06
-    , mainContext.beginPath();
-  for (var i = -camX, k = -camY; i < maxScreenWidth || k < maxScreenHeight; i += gridDelta, k += gridDelta) {
-    if (i > 0) {
-      mainContext.moveTo(i, 0);
-      mainContext.lineTo(i, maxScreenHeight);
-    }
-    if (k > 0) {
-      mainContext.moveTo(0, k);
-      mainContext.lineTo(maxScreenWidth, k);
-    }
-  }
-  mainContext.stroke();
-  mainContext.globalAlpha = 1;
-  mainContext.strokeStyle = outlineColor;
-  renderGameObjects(-1, xOffset, yOffset);
-  mainContext.globalAlpha = 1;
-  mainContext.lineWidth = 5.5;
-  renderProjectiles(0, xOffset, yOffset);
-  renderPlayers(xOffset, yOffset, 0);
-  mainContext.globalAlpha = 1;
-
-  if (renderGameObjects(0, xOffset, yOffset), renderProjectiles(1, xOffset, yOffset), renderGameObjects(1, xOffset, yOffset), renderPlayers(xOffset, yOffset
-      , 1), renderGameObjects(2, xOffset, yOffset), renderGameObjects(3, xOffset, yOffset), mainContext.fillStyle = '#000', mainContext.globalAlpha = 0.09
-    , xOffset <= 0 && mainContext.fillRect(0, 0, -xOffset, maxScreenHeight), _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - xOffset <= maxScreenWidth) {
-    var tmpY = Math.max(0, -yOffset);
-    mainContext.fillRect(_config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - xOffset, tmpY, maxScreenWidth - (_config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - xOffset), maxScreenHeight - tmpY);
-  }
-  if (yOffset <= 0 && mainContext.fillRect(-xOffset, 0, maxScreenWidth + xOffset, -yOffset), _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - yOffset <= maxScreenHeight) {
-    var tmpX = Math.max(0, -xOffset)
-      , tmpMin = 0;
-    _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - xOffset <= maxScreenWidth && (tmpMin = maxScreenWidth - (_config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - xOffset)), mainContext.fillRect(tmpX, _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale -
-      yOffset, maxScreenWidth - tmpX - tmpMin, maxScreenHeight - (_config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - yOffset));
-  }
-  for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext
-    .strokeStyle = darkOutlineColor, textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length; ++i)
-    if ((tmpObj = players[i])
-      .visible) {
-      var total = tmpObj.t2 - tmpObj.t1;
-      var ratio = (now - average - tmpObj.t1) / total;
-      tmpObj.dt += delta;
-      var tmpRate = Math.min(1.7, tmpObj.dt / 170);
-      var tmpDiff = tmpObj.x2 - tmpObj.x1;
-      tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate;
-      tmpDiff = tmpObj.y2 - tmpObj.y1;
-      tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate;
-      tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
-
-      if (players[i] && tmpObj.chatCountdown) {
-        tmpObj.chatCountdown -= delta, tmpObj.chatCountdown <= 0 && (tmpObj.chatCountdown = 0), mainContext.font = '32px "Baloo 2"';
-        var tmpSize = mainContext.measureText(tmpObj.chatMessage);
-        mainContext.textBaseline = 'middle', mainContext.textAlign = 'center', tmpX = tmpObj.x - xOffset, tmpY = tmpObj.y - tmpObj.scale - yOffset - 90;
-        var tmpW = tmpSize.width + 17;
-        mainContext.fillStyle = 'rgba(0,0,0,0.2)', mainContext.roundRect(tmpX - tmpW / 2, tmpY - 23.5, tmpW, 47, 6), mainContext.fill(), mainContext.fillStyle =
-          '#fff', mainContext.fillText(tmpObj.chatMessage, tmpX, tmpY);
-      }
-
-      var tmpText = (tmpObj.team ? '[' + tmpObj.team + '] ' : '') + tmpObj.name;
-      if ('' != tmpText) {
-        if (mainContext.font = (tmpObj.nameScale || 30) + 'px "Baloo 2"', mainContext.fillStyle = (tmpObj.health <= 0 || !tmpObj.alive) ? '#7E7E7E' : '#fff', mainContext.textBaseline = 'middle', mainContext
-          .textAlign = 'center', mainContext.lineWidth = tmpObj
-          .nameScale ? 11 : 8, mainContext.lineJoin = 'round', mainContext.strokeText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"]
-            .nameY), mainContext.fillText(tmpText, tmpObj.x - xOffset, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].nameY), tmpObj.isLeader && iconSprites.crown
-          .isLoaded) {
-          var tmpS = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].crownIconScale;
-          tmpX = tmpObj.x - xOffset - tmpS / 2 - mainContext.measureText(tmpText)
-            .width / 2 - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].crownPad, mainContext.drawImage(iconSprites.crown, tmpX, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].nameY - tmpS / 2 - 5, tmpS
-              , tmpS);
-        }
-        1 == tmpObj.iconIndex && iconSprites.skull.isLoaded && (tmpS = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].crownIconScale, tmpX = tmpObj.x - xOffset - tmpS / 2 + mainContext.measureText(
-            tmpText)
-          .width / 2 + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].crownPad, mainContext.drawImage(iconSprites.skull, tmpX, tmpObj.y - yOffset - tmpObj.scale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].nameY - tmpS / 2 - 5, tmpS
-            , tmpS));
-      }
-      tmpObj.health > 0 && (_config_js__WEBPACK_IMPORTED_MODULE_4__["default"].healthBarWidth, mainContext.fillStyle = darkOutlineColor, mainContext.roundRect(tmpObj.x - xOffset - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].healthBarWidth -
-          _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].healthBarPad, tmpObj.y - yOffset + tmpObj.scale + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].nameY, 2 * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].healthBarWidth + 2 * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].healthBarPad, 17, 8), mainContext
-        .fill(), mainContext.fillStyle = tmpObj == player || tmpObj.team && tmpObj.team == player.team ? '#8ecc51' : '#cc5151', mainContext.roundRect(tmpObj
-          .x - xOffset - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].healthBarWidth, tmpObj.y - yOffset + tmpObj.scale + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].nameY + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].healthBarPad, 2 * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].healthBarWidth * (tmpObj
-            .health / tmpObj.maxHealth), 17 - 2 * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].healthBarPad, 7), mainContext.fill());
-    }
-
-  if (player?.alive) {
-    const mapOffY = gameCanvas.height - 200;
-    
-    mainContext.fillStyle = "rgba(0, 0, 0, 0.3)";
-    mainContext.shadowBlur = 3;
-    mainContext.roundRect(0, mapOffY, 200, mapOffY + 200, 10);
-    mainContext.fill();
-    mainContext.fillStyle = '#fff';
-    renderCircle(player.x / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 200, mapOffY + player.y / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale *
-        200, 5, mainContext, true);
-    mainContext.fillStyle = 'rgba(255, 255, 255, 0.35)';
-    if (minimapData) {
-      for (i = 0; i < minimapData.length;) {
-        renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 200, mapOffY + minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 200, 5, mainContext, true);
-        i += 2;
-      }
-    }
-  }
-
-  requestAnimationFrame_(render);
-};
-
-render();
-
-window.requestAnimFrame = window.requestAnimationFrame = null;
-
-window.aJoinReq = aJoinReq;
-window.kickFromClan = kickFromClan;
-window.sendJoin = sendJoin;
-window.leaveAlliance = leaveAlliance;
-window.createAlliance = createAlliance;
-window.showItemInfo = showItemInfo;
-window.selectSkinColor = function (index) {
-  skinColor = index, updateSkinColorPicker();
-};
-window.changeStoreIndex = function (index) {
-  currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
-};
 
 document.querySelector("#gameName").innerHTML = "moomoo";
 
