@@ -2172,13 +2172,18 @@ const socket = {
   connect(address, callback, events) {
     if (this.socket) return;
     
-    WebSocket = new Proxy(WebSocket, {
-      construct: (target, args) => {
-        this.socket = new target(args);
+    WebSocket.prototype.send = new Proxy(WebSocket.prototype.send, {
+      apply: (target, that, args) => {
+
+        if (!this.socket) return target.apply(that, args);
+        
+        this.socket = that;
         this.socket.addEventListener("message", message => {
           let msg = new Uint8Array(message.data),
           parsed = _msgpack_js__WEBPACK_IMPORTED_MODULE_0__["default"].decode(msg);
           let [type, data] = parsed;
+
+          console.log("[*] Listening rn ", parsed);
           
           if (type == "io-init") this.socketId = data[0];
           else if (events[type]) events[type].apply(void 0, data);
@@ -2197,7 +2202,7 @@ const socket = {
           callback('Socket closed');
         };
 
-        return this.socket;
+        return target.apply(that, args);
       }
     });
   },
