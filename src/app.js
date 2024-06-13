@@ -952,7 +952,7 @@ const benchmarks = {
 const modulesQueue = [
   /** HELPER MODULES ARE GOING FIRST **/
   () => {
-    console.log(player, players, gameObjects);
+    console.log(player);
   }
 ];
 
