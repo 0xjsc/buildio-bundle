@@ -331,17 +331,6 @@ function getAttackDir() {
   return aimOverride ? aimOverride : (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2));
 }
 
-eventsListener.addEventListener('mousemove', function (e) {
-  e.preventDefault(), e.stopPropagation(), setUsingTouch(!1), mouseX = e.clientX, mouseY = e.clientY;
-});
-eventsListener.addEventListener('mousedown', function (e) {
-  aimOverride = false;
-  setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
-});
-eventsListener.addEventListener('mouseup', function (e) {
-  setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
-});
-
 var keys = {},
   moveKeys = {
     KeyW: [0, -1],
