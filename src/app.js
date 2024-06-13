@@ -770,7 +770,7 @@ function killPlayer() {
 
   console.log("Logged death", logData);
   
-  inGame = !1,
+  inGame = false;
 }
 
 function killObjects(sid) {
