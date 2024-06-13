@@ -3081,7 +3081,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const serverPackets = {};
-const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
 const { log } = console;
 
 let packets, serverSide;
@@ -3297,46 +3296,6 @@ var useNativeResolution, showPing, delta, now, lastSent, attackState, player, pl
   maxScreenHeight = _config_js__WEBPACK_IMPORTED_MODULE_3__["default"].maxScreenHeight,
   gridDelta = maxScreenHeight / 18,
   inGame = !1,
-  mainMenu = (document.getElementById('ad-container'), document.getElementById('mainMenu')),
-  enterGameButton = document.getElementById('enterGame'),
-  promoImageButton = document.getElementById('promoImg'),
-  partyButton = document.getElementById('partyButton'),
-  joinPartyButton = document.getElementById('joinPartyButton'),
-  settingsButton = document.getElementById('settingsButton'),
-  settingsButtonTitle = settingsButton.getElementsByTagName('span')[0],
-  allianceButton = document.getElementById('allianceButton'),
-  storeButton = document.getElementById('storeButton'),
-  chatButton = document.getElementById('chatButton'),
-  serverBrowser = document.getElementById('serverBrowser'),
-  nativeResolutionCheckbox = document.getElementById('nativeResolution'),
-  showPingCheckbox = document.getElementById('showPing'),
-  pingDisplay = (document.getElementById('playMusic'), document.getElementById('pingDisplay')),
-  shutdownDisplay = document.getElementById('shutdownDisplay'),
-  menuCardHolder = document.getElementById('menuCardHolder'),
-  guideCard = document.getElementById('guideCard'),
-  loadingText = document.getElementById('loadingText'),
-  gameUI = document.getElementById('gameUI'),
-  actionBar = document.getElementById('actionBar'),
-  scoreDisplay = document.getElementById('scoreDisplay'),
-  foodDisplay = document.getElementById('foodDisplay'),
-  woodDisplay = document.getElementById('woodDisplay'),
-  stoneDisplay = document.getElementById('stoneDisplay'),
-  killCounter = document.getElementById('killCounter'),
-  leaderboardData = document.getElementById('leaderboardData'),
-  nameInput = document.getElementById('nameInput'),
-  itemInfoHolder = document.getElementById('itemInfoHolder'),
-  ageText = document.getElementById('ageText'),
-  ageBarBody = document.getElementById('ageBarBody'),
-  upgradeHolder = document.getElementById('upgradeHolder'),
-  upgradeCounter = document.getElementById('upgradeCounter'),
-  allianceMenu = document.getElementById('allianceMenu'),
-  allianceHolder = document.getElementById('allianceHolder'),
-  allianceManager = document.getElementById('allianceManager'),
-  diedText = document.getElementById('diedText'),
-  skinColorHolder = document.getElementById('skinColorHolder');
-  var storeMenu = document.getElementById('storeMenu'),
-  storeHolder = document.getElementById('storeHolder'),
-  noticationDisplay = document.getElementById('noticationDisplay'),
   hats = _js_data_store_js__WEBPACK_IMPORTED_MODULE_9__["default"].hats,
   accessories = _js_data_store_js__WEBPACK_IMPORTED_MODULE_9__["default"].accessories,
   objectManager = new _js_data_objectManager_js__WEBPACK_IMPORTED_MODULE_7__["default"](_js_data_gameObject_js__WEBPACK_IMPORTED_MODULE_4__["default"], gameObjects, _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"], _config_js__WEBPACK_IMPORTED_MODULE_3__["default"]),
@@ -3351,57 +3310,7 @@ var inWindow = !0,
   didLoad = !1,
   captchaReady = !1;
 
-async function disconnect(reason) {
-  enterGameButton.innerHTML = "Disconnected";
-}
-
-function showLoadingText(text) {
-  mainMenu.style.display = 'block', gameUI.style.display = 'none', menuCardHolder.style.display = 'none', diedText.style.display = 'none', loadingText.style.display = 'block', loadingText.innerHTML = text + '<a href=\'javascript:window.location.href=window.location.href\' class=\'ytLink\'>reload</a>';
-}
-
 didLoad = true;
-
-function setupServerStatus() {
-  var altServerText, altServerURL, tmpHTML = '',
-    overallTotal = 0;
-  tmpHTML += '<option disabled>All Servers - 100 players</option>', serverBrowser.innerHTML = tmpHTML, 'mohmoh.eu' == location.hostname ? (altServerText = 'Back to MohMoh', altServerURL = '//mohmoh.eu/') : (altServerText = 'Try the sandbox', altServerURL = '//mohmoh.eu/'), document.getElementById('altServer')
-    .innerHTML = '<a href=\'' + altServerURL + '\'>' + altServerText + '<i class=\'material-icons\' style=\'font-size:10px;vertical-align:middle\'>arrow_forward_ios</i></a>';
-}
-
-function updateServerList() { }
-
-function showItemInfo(item, isWeapon, isStoreItem) {
-  if (player && item)
-    if (_libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].removeAllChildren(itemInfoHolder), itemInfoHolder.classList.add('visible'), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-        id: 'itemInfoName',
-        text: _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].capitalizeFirst(item.name),
-        parent: itemInfoHolder
-      }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-        id: 'itemInfoDesc',
-        text: item.desc,
-        parent: itemInfoHolder
-      }), isStoreItem);
-    else if (isWeapon)
-    _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-      class: 'itemInfoReq',
-      text: item.type ? 'secondary' : 'primary',
-      parent: itemInfoHolder
-    });
-  else {
-    for (var i = 0; i < item.req.length; i += 2)
-      _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-        class: 'itemInfoReq',
-        html: item.req[i] + '<span class=\'itemInfoReqVal\'> x' + item.req[i + 1] + '</span>',
-        parent: itemInfoHolder
-      });
-    item.group.limit && _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-      class: 'itemInfoLmt',
-      text: (player.itemCounts[item.group.id] || 0) + '/' + item.group.limit,
-      parent: itemInfoHolder
-    });
-  } else
-    itemInfoHolder.classList.remove('visible');
-}
 
 var lastDeath, minimapData, mapMarker, allianceNotifications = [],
   alliancePlayers = [];
@@ -3410,141 +3319,30 @@ function allianceNotification(sid, name) {
   allianceNotifications.push({
     sid: sid,
     name: name
-  }), updateNotifications();
-}
-
-function updateNotifications() {
-  if (allianceNotifications[0]) {
-    var tmpN = allianceNotifications[0];
-    _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].removeAllChildren(noticationDisplay), noticationDisplay.style.display = 'block', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-      class: 'notificationText',
-      text: tmpN.name,
-      parent: noticationDisplay
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-      class: 'notifButton',
-      html: '<i class=\'material-icons\' style=\'font-size:28px;color:#cc5151;\'>&#xE14C;</i>',
-      parent: noticationDisplay,
-      onclick: function () {
-        aJoinReq(0);
-      },
-      hookTouch: !0
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-      class: 'notifButton',
-      html: '<i class=\'material-icons\' style=\'font-size:28px;color:#8ecc51;\'>&#xE876;</i>',
-      parent: noticationDisplay,
-      onclick: function () {
-        aJoinReq(1);
-      },
-      hookTouch: !0
-    });
-  } else
-    noticationDisplay.style.display = 'none';
+  });
 }
 
 function addAlliance(data) {
-  alliances.push(data), 'block' == allianceMenu.style.display && showAllianceMenu();
+  alliances.push(data);
 }
 
 function setPlayerTeam(team, isOwner) {
-  player && (player.team = team, player.isOwner = isOwner, 'block' == allianceMenu.style.display && showAllianceMenu());
+  player && (player.team = team, player.isOwner = isOwner);
 }
 
 function setAlliancePlayers(data) {
-  alliancePlayers = data, 'block' == allianceMenu.style.display && showAllianceMenu();
+  alliancePlayers = data;
 }
 
 function deleteAlliance(sid) {
   for (var i = alliances.length - 1; i >= 0; i--)
     alliances[i].sid == sid && alliances.splice(i, 1);
-  'block' == allianceMenu.style.display && showAllianceMenu();
-}
-
-function showAllianceMenu() {
-  if (player && player.alive) {
-    if (closeChat(), storeMenu.style.display = 'none', allianceMenu.style.display = 'block', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].removeAllChildren(allianceHolder), player.team)
-      for (var i = 0; i < alliancePlayers.length; i += 2)
-        ! function (i) {
-          var tmp = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-            class: 'allianceItem',
-            style: 'color:' + (alliancePlayers[i] == player.sid ? '#fff' : 'rgba(255,255,255,0.6)'),
-            text: alliancePlayers[i + 1],
-            parent: allianceHolder
-          });
-          player.isOwner && alliancePlayers[i] != player.sid && _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-            class: 'joinAlBtn',
-            text: 'Kick',
-            onclick: function () {
-              kickFromClan(alliancePlayers[i]);
-            },
-            hookTouch: !0,
-            parent: tmp
-          });
-        }(i);
-    else if (alliances.length)
-      for (i = 0; i < alliances.length; ++i)
-        ! function (i) {
-          var tmp = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-            class: 'allianceItem',
-            style: 'color:' + (alliances[i].sid == player.team ? '#fff' : 'rgba(255,255,255,0.6)'),
-            text: alliances[i].sid,
-            parent: allianceHolder
-          });
-          _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-            class: 'joinAlBtn',
-            text: 'Join',
-            onclick: function () {
-              sendJoin(i);
-            },
-            hookTouch: !0,
-            parent: tmp
-          });
-        }(i);
-    else
-      _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-        class: 'allianceItem',
-        text: 'No Tribes Yet',
-        parent: allianceHolder
-      });
-    _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].removeAllChildren(allianceManager), player.team ? _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-      class: 'allianceButtonM',
-      style: 'width: 360px',
-      text: player.isOwner ? 'Delete Tribe' : 'Leave Tribe',
-      onclick: function () {
-        leaveAlliance();
-      },
-      hookTouch: !0,
-      parent: allianceManager
-    }) : (_libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-      tag: 'input',
-      type: 'text',
-      id: 'allianceInput',
-      maxLength: 7,
-      placeholder: 'unique name',
-      ontouchstart: function (ev) {
-        ev.preventDefault();
-        var newValue = prompt('unique name', ev.currentTarget.value);
-        ev.currentTarget.value = newValue.slice(0, 7);
-      },
-      parent: allianceManager
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-      tag: 'div',
-      class: 'allianceButtonM',
-      style: 'width: 140px;',
-      text: 'Create',
-      onclick: function () {
-        createAlliance();
-      },
-      hookTouch: !0,
-      parent: allianceManager
-    }));
-  }
 }
 
 function aJoinReq(join) {
   wsBridge.acceptClanJoin(allianceNotifications, join);
   
   allianceNotifications.splice(0, 1);
-  updateNotifications();
 }
 
 function kickFromClan(sid) {
@@ -3559,11 +3357,7 @@ function createAlliance() {
   wsBridge.createClan(document.getElementById('allianceInput').value);
 }
 
-let waka = 0; // sorry for bad variable name
-
 function leaveAlliance() {
-  allianceNotifications = [];
-  updateNotifications();
   wsBridge.leaveClan();
 }
 var tmpPing, mapPings = [];
@@ -3576,69 +3370,7 @@ function updateMinimap(data) {
 var currentStoreIndex = 0;
 
 function updateStoreItems(type, id, index) {
-  index ? type ? player.tailIndex = id : player.tails[id] = 1 : type ? player.skinIndex = id : player.skins[id] = 1, 'block' == storeMenu.style.display && generateStoreList();
-}
-
-function generateStoreList() {
-  if (player) {
-    _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].removeAllChildren(storeHolder);
-    for (var index = currentStoreIndex, tmpArray = index ? accessories : hats, i = 0; i < tmpArray.length; ++i)
-      tmpArray[i].dontSell || function (i) {
-        var tmp = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-          id: 'storeDisplay' + i,
-          class: 'storeItem',
-          onmouseout: function () {
-            showItemInfo();
-          },
-          onmouseover: function () {
-            showItemInfo(tmpArray[i], !1, !0);
-          },
-          parent: storeHolder
-        });
-        _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(tmp, !0), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-          tag: 'img',
-          class: 'hatPreview',
-          src: '../img/' + (index ? 'accessories/access_' : 'hats/hat_') + tmpArray[i].id + (tmpArray[i].topSprite ? '_p' : '') + '.png',
-          parent: tmp
-        }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-          tag: 'span',
-          text: tmpArray[i].name,
-          parent: tmp
-        }), (index ? player.tails[tmpArray[i].id] : player.skins[tmpArray[i].id]) ? (index ? player.tailIndex : player.skinIndex) == tmpArray[i].id ? _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-          class: 'joinAlBtn',
-          style: 'margin-top: 5px',
-          text: 'Unequip',
-          onclick: function () {
-            storeEquip(0, index);
-          },
-          hookTouch: !0,
-          parent: tmp
-        }) : _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-          class: 'joinAlBtn',
-          style: 'margin-top: 5px',
-          text: 'Equip',
-          onclick: function () {
-            storeEquip(tmpArray[i].id, index);
-          },
-          hookTouch: !0,
-          parent: tmp
-        }) : (_libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-          class: 'joinAlBtn',
-          style: 'margin-top: 5px',
-          text: 'Buy',
-          onclick: function () {
-            storeBuy(tmpArray[i].id, index);
-          },
-          hookTouch: !0,
-          parent: tmp
-        }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-          tag: 'span',
-          class: 'itemPrice',
-          text: tmpArray[i].price,
-          parent: tmp
-        }));
-      }(i);
-  }
+  index ? type ? player.tailIndex = id : player.tails[id] = 1 : type ? player.skinIndex = id : player.skins[id] = 1;
 }
 
 function storeEquip(id, index) {
@@ -3649,29 +3381,9 @@ function storeBuy(id, index) {
   wsBridge.itemAction(id, index, true);
 }
 
-function hideAllWindows() {
-  storeMenu.style.display = 'none', allianceMenu.style.display = 'none', closeChat();
-}
-
 function updateItems(data, wpn) {
   data && (wpn ? player.weapons = data : player.items = data);
-  for (var i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_5__["default"].list.length; ++i) {
-    var tmpI = _js_data_items_js__WEBPACK_IMPORTED_MODULE_5__["default"].weapons.length + i;
-    document.getElementById('actionBarItem' + tmpI)
-      .style.display = player.items.indexOf(_js_data_items_js__WEBPACK_IMPORTED_MODULE_5__["default"].list[i].id) >= 0 ? 'inline-block' : 'none';
-  }
-  for (i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_5__["default"].weapons.length; ++i)
-    document.getElementById('actionBarItem' + i)
-    .style.display = player.weapons[_js_data_items_js__WEBPACK_IMPORTED_MODULE_5__["default"].weapons[i].type] == _js_data_items_js__WEBPACK_IMPORTED_MODULE_5__["default"].weapons[i].id ? 'inline-block' : 'none';
 }
-
-function setUseNativeResolution(useNative) { }
-
-function updateSkinColorPicker() { }
-var chatBox = document.getElementById('chatBox'),
-  chatHolder = document.getElementById('chatHolder');
-
-function toggleChat() { }
 
 function sendChat(message) {
   wsBridge.sendChat(message);
@@ -3680,19 +3392,9 @@ function sendChat(message) {
 function closeChat() { }
 var usingTouch, lastDir;
 
+const setUsingTouch = e => usingTouch = !!e;
+
 function receiveChat(sid, message) { }
-
-function setUsingTouch(using) {
-  (usingTouch = using) ? guideCard.classList.add('touch'): guideCard.classList.remove('touch');
-}
-
-function touchEnd(ev) {
-  ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
-  for (var i = 0; i < ev.changedTouches.length; i++) {
-    var t = ev.changedTouches[i];
-    t.identifier == controllingTouch.id ? (controllingTouch.id = -1, sendMoveDir()) : t.identifier == attackingTouch.id && (attackingTouch.id = -1, player.buildIndex >= 0 && (attackState = 1, sendAtckState()), attackState = 0, sendAtckState());
-  }
-}
 
 function getAttackDir() {
   return aimOverride ? aimOverride : (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2));
@@ -3704,14 +3406,11 @@ eventsListener.addEventListener('mousemove', function (e) {
 eventsListener.addEventListener('mousedown', function (e) {
   aimOverride = false;
   setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
-  touch = e.button == 0;
-  waka = touch ? player.weapons[0] : (10 == player.weapons[1] ? 10 : player.weapons[0]);
 });
 eventsListener.addEventListener('mouseup', function (e) {
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
 });
 
-  let touch = 0;
 var keys = {},
   moveKeys = {
     KeyW: [0, -1],
@@ -3725,10 +3424,6 @@ window.keyEvents = {};
 function resetMoveDir() {
   keys = {};
   wsBridge.stopMovement();
-}
-
-function keysActive() {
-  return 'block' != allianceMenu.style.display && 'block' != chatHolder.style.display;
 }
 
 function sendAtckState() {
@@ -3750,8 +3445,6 @@ window.addEventListener('keydown', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["
   }
 }));
 var lastMoveDir = void 0;
-
-function sendMoveDir() { }
 
 function sendMapPing() {
   wsBridge.mapPing();
@@ -3806,7 +3499,6 @@ function killObject(sid) {
 
 let oldKills = 0;
 
-function updateStatusDisplay() { }
 var iconSprites = {},
   icons = [
     'crown',
@@ -3823,27 +3515,8 @@ function updateAge(xp, mxp, age) {
   null != xp && (player.XP = xp), null != mxp && (player.maxXP = mxp), null != age && (player.age = age), age == _config_js__WEBPACK_IMPORTED_MODULE_3__["default"].maxAge ? (ageText.innerHTML = 'MAX AGE', ageBarBody.style.width = '100%') : (ageText.innerHTML = 'AGE ' + player.age, ageBarBody.style.width = player.XP / player.maxXP * 100 + '%');
 }
 
-function updateLeaderboard(data) {
-  _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].removeAllChildren(leaderboardData);
-  for (var tmpC = 1, i = 0; i < data.length; i += 3)
-    ! function (i) {
-      _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-        class: 'leaderHolder',
-        parent: leaderboardData,
-        children: [
-          _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-            class: 'leaderboardItem',
-            style: 'color:' + (data[i] == playerSID ? '#fff' : 'rgba(255,255,255,0.6)'),
-            text: tmpC + '. ' + ('' != data[i + 1] ? data[i + 1] : 'unknown')
-          }),
-          _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].generateElement({
-            class: 'leaderScore',
-            text: _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].kFormat(data[i + 2]) || '0'
-          })
-        ]
-      });
-    }(i), tmpC++;
-}
+function updateLeaderboard(data) { };
+
 let lastAttackDir = null;
 
 const speeds = [300, 400, 400, 300, 300, 700, 300, 100, 400, 600, 400, 1, 700, 230, 700, 1500];
@@ -3851,32 +3524,8 @@ let lastPoison = Date.now();
 let turretReload = 0;
 const othersReloads  = [];
 
-function getBiomeHat() {
-
-  if (window.tanker) 
-    return 6;
-  
-  const biomeID = player.y >= _config_js__WEBPACK_IMPORTED_MODULE_3__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_3__["default"].snowBiomeTop ? 2 : player.y <= _config_js__WEBPACK_IMPORTED_MODULE_3__["default"].snowBiomeTop ? 1 : 0;
-
-  switch (biomeID) {
-    case 0:
-      return 12; // forest
-      break;
-    case 1:
-      return 15; // winter
-      break;
-    case 2:
-      return 12; // desert
-      break;
-  }
-}
-
 function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
-
-  if (sid == ownerSid && normalInsta() == false) {
-    wsBridge.updateHittingState(true, players.find(p => p && p?.sid == ownerSid).dir); 
-  }
   
   if (sid == player.sid) reloads[waka] = 0;
   else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = 0;
@@ -3923,7 +3572,7 @@ function addPlayer(data, isYou) {
     return null;
   }(data[0]);
   tmpPlayer || (tmpPlayer = new _js_data_player_js__WEBPACK_IMPORTED_MODULE_8__["default"](data[0], data[1], _config_js__WEBPACK_IMPORTED_MODULE_3__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"], projectileManager, objectManager, players, ais, _js_data_items_js__WEBPACK_IMPORTED_MODULE_5__["default"], hats, accessories), players.push(tmpPlayer)), tmpPlayer.spawn(isYou ? moofoll : null), tmpPlayer.visible = !1, tmpPlayer.x2 = void 0, tmpPlayer.y2 = void 0, tmpPlayer.setData(data), isYou && (camX = (player = tmpPlayer)
-    .x, camY = player.y, updateItems(), updateStatusDisplay(), updateAge(), updateUpgrades(0), gameUI.style.display = 'block');
+    .x, camY = player.y, updateItems(), updateAge(), updateUpgrades(0));
 }
 
 function removePlayer(id) {
@@ -3946,41 +3595,10 @@ function updateHealth(sid, value) {
   (tmpObj = findPlayerBySID(sid)) && (tmpObj.health = value);
 }
 
-function getMoveDir() {
-  var newMoveDir = function () {
-    var dx = 0,
-      dy = 0;
-    if (-1 != controllingTouch.id)
-      dx += controllingTouch.currentX - controllingTouch.startX, dy += controllingTouch.currentY - controllingTouch.startY;
-    else
-      for (var key in moveKeys) {
-        var tmpDir = moveKeys[key];
-        dx += !!keys[key] * tmpDir[0], dy += !!keys[key] * tmpDir[1];
-      }
-    return 0 == dx && 0 == dy ? void 0 : _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].fixTo(Math.atan2(dy, dx), 2);
-  }();
-  return newMoveDir;
-}
-
 let reloads = [];
 
-const sxw = 1920 / 2;
-const sxh = 1080 / 2;
 let tmpTime = Date.now();
-let serverLag = 0;
-let average = 111;
-let current = 111;
 let aimOverride = false;
-
-const benchmarks = {
-  AutoBreak: 0,
-  AntiInsta: 0,
-  AutoHeal: 0,
-  AutoReload: 0,
-  Macros: 0,
-  Placers: 0,
-  ItemController: 0
-}
 
 const modulesQueue = [
   /** HELPER MODULES ARE GOING FIRST **/
@@ -4038,8 +3656,6 @@ function serverShutdownNotice(countdown) { }
 function openLink(link) {
   window.open(link, '_blank');
 }
-
-document.querySelector("#gameName").innerHTML = "moomoo";
 
 /******/ })()
 ;
