@@ -2182,8 +2182,6 @@ const socket = {
           let msg = new Uint8Array(message.data),
           parsed = _msgpack_js__WEBPACK_IMPORTED_MODULE_0__["default"].decode(msg);
           let [type, data] = parsed;
-
-          console.log("[*] Got packet from server", parsed);
           
           if (type == "io-init") this.socketId = data[0];
           else if (events[type]) events[type].apply(void 0, data);
