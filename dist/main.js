@@ -3208,7 +3208,6 @@ if (location.href.includes("moomoo")) {
   }
 
 serverPackets[serverSide.INIT] = setInitData;
-serverPackets[serverSide.DISCONNECT] = disconnect;
 serverPackets[serverSide.SETUP_GAME] = setupGame;
 serverPackets[serverSide.ADD_PLAYER] = addPlayer;
 serverPackets[serverSide.REMOVE_PLAYER] = removePlayer;
