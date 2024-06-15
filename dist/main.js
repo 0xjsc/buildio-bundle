@@ -5737,7 +5737,7 @@ function bullSpam(dumbestEnemy) {
   if (breaking) return (bullspam = false, aimOverride = false);
   if (reloads[player.weaponIndex] != speeds[player.weaponIndex]) return;
   if (player.skinIndex == 60) return;
-  if (!dumbestEnemy) return;
+  if (!dumbestEnemy?.x2) return;
   
   bullspam = true;
   
