@@ -4649,7 +4649,7 @@ function killObjects(sid) {
 function killObject(sid) {
   const object = gameObjects[sid];
   objectManager.disableBySid(sid);
-  players.find(e => e.sid != player.sid && Math.hypot(player.x - e.x, player.y - e.y) < 180) && autoplace(object, true);
+  players.find(e => e.sid != player.sid && Math.hypot(player.x - e.x, player.y - e.y) < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale) && autoplace(object, true);
 }
 
 let oldKills = 0;
@@ -5254,7 +5254,7 @@ function autoplace(enemy, replace = false) {
   const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y, (enemy || window.enemyDanger)?.x - player.x);
   placers = [...toAngles(preplacableObjects), ...freeAngles].map((angle, i, array) => {
     const preplace = i < preplacableObjects.length;
-    place(player.items[((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
+    place(player.items[((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale) ? 2 : 4)], angle);
     benchmarks.Placers += 3;
 
     return {
@@ -5337,7 +5337,7 @@ function fixInsta() {
 }
 
 function normalInsta() {
-  const enemies = players.filter(e => e?.alive && e?.health > 0 && Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid))
+  const enemies = players.filter(e => e?.alive && e?.health > 0 && Math.hypot(player.x - e?.x, player.y - e?.y) < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale && player.sid != e.sid && !alliancePlayers.includes(e.sid))
     .sort((a, b) => Math.hypot(a?.x - b?.x, a?.y - b?.y));
   
   const enemy = enemies[0];
@@ -5395,7 +5395,7 @@ function normalInsta() {
 }
 
 function reverseInsta() {
-  const enemy = players.find(e => e?.alive && e?.health > 0 && Math.hypot(player.x - e?.x, player.y - e?.y) < 180 && player.sid != e.sid && !alliancePlayers.includes(e.sid));
+  const enemy = players.find(e => e?.alive && e?.health > 0 && Math.hypot(player.x - e?.x, player.y - e?.y) < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale && player.sid != e.sid && !alliancePlayers.includes(e.sid));
   window.sidFocus = enemy?.sid || 69420;
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
   if (!enemy) return;
@@ -5494,7 +5494,7 @@ function boostSpike() {
   if (distance > 400 && distance < 500) {
     place(player.items[4], angle);
     _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.MOVEMENT, angle);
-  } else if (distance < 400 && Math.hypot(player.x - player.x2, player.y - player.y2) > 20) {
+  } else if (distance < 400 && Math.hypot(player.x1 - player.x2, player.y1 - player.y2) > 20) {
     const enemyBorder = {
       x: window.enemy.x + Math.cos(Math.PI / 2) * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale,
       y: window.enemy.y + Math.sin(Math.PI / 2) * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale
@@ -5707,7 +5707,7 @@ const modulesQueue = [
     wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((endTimeout - Date.now()) / 1000) + "s");
   }, () => {
     const hitHat = (breaking || !touch) ? 40 : 7;
-    const hitAcc = (player.health > 50) ? 15 : (player.health < 40 ? 18 : 13);
+    const hitAcc = (player.health > 50) ? 21 : (player.health < 40 ? 18 : 13);
     const idleHat = window.enemyDanger ? 6 : getBiomeHat();
     const idleAcc = window.enemyDanger ? 15 : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 6 : 11);
     const tankerHat = 6;
@@ -5741,7 +5741,7 @@ function bullSpam(dumbestEnemy) {
   bullspam = true;
   
   const aimDirection = Math.atan2(dumbestEnemy.y2 - player.y2, dumbestEnemy.x2 - player.x2);
-  if (Math.hypot(dumbestEnemy.x2 - player.x2, dumbestEnemy.y2 - player.y2) > _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range) return (bullspam = false, aimOverride = false); 
+  if (Math.hypot(dumbestEnemy.x2 - player.x2, dumbestEnemy.y2 - player.y2) > _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale) return (bullspam = false, aimOverride = false); 
   
   wsBridge.updateHittingState(true, aimDirection);
   wsBridge.updateHittingState(false, getAttackDir());
