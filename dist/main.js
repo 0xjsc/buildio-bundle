@@ -4030,7 +4030,7 @@ var inWindow = !0,
   captchaReady = !1;
 
 async function disconnect(reason) {
-  enterGameButton.innerHTML = "Disconnected";
+  (enterGameButton || gameName).innerHTML = "Disconnected";
 }
 
 function showLoadingText(text) {
@@ -5941,9 +5941,10 @@ function render() {
     };
     placers.forEach(angle => {
       if (placers.find(e => Math.abs(e - angle.dir) < Math.PI / 2)) return;
+      if (Math.abs(angle.dir - lastMoveDir) > Math.PI) return;
       
-      const tmpX = Math.cos(angle.dir) * 90 + player.x1 - xOffset;
-      const tmpY = Math.sin(angle.dir) * 90 + player.y1 - yOffset;
+      const tmpX = Math.cos(angle.dir) * 90 + player.x2 - xOffset;
+      const tmpY = Math.sin(angle.dir) * 90 + player.y2 - yOffset;
       
       const sprite = itemSprites[angle.type == "pit trap" ? player.items[4] : player.items[2]];
       if (!sprite) return;
@@ -5971,17 +5972,15 @@ window.leaveAlliance = leaveAlliance;
 window.createAlliance = createAlliance;
 window.showItemInfo = showItemInfo;
 window.selectSkinColor = function (index) {
-  skinColor = index, updateSkinColorPicker();
+  skinColor = index;
+  updateSkinColorPicker();
 };
 window.changeStoreIndex = function (index) {
   currentStoreIndex != index && (currentStoreIndex = index, generateStoreList());
 };
 
-document.querySelector("#gameName").innerHTML = "moomoo";
-
 document.querySelector("body").insertAdjacentHTML("beforeend", `
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap');
 
 .menuCard, .menuText, .menuHeader {
   background: #222222 !important;
@@ -6046,7 +6045,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   background: rgba(0, 0, 0, 0.8);
 }
 
-#wideAdCard, .adMenuCard, #promoImgHolder, #mapDisplay, #scoreDisplay {
+#wideAdCard, .adMenuCard, #promoImgHolder, #mapDisplay, #scoreDisplay, #main-menu-left-ad, #bottom-ad {
   display: none !important;
   visibility: hidden !important;
 }
@@ -6055,11 +6054,6 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   border-radius: 10px !important;
   box-shadow: 0px 0px 4px 2px rgb(15, 10, 12);
 }
-
-* {
-  font-family: 'Baloo 2';
-}
-
 </style>
 `);
 
