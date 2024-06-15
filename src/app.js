@@ -1252,6 +1252,8 @@ function gather(tmpObj) {
   const buildDamage = (items.weapons[tmpObj.weaponIndex].dmg * config.fetchVariant(tmpObj).val * 
         (items.weapons[tmpObj.weaponIndex].sDmg || 1) * 
         (tmpObj.skin && tmpObj.skin.bDmg ? tmpObj.skin.bDmg : 1)) || 0;
+
+  console.log(buildDamage);
   
   for (let i = 0; i < gameObjects.length; i++) {
     const obj = gameObjects[i];
