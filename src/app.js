@@ -2391,6 +2391,7 @@ function render() {
     placers.forEach(angle => {
       const tmpX = Math.cos(angle.dir) * 90 + player.x1 - xOffset;
       const tmpY = Math.sin(angle.dir) * 90 + player.y1 - yOffset;
+      console.log(angle.dir, angle.type, itemSprites[angle.type == "pit trap" ? player.items[4] : player.items[2]]);
       
       const sprite = itemSprites[angle.type == "pit trap" ? player.items[4] : player.items[2]];
       if (!sprite) return;
