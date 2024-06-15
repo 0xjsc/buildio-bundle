@@ -1740,6 +1740,7 @@ function autobreak(trap) {
     wsBridge.sendChat("AntiSP T");
     breaking = false;
     bullspam = false;
+    aimOverride = false;
     storeEquip(17);
     storeEquip(15, true);
   }
@@ -2107,8 +2108,8 @@ const modulesQueue = [
     else if (window.keyEvents.ArrowRight) offsetCamX += (deltaHold += 3);
     else deltaHold = 10;
   }, (tt) => {
-    if (instakilling) return (bullspam = false);
-    if (!tt) return (bullspam = false);
+    if (instakilling) return (bullspam = false, aimOverride = false);
+    if (!tt) return (bullspam = false, aimOverride = false);
     const dumbestEnemy = players.sort((a, b) => Math.hypot(a?.x - player.x, a?.y - player.y) -
                                             Math.hypot(b?.x - player.x, b?.y - player.y)).find(e => e.sid != playerSID);
     
@@ -2178,14 +2179,14 @@ let lastPing_ = Date.now();
 let bullspam = false;
   
 function bullSpam(dumbestEnemy) {
-  if (breaking) return (bullspam = false);
+  if (breaking) return (bullspam = false, aimOverride = false);
   if (reloads[player.weaponIndex] != speeds[player.weaponIndex]) return;
   if (player.skinIndex == 60) return;
   
   bullspam = true;
   
   const aimDirection = Math.atan2(dumbestEnemy.y2 - player.y2, dumbestEnemy.x2 - player.x2);
-  if (Math.hypot(dumbestEnemy.x2 - player.x2, dumbestEnemy.y2 - player.y2) > items.weapons[tmpObj.weaponIndex].range) return (bullspam = false); 
+  if (Math.hypot(dumbestEnemy.x2 - player.x2, dumbestEnemy.y2 - player.y2) > items.weapons[tmpObj.weaponIndex].range) return (bullspam = false, aimOverride = false); 
   
   wsBridge.updateHittingState(true, aimDirection);
   wsBridge.updateHittingState(false, getAttackDir());
