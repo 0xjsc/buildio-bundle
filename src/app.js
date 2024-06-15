@@ -1249,7 +1249,7 @@ function getBiomeHat() {
 }
 
 function gather(tmpObj) {
-  const buildDamage = (items.weapons[tmpObj.weaponIndex].dmg * config.fetchVariant(tmpObj).val * 
+  const buildDamage = -(items.weapons[tmpObj.weaponIndex].dmg * config.fetchVariant(tmpObj).val * 
         (items.weapons[tmpObj.weaponIndex].sDmg || 1) * 
         (tmpObj.skin && tmpObj.skin.bDmg ? tmpObj.skin.bDmg : 1)) || 0;
 
