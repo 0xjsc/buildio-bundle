@@ -4785,6 +4785,22 @@ function getBiomeHat() {
   }
 }
 
+function gather(tmpObj) {
+  const buildDamage = (_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[tmpObj.weaponIndex].dmg * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].fetchVariant(tmpObj).val * 
+        (_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[tmpObj.weaponIndex].sDmg || 1) * 
+        (tmpObj.skin && tmpObj.skin.bDmg ? tmpObj.skin.bDmg : 1)) || 0;
+  
+  for (let i = 0; i < gameObjects.length; i++) {
+    const obj = gameObjects[i];
+    if (!obj?.health) continue;
+    
+    const dist = Math.hypot(obj.x - tmpObj.x, obj.y - tmpObj.y);
+    if (dist - obj.scale > _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[tmpObj.weaponIndex].range) continue;
+    
+    obj.changeHealth(buildDamage);
+  }
+}
+
 function gatherAnimation(sid, didHit, index) {
   (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
 
@@ -5231,7 +5247,7 @@ function autoplace(enemy, replace = false) {
   });
 }
 
-let reloads = [];
+let reloads = [...speeds];
 
 const sxw = 1920 / 2;
 const sxh = 1080 / 2;
@@ -5255,6 +5271,9 @@ function autobreak(trap) {
   window.trap = trap;
   
   wsBridge.updateHittingState(true, trapAngle);
+
+  if (reloads[waka] == speeds[waka]) wsBridge.sendChat("Health: " + (500 - trap.health));
+  
   benchmarks.AutoBreak++;
 
   aimOverride = trapAngle;
@@ -5620,8 +5639,11 @@ const modulesQueue = [
   }, (tt) => {
     if (instakilling) return;
     if (!tt) return;
-
+    const dumbestEnemy = players.sort((a, b) => Math.hypot(a?.x - player.x, a?.y - player.y) -
+                                            Math.hypot(b?.x - player.x, b?.y - player.y)).find(e => e.sid != playerSID);
+    
     window.boostinsta ? (tt && boostInstaOptimisations()) : (tt && autoplace());
+    bullSpam(tt);
   }, (tt) => {
     if (breaking) return;
     if (instakilling) return;
@@ -5686,6 +5708,24 @@ const modulesQueue = [
 
 let attackDir = 0, tmp_Dir = 0, camSpd = 0;
 let lastPing_ = Date.now();
+
+let bullspam = false;
+  
+function bullSpam(dumbestEnemy) {
+  if (breaking) return (bullspam = false);
+  if (reloads[player.weaponIndex] != speeds[player.weaponIndex]) return;
+  if (player.skinIndex == 60) return;
+  
+  bullspam = true;
+  
+  const aimDirection = Math.atan2(dumbestEnemy.y2 - player.y2, dumbestEnemy.x2 - player.x2);
+  if (Math.hypot(dumbestEnemy.x2 - player.x2, dumbestEnemy.y2 - player.y2) > 180) return (bullspam = false); 
+  
+  wsBridge.updateHittingState(true, aimDirection);
+  wsBridge.updateHittingState(false, getAttackDir());
+  
+  aimOverride = aimDirection;
+}
 
 function updatePlayers(data) {
   let tt;
