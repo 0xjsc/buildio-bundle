@@ -1,4 +1,4 @@
-export default {
+const config = {
   "maxScreenWidth": 1920,
   "maxScreenHeight": 1080,
   "serverUpdateRate": 9,
@@ -62,6 +62,11 @@ export default {
     "xp": 15000,
     "val": 1.21
   }],
+  "fetchVariant": function(t) {
+    for (var n = t.weaponXP[t.weaponIndex] || 0, i = config.weaponVariants.length - 1; i >= 0; --i)
+      if (n >= config.weaponVariants[i].xp)
+         return config.weaponVariants[i]
+  },
   "resourceTypes": ["wood", "food", "stone", "points"],
   "areaCount": 7,
   "treesPerArea": 9,
@@ -97,3 +102,5 @@ export default {
   "MAX_TURN_SPEED": 0.3,
   "DAY_INTERVAL": 1440000
 };
+
+export default config;
