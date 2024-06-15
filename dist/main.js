@@ -5937,7 +5937,7 @@ function render() {
       if (!sprite) return;
     
       mainContext.save();
-      mainContext.globalAlpha = 0.3;
+      mainContext.globalAlpha = 0.09;
       mainContext.translate(tmpX, tmpY);
       mainContext.rotate(angle.dir);
       mainContext.drawImage(sprite, -sprite.width / 2, -sprite.height / 2);
