@@ -5665,7 +5665,6 @@ const modulesQueue = [
     else deltaHold = 10;
   }, (tt) => {
     if (instakilling) return (bullspam = false, aimOverride = false);
-    if (!tt) return (bullspam = false, aimOverride = false);
     const dumbestEnemy = players.sort((a, b) => Math.hypot(a?.x - player.x, a?.y - player.y) -
                                             Math.hypot(b?.x - player.x, b?.y - player.y)).find(e => e.sid != playerSID);
     
@@ -5742,7 +5741,7 @@ function bullSpam(dumbestEnemy) {
   bullspam = true;
   
   const aimDirection = Math.atan2(dumbestEnemy.y2 - player.y2, dumbestEnemy.x2 - player.x2);
-  if (Math.hypot(dumbestEnemy.x2 - player.x2, dumbestEnemy.y2 - player.y2) > _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[tmpObj.weaponIndex].range) return (bullspam = false, aimOverride = false); 
+  if (Math.hypot(dumbestEnemy.x2 - player.x2, dumbestEnemy.y2 - player.y2) > _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range) return (bullspam = false, aimOverride = false); 
   
   wsBridge.updateHittingState(true, aimDirection);
   wsBridge.updateHittingState(false, getAttackDir());
