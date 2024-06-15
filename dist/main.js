@@ -4050,8 +4050,8 @@ didLoad = true;
 function setupServerStatus() {
   var altServerText, altServerURL, tmpHTML = '',
     overallTotal = 0;
-  tmpHTML += '<option disabled>All Servers - 100 players</option>', serverBrowser.innerHTML = tmpHTML, 'mohmoh.eu' == location.hostname ? (altServerText = 'Back to MohMoh', altServerURL = '//mohmoh.eu/') : (altServerText = 'Try the sandbox', altServerURL = '//mohmoh.eu/'), document.getElementById('altServer')
-    .innerHTML = '<a href=\'' + altServerURL + '\'>' + altServerText + '<i class=\'material-icons\' style=\'font-size:10px;vertical-align:middle\'>arrow_forward_ios</i></a>';
+  tmpHTML += '<option disabled>This feature has been disabled</option>';
+  serverBrowser.innerHTML = tmpHTML;
 }
 
 function updateServerList() { }
