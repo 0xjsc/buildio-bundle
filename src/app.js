@@ -1673,16 +1673,14 @@ function getMoveDir() {
   return newMoveDir;
 }
 
-function findFreeAngles() {
-  const freeAngles = [];
+const circleLength = Math.PI * 2;
+const placeDelta = circleLength / 3;
+const freeAngles = [];
 
-  for (let i = -Math.sin(Date.now()); i < Math.PI * 2; i += Math.PI / 2) {
-    if (i < 0) continue;
+for (let i = -Math.sin(Date.now()); i < circleLength; i += placeDelta) {
+  if (i < 0) continue;
 
-    freeAngles.push(i);
-  }
-
-  return freeAngles;
+  freeAngles.push(i);
 }
 
 function toAngles(objects) {
@@ -1696,10 +1694,9 @@ function autoplace(enemy, replace = false) {
   if (breaking) return;
 
   const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
-  const angles = findFreeAngles();
   const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < config.playerScale + (object?.group?.scale) || 50);
   const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y, (enemy || window.enemyDanger)?.x - player.x);
-  placers = [...toAngles(preplacableObjects), ...angles].map((angle, i, array) => {
+  placers = [...toAngles(preplacableObjects), ...freeAngles].map((angle, i, array) => {
     const preplace = i < preplacableObjects.length;
     place(player.items[((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
     benchmarks.Placers += 3;
@@ -2116,7 +2113,7 @@ const modulesQueue = [
                                             Math.hypot(b?.x - player.x, b?.y - player.y)).find(e => e.sid != playerSID);
     
     window.boostinsta ? (tt && boostInstaOptimisations()) : (tt && autoplace());
-    bullSpam(tt);
+    bullSpam(dumbestEnemy);
   }, (tt) => {
     if (breaking) return;
     if (instakilling) return;
@@ -2188,7 +2185,7 @@ function bullSpam(dumbestEnemy) {
   bullspam = true;
   
   const aimDirection = Math.atan2(dumbestEnemy.y2 - player.y2, dumbestEnemy.x2 - player.x2);
-  if (Math.hypot(dumbestEnemy.x2 - player.x2, dumbestEnemy.y2 - player.y2) > 180) return (bullspam = false); 
+  if (Math.hypot(dumbestEnemy.x2 - player.x2, dumbestEnemy.y2 - player.y2) > items.weapons[tmpObj.weaponIndex].range) return (bullspam = false); 
   
   wsBridge.updateHittingState(true, aimDirection);
   wsBridge.updateHittingState(false, getAttackDir());
