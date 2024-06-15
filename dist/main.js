@@ -5208,6 +5208,8 @@ function toAngles(objects) {
   return objects.map(object => Math.atan2(object.y - player.y2, object.x - player.x2));
 }
 
+let placers = [];
+
 function autoplace(enemy, replace = false) {
   if (instakilling) return;
   if (breaking) return;
