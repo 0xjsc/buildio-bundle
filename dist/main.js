@@ -5281,7 +5281,7 @@ function autobreak(trap) {
   
   wsBridge.updateHittingState(true, trapAngle);
 
-  if (reloads[waka] == speeds[waka]) wsBridge.sendChat("Health: " + (500 - trap.health));
+  if (reloads[waka] == speeds[waka]) wsBridge.sendChat("Health: " + trap.health);
   
   benchmarks.AutoBreak++;
 
