@@ -5941,7 +5941,6 @@ function render() {
     };
     placers.forEach(angle => {
       if (placers.find(e => Math.abs(e.dir - angle.dir) < Math.PI / 2)) return;
-      if (Math.abs(angle.dir - lastMoveDir) > Math.PI) return;
       
       const tmpX = Math.cos(angle.dir) * 90 + player.x1 - xOffset;
       const tmpY = Math.sin(angle.dir) * 90 + player.y1 - yOffset;
