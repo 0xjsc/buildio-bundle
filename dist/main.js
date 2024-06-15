@@ -5928,9 +5928,8 @@ function render() {
         i += 2;
       }
     };
-    let lastPlacementDir = 0;
     placers.forEach(angle => {
-      if (Math.abs(lastPlacementDir - angle.dir) < Math.PI / 2) return;
+      if (placers.find(e => Math.abs(e - angle.dir) < Math.PI / 2)) return;
       
       const tmpX = Math.cos(angle.dir) * 90 + player.x1 - xOffset;
       const tmpY = Math.sin(angle.dir) * 90 + player.y1 - yOffset;
