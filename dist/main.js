@@ -3750,6 +3750,7 @@ let offsetCamY = 0;
 let deltaHold = 10;
 let ownerSid = null;
 let autoclicker = false;
+let placerr = [];
 
 const emojis = new Map();
 
@@ -5215,10 +5216,16 @@ function autoplace(enemy, replace = false) {
   const angles = findFreeAngles();
   const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale + (object?.group?.scale) || 50);
   const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y, (enemy || window.enemyDanger)?.x - player.x);
-  [...toAngles(preplacableObjects), ...angles].forEach((angle, i, array) => {
+  placers = [...toAngles(preplacableObjects), ...angles];
+  placers.map((angle, i, array) => {
     const preplace = i < preplacableObjects.length;
     place(player.items[((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
     benchmarks.Placers += 3;
+
+    return {
+      dir: angles,
+      type: ((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? "spinning spikes" : "pit trap"
+    };
   });
 }
 
@@ -5532,6 +5539,8 @@ const benchmarks = {
 const modulesQueue = [
   /** HELPER MODULES ARE GOING FIRST **/
   () => {
+    placers = [];
+    
     nearestGameObjects = gameObjects.filter(object => {
       if (!object?.x) return;
 
@@ -5865,8 +5874,23 @@ function render() {
         renderCircle(minimapData[i] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 200, mapOffY + minimapData[i + 1] / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale * 200, 5, mainContext, true);
         i += 2;
       }
-    }
-  }
+    };
+
+    placers.forEach(angle => {
+      const tmpX = Math.cos(angle.dir) * 90 + player.x1 - xOffset;
+      const tmpY = Math.sin(angle.dir) * 90 + player.y1 - yOffset;
+      
+      const sprite = itemSprites[angle.type == "pit trap" ? player.items[4] : player.items[2]];
+      if (!sprite) return;
+    
+      mainContext.save();
+      mainContext.globalAlpha = 0.3;
+      mainContext.translate(tmpX, tmpY);
+      mainContext.rotate(angle.dir);
+      mainContext.drawImage(sprite, -sprite.width / 2, -sprite.height / 2);
+      mainContext.restore();
+    });
+  };
 
   requestAnimationFrame_(render);
 };
