@@ -5660,9 +5660,9 @@ const modulesQueue = [
   }, () => {
     const hitHat = (breaking || !touch) ? 40 : 7;
     const hitAcc = (player.health > 50) ? 15 : (player.health < 40 ? 18 : 13);
-    const idleHat = window.enemyDanger ? (breaking ? 17 : 6) : getBiomeHat();
+    const idleHat = window.enemyDanger ? 6 : getBiomeHat();
     const idleAcc = window.enemyDanger ? 15 : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 6 : 11);
-    const tankerHat = breaking ? 17 : 6;
+    const tankerHat = 6;
     const tankerAcc = 15;
     const weapon = waka || player.weaponIndex;
     const preparingForHit = reloads[weapon] == speeds[weapon];
