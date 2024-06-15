@@ -2354,7 +2354,6 @@ function render() {
       mainContext.restore();
     });
   };
-  }
 
   requestAnimationFrame_(render);
 };
