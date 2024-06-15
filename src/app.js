@@ -1295,11 +1295,13 @@ function renderPlayers(xOffset, yOffset, zIndex) {
 }
 
 function renderPlayer(e, t) {
+  if (!e) return;
+  
   (t = t || mainContext)
   .lineWidth = 5.5, t.lineJoin = 'miter';
-  var i = Math.PI / 4 * (items.weapons[e.weaponIndex].armS || 1),
-    n = e.buildIndex < 0 && items.weapons[e.weaponIndex].hndS || 1,
-    s = e.buildIndex < 0 && items.weapons[e.weaponIndex].hndD || 1;
+  var i = Math.PI / 4 * (items.weapons[e.weaponIndex]?.armS || 1),
+    n = e.buildIndex < 0 && items.weapons[e.weaponIndex]?.hndS || 1,
+    s = e.buildIndex < 0 && items.weapons[e.weaponIndex]?.hndD || 1;
   if (e.tailIndex > 0 && function (index, ctxt, owner) {
       if (!(tmpSkin = accessSprites[index])) {
         var tmpImage = new Image();
