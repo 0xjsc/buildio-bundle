@@ -4789,6 +4789,8 @@ function gather(tmpObj) {
   const buildDamage = (_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[tmpObj.weaponIndex].dmg * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].fetchVariant(tmpObj).val * 
         (_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[tmpObj.weaponIndex].sDmg || 1) * 
         (tmpObj.skin && tmpObj.skin.bDmg ? tmpObj.skin.bDmg : 1)) || 0;
+
+  console.log(buildDamage);
   
   for (let i = 0; i < gameObjects.length; i++) {
     const obj = gameObjects[i];
