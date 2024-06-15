@@ -2121,6 +2121,8 @@ const modulesQueue = [
     else deltaHold = 10;
   }, (tt) => {
     if (instakilling) return (bullspam = false, aimOverride = false);
+    if (!tt) return;
+    
     const dumbestEnemy = players.sort((a, b) => Math.hypot(a?.x - player.x, a?.y - player.y) -
                                             Math.hypot(b?.x - player.x, b?.y - player.y)).find(e => e.sid != playerSID);
     
