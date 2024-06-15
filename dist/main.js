@@ -5928,21 +5928,24 @@ function render() {
         i += 2;
       }
     };
-
+    let lastPlacementDir = 0;
     placers.forEach(angle => {
+      if (Math.abs(lastPlacementDir - angle.dir) < Math.PI / 2) return;
+      
       const tmpX = Math.cos(angle.dir) * 90 + player.x1 - xOffset;
       const tmpY = Math.sin(angle.dir) * 90 + player.y1 - yOffset;
-      console.log(angle.dir, angle.type, itemSprites[angle.type == "pit trap" ? player.items[4] : player.items[2]]);
       
       const sprite = itemSprites[angle.type == "pit trap" ? player.items[4] : player.items[2]];
       if (!sprite) return;
     
       mainContext.save();
-      mainContext.globalAlpha = 0.09;
+      mainContext.globalAlpha = 0.3;
       mainContext.translate(tmpX, tmpY);
       mainContext.rotate(angle.dir);
       mainContext.drawImage(sprite, -sprite.width / 2, -sprite.height / 2);
       mainContext.restore();
+
+      lastPlacementDir = angle.dir;
     });
   };
 
