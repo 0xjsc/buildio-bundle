@@ -2048,7 +2048,7 @@ const modulesQueue = [
     nearestGameObjects = gameObjects.filter(object => {
       if (!object?.x) return;
 
-      if (!isOnScreen(object?.x - xOffset, object?.y - yOffset, 45)) return;
+      if (!isOnScreen(object?.x - xOffset, object?.y - yOffset, object.scale)) return;
       
       return true;
     });
@@ -2398,6 +2398,7 @@ function render() {
     placers.forEach(angle => {
       if (placers.find(e => Math.abs(e - angle.dir) < Math.PI / 2)) return;
       if (Math.abs(angle.dir - lastMoveDir) > Math.PI) return;
+      if (angle.type == "pit trap") return;
       
       const tmpX = Math.cos(angle.dir) * 90 + player.x2 - xOffset;
       const tmpY = Math.sin(angle.dir) * 90 + player.y2 - yOffset;
