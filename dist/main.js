@@ -66,7 +66,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+const config = {
   "maxScreenWidth": 1920,
   "maxScreenHeight": 1080,
   "serverUpdateRate": 9,
@@ -130,6 +130,11 @@ __webpack_require__.r(__webpack_exports__);
     "xp": 15000,
     "val": 1.21
   }],
+  "fetchVariant": function(t) {
+    for (var n = t.weaponXP[t.weaponIndex] || 0, i = config.weaponVariants.length - 1; i >= 0; --i)
+      if (n >= config.weaponVariants[i].xp)
+         return config.weaponVariants[i]
+  },
   "resourceTypes": ["wood", "food", "stone", "points"],
   "areaCount": 7,
   "treesPerArea": 9,
@@ -164,7 +169,9 @@ __webpack_require__.r(__webpack_exports__);
   "MAX_SPEED": 0.3,
   "MAX_TURN_SPEED": 0.3,
   "DAY_INTERVAL": 1440000
-});
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (config);
 
 
 /***/ }),
