@@ -5160,7 +5160,7 @@ function healing(healTimestamp) {
   ) : (
     rawHealTimeout
   )) - timeDelay + 1;
-  const healTimeout = damage > 50 ? 0 : safeHealTimeout;
+  const healTimeout = safeHealTimeout;
   
   window.setTimeout(() =>
     heal(healCount), healTimeout);
@@ -5225,7 +5225,7 @@ function autoplace(enemy, replace = false) {
     benchmarks.Placers += 3;
 
     return {
-      dir: angles,
+      dir: angle,
       type: ((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? "spinning spikes" : "pit trap"
     };
   });
