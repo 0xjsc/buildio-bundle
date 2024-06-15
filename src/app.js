@@ -1737,8 +1737,8 @@ function autobreak(trap) {
   
   wsBridge.updateHittingState(true, trapAngle);
 
-  const buildDamage = (items.weapons[waka].dmg * config.fetchVariant(player).val * 
-        (items.weapons[waka].sDmg || 1) * 3.3) || 0;
+  const buildDamage = items.weapons[waka].dmg * config.fetchVariant(player).val * 
+        items.weapons[waka].sDmg || 1;
 
   if (trap.health - buildDamage <= 0) {
     wsBridge.sendChat("AntiSP T");
