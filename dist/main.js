@@ -4875,7 +4875,7 @@ function renderPlayer(e, t) {
         accessPointers[index] = tmpObj;
       }
       tmpObj?.scale && tmpSkin.isLoaded && (ctxt.save(), ctxt.translate(-20 - (tmpObj.xOff || 0), 0), tmpObj.spin && ctxt.rotate(owner.skinRot), ctxt.drawImage(tmpSkin, -tmpObj.scale / 2, -tmpObj.scale / 2, tmpObj.scale, tmpObj.scale), ctxt.restore());
-    }(e.tailIndex, t, e), e.buildIndex < 0 && !_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].aboveHand && (renderTool(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex], _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].projectile || _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].projectiles[_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].projectile], mainContext)), t.fillStyle = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].skinColors[e.skinColor], renderCircle(e.scale * Math.cos(i), e.scale * Math.sin(i), 14), renderCircle(e.scale * s * Math.cos(-i * n), e.scale * s * Math.sin(-i * n), 14), e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].aboveHand && (renderTool(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex], _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].projectile || _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].projectiles[_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].projectile], mainContext)), e.buildIndex >= 0) {
+    }(e.tailIndex, t, e), e.buildIndex < 0 && !_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex]?.aboveHand && (renderTool(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex], _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].projectile || _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].projectiles[_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].projectile], mainContext)), t.fillStyle = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].skinColors[e.skinColor], renderCircle(e.scale * Math.cos(i), e.scale * Math.sin(i), 14), renderCircle(e.scale * s * Math.cos(-i * n), e.scale * s * Math.sin(-i * n), 14), e.buildIndex < 0 && _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].aboveHand && (renderTool(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex], _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].weaponVariants[e.weaponVariant].src, e.scale, 0, t), null == _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].projectile || _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].hideProjectile || renderProjectile(e.scale, 0, _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].projectiles[_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[e.weaponIndex].projectile], mainContext)), e.buildIndex >= 0) {
     var o = getItemSprite(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[e.buildIndex]);
     t.drawImage(o, e.scale - _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[e.buildIndex].holdOffset, -o.width / 2);
   }
@@ -5230,7 +5230,7 @@ function getMoveDir() {
 }
 
 const circleLength = Math.PI * 2;
-const placeDelta = circleLength / 3;
+const placeDelta = Math.PI / 2;
 const freeAngles = [];
 
 for (let i = -Math.sin(Date.now()); i < circleLength; i += placeDelta) {
@@ -5940,9 +5940,8 @@ function render() {
       }
     };
     placers.forEach(angle => {
-      if (placers.find(e => Math.abs(e - angle.dir) < Math.PI)) return;
+      if (placers.find(e => Math.abs(e.dir - angle.dir) < Math.PI / 2)) return;
       if (Math.abs(angle.dir - lastMoveDir) > Math.PI) return;
-      if (angle.type == "pit trap") return;
       
       const tmpX = Math.cos(angle.dir) * 90 + player.x1 - xOffset;
       const tmpY = Math.sin(angle.dir) * 90 + player.y1 - yOffset;
