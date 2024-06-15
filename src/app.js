@@ -945,13 +945,17 @@ function touchEnd(ev) {
 function getAttackDir() {
   return aimOverride ? aimOverride : (lastDir = Math.atan2(mouseY - screenHeight / 2, mouseX - screenWidth / 2));
 }
-window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsingTouch(!1), window.setUsingTouch = setUsingTouch, eventsListener.addEventListener('touchmove', UTILS.checkTrusted(function (ev) {
+window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsingTouch(!1), window.setUsingTouch = setUsingTouch, window.addEventListener('touchmove', UTILS.checkTrusted(function (ev) {
+  if (ev.toElement.id !== "gameCanvas" &&
+     ev.toElement.id !== "touch-controls-fullscreen") return;
   ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
   for (var i = 0; i < ev.changedTouches.length; i++) {
     var t = ev.changedTouches[i];
     t.identifier == controllingTouch.id ? (controllingTouch.currentX = t.pageX, controllingTouch.currentY = t.pageY, sendMoveDir()) : t.identifier == attackingTouch.id && (attackingTouch.currentX = t.pageX, attackingTouch.currentY = t.pageY, attackState = 1);
   }
-}), !1), eventsListener.addEventListener('touchstart', UTILS.checkTrusted(function (ev) {
+}), !1), window.addEventListener('touchstart', UTILS.checkTrusted(function (ev) {
+  if (ev.toElement.id !== "gameCanvas" &&
+    ev.toElement.id !== "touch-controls-fullscreen") return;
   if (!inGame)
     return ev.preventDefault(), !1;
   ev.preventDefault(), ev.stopPropagation(), setUsingTouch(!0);
@@ -959,17 +963,23 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
     var t = ev.changedTouches[i];
     t.pageX < document.body.scrollWidth / 2 && -1 == controllingTouch.id ? (controllingTouch.id = t.identifier, controllingTouch.startX = controllingTouch.currentX = t.pageX, controllingTouch.startY = controllingTouch.currentY = t.pageY, sendMoveDir()) : t.pageX > document.body.scrollWidth / 2 && -1 == attackingTouch.id && (attackingTouch.id = t.identifier, attackingTouch.startX = attackingTouch.currentX = t.pageX, attackingTouch.startY = attackingTouch.currentY = t.pageY, player.buildIndex < 0 && (attackState = 1, sendAtckState()));
   }
-}), false), eventsListener.addEventListener('touchend', UTILS.checkTrusted(touchEnd), !1), eventsListener.addEventListener('touchcancel', UTILS.checkTrusted(touchEnd), !1), eventsListener.addEventListener('touchleave', UTILS.checkTrusted(touchEnd), !1), eventsListener.addEventListener('mousemove', function (e) {
+}), false), window.addEventListener('touchend', UTILS.checkTrusted(touchEnd), !1), window.addEventListener('touchcancel', UTILS.checkTrusted(touchEnd), !1), window.addEventListener('touchleave', UTILS.checkTrusted(touchEnd), !1), eventsListener.addEventListener('mousemove', function (e) {
   e.preventDefault(), e.stopPropagation(), setUsingTouch(!1), mouseX = e.clientX, mouseY = e.clientY;
-}, false), eventsListener.addEventListener('mousedown', function (e) {
+}, false), window.addEventListener('mousedown', function (e) {
+  if (e.toElement.id !== "gameCanvas" &&
+    e.toElement.id !== "touch-controls-fullscreen") return;
   aimOverride = false;
   setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
   touch = e.button == 0;
   waka = touch ? player.weapons[0] : (10 == player.weapons[1] ? 10 : player.weapons[0]);
-}, false), eventsListener.addEventListener('mouseup', function (e) {
+}, false), window.addEventListener('mouseup', function (e) {
+  if (e.toElement.id !== "gameCanvas" &&
+    e.toElement.id !== "touch-controls-fullscreen") return;
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
 }, false);
 eventsListener.addEventListener("wheel", function (e) {
+  if (e.toElement.id !== "gameCanvas" &&
+    e.toElement.id !== "touch-controls-fullscreen") return;
   const deltaY = maxScreenWidth / 20;
   const fixedDelta = e.deltaY > 0 ? deltaY : -deltaY;
   maxScreenWidth += fixedDelta;
@@ -2399,8 +2409,6 @@ function render() {
       mainContext.rotate(angle.dir);
       mainContext.drawImage(sprite, -sprite.width / 2, -sprite.height / 2);
       mainContext.restore();
-
-      lastPlacementDir = angle.dir;
     });
   };
 
