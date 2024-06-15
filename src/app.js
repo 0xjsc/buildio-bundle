@@ -2396,12 +2396,12 @@ function render() {
       }
     };
     placers.forEach(angle => {
-      if (placers.find(e => Math.abs(e - angle.dir) < Math.PI / 2)) return;
+      if (placers.find(e => Math.abs(e - angle.dir) < Math.PI)) return;
       if (Math.abs(angle.dir - lastMoveDir) > Math.PI) return;
       if (angle.type == "pit trap") return;
       
-      const tmpX = Math.cos(angle.dir) * 90 + player.x2 - xOffset;
-      const tmpY = Math.sin(angle.dir) * 90 + player.y2 - yOffset;
+      const tmpX = Math.cos(angle.dir) * 90 + player.x1 - xOffset;
+      const tmpY = Math.sin(angle.dir) * 90 + player.y1 - yOffset;
       
       const sprite = itemSprites[angle.type == "pit trap" ? player.items[4] : player.items[2]];
       if (!sprite) return;
