@@ -4795,9 +4795,7 @@ function getBiomeHat() {
 function gather(tmpObj) {
   const buildDamage = -(_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[tmpObj.weaponIndex].dmg * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].fetchVariant(tmpObj).val * 
         (_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[tmpObj.weaponIndex].sDmg || 1) * 
-        (tmpObj.skin && tmpObj.skin.bDmg ? tmpObj.skin.bDmg : 1)) || 0;
-
-  console.log(buildDamage);
+        (tmpObj.skin && tmpObj.skin.bDmg ? tmpObj.skin.bDmg : 1) || ((tmpObj.skinIndex == 40) && 3.3)) || 0;
   
   for (let i = 0; i < gameObjects.length; i++) {
     const obj = gameObjects[i];
@@ -5281,7 +5279,16 @@ function autobreak(trap) {
   
   wsBridge.updateHittingState(true, trapAngle);
 
-  if (reloads[waka] == speeds[waka]) wsBridge.sendChat("Health: " + trap.health);
+  const buildDamage = (_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[waka].dmg * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].fetchVariant(player).val * 
+        (_js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[waka].sDmg || 1) * 3.3) || 0;
+
+  if (trap.health - buildDamage <= 0) {
+    wsBridge.sendChat("AntiSP T");
+    breaking = false;
+    bullspam = false;
+    storeEquip(17);
+    storeEquip(15, true);
+  }
   
   benchmarks.AutoBreak++;
 
