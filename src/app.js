@@ -1251,9 +1251,7 @@ function getBiomeHat() {
 function gather(tmpObj) {
   const buildDamage = -(items.weapons[tmpObj.weaponIndex].dmg * config.fetchVariant(tmpObj).val * 
         (items.weapons[tmpObj.weaponIndex].sDmg || 1) * 
-        (tmpObj.skin && tmpObj.skin.bDmg ? tmpObj.skin.bDmg : 1)) || 0;
-
-  console.log(buildDamage);
+        (tmpObj.skin && tmpObj.skin.bDmg ? tmpObj.skin.bDmg : 1) || ((tmpObj.skinIndex == 40) && 3.3)) || 0;
   
   for (let i = 0; i < gameObjects.length; i++) {
     const obj = gameObjects[i];
@@ -1737,7 +1735,16 @@ function autobreak(trap) {
   
   wsBridge.updateHittingState(true, trapAngle);
 
-  if (reloads[waka] == speeds[waka]) wsBridge.sendChat("Health: " + trap.health);
+  const buildDamage = (items.weapons[waka].dmg * config.fetchVariant(player).val * 
+        (items.weapons[waka].sDmg || 1) * 3.3) || 0;
+
+  if (trap.health - buildDamage <= 0) {
+    wsBridge.sendChat("AntiSP T");
+    breaking = false;
+    bullspam = false;
+    storeEquip(17);
+    storeEquip(15, true);
+  }
   
   benchmarks.AutoBreak++;
 
