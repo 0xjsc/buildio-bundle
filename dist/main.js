@@ -5665,7 +5665,7 @@ const modulesQueue = [
     else deltaHold = 10;
   }, (tt) => {
     if (instakilling) return (bullspam = false, aimOverride = false);
-    if (!tt) return;
+    if (!tt) return (bullspam = false, aimOverride = false);
     
     const dumbestEnemy = players.sort((a, b) => Math.hypot(a?.x - player.x, a?.y - player.y) -
                                             Math.hypot(b?.x - player.x, b?.y - player.y)).find(e => e.sid != playerSID);
@@ -5740,8 +5740,8 @@ let bullspam = false;
 function bullSpam(dumbestEnemy) {
   if (breaking) return (bullspam = false, aimOverride = false);
   if (reloads[player.weaponIndex] != speeds[player.weaponIndex]) return;
-  if (player.skinIndex == 60) return;
-  if (typeof dumbestEnemy !== "object") return;
+  if (player.skinIndex == 60) return (bullspam = false, aimOverride = false);
+  if (typeof dumbestEnemy !== "object") return (bullspam = false, aimOverride = false);
   
   bullspam = true;
   
