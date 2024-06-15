@@ -2111,8 +2111,8 @@ const modulesQueue = [
     else if (window.keyEvents.ArrowRight) offsetCamX += (deltaHold += 3);
     else deltaHold = 10;
   }, (tt) => {
-    if (instakilling) return;
-    if (!tt) return;
+    if (instakilling) return (bullspam = false);
+    if (!tt) return (bullspam = false);
     const dumbestEnemy = players.sort((a, b) => Math.hypot(a?.x - player.x, a?.y - player.y) -
                                             Math.hypot(b?.x - player.x, b?.y - player.y)).find(e => e.sid != playerSID);
     
@@ -2169,13 +2169,9 @@ const modulesQueue = [
     if (preparingForHit && !alreadyWearsHit && (attackState || breaking || bullspam)) {
       storeEquip(hitHat);
       storeEquip(hitAcc, true);
-      
-      benchmarks.ItemController += 2;
     } else if (!alreadyWearsIdle && (!preparingForHit || !attackState)) {
       storeEquip(window.tanker ? tankerHat : idleHat);
       storeEquip(window.tanker ? tankerAcc : idleAcc, true);
-
-      benchmarks.ItemController += 2;
     }
   }
 ];
