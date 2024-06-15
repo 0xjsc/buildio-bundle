@@ -4507,7 +4507,9 @@ window.addEventListener('resize', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["d
     var t = ev.changedTouches[i];
     t.pageX < document.body.scrollWidth / 2 && -1 == controllingTouch.id ? (controllingTouch.id = t.identifier, controllingTouch.startX = controllingTouch.currentX = t.pageX, controllingTouch.startY = controllingTouch.currentY = t.pageY, sendMoveDir()) : t.pageX > document.body.scrollWidth / 2 && -1 == attackingTouch.id && (attackingTouch.id = t.identifier, attackingTouch.startX = attackingTouch.currentX = t.pageX, attackingTouch.startY = attackingTouch.currentY = t.pageY, player.buildIndex < 0 && (attackState = 1, sendAtckState()));
   }
-}), false), window.addEventListener('touchend', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(touchEnd), !1), window.addEventListener('touchcancel', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(touchEnd), !1), window.addEventListener('touchleave', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(touchEnd), !1), eventsListener.addEventListener('mousemove', function (e) {
+}), false), window.addEventListener('touchend', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(touchEnd), !1), window.addEventListener('touchcancel', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(touchEnd), !1), window.addEventListener('touchleave', _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(touchEnd), !1), window.addEventListener('mousemove', function (e) {
+  if (e.toElement.id !== "gameCanvas" &&
+    e.toElement.id !== "touch-controls-fullscreen") return;
   e.preventDefault(), e.stopPropagation(), setUsingTouch(!1), mouseX = e.clientX, mouseY = e.clientY;
 }, false), window.addEventListener('mousedown', function (e) {
   if (e.toElement.id !== "gameCanvas" &&
