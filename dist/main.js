@@ -5243,8 +5243,7 @@ function autoplace(enemy, replace = false) {
   const angles = findFreeAngles();
   const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale + (object?.group?.scale) || 50);
   const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y, (enemy || window.enemyDanger)?.x - player.x);
-  placers = [...toAngles(preplacableObjects), ...angles];
-  placers.map((angle, i, array) => {
+  placers = [...toAngles(preplacableObjects), ...angles].map((angle, i, array) => {
     const preplace = i < preplacableObjects.length;
     place(player.items[((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < 180) ? 2 : 4)], angle);
     benchmarks.Placers += 3;
