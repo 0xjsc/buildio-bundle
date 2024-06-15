@@ -4802,7 +4802,7 @@ function gather(tmpObj) {
 }
 
 function gatherAnimation(sid, didHit, index) {
-  (tmpObj = findPlayerBySID(sid)) && tmpObj.startAnim(didHit, index);
+  (tmpObj = findPlayerBySID(sid)) && (tmpObj.startAnim(didHit, index), gather(tmpObj));
 
   if (sid == ownerSid && normalInsta() == false) {
     wsBridge.updateHittingState(true, players.find(p => p && p?.sid == ownerSid).dir); 
