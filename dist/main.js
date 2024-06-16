@@ -5722,10 +5722,10 @@ const modulesQueue = [
     const alreadyWearsHit = player.skinIndex == hitHat && player.tailIndex == hitAcc;
     const alreadyWearsIdle = player.skinIndex == idleHat && player.tailIndex == idleAcc;
 
-    if (preparingForHit && !alreadyWearsHit && (attackState || breaking || bullspam)) {
+    if (preparingForHit && (attackState || breaking || bullspam)) {
       storeEquip(hitHat);
       storeEquip(hitAcc, true);
-    } else if (!alreadyWearsIdle && (!preparingForHit || !attackState)) {
+    } else if (!preparingForHit || !attackState) {
       storeEquip(window.tanker ? tankerHat : idleHat);
       storeEquip(window.tanker ? tankerAcc : idleAcc, true);
     }
