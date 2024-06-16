@@ -2179,6 +2179,7 @@ const modulesQueue = [
     if (preparingForHit && (attackState || breaking || bullspam)) {
       storeEquip(hitHat);
       storeEquip(hitAcc, true);
+      reloads[weapon] = 0;
     } else {
       storeEquip(window.tanker ? tankerHat : idleHat);
       storeEquip(window.tanker ? tankerAcc : idleAcc, true);
