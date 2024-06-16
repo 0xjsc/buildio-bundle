@@ -1738,7 +1738,7 @@ function autobreak(trap) {
   wsBridge.updateHittingState(true, trapAngle);
 
   const buildDamage = items.weapons[waka].dmg * config.fetchVariant(player).val * 
-        items.weapons[waka].sDmg || 1;
+        items.weapons[waka].sDmg * 3.3 || 1;
 
   if (trap.health - buildDamage <= 0) {
     wsBridge.sendChat("AntiSP T");
@@ -1747,6 +1747,8 @@ function autobreak(trap) {
     aimOverride = false;
     storeEquip(17);
     storeEquip(15, true);
+  } else {
+    wsBridge.sendChat("TT Health " + trap.health);
   }
   
   benchmarks.AutoBreak++;
@@ -2124,6 +2126,7 @@ const modulesQueue = [
   }, (tt) => {
     if (breaking) return;
     if (instakilling) return;
+    if (reloads[player.weaponIndex] != speeds[player.weaponIndex]) return;
     
     if (tt?.skinIndex == 26 || tt?.skinIndex == 11) {
       wsBridge.updateHittingState(false, getAttackDir());
