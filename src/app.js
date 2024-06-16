@@ -1283,6 +1283,10 @@ function gatherAnimation(sid, didHit, index) {
   if (sid == ownerSid && normalInsta() == false) {
     wsBridge.updateHittingState(true, players.find(p => p && p?.sid == ownerSid).dir); 
   }
+
+  if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 180 && (tmpObj.skinIndex == 11 || tmpObj.tailIndex == 21)) {
+    enemyIsSusMf = true;
+  }
   
   if (sid == player.sid) reloads[player.weaponIndex] = 0;
   else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = 0;
@@ -2032,7 +2036,9 @@ const benchmarks = {
   Macros: 0,
   Placers: 0,
   ItemController: 0
-}
+};
+
+let enemyIsSusMf = false;
 
 const modulesQueue = [
   /** HELPER MODULES ARE GOING FIRST **/
@@ -2131,6 +2137,9 @@ const modulesQueue = [
     
     if (tt?.skinIndex == 26 || tt?.skinIndex == 11) {
       wsBridge.updateHittingState(false, getAttackDir());
+      storeEquip(11);
+      storeEquip(21, true);
+      wsBridge.sendChat("AAB SkibidiTest");
     } else if (attackState && tt?.skinIndex != 26 && tt?.skinIndex != 11) {
       wsBridge.updateHittingState(true, getAttackDir());
     }
@@ -2164,7 +2173,7 @@ const modulesQueue = [
     const hitHat = (breaking || !touch) ? 40 : 7;
     const hitAcc = (player.health > 50) ? 21 : (player.health < 40 ? 18 : 13);
     const idleHat = window.enemyDanger ? 6 : getBiomeHat();
-    const idleAcc = window.enemyDanger ? 15 : (player.y <= config.snowBiomeTop ? 6 : 11);
+    const idleAcc = window.enemyDanger ? (enemyIsSusMf ? (enemyIsSusMf = false, 21) : 13) : (player.y <= config.snowBiomeTop ? 6 : 11);
     const tankerHat = 6;
     const tankerAcc = 15;
     const weapon = waka || player.weaponIndex;
