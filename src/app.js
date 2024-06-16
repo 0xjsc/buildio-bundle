@@ -1283,7 +1283,7 @@ function gatherAnimation(sid, didHit, index) {
     wsBridge.updateHittingState(true, players.find(p => p && p?.sid == ownerSid).dir); 
   }
   
-  if (sid == player.sid) reloads[waka] = 0;
+  if (sid == player.sid) reloads[player.weaponIndex] = 0;
   else (othersReloads[tmpObj.sid] || (othersReloads[tmpObj.sid] = [0, 0]))[tmpObj.weaponIndex] = 0;
 }
 
@@ -1637,28 +1637,20 @@ let lastDamage = 0;
 let prevHeal = 0;
 let healTimestamp = Date.now();
 
+function check0Shame(healTimestamp) {
+  return Date.now() - healTimestamp >= 120 - window.pingTime;
+}
+
 function healing(healTimestamp) {
   if (player?.health == 100 || !player?.health) return;
   
   const damage = 100 - player.health;
   const healingItemSid = player.items[0];
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
-  const timeDelay = Date.now() - healTimestamp;
 
-  const prevHealEndsIn = Date.now() - prevHeal - window.pingTime;
-  const prevHealFixed = prevHealEndsIn < 0 ? 0 : (prevHealEndsIn > average ? 0 : prevHealEndsIn);
-  const rawHealTimeout = safeHealDelay - window.pingTime / 2;
-  const safeHealTimeout = (prevHealFixed ? (
-    rawHealTimeout + prevHealFixed
-  ) : (
-    rawHealTimeout
-  )) - timeDelay + 1;
-  const healTimeout = safeHealTimeout;
-  
-  window.setTimeout(() =>
-    heal(healCount), healTimeout);
-  lastDamage = Date.now();
-  prevHeal = Date.now() + healTimeout;
+  if (!check0Shame(healTimestamp)) return;
+
+  heal(healCount);
 }
 
 function updateHealth(sid, value) {
@@ -2065,8 +2057,7 @@ const modulesQueue = [
     turretReload = Math.min(turretReload + current, 2500);
     if (!player?.weaponIndex) return;
     
-    if (reloads[player.weaponIndex] < speeds[player.weaponIndex]) reloads[player.weaponIndex] += current;
-    else reloads[player.weaponIndex] = speeds[player.weaponIndex];
+    reloads[player.weaponIndex] = Math.min(reloads[player.weaponIndex] + current, speeds[player.weaponIndex]);
   },
   /** DEFENCE MODULES **/
   () => antiInsta(),
