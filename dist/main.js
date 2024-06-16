@@ -5282,14 +5282,13 @@ function autobreak(trap) {
   breaking = true;
   window.trap = trap;
   
-  wsBridge.updateHittingState(true, antiSpikeSync ? hit360 : trapAngle);
+  wsBridge.updateHittingState(true, trapAngle);
   antiSpikeSync = false;
 
   const buildDamage = _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[waka].dmg * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].fetchVariant(player).val * 
         _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[waka].sDmg * 3.3 || 1;
 
   if (trap.health - buildDamage <= 0) {
-    wsBridge.sendChat("AntiSP T");
     aimOverride = false;
     antiSpikeSync = true;
     storeEquip(6);
