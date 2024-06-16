@@ -1232,7 +1232,6 @@ function renderGameObjects(layer, xOffset, yOffset) {
 }
 
 const speeds = [300, 400, 400, 300, 300, 700, 300, 100, 400, 600, 400, 1, 700, 230, 700, 1500];
-let lastPoison = Date.now();
 let turretReload = 0;
 const othersReloads  = [];
 
