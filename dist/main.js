@@ -5710,7 +5710,7 @@ const modulesQueue = [
 
     wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((endTimeout - Date.now()) / 1000) + "s");
   }, () => {
-    const hitHat = (breaking || !touch) ? 40 : ((Date.now() - lastPoison > poisonCD || Date.now() - lastPoison < average * 2) ? (lastPoison = Date.now(), 21) : 7);
+    const hitHat = (breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), 21) : 7);
     const hitAcc = (player.health > 50) ? 21 : (player.health < 40 ? 18 : 13);
     const idleHat = window.enemyDanger ? 6 : getBiomeHat();
     const idleAcc = window.enemyDanger ? (enemyIsSusMf ? (enemyIsSusMf = false, 21) : 13) : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 6 : 11);
@@ -5725,6 +5725,8 @@ const modulesQueue = [
     if (preparingForHit && (attackState || breaking || bullspam)) {
       storeEquip(hitHat);
       storeEquip(hitAcc, true);
+      
+      reloads[weapon] = 0;
     } else if (!preparingForHit || !attackState) {
       storeEquip(window.tanker ? tankerHat : idleHat);
       storeEquip(window.tanker ? tankerAcc : idleAcc, true);
