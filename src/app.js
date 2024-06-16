@@ -300,11 +300,9 @@ function connectSocket(token, server = location.host) {
         enterGame();
       }
     }), UTILS.hookTouchEvents(enterGameButton), joinPartyButton.onclick = UTILS.checkTrusted(function () {
-      setTimeout(function () {
-        var currentKey = serverBrowser.value,
-          key = prompt('party key', currentKey);
-        key && (window.onbeforeunload = void 0, window.location.href = '/?server=' + key);
-      }, 10);
+      var currentKey = serverBrowser.value,
+        key = prompt('party key', currentKey);
+      key && (window.onbeforeunload = void 0, window.location.href = '/?server=' + key);
     }), UTILS.hookTouchEvents(joinPartyButton), settingsButton.onclick = UTILS.checkTrusted(function () {
       guideCard.classList.contains('showing') ? (guideCard.classList.remove('showing'), settingsButtonTitle.innerText = 'Settings') : (guideCard.classList.add('showing'), settingsButtonTitle.innerText = 'Close');
     }), UTILS.hookTouchEvents(settingsButton), allianceButton.onclick = UTILS.checkTrusted(function () {
@@ -377,7 +375,7 @@ function connectSocket(token, server = location.host) {
         showPing = showPingCheckbox.checked, pingDisplay.hidden = !showPing, saveVal('show_ping', showPing ? 'true' : 'false');
       });
     }());
-  }, serverPackets), setupServerStatus(), setTimeout(() => updateServerList(), 3000);
+  }, serverPackets), setupServerStatus(), updateServerList();
 }
 var canStore = 0,
   mathPI = Math.PI,
@@ -821,10 +819,7 @@ var chatBox = document.getElementById('chatBox'),
   chatHolder = document.getElementById('chatHolder');
 
 function toggleChat() {
-  usingTouch ? setTimeout(function () {
-    var chatMessage = prompt('chat message');
-    chatMessage && sendChat(chatMessage);
-  }, 1) : 'block' == chatHolder.style.display ? (chatBox.value && sendChat(chatBox.value), closeChat()) : (storeMenu.style.display = 'none', allianceMenu.style.display = 'none', chatHolder.style.display = 'block', chatBox.focus(), resetMoveDir()), chatBox.value = '';
+  'block' == chatHolder.style.display ? (chatBox.value && sendChat(chatBox.value), closeChat()) : (storeMenu.style.display = 'none', allianceMenu.style.display = 'none', chatHolder.style.display = 'block', chatBox.focus(), resetMoveDir()), chatBox.value = '';
 }
 
 function sendChat(message) {
@@ -1643,7 +1638,7 @@ let prevHeal = 0;
 let healTimestamp = Date.now();
 
 function check0Shame(healTimestamp) {
-  return Date.now() - healTimestamp >= 120 - window.pingTime;
+  return Date.now() - healTimestamp >= 120;
 }
 
 function healing(healTimestamp) {
