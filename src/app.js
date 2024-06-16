@@ -2129,14 +2129,12 @@ const modulesQueue = [
   }, (tt) => {
     if (breaking) return;
     if (instakilling) return;
-    if (reloads[player.weaponIndex] != speeds[player.weaponIndex]) return;
     
     if (tt?.skinIndex == 26 || tt?.skinIndex == 11) {
       wsBridge.updateHittingState(false, getAttackDir());
       storeEquip(11);
       storeEquip(21, true);
-      wsBridge.sendChat("AAB SkibidiTest");
-    } else if (attackState && tt?.skinIndex != 26 && tt?.skinIndex != 11) {
+    } else if (attackState) {
       wsBridge.updateHittingState(true, getAttackDir());
     }
   }, () => { /** Instakill shouldn't be interrupted **/
