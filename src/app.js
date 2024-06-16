@@ -1637,7 +1637,7 @@ let prevHeal = 0;
 let healTimestamp = Date.now();
 
 function check0Shame(healTimestamp) {
-  return Date.now() - healTimestamp >= 120;
+  return Date.now() - healTimestamp >= 120 - window.pingTime;
 }
 
 function healing(healTimestamp) {
