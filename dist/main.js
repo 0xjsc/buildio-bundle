@@ -3564,6 +3564,7 @@ __webpack_require__.r(__webpack_exports__);
 const serverPackets = {};
 const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
 const { log } = console;
+let antiSpikeSync = false;
 
 let packets, serverSide;
 
