@@ -1738,14 +1738,13 @@ function autobreak(trap) {
   breaking = true;
   window.trap = trap;
   
-  wsBridge.updateHittingState(true, antiSpikeSync ? hit360 : trapAngle);
+  wsBridge.updateHittingState(true, trapAngle);
   antiSpikeSync = false;
 
   const buildDamage = items.weapons[waka].dmg * config.fetchVariant(player).val * 
         items.weapons[waka].sDmg * 3.3 || 1;
 
   if (trap.health - buildDamage <= 0) {
-    wsBridge.sendChat("AntiSP T");
     aimOverride = false;
     antiSpikeSync = true;
     storeEquip(6);
