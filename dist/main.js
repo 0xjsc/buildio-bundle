@@ -5286,10 +5286,8 @@ function autobreak(trap) {
 
   if (trap.health - buildDamage <= 0) {
     wsBridge.sendChat("AntiSP T");
-    breaking = false;
-    bullspam = false;
     aimOverride = false;
-    storeEquip(17);
+    storeEquip(6);
     storeEquip(15, true);
   } else {
     wsBridge.sendChat("TT Health " + trap.health);
