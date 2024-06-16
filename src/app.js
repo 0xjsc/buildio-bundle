@@ -2165,7 +2165,7 @@ const modulesQueue = [
     wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((endTimeout - Date.now()) / 1000) + "s");
   }, () => {
     const hitHat = (breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), 21) : 7);
-    const hitAcc = (player.health > 50) ? 21 : (player.health < 40 ? 18 : 13);
+    const hitAcc = enemyIsSusMf ? 21 : 18;
     const idleHat = window.enemyDanger ? 6 : getBiomeHat();
     const idleAcc = window.enemyDanger ? (enemyIsSusMf ? (enemyIsSusMf = false, 21) : 13) : (player.y <= config.snowBiomeTop ? 6 : 11);
     const tankerHat = 6;
