@@ -1730,15 +1730,16 @@ function autobreak(trap) {
   
   const correctWeapon = antiSpikeSync ? player.weapons[0] : (player.weapons[1] == 10 ? 10 : player.weapons[0]);
   const trapAngle = Math.atan2(
-    trap.y - player.y,
+    trap.y - player.y, 
     trap.x - player.x
   );
 
-  antiSpikeSync = false;
+  
   breaking = true;
   window.trap = trap;
   
-  wsBridge.updateHittingState(true, trapAngle);
+  wsBridge.updateHittingState(true, antiSpikeSync ? hit360 : trapAngle);
+  antiSpikeSync = false;
 
   const buildDamage = items.weapons[waka].dmg * config.fetchVariant(player).val * 
         items.weapons[waka].sDmg * 3.3 || 1;
@@ -1749,8 +1750,6 @@ function autobreak(trap) {
     antiSpikeSync = true;
     storeEquip(6);
     storeEquip(15, true);
-  } else {
-    wsBridge.sendChat("TT Health " + trap.health);
   }
   
   benchmarks.AutoBreak++;
@@ -2200,7 +2199,8 @@ function bullSpam(dumbestEnemy) {
   
   const aimDirection = Math.atan2(dumbestEnemy.y2 - player.y2, dumbestEnemy.x2 - player.x2);
   if (Math.hypot(dumbestEnemy.x2 - player.x2, dumbestEnemy.y2 - player.y2) > items.weapons[player.weaponIndex].range + config.playerScale) return (bullspam = false, aimOverride = false); 
-  
+
+  wsBridge.updateHoldItem(player.weapons[0], true);
   wsBridge.updateHittingState(true, aimDirection);
   wsBridge.updateHittingState(false, getAttackDir());
   
