@@ -295,28 +295,28 @@ function connectSocket(token, server = location.host) {
     if (location.href.includes("mohmoh"))
       wsBridge.register();
     
-    wsBridge.pingServer(); (error !== "Invalid Connection" && error) ? disconnect(error) : (document.getElementById("enterGame").onclick = UTILS.checkTrusted(function () {
+    wsBridge.pingServer(); (error !== "Invalid Connection" && error) ? disconnect(error) : (loadingText.style.display = 'none', menuCardHolder.style.display = 'block', document.getElementById("enterGame").onclick = UTILS.checkTrusted(function () {
       enterGame();
-    }), UTILS.hookTouchEvents(enterGameButton), joinPartyButton.onclick = UTILS.checkTrusted(function () {
+    }), joinPartyButton.onclick = UTILS.checkTrusted(function () {
       var currentKey = serverBrowser.value,
         key = prompt('party key', currentKey);
       key && (window.onbeforeunload = void 0, window.location.href = '/?server=' + key);
-    }), UTILS.hookTouchEvents(joinPartyButton), settingsButton.onclick = UTILS.checkTrusted(function () {
+    }), settingsButton.onclick = UTILS.checkTrusted(function () {
       guideCard.classList.contains('showing') ? (guideCard.classList.remove('showing'), settingsButtonTitle.innerText = 'Settings') : (guideCard.classList.add('showing'), settingsButtonTitle.innerText = 'Close');
-    }), UTILS.hookTouchEvents(settingsButton), allianceButton.onclick = UTILS.checkTrusted(function () {
+    }), allianceButton.onclick = UTILS.checkTrusted(function () {
       resetMoveDir(), 'block' != allianceMenu.style.display ? showAllianceMenu() : allianceMenu.style.display = 'none';
-    }), UTILS.hookTouchEvents(allianceButton), storeButton.onclick = UTILS.checkTrusted(function () {
+    }), storeButton.onclick = UTILS.checkTrusted(function () {
       'block' != storeMenu.style.display ? (storeMenu.style.display = 'block', allianceMenu.style.display = 'none', closeChat(), generateStoreList()) : storeMenu.style.display = 'none';
-    }), UTILS.hookTouchEvents(storeButton), chatButton.onclick = UTILS.checkTrusted(function () {
+    }), chatButton.onclick = UTILS.checkTrusted(function () {
       toggleChat();
-    }), UTILS.hookTouchEvents(chatButton), function () {
+    }), function () {
       for (var i = 0; i < icons.length; ++i) {
         var tmpSprite = new Image();
         tmpSprite.onload = function () {
           this.isLoaded = !0;
         }, tmpSprite.src = '.././img/icons/' + icons[i] + '.png', iconSprites[icons[i]] = tmpSprite;
       }
-    }(), loadingText.style.display = 'none', menuCardHolder.style.display = 'block', nameInput.value = getSavedVal('moo_name') || '', function () {
+    }(), nameInput.value = getSavedVal('moo_name') || '', function () {
       var savedNativeValue = getSavedVal('native_resolution') || true;
       setUseNativeResolution(savedNativeValue ? 'true' == savedNativeValue : 'undefined' != typeof cordova), showPing = 'true' == getSavedVal('show_ping'), pingDisplay.hidden = !showPing, getSavedVal('moo_moosic'), updateSkinColorPicker(), UTILS.removeAllChildren(actionBar);
       for (var i = 0; i < items.weapons.length + items.list.length; ++i)
