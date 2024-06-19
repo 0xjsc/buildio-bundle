@@ -5236,14 +5236,73 @@ function toAngles(objects) {
 
 let placers = [];
 
+let lastTickTimestamp = Date.now();
+let serverTicksMap = [];
+let preplaceTickRadixes = [];
+
+function preplace(enemy) {
+    if (!enemy) return;
+    if (instakilling) return;
+  
+    enemy.moveDir = Math.atan2(player.y2 - player.y1, player.x2 - player.x1);
+    const serverTickHappen = lastTickTimestamp - window.pingTime / 2 - serverLag;   
+    serverTicksMap = (new Array(10)).fill(0).map((value, index) => 
+      serverTickHappen + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].serverUpdateRate);
+    const perfectPreplacableTicks = serverTicksMap.filter(tickTimestamp => 
+        tickTimestamp - Date.now() - window.pingTime > 0);
+    const perfect2ResyncTicks = perfectPreplacableTicks.slice(0, 2);
+    console.log(perfect2ResyncTicks);
+    perfect2ResyncTicks.forEach(perfectTimestamp => {
+        const shouldRebuildTray = !preplaceTickRadixes.find(tickTimestamp => 
+            Math.abs(perfectTimestamp - tickTimestamp) < 1000 / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].serverUpdateRate);
+        if (shouldRebuildTray) return;
+        preplaceTickRadixes.push(perfectTimestamp);
+        window.setTimeout(function() {
+            const timeToTick = perfectTimestamp - Date.now() - window.pingTime;
+            player.moveDir = Math.atan2(player.y2 - player.y1, player.x2 - player.x1);
+            const actualX = Math.cos(player.moveDir) * timeToTick + player.x2;
+            const actualY = Math.sin(player.moveDir) * timeToTick + player.y2;
+            const playerRadius = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale / 2;
+            const permissibleError = Math.hypot(player.x2 - actualX, player.y2 - actualY);
+            const placeReach = playerRadius + _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[15].scale / 2 + permissibleError;
+            const preplacableObjects = nearestGameObjects.filter(object =>
+                object && Math.hypot(object.x - actualX, object.y - axtualY) <= placeReach);
+            preplacableObjects.forEach(gameObject => {
+                if (gameObject.health > gameObject.maxHealth / 2) return;
+                const angleLookupStart = Math.atan2(gameObject.y - actualY - Math.cos(90) * gameObject.scale / 2, gameObject.x - actualX - Math.cos(90) * gameObject.scale / 2);
+                const angleLookupEnd = Math.atan2(gameObject.y - actualY + Math.cos(90) * gameObject.scale / 2, gameObject.x - actualX + Math.cos(90) * gameObject.scale / 2);
+                let searchFailed = true;
+                for (let currentAngle = angleLookupStart;
+                    currentAngle < angleLookupEnd;
+                    currentAngle += Math.abs(angleLookupEnd - angleLookupStart) / 4
+                ) {
+                    const actualReach = playerRadius + _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[15].scale / 2;
+                    const objectX = Math.cos(currentAngle) * actualReach + actualX;
+                    const objectY = Math.sin(currentAngle) * actualReach + actualY;
+                    if (preplacableObjects.find(e => e != gameObject && 
+                        Math.hypot(e.x - gameObject.x, e.y - gameObject.y) < actualReach)) continue;
+                    else {
+                        searchFailed = false;
+                        break;
+                    }
+                };
+                if (searchFailed) currentAngle = Math.atan2(gameObject.y - actualY, gameObject.x - actualX);
+                const objectSid = (Math.abs(Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2) - currentAngle) <= Math.PI / 2 &&
+                    Math.hypot(player.x2 - enemy.x2, player.y2 - enemy.y2) <= weapons.list[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale) ? 2 : 4;
+                place(objectSid, currentAngle);
+            });
+        }, perfectTimestamp - Date.now() - window.pingTime);
+    })
+    lastTickTimestamp = Date.now();
+};
+                              
 function autoplace(enemy, replace = false) {
   if (instakilling) return;
   if (breaking) return;
 
   const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
-  const preplacableObjects = nearestGameObjects.filter(object => object && Math.hypot(object.x - player.x, object.y - player.y) < _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale + (object?.group?.scale) || 50);
   const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y, (enemy || window.enemyDanger)?.x - player.x);
-  placers = [...toAngles(preplacableObjects), ...freeAngles].map((angle, i, array) => {
+  placers = [...freeAngles].map((angle, i, array) => {
     const preplace = i < preplacableObjects.length;
     place(player.items[((preplace || replace) && Math.abs(angle - getMoveDir()) > Math.PI && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale) ? 2 : 4)], angle);
     benchmarks.Placers += 3;
@@ -5253,6 +5312,8 @@ function autoplace(enemy, replace = false) {
       type: ((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? "spinning spikes" : "pit trap"
     };
   });
+
+  preplace(enemy || window.enemyDanger);
 }
 
 let reloads = [...speeds];
