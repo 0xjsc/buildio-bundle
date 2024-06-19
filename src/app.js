@@ -1725,7 +1725,7 @@ function preplace(enemy) {
                     currentAngle < angleLookupEnd;
                     currentAngle += Math.abs(angleLookupEnd - angleLookupStart) / 4
                 ) {
-                    const actualReach = playerRadius + items.list[15].scale / 2;
+                    const actualReach = items.weapons.list[player.weaponIndex].range + config.playerScale;
                     const objectX = Math.cos(currentAngle) * actualReach + actualX;
                     const objectY = Math.sin(currentAngle) * actualReach + actualY;
                     if (preplacableObjects.find(e => e != gameObject && 
@@ -1737,7 +1737,7 @@ function preplace(enemy) {
                 };
                 if (searchFailed) currentAngle = Math.atan2(gameObject.y - actualY, gameObject.x - actualX);
                 const objectSid = (Math.abs(Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2) - currentAngle) <= Math.PI / 2 &&
-                    Math.hypot(player.x2 - enemy.x2, player.y2 - enemy.y2) <= weapons.list[player.weaponIndex].range + config.playerScale) ? 2 : 4;
+                    Math.hypot(player.x2 - enemy.x2, player.y2 - enemy.y2) <= items.weapons.list[player.weaponIndex].range + config.playerScale) ? 2 : 4;
                 place(objectSid, currentAngle);
             });
         }, perfectTimestamp - Date.now() - window.pingTime);
@@ -1749,12 +1749,13 @@ function autoplace(enemy, replace = false) {
   if (instakilling) return;
   if (breaking) return;
 
-  const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
-  const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y, (enemy || window.enemyDanger)?.x - player.x);
-  placers = freeAngles.map((angle, i, array) => {
-    place(player.items[(replace && Math.abs(angle - getMoveDir()) > Math.PI && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < items.weapons[player.weaponIndex].range + config.playerScale) ? 2 : 4)], angle);
+  const distance = Math.hypot(enemy?.x2 - player?.x2, enemy?.y2 - player?.y2) || 181;
+  const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y2, (enemy || window.enemyDanger)?.x - player.x2);
+  const preplacableObjects = nearestGameObjects.filter(e => Math.hypot(e.x - player.x2, e.y - player.y2) < items.weapons.list[player.weaponIndex].range + config.playerScale);
+  placers = [...preplacableObjects, ...freeAngles].map((angle, i, array) => {
+    const preplace = i < preplacableObjects.length;
+    place(player.items[((replace || preplace) && Math.abs(angle - getMoveDir()) > Math.PI && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < items.weapons[player.weaponIndex].range + config.playerScale) ? 2 : 4)], angle);
     benchmarks.Placers += 3;
-
     return {
       dir: angle,
       type: (preplace && Math.abs(enemyDir - angle) < Math.PI / 2) ? "spinning spikes" : "pit trap"
@@ -2211,7 +2212,7 @@ const modulesQueue = [
 
     wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((endTimeout - Date.now()) / 1000) + "s");
   }, () => {
-    const hitHat = (breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), sunShines && wsBridge.sendChat("Poisoned by the sun"), 21) : 7);
+    const hitHat = (breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), 21) : 7);
     const hitAcc = enemyIsSusMf ? 21 : 18;
     const idleHat = window.enemyDanger ? 6 : getBiomeHat();
     const idleAcc = window.enemyDanger ? (enemyIsSusMf ? (enemyIsSusMf = false, 21) : 13) : (player.y <= config.snowBiomeTop ? 6 : 11);
