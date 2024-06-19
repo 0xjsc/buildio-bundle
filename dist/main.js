@@ -3831,7 +3831,7 @@ window.grecaptcha?.ready && connectSocketIfReady();
 const wsLogs = [];
 
 function connectSocket(token, server = location.host) {
-  var wsAddress = (isProd ? "ws" : "wss") + '://' + server + server.includes("mohmohx") ? "" : ("/?token=" + token);
+  var wsAddress = (isProd ? "ws" : "wss") + '://' + server + (server.includes("mohmohx") ? "" : ("/?token=" + token));
 
   console.log("Calling io connect on " + wsAddress);
   
