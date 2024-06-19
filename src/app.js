@@ -17,6 +17,7 @@ import VultrServer from "./vultr/VultrSeeker.js";
 import Dialog from "./libs/alert.js";
 import SocketController from "./socket/socket.js";
 
+let antibull = false;
 const sunShines = true;
 const serverPackets = {};
 const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
@@ -1283,6 +1284,7 @@ function gatherAnimation(sid, didHit, index) {
   } else if (antibull && Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < items.weapons[player.weaponIndex] + config.playerScale) {
     storeEquip(53);
     wsBridge.sendChat("AntiBull test");
+    antibull = false;
   }
   
   if (sid == player.sid) reloads[player.weaponIndex] = 0;
