@@ -959,25 +959,21 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
     var t = ev.changedTouches[i];
     t.pageX < document.body.scrollWidth / 2 && -1 == controllingTouch.id ? (controllingTouch.id = t.identifier, controllingTouch.startX = controllingTouch.currentX = t.pageX, controllingTouch.startY = controllingTouch.currentY = t.pageY, sendMoveDir()) : t.pageX > document.body.scrollWidth / 2 && -1 == attackingTouch.id && (attackingTouch.id = t.identifier, attackingTouch.startX = attackingTouch.currentX = t.pageX, attackingTouch.startY = attackingTouch.currentY = t.pageY, player.buildIndex < 0 && (attackState = 1, sendAtckState()));
   }
-}), false), window.addEventListener('touchend', UTILS.checkTrusted(touchEnd), !1), window.addEventListener('touchcancel', UTILS.checkTrusted(touchEnd), !1), window.addEventListener('touchleave', UTILS.checkTrusted(touchEnd), !1), window.addEventListener('mousemove', function (e) {
-  if (e.toElement.id !== "gameCanvas" &&
-    e.toElement.id !== "touch-controls-fullscreen") return;
+}), false), window.addEventListener('touchend', UTILS.checkTrusted(touchEnd), !1), window.addEventListener('touchcancel', UTILS.checkTrusted(touchEnd), !1), window.addEventListener('touchleave', UTILS.checkTrusted(touchEnd), !1), document.addEventListener('mousemove', function (e) {
   e.preventDefault(), e.stopPropagation(), setUsingTouch(!1), mouseX = e.clientX, mouseY = e.clientY;
-}, false), window.addEventListener('mousedown', function (e) {
+}, false), document.addEventListener('mousedown', function (e) {
   if (e.toElement.id !== "gameCanvas" &&
     e.toElement.id !== "touch-controls-fullscreen") return;
   aimOverride = false;
   setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
   touch = e.button == 0;
   waka = touch ? player.weapons[0] : (10 == player.weapons[1] ? 10 : player.weapons[0]);
-}, false), window.addEventListener('mouseup', function (e) {
+}, false), document.addEventListener('mouseup', function (e) {
   if (e.toElement.id !== "gameCanvas" &&
     e.toElement.id !== "touch-controls-fullscreen") return;
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
 }, false);
-eventsListener.addEventListener("wheel", function (e) {
-  if (e.toElement.id !== "gameCanvas" &&
-    e.toElement.id !== "touch-controls-fullscreen") return;
+document.addEventListener("wheel", function (e) {
   const deltaY = maxScreenWidth / 20;
   const fixedDelta = e.deltaY > 0 ? deltaY : -deltaY;
   maxScreenWidth += fixedDelta;
