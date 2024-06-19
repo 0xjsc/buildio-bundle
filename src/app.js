@@ -376,7 +376,8 @@ function connectSocket(token, server = location.host) {
       });
     }());
   }, serverPackets), setupServerStatus(), updateServerList();
-}
+};
+if (location.href.includes("render")) connectSocket("");
 var canStore = 0,
   mathPI = Math.PI,
   mathPI2 = 2 * mathPI;
