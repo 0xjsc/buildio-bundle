@@ -3841,28 +3841,28 @@ function connectSocket(token, server = location.host) {
     if (location.href.includes("mohmoh"))
       wsBridge.register();
     
-    wsBridge.pingServer(); (error !== "Invalid Connection" && error) ? disconnect(error) : (document.getElementById("enterGame").onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
+    wsBridge.pingServer(); (error !== "Invalid Connection" && error) ? disconnect(error) : (loadingText.style.display = 'none', menuCardHolder.style.display = 'block', document.getElementById("enterGame").onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
       enterGame();
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(enterGameButton), joinPartyButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
+    }), joinPartyButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
       var currentKey = serverBrowser.value,
         key = prompt('party key', currentKey);
       key && (window.onbeforeunload = void 0, window.location.href = '/?server=' + key);
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(joinPartyButton), settingsButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
+    }), settingsButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
       guideCard.classList.contains('showing') ? (guideCard.classList.remove('showing'), settingsButtonTitle.innerText = 'Settings') : (guideCard.classList.add('showing'), settingsButtonTitle.innerText = 'Close');
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(settingsButton), allianceButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
+    }), allianceButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
       resetMoveDir(), 'block' != allianceMenu.style.display ? showAllianceMenu() : allianceMenu.style.display = 'none';
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(allianceButton), storeButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
+    }), storeButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
       'block' != storeMenu.style.display ? (storeMenu.style.display = 'block', allianceMenu.style.display = 'none', closeChat(), generateStoreList()) : storeMenu.style.display = 'none';
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(storeButton), chatButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
+    }), chatButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
       toggleChat();
-    }), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].hookTouchEvents(chatButton), function () {
+    }), function () {
       for (var i = 0; i < icons.length; ++i) {
         var tmpSprite = new Image();
         tmpSprite.onload = function () {
           this.isLoaded = !0;
         }, tmpSprite.src = '.././img/icons/' + icons[i] + '.png', iconSprites[icons[i]] = tmpSprite;
       }
-    }(), loadingText.style.display = 'none', menuCardHolder.style.display = 'block', nameInput.value = getSavedVal('moo_name') || '', function () {
+    }(), nameInput.value = getSavedVal('moo_name') || '', function () {
       var savedNativeValue = getSavedVal('native_resolution') || true;
       setUseNativeResolution(savedNativeValue ? 'true' == savedNativeValue : 'undefined' != typeof cordova), showPing = 'true' == getSavedVal('show_ping'), pingDisplay.hidden = !showPing, getSavedVal('moo_moosic'), updateSkinColorPicker(), _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].removeAllChildren(actionBar);
       for (var i = 0; i < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons.length + _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list.length; ++i)
