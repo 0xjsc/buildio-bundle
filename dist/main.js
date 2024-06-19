@@ -2635,10 +2635,6 @@ const socket = {
       this.connected = false;
       callback('Socket closed');
     };
-    
-    this.socket.onerror = error => {
-      callback('Socket error');
-    };
   },
   send(type) {
     const data = Array.prototype.slice.call(arguments, 1),
