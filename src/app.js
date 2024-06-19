@@ -295,12 +295,8 @@ function connectSocket(token, server = location.host) {
     if (location.href.includes("mohmoh"))
       wsBridge.register();
     
-    wsBridge.pingServer(); (error !== "Invalid Connection" && error) ? disconnect(error) : (enterGameButton.onclick = UTILS.checkTrusted(function () {
-      if (error) {
-        disconnect(error);
-      } else {
-        enterGame();
-      }
+    wsBridge.pingServer(); (error !== "Invalid Connection" && error) ? disconnect(error) : (document.getElementById("enterGame").onclick = UTILS.checkTrusted(function () {
+      enterGame();
     }), UTILS.hookTouchEvents(enterGameButton), joinPartyButton.onclick = UTILS.checkTrusted(function () {
       var currentKey = serverBrowser.value,
         key = prompt('party key', currentKey);
