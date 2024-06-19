@@ -5244,7 +5244,7 @@ function preplace(enemy) {
     serverTicksMap = (new Array(3)).fill(0).map((value, index) => 
       serverTickHappen + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].serverUpdateRate);
     const perfectPreplacableTicks = serverTicksMap.filter(tickTimestamp => 
-        tickTimestamp - Date.now() - window.pingTime > 0);
+        tickTimestamp - Date.now() > 0);
     const perfect2ResyncTicks = perfectPreplacableTicks.slice(0, 2);
     console.log(perfect2ResyncTicks);
     perfect2ResyncTicks.forEach(perfectTimestamp => {
