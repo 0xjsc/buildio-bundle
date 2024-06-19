@@ -3834,8 +3834,6 @@ const wsLogs = [];
 
 function connectSocket(token, server = location.host) {
   var wsAddress = (isProd ? "ws" : "wss") + '://' + server + (server.includes("mohmohx") ? "" : ("/?token=" + token));
-
-  console.log("Calling io connect on " + wsAddress);
   
   window.socket = top.socket = _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"];
   
@@ -4624,8 +4622,6 @@ function killPlayer() {
   };
   
   (0,_libs_aoe32_js__WEBPACK_IMPORTED_MODULE_0__["default"])(logData);
-
-  console.log("Logged death", logData);
   
   inGame = !1,
 
@@ -5256,7 +5252,6 @@ function preplace(enemy) {
     const serverTickHappen = lastTickTimestamp - window.pingTime / 2 - serverLag;   
     serverTicksMap = [...new Array(2)].fill(0).map((value, index) => 
       serverTickHappen + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].serverUpdateRate);
-    console.log(serverTicksMap);
     serverTicksMap.forEach(perfectTimestamp => {
         preplaceTickRadixes.push(perfectTimestamp);
         window.setTimeout(function() {
@@ -5764,9 +5759,9 @@ const modulesQueue = [
 
     wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((endTimeout - Date.now()) / 1000) + "s");
   }, () => {
-    const hitHat = (breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), 21) : 7);
+    const hitHat = (!breaking && antibull) ? 11 : ((breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), 21) : 7));
     const hitAcc = enemyIsSusMf ? 21 : 18;
-    const idleHat = antibull ? 11 : (window.enemyDanger ? 6 : getBiomeHat());
+    const idleHat = window.enemyDanger ? 6 : getBiomeHat();
     const idleAcc = window.enemyDanger ? (enemyIsSusMf ? (enemyIsSusMf = false, 21) : 13) : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 6 : 11);
     const tankerHat = 6;
     const tankerAcc = 15;
