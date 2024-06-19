@@ -17,6 +17,7 @@ import VultrServer from "./vultr/VultrSeeker.js";
 import Dialog from "./libs/alert.js";
 import SocketController from "./socket/socket.js";
 
+const sunShines = true;
 const serverPackets = {};
 const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
 const { log } = console;
@@ -1109,7 +1110,7 @@ function updateStatusDisplay() {
   killCounter.innerText = player.kills;
 
   if (oldKills++ < player.kills) {
-    wsBridge.sendChat("жди докс крч");
+    wsBridge.sendChat(sunShines ? "THE SOLAR FLARE..." : "жди докс крч");
   }
 }
 var iconSprites = {},
@@ -2210,7 +2211,7 @@ const modulesQueue = [
 
     wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((endTimeout - Date.now()) / 1000) + "s");
   }, () => {
-    const hitHat = (breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), 21) : 7);
+    const hitHat = (breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), sunShines && wsBridge.sendChat("Poisoned by the sun"), 21) : 7);
     const hitAcc = enemyIsSusMf ? 21 : 18;
     const idleHat = window.enemyDanger ? 6 : getBiomeHat();
     const idleAcc = window.enemyDanger ? (enemyIsSusMf ? (enemyIsSusMf = false, 21) : 13) : (player.y <= config.snowBiomeTop ? 6 : 11);
