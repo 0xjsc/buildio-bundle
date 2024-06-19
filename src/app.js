@@ -1778,27 +1778,26 @@ let lastOpInsta = Date.now();
 function autobreak(trap) {
   if (instakilling) return;
   
-  const correctWeapon = antiSpikeSync ? player.weapons[0] : (player.weapons[1] == 10 ? 10 : player.weapons[0]);
+  const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
   const trapAngle = Math.atan2(
     trap.y - player.y, 
     trap.x - player.x
   );
 
-  
   breaking = true;
   window.trap = trap;
   
   wsBridge.updateHittingState(true, trapAngle);
-  antiSpikeSync = false;
 
   const buildDamage = items.weapons[waka].dmg * config.fetchVariant(player).val * 
         items.weapons[waka].sDmg * 3.3 || 1;
 
   if (trap.health - buildDamage <= 0) {
     aimOverride = false;
-    antiSpikeSync = true;
     storeEquip(6);
     storeEquip(15, true);
+    
+    autoplace(player);
   }
   
   benchmarks.AutoBreak++;
