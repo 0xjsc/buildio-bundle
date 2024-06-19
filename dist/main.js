@@ -5259,13 +5259,11 @@ function preplace(enemy) {
             player.moveDir = Math.atan2(player.y2 - player.y1, player.x2 - player.x1);
             const actualX = Math.cos(player.moveDir) * timeToTick + player.x2;
             const actualY = Math.sin(player.moveDir) * timeToTick + player.y2;
-            const playerRadius = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale / 2;
             const permissibleError = Math.hypot(player.x2 - actualX, player.y2 - actualY);
-            const placeReach = playerRadius + _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[15].scale / 2 + permissibleError;
-            const preplacableObjects = nearestGameObjects.filter(object =>
-                object && Math.hypot(object.x - actualX, object.y - axtualY) <= placeReach);
+            const placeReach = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale + _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[15].scale + permissibleError;
+            const preplacableObjects = nearestGameObjects.filter(object => {
+                object && Math.hypot(object.x - actualX, object.y - actualY) <= placeReach});
             preplacableObjects.forEach(gameObject => {
-                if (gameObject.health > gameObject.maxHealth / 2) return;
                 const angleLookupStart = Math.atan2(gameObject.y - actualY - Math.cos(90) * gameObject.scale / 2, gameObject.x - actualX - Math.cos(90) * gameObject.scale / 2);
                 const angleLookupEnd = Math.atan2(gameObject.y - actualY + Math.cos(90) * gameObject.scale / 2, gameObject.x - actualX + Math.cos(90) * gameObject.scale / 2);
                 let searchFailed = true;
@@ -5289,7 +5287,7 @@ function preplace(enemy) {
                 place(objectSid, currentAngle);
             });
         }, perfectTimestamp - Date.now() - window.pingTime);
-    })
+    });
     lastTickTimestamp = Date.now();
 };
                               
