@@ -5298,14 +5298,13 @@ function autoplace(enemy, replace = false) {
 
   const distance = Math.hypot(enemy?.x - player?.x, enemy?.y - player?.y) || 181;
   const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y, (enemy || window.enemyDanger)?.x - player.x);
-  placers = [...freeAngles].map((angle, i, array) => {
-    const preplace = i < preplacableObjects.length;
-    place(player.items[((preplace || replace) && Math.abs(angle - getMoveDir()) > Math.PI && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale) ? 2 : 4)], angle);
+  placers = freeAngles.map((angle, i, array) => {
+    place(player.items[(replace && Math.abs(angle - getMoveDir()) > Math.PI && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale) ? 2 : 4)], angle);
     benchmarks.Placers += 3;
 
     return {
       dir: angle,
-      type: ((preplace || replace) && Math.abs(enemyDir - angle) < Math.PI / 2) ? "spinning spikes" : "pit trap"
+      type: (preplace && Math.abs(enemyDir - angle) < Math.PI / 2) ? "spinning spikes" : "pit trap"
     };
   });
 
