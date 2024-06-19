@@ -3563,6 +3563,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+let antibull = false;
 const sunShines = true;
 const serverPackets = {};
 const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
@@ -4829,6 +4830,7 @@ function gatherAnimation(sid, didHit, index) {
   } else if (antibull && Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex] + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale) {
     storeEquip(53);
     wsBridge.sendChat("AntiBull test");
+    antibull = false;
   }
   
   if (sid == player.sid) reloads[player.weaponIndex] = 0;
