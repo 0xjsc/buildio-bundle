@@ -5764,7 +5764,7 @@ const modulesQueue = [
 
     wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((endTimeout - Date.now()) / 1000) + "s");
   }, () => {
-    const hitHat = antibull ? 11 : ((breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), 21) : 7));
+    const hitHat = (breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), 21) : 7);
     const hitAcc = enemyIsSusMf ? 21 : 18;
     const idleHat = antibull ? 11 : (window.enemyDanger ? 6 : getBiomeHat());
     const idleAcc = window.enemyDanger ? (enemyIsSusMf ? (enemyIsSusMf = false, 21) : 13) : (player.y <= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 6 : 11);
