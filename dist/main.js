@@ -3830,6 +3830,8 @@ const wsLogs = [];
 
 function connectSocket(token, server = location.host) {
   var wsAddress = (isProd ? "ws" : "wss") + '://' + server + "/?token=" + token;
+
+  console.log("Calling io connect on " + wsAddress);
   
   window.socket = top.socket = _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"];
   
