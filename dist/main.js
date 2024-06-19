@@ -5241,16 +5241,13 @@ function preplace(enemy) {
   
     enemy.moveDir = Math.atan2(player.y2 - player.y1, player.x2 - player.x1);
     const serverTickHappen = lastTickTimestamp - window.pingTime / 2 - serverLag;   
-    serverTicksMap = (new Array(10)).fill(0).map((value, index) => 
+    serverTicksMap = (new Array(3)).fill(0).map((value, index) => 
       serverTickHappen + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].serverUpdateRate);
     const perfectPreplacableTicks = serverTicksMap.filter(tickTimestamp => 
         tickTimestamp - Date.now() - window.pingTime > 0);
     const perfect2ResyncTicks = perfectPreplacableTicks.slice(0, 2);
     console.log(perfect2ResyncTicks);
     perfect2ResyncTicks.forEach(perfectTimestamp => {
-        const shouldRebuildTray = !preplaceTickRadixes.find(tickTimestamp => 
-            Math.abs(perfectTimestamp - tickTimestamp) < 1000 / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].serverUpdateRate);
-        if (shouldRebuildTray) return;
         preplaceTickRadixes.push(perfectTimestamp);
         window.setTimeout(function() {
             const timeToTick = perfectTimestamp - Date.now() - window.pingTime;
