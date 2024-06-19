@@ -62,17 +62,19 @@ UTILS.randInt = function (min, max) {
   var touch = event.changedTouches[0];
   event.screenX = touch.screenX, event.screenY = touch.screenY, event.clientX = touch.clientX, event.clientY = touch.clientY, event.pageX = touch.pageX, event.pageY = touch.pageY;
 }, UTILS.hookTouchEvents = function (element, skipPrevent) {
-  var preventDefault = !skipPrevent,
-    isHovering = !1;
+  try {
+    var preventDefault = !skipPrevent,
+      isHovering = !1;
 
-  function touchEnd(e) {
-    UTILS.mousifyTouchEvent(e), window.setUsingTouch(!0), preventDefault && (e.preventDefault(), e.stopPropagation()), isHovering && (element.onclick && element.onclick(e), element.onmouseout && element.onmouseout(e), isHovering = !1);
-  }
-  element.addEventListener('touchstart', UTILS.checkTrusted(function (e) {
-    UTILS.mousifyTouchEvent(e), window.setUsingTouch(!0), preventDefault && (e.preventDefault(), e.stopPropagation()), element.onmouseover && element.onmouseover(e), isHovering = !0;
-  }), !1), element.addEventListener('touchmove', UTILS.checkTrusted(function (e) {
-    UTILS.mousifyTouchEvent(e), window.setUsingTouch(!0), preventDefault && (e.preventDefault(), e.stopPropagation()), UTILS.containsPoint(element, e.pageX, e.pageY) ? isHovering || (element.onmouseover && element.onmouseover(e), isHovering = !0) : isHovering && (element.onmouseout && element.onmouseout(e), isHovering = !1);
-  }), !1), element.addEventListener('touchend', UTILS.checkTrusted(touchEnd), !1), element.addEventListener('touchcancel', UTILS.checkTrusted(touchEnd), !1), element.addEventListener('touchleave', UTILS.checkTrusted(touchEnd), !1);
+    function touchEnd(e) {
+      UTILS.mousifyTouchEvent(e), window.setUsingTouch(!0), preventDefault && (e.preventDefault(), e.stopPropagation()), isHovering && (element.onclick && element.onclick(e), element.onmouseout && element.onmouseout(e), isHovering = !1);
+    }
+    element.addEventListener('touchstart', UTILS.checkTrusted(function (e) {
+      UTILS.mousifyTouchEvent(e), window.setUsingTouch(!0), preventDefault && (e.preventDefault(), e.stopPropagation()), element.onmouseover && element.onmouseover(e), isHovering = !0;
+    }), !1), element.addEventListener('touchmove', UTILS.checkTrusted(function (e) {
+      UTILS.mousifyTouchEvent(e), window.setUsingTouch(!0), preventDefault && (e.preventDefault(), e.stopPropagation()), UTILS.containsPoint(element, e.pageX, e.pageY) ? isHovering || (element.onmouseover && element.onmouseover(e), isHovering = !0) : isHovering && (element.onmouseout && element.onmouseout(e), isHovering = !1);
+    }), !1), element.addEventListener('touchend', UTILS.checkTrusted(touchEnd), !1), element.addEventListener('touchcancel', UTILS.checkTrusted(touchEnd), !1), element.addEventListener('touchleave', UTILS.checkTrusted(touchEnd), !1);
+  } catch(e) { };
 }, UTILS.removeAllChildren = function (element) {
   for (; element.hasChildNodes();)
     element.removeChild(element.lastChild);
