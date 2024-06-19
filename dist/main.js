@@ -5176,10 +5176,6 @@ let lastDamage = 0;
 let prevHeal = 0;
 let healTimestamp = Date.now();
 
-function check0Shame(healTimestamp) {
-  return Date.now() - healTimestamp >= 120 - window.pingTime;
-}
-
 function healing(healTimestamp) {
   if (player?.health == 100 || !player?.health) return;
   
@@ -5187,9 +5183,11 @@ function healing(healTimestamp) {
   const healingItemSid = player.items[0];
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
 
-  if (!check0Shame(healTimestamp)) return;
-
-  heal(healCount);
+  if (Date.now() - healTimestamp + 120 - window.pingTime <= average) {
+    setTimeout(() => {
+      heal(healCount);
+    }, Date.now() - healTimestamp + 120 - window.pingTime);
+  }
 }
 
 function updateHealth(sid, value) {
