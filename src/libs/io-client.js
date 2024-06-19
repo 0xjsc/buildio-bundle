@@ -15,8 +15,6 @@ const socket = {
       let msg = new Uint8Array(message.data),
         parsed = msgpack.decode(msg);
       let [type, data] = parsed;
-
-      console.log(`[MooClient] Receiving {${type}:${data}}`);
           
       if (type == "io-init") this.socketId = data[0];
       else if (events[type]) events[type].apply(void 0, data);
