@@ -1713,7 +1713,7 @@ function preplace(enemy) {
             const actualY = Math.sin(player.moveDir) * timeToTick + player.y2;
             const permissibleError = Math.hypot(player.x2 - actualX, player.y2 - actualY);
             const placeReach = config.playerScale + items.list[15].scale + permissibleError;
-            const preplacableObjects = nearestGameObjects.filter(object =>
+            const preplacableObjects = nearestGameObjects.filter(object => {
                 object && Math.hypot(object.x - actualX, object.y - actualY) <= placeReach);
                 const angleLookupStart = Math.atan2(gameObject.y - actualY - Math.cos(90) * gameObject.scale / 2, gameObject.x - actualX - Math.cos(90) * gameObject.scale / 2);
                 const angleLookupEnd = Math.atan2(gameObject.y - actualY + Math.cos(90) * gameObject.scale / 2, gameObject.x - actualX + Math.cos(90) * gameObject.scale / 2);
@@ -1738,7 +1738,7 @@ function preplace(enemy) {
                 place(objectSid, currentAngle);
             });
         }, perfectTimestamp - Date.now() - window.pingTime);
-    })
+    });
     lastTickTimestamp = Date.now();
 };
                               
