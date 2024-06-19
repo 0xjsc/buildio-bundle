@@ -5848,7 +5848,7 @@ var lastPing = -1;
 
 function pingSocketResponse() {
   var pingTime = Date.now() - lastPing;
-  window.pingTime = pingTime, pingDisplay.innerText = 'Ping: ' + pingTime + '\xA0ms';
+  window.pingTime = pingTime;
 }
 
 function pingSocket() {
