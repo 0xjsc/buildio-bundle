@@ -1714,7 +1714,7 @@ function preplace(enemy) {
             const actualX = Math.cos(player.moveDir) * timeToTick + player.x2;
             const actualY = Math.sin(player.moveDir) * timeToTick + player.y2;
             const permissibleError = Math.hypot(player.x2 - actualX, player.y2 - actualY);
-            const placeReach = config.playerScale + items.list[15].scale + permissibleError;
+            const placeReach = config.playerScale + 50 + permissibleError;
             const preplacableObjects = nearestGameObjects.filter(object => {
                 object && Math.hypot(object.x - actualX, object.y - actualY) <= placeReach});
             preplacableObjects.forEach(gameObject => {
@@ -1737,7 +1737,7 @@ function preplace(enemy) {
                 };
                 if (searchFailed) currentAngle = Math.atan2(gameObject.y - actualY, gameObject.x - actualX);
                 const objectSid = (Math.abs(Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2) - currentAngle) <= Math.PI / 2 &&
-                    Math.hypot(player.x2 - enemy.x2, player.y2 - enemy.y2) <= items.weapons.list[player.weaponIndex].range + config.playerScale) ? 2 : 4;
+                    Math.hypot(player.x2 - enemy.x2, player.y2 - enemy.y2) <= 180) ? 2 : 4;
                 place(objectSid, currentAngle);
             });
         }, perfectTimestamp - Date.now() - window.pingTime);
@@ -1751,7 +1751,7 @@ function autoplace(enemy, replace = false) {
 
   const distance = Math.hypot(enemy?.x2 - player?.x2, enemy?.y2 - player?.y2) || 181;
   const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y2, (enemy || window.enemyDanger)?.x - player.x2);
-  const preplacableObjects = nearestGameObjects.filter(e => Math.hypot(e.x - player.x2, e.y - player.y2) < items.weapons.list[player.weaponIndex].range + config.playerScale);
+  const preplacableObjects = nearestGameObjects.filter(e => Math.hypot(e.x - player.x2, e.y - player.y2) < 180;
   placers = [...preplacableObjects, ...freeAngles].map((angle, i, array) => {
     const preplace = i < preplacableObjects.length;
     place(player.items[((replace || preplace) && Math.abs(angle - getMoveDir()) > Math.PI && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < items.weapons[player.weaponIndex].range + config.playerScale) ? 2 : 4)], angle);
