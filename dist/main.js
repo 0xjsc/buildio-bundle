@@ -6078,29 +6078,6 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   border: 0px !important;
 }
 
-#modMenu {
-  position: fixed;
-  background-color: rgba(0, 0, 0, 0.6);
-  box-shadow: 2px 2px 12px black;
-  height: 290px;
-  width: 300px;
-  top: 300px;
-  left: 0px;
-  z-index: 10;
-  border: 5px solid transparent;
-  border-top: linear-gradient(#b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
-  color: white;
-  transition: all 1s 0s;
-  overflow: auto;
-  scrollbar-width: none;
-  font-family: Arial !important;
-}
-
-#modMenu:hover {
-  transform: scale(1.05);
-  background: rgba(0, 0, 0, 0.8);
-}
-
 #wideAdCard, .adMenuCard, #promoImgHolder, #mapDisplay, #scoreDisplay, #main-menu-left-ad, #bottom-ad {
   display: none !important;
   visibility: hidden !important;
@@ -6108,7 +6085,7 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
 
 .actionBarItem, #stoneDisplay, #woodDisplay, #foodDisplay, #leaderboard, .gameButton, #killCounter, .resourceDisplay {
   border-radius: 10px !important;
-  box-shadow: 0px 0px 4px 2px rgb(15, 10, 12);
+  opacity: 80%;
 }
 </style>
 `);
