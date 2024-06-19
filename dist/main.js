@@ -4824,7 +4824,7 @@ function gatherAnimation(sid, didHit, index) {
     wsBridge.updateHittingState(true, players.find(p => p && p?.sid == ownerSid).dir); 
   }
 
-  if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 180 && (tmpObj.skinIndex == 11 || tmpObj.tailIndex == 21)) {
+  if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex] + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale && (tmpObj.skinIndex == 11 || tmpObj.tailIndex == 21)) {
     enemyIsSusMf = true;
   }
   
@@ -5260,9 +5260,9 @@ function preplace(enemy) {
             const actualX = Math.cos(player.moveDir) * timeToTick + player.x2;
             const actualY = Math.sin(player.moveDir) * timeToTick + player.y2;
             const permissibleError = Math.hypot(player.x2 - actualX, player.y2 - actualY);
-            const placeReach = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale + _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].list[15].scale + permissibleError;
+            const placeReach = _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale + 50 + permissibleError;
             const preplacableObjects = nearestGameObjects.filter(object => {
-                object && Math.hypot(object.x - actualX, object.y - actualY) <= placeReach});
+                object && Math.hypot(object.x - actualX, object.y - actualY) <= placeReach });
             preplacableObjects.forEach(gameObject => {
                 const angleLookupStart = Math.atan2(gameObject.y - actualY - Math.cos(90) * gameObject.scale / 2, gameObject.x - actualX - Math.cos(90) * gameObject.scale / 2);
                 const angleLookupEnd = Math.atan2(gameObject.y - actualY + Math.cos(90) * gameObject.scale / 2, gameObject.x - actualX + Math.cos(90) * gameObject.scale / 2);
@@ -5271,7 +5271,7 @@ function preplace(enemy) {
                     currentAngle < angleLookupEnd;
                     currentAngle += Math.abs(angleLookupEnd - angleLookupStart) / 4
                 ) {
-                    const actualReach = _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons.list[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale;
+                    const actualReach = _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale;
                     const objectX = Math.cos(currentAngle) * actualReach + actualX;
                     const objectY = Math.sin(currentAngle) * actualReach + actualY;
                     if (preplacableObjects.find(e => e != gameObject && 
@@ -5283,7 +5283,7 @@ function preplace(enemy) {
                 };
                 if (searchFailed) currentAngle = Math.atan2(gameObject.y - actualY, gameObject.x - actualX);
                 const objectSid = (Math.abs(Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2) - currentAngle) <= Math.PI / 2 &&
-                    Math.hypot(player.x2 - enemy.x2, player.y2 - enemy.y2) <= _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons.list[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale) ? 2 : 4;
+                    Math.hypot(player.x2 - enemy.x2, player.y2 - enemy.y2) <= _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex] + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale) ? 2 : 4;
                 place(objectSid, currentAngle);
             });
         }, perfectTimestamp - Date.now() - window.pingTime);
@@ -5297,7 +5297,7 @@ function autoplace(enemy, replace = false) {
 
   const distance = Math.hypot(enemy?.x2 - player?.x2, enemy?.y2 - player?.y2) || 181;
   const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y2, (enemy || window.enemyDanger)?.x - player.x2);
-  const preplacableObjects = nearestGameObjects.filter(e => Math.hypot(e.x - player.x2, e.y - player.y2) < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons.list[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale);
+  const preplacableObjects = nearestGameObjects.filter(e => Math.hypot(e.x - player.x2, e.y - player.y2) < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex] + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale);
   placers = [...preplacableObjects, ...freeAngles].map((angle, i, array) => {
     const preplace = i < preplacableObjects.length;
     place(player.items[((replace || preplace) && Math.abs(angle - getMoveDir()) > Math.PI && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale) ? 2 : 4)], angle);
