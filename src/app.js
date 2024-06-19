@@ -1632,17 +1632,18 @@ let prevHeal = 0;
 let healTimestamp = Date.now();
 
 function healing(healTimestamp) {
-  if (player?.health == 100) return;
-  
-  const damage = 100 - player.health;
+  const damage = (100 - player.health) || 100;
   const healingItemSid = player.items[0];
   const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
 
-  if (Date.now() - healTimestamp + 120 - window.pingTime <= average) {
-    setTimeout(() => {
-      heal(healCount);
-    }, Date.now() - healTimestamp + 120 - window.pingTime);
-  }
+  setTimeout(() => {
+    heal(healCount);
+  }, ((Date.now() - prevHeal) < 111) ? 
+             (Date.now() - healTimestamp + 120 - window.pingTime + 
+             (Date.now() - prevHeal)) : 
+             (Date.now() - healTimestamp + 120 - window.pingTime));
+
+  prevHeal = Date.now();
 }
 
 function updateHealth(sid, value) {
