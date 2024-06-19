@@ -1632,7 +1632,7 @@ let prevHeal = 0;
 let healTimestamp = Date.now();
 
 function healing(healTimestamp) {
-  if (player?.health == 100 || !player?.health) return;
+  if (player?.health == 100) return;
   
   const damage = 100 - player.health;
   const healingItemSid = player.items[0];
@@ -1651,6 +1651,8 @@ function updateHealth(sid, value) {
   oldHealth = player.health;
 
   healTimestamp = Date.now();
+
+  healing(healTimestamp);
 }
 
 function getMoveDir() {
@@ -2109,8 +2111,6 @@ const modulesQueue = [
     reloads[player.weaponIndex] = Math.min(reloads[player.weaponIndex] + current, speeds[player.weaponIndex]);
   },
   /** DEFENCE MODULES **/
-  () => antiInsta(),
-  () => healing(healTimestamp),
   () => {
     if (instakilling) return;
     
