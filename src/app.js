@@ -1711,13 +1711,10 @@ function preplace(enemy) {
             player.moveDir = Math.atan2(player.y2 - player.y1, player.x2 - player.x1);
             const actualX = Math.cos(player.moveDir) * timeToTick + player.x2;
             const actualY = Math.sin(player.moveDir) * timeToTick + player.y2;
-            const playerRadius = config.playerScale / 2;
             const permissibleError = Math.hypot(player.x2 - actualX, player.y2 - actualY);
-            const placeReach = playerRadius + items.list[15].scale / 2 + permissibleError;
+            const placeReach = config.playerScale + items.list[15].scale + permissibleError;
             const preplacableObjects = nearestGameObjects.filter(object =>
-                object && Math.hypot(object.x - actualX, object.y - axtualY) <= placeReach);
-            preplacableObjects.forEach(gameObject => {
-                if (gameObject.health > gameObject.maxHealth / 2) return;
+                object && Math.hypot(object.x - actualX, object.y - actualY) <= placeReach);
                 const angleLookupStart = Math.atan2(gameObject.y - actualY - Math.cos(90) * gameObject.scale / 2, gameObject.x - actualX - Math.cos(90) * gameObject.scale / 2);
                 const angleLookupEnd = Math.atan2(gameObject.y - actualY + Math.cos(90) * gameObject.scale / 2, gameObject.x - actualX + Math.cos(90) * gameObject.scale / 2);
                 let searchFailed = true;
