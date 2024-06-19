@@ -286,6 +286,8 @@ const wsLogs = [];
 
 function connectSocket(token, server = location.host) {
   var wsAddress = (isProd ? "ws" : "wss") + '://' + server + "/?token=" + token;
+
+  console.log("Calling io connect on " + wsAddress);
   
   window.socket = top.socket = io;
   
