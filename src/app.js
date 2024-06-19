@@ -1277,7 +1277,7 @@ function gatherAnimation(sid, didHit, index) {
 
   if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < items.weapons[player.weaponIndex] + config.playerScale && (tmpObj.skinIndex == 11 || tmpObj.tailIndex == 21)) {
     enemyIsSusMf = true;
-  } else if (antibull && Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < items.weapons[player.weaponIndex] + config.playerScale) {
+  } else if (antibull && Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < items.weapons[player.weaponIndex] + config.playerScale * 2) {
     storeEquip(53);
     wsBridge.sendChat("AntiBull test");
     antibull = false;
