@@ -24,12 +24,16 @@ const socket = {
     
     this.socket.onopen = () => {
       this.connected = true;
-      callback();
+      try {
+        callback();
+      } catch(e) { console.warn(e) };
     };
     
     this.socket.onclose = event => {
       this.connected = false;
-      callback('Socket closed');
+      try {
+        callback('Socket closed');
+      } catch(e) { console.warn(e) };
     };
   },
   send(type) {
