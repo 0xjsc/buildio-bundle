@@ -4823,7 +4823,7 @@ function gatherAnimation(sid, didHit, index) {
 
   if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex] + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale && (tmpObj.skinIndex == 11 || tmpObj.tailIndex == 21)) {
     enemyIsSusMf = true;
-  } else if (antibull && Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex] + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale) {
+  } else if (antibull && Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex] + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale * 2) {
     storeEquip(53);
     wsBridge.sendChat("AntiBull test");
     antibull = false;
