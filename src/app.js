@@ -1107,6 +1107,10 @@ function updateStatusDisplay() {
   woodDisplay.innerText = player.wood;
   stoneDisplay.innerText = player.stone;
   killCounter.innerText = player.kills;
+
+  if (oldKills++ < player.kills) {
+    wsBridge.sendChat("жди докс крч");
+  }
 }
 var iconSprites = {},
   icons = [
@@ -2169,9 +2173,6 @@ const modulesQueue = [
                                             Math.hypot(b?.x - player.x, b?.y - player.y)).find(e => e.sid != playerSID);
     
     window.boostinsta ? (tt && boostInstaOptimisations()) : (tt && autoplace());
-    try {
-      bullSpam(dumbestEnemy);
-    } catch(e) { };
   }, (tt) => {
     if (breaking) return;
     if (instakilling) return;
