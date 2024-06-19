@@ -1714,7 +1714,8 @@ function preplace(enemy) {
             const permissibleError = Math.hypot(player.x2 - actualX, player.y2 - actualY);
             const placeReach = config.playerScale + items.list[15].scale + permissibleError;
             const preplacableObjects = nearestGameObjects.filter(object => {
-                object && Math.hypot(object.x - actualX, object.y - actualY) <= placeReach);
+                object && Math.hypot(object.x - actualX, object.y - actualY) <= placeReach});
+            preplacableObjects.forEach(gameObject => {
                 const angleLookupStart = Math.atan2(gameObject.y - actualY - Math.cos(90) * gameObject.scale / 2, gameObject.x - actualX - Math.cos(90) * gameObject.scale / 2);
                 const angleLookupEnd = Math.atan2(gameObject.y - actualY + Math.cos(90) * gameObject.scale / 2, gameObject.x - actualX + Math.cos(90) * gameObject.scale / 2);
                 let searchFailed = true;
