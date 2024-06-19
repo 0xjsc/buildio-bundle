@@ -1280,6 +1280,9 @@ function gatherAnimation(sid, didHit, index) {
 
   if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < items.weapons[player.weaponIndex] + config.playerScale && (tmpObj.skinIndex == 11 || tmpObj.tailIndex == 21)) {
     enemyIsSusMf = true;
+  } else if (antibull && Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < items.weapons[player.weaponIndex] + config.playerScale) {
+    storeEquip(53);
+    wsBridge.sendChat("AntiBull test");
   }
   
   if (sid == player.sid) reloads[player.weaponIndex] = 0;
@@ -2180,6 +2183,7 @@ const modulesQueue = [
     
     if (tt?.skinIndex == 26 || tt?.skinIndex == 11) {
       wsBridge.updateHittingState(false, getAttackDir());
+      antibull = true;
       storeEquip(11);
       storeEquip(21, true);
     } else if (attackState) {
@@ -2212,9 +2216,9 @@ const modulesQueue = [
 
     wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((endTimeout - Date.now()) / 1000) + "s");
   }, () => {
-    const hitHat = (breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), 21) : 7);
+    const hitHat = antibull ? 11 : ((breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), 21) : 7));
     const hitAcc = enemyIsSusMf ? 21 : 18;
-    const idleHat = window.enemyDanger ? 6 : getBiomeHat();
+    const idleHat = antibull ? 11 : (window.enemyDanger ? 6 : getBiomeHat());
     const idleAcc = window.enemyDanger ? (enemyIsSusMf ? (enemyIsSusMf = false, 21) : 13) : (player.y <= config.snowBiomeTop ? 6 : 11);
     const tankerHat = 6;
     const tankerAcc = 15;
