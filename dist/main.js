@@ -4048,10 +4048,10 @@ window.captchaCallback = () => connectSocketIfReady();
 didLoad = true;
 
 function setupServerStatus() {
-  var altServerText, altServerURL, tmpHTML = '',
-    overallTotal = 0;
-  tmpHTML += '<option disabled>This feature has been disabled</option>';
-  serverBrowser.innerHTML = tmpHTML;
+  //var altServerText, altServerURL, tmpHTML = '',
+  //  overallTotal = 0;
+  //tmpHTML += '<option disabled>This feature has been disabled</option>';
+  //serverBrowser.innerHTML = tmpHTML;
 }
 
 function updateServerList() { }
