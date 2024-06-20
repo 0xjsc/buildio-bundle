@@ -2331,8 +2331,6 @@ const requestAnimationFrame_ = requestAnimationFrame;
 function render() {
   now = Date.now(), delta = now - lastUpdate, lastUpdate = now;
 
-  mainContext.clearRect(0, 0, canvas.width, canvas.height);
-
   if (player) {
     const moX = dxw - mouseX;
     const moY = dxh - mouseY;
