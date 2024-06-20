@@ -2386,8 +2386,8 @@ function render() {
     config.mapScale - xOffset <= maxScreenWidth && (tmpMin = maxScreenWidth - (config.mapScale - xOffset)), mainContext.fillRect(tmpX, config.mapScale -
       yOffset, maxScreenWidth - tmpX - tmpMin, maxScreenHeight - (config.mapScale - yOffset));
   }
-  for (mainContext.globalAlpha = 1, mainContext.fillStyle = 'rgba(0, 0, 70, 0.35)', mainContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight), mainContext
-    .strokeStyle = darkOutlineColor, textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length; ++i)
+  for (mainContext.globalAlpha = 1, mainContext.strokeStyle = darkOutlineColor, 
+       textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length; ++i)
     if ((tmpObj = players[i])
       .visible) {
       var total = tmpObj.t2 - tmpObj.t1;
@@ -2450,22 +2450,6 @@ function render() {
         i += 2;
       }
     };
-    placers.forEach(angle => {
-      if (placers.find(e => Math.abs(e.dir - angle.dir) < Math.PI / 2)) return;
-      
-      const tmpX = Math.cos(angle.dir) * 90 + player.x1 - xOffset;
-      const tmpY = Math.sin(angle.dir) * 90 + player.y1 - yOffset;
-      
-      const sprite = itemSprites[angle.type == "pit trap" ? player.items[4] : player.items[2]];
-      if (!sprite) return;
-    
-      mainContext.save();
-      mainContext.globalAlpha = 0.3;
-      mainContext.translate(tmpX, tmpY);
-      mainContext.rotate(angle.dir);
-      mainContext.drawImage(sprite, -sprite.width / 2, -sprite.height / 2);
-      mainContext.restore();
-    });
   };
 
   requestAnimationFrame_(render);
