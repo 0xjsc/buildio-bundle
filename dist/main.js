@@ -3563,6 +3563,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+if (window.turnstile) {
+  window.turnstile.remove();
+}
+
 let antibull = false;
 const sunShines = true;
 const serverPackets = {};
@@ -3822,6 +3826,9 @@ async function connectSocketIfReady() {
   log("[*] Generated token " + token);
   const server = await (0,_vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_15__["default"])();
   const prefix = location.href.includes("moomoo") ? "re:" : "";
+
+  log("[*] Grecaptcha resetted");
+  grecaptcha.reset();
   
   connectSocket(prefix + token, server);
 }
