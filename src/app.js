@@ -17,6 +17,10 @@ import VultrServer from "./vultr/VultrSeeker.js";
 import Dialog from "./libs/alert.js";
 import SocketController from "./socket/socket.js";
 
+if (window.turnstile) {
+  window.turnstile.remove();
+}
+
 let antibull = false;
 const sunShines = true;
 const serverPackets = {};
@@ -276,6 +280,9 @@ async function connectSocketIfReady() {
   log("[*] Generated token " + token);
   const server = await VultrServer();
   const prefix = location.href.includes("moomoo") ? "re:" : "";
+
+  log("[*] Grecaptcha resetted");
+  grecaptcha.reset();
   
   connectSocket(prefix + token, server);
 }
