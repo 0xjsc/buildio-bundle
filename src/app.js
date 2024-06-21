@@ -282,7 +282,7 @@ async function connectSocketIfReady() {
   const prefix = location.href.includes("moomoo") ? "re:" : "";
 
   log("[*] Grecaptcha resetted");
-  grecaptcha.reset();
+  // grecaptcha.reset();
   
   connectSocket(prefix + token, server);
 }
