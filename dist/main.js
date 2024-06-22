@@ -5912,7 +5912,7 @@ function render() {
       .fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(
         xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06
     , mainContext.beginPath();
-  /*for (var i = -camX, k = -camY; i < maxScreenWidth || k < maxScreenHeight; i += gridDelta, k += gridDelta) {
+  for (var i = -camX, k = -camY; i < maxScreenWidth || k < maxScreenHeight; i += gridDelta, k += gridDelta) {
     if (i > 0) {
       mainContext.moveTo(i, 0);
       mainContext.lineTo(i, maxScreenHeight);
@@ -5922,7 +5922,7 @@ function render() {
       mainContext.lineTo(maxScreenWidth, k);
     }
   }
-  mainContext.stroke();*/
+  mainContext.stroke();
   mainContext.globalAlpha = 1;
   mainContext.strokeStyle = outlineColor;
   renderGameObjects(-1, xOffset, yOffset);
@@ -5948,14 +5948,15 @@ function render() {
        textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length; ++i)
     if ((tmpObj = players[i])
       .visible) {
-      var total = tmpObj.t2 - tmpObj.t1;
-      var ratio = (now - average - tmpObj.t1) / total;
-      tmpObj.dt = Date.now();
-      var tmpRate = Math.min(1.7, tmpObj.dt / 170);
-      var tmpDiff = tmpObj.x2 - tmpObj.x1;
-      tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate;
-      tmpDiff = tmpObj.y2 - tmpObj.y1;
-      tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate;
+      //var total = tmpObj.t2 - tmpObj.t1;
+      //var ratio = (now - average - tmpObj.t1) / total;
+      //tmpObj.dt += delta;
+      //var tmpRate = Math.min(1.7, tmpObj.dt / 170);
+      //var tmpDiff = tmpObj.x2 - tmpObj.x1;
+      tmpObj.x = tmpObj.x1 * 0.1 + tmpObj.x * 0.9;
+      tmpObj.y = tmpObj.y1 * 0.1 + tmpObj.y * 0.9;
+      //tmpDiff = tmpObj.y2 - tmpObj.y1;
+      //tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate;
       tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
 
       if (players[i] && tmpObj.chatCountdown) {
