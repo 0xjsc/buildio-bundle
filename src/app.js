@@ -31,8 +31,8 @@ function notification(text) {
   }, 2000);
 };
 
-document.querySelector("#gameUI").style.background = "rgba(0, 0, 70, 0.5)";
-document.querySelector("#mainMenu").style.background = "rgba(0, 0, 70, 0.5)";
+document.querySelector("#gameUI").style.background = "rgba(0, 0, 70, 0.3)";
+document.querySelector("#mainMenu").style.background = "rgba(0, 0, 70, 0.3)";
 
 let antibull = false;
 const serverPackets = {};
