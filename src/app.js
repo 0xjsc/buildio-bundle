@@ -26,7 +26,7 @@ function notification(text) {
   document.documentElement.appendChild(notif);
 
   setTimeout(() => {
-    notificationOffset -= 120;
+    notificationOffset -= 90;
     notif.remove();
   }, 2000);
 };
@@ -1247,6 +1247,8 @@ const othersReloads  = [];
 function getBiomeHat() {
   const biomeID = player.y >= config.mapScale - config.snowBiomeTop ? 2 : player.y <= config.snowBiomeTop ? 1 : 0;
 
+  if (window.enemyDanger) return 6;
+
   switch (biomeID) {
     case 0:
       return 12; // forest
@@ -1283,7 +1285,7 @@ function gatherAnimation(sid, didHit, index) {
     wsBridge.updateHittingState(true, players.find(p => p && p?.sid == ownerSid).dir); 
   }
 
-  if (antibull) {
+  if (antibull && Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < items.weapons[player.weaponIndex].range + config.playerScale) {
     notification("Antibull performed at " + tmpObj.name);
     storeEquip(53);
     antibull = false;
