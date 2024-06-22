@@ -1042,7 +1042,7 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : UTILS.fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (wsBridge.updateMoveDir(newMoveDir), (!window.enemyDanger && !instakilling) && (storeEquip(window.tanker ? 15 : (player.y <= config.snowBiomeTop ? 6 : 11), true), storeEquip(window.tanker ? 6 : getBiomeHat())), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (wsBridge.updateMoveDir(newMoveDir), (!window.enemyDanger && !instakilling) && (storeEquip(window.tanker ? 15 : (player.y <= 11), true), storeEquip(window.tanker ? 6 : getBiomeHat())), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
@@ -2223,7 +2223,7 @@ const modulesQueue = [
     const hitHat = (!breaking && antibull) ? 11 : ((breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), 21) : 7));
     const hitAcc = enemyIsSusMf ? 21 : 18;
     const idleHat = window.enemyDanger ? 6 : getBiomeHat();
-    const idleAcc = window.enemyDanger ? (enemyIsSusMf ? (enemyIsSusMf = false, 21) : 13) : (player.y <= config.snowBiomeTop ? 6 : 11);
+    const idleAcc = window.enemyDanger ? (enemyIsSusMf ? (enemyIsSusMf = false, 21) : 13) : 11;
     const tankerHat = 6;
     const tankerAcc = 15;
     const weapon = waka || player.weaponIndex;
