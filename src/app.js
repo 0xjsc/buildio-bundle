@@ -263,7 +263,7 @@ var isProd = location.origin.includes("http://")
 var startedConnecting = false;
 
 if (localStorage.version !== versionHash) {
-  notification(`<h2> AutoWASM has been updated to version ${versionHash}! </h2> <br> ${changelog}`);
+  notification(`utoWASM has been updated to version ${versionHash} - ${changelog}`);
   localStorage.version = versionHash;
 }
 
@@ -2241,7 +2241,7 @@ const modulesQueue = [
       setTimeout(() => {
         storeEquip(idleHat);
         storeEquip(idleAcc, true);
-      }, config.serverUpdateRate / 2);
+      }, 1000 / config.serverUpdateRate / 2);
     } else {
       storeEquip(idleHat);
       storeEquip(idleAcc, true);
