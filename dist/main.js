@@ -3567,6 +3567,8 @@ if (window.turnstile) {
   window.turnstile.remove();
 }
 
+document.querySelector("#gameUI").style.background = "rgba(0, 0, 70, 0.3)";
+
 let antibull = false;
 const sunShines = true;
 const serverPackets = {};
