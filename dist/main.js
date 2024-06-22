@@ -3563,10 +3563,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-if (window.turnstile) {
-  window.turnstile.remove();
-}
-
 let notificationOffset = 0;
 function notification(text) {
   const notif = document.createElement("div");
@@ -3581,10 +3577,10 @@ function notification(text) {
   }, 2000);
 };
 
-document.documentElement.style.background = "rgba(0, 0, 70, 0.5)";
+document.querySelector("#gameUI").style.background = "rgba(0, 0, 70, 0.5)";
+document.querySelector("#mainMenu").style.background = "rgba(0, 0, 70, 0.5)";
 
 let antibull = false;
-const sunShines = true;
 const serverPackets = {};
 const eventsListener = location.href.includes("mohmoh") ? document.getElementById("gameCanvas") : document.getElementById("touch-controls-fullscreen");
 const { log } = console;
@@ -3772,9 +3768,8 @@ const clanNames = [
   "urez"
 ];
 
-const versionHash = "1.6-Omicron";
+const versionHash = "1.6-Final";
 const changelog = "Fixes...";
-const motionBlurLevel = 0.6;
 let instakilling = false;
 
 let offsetCamX = 0;
@@ -3782,7 +3777,6 @@ let offsetCamY = 0;
 let deltaHold = 10;
 let ownerSid = null;
 let autoclicker = false;
-let placerr = [];
 
 const emojis = new Map();
 
@@ -3815,12 +3809,7 @@ var isProd = location.origin.includes("http://")
 var startedConnecting = false;
 
 if (localStorage.version !== versionHash) {
-  const element = (0,_libs_alert_js__WEBPACK_IMPORTED_MODULE_16__["default"])(`<h2> AutoWASM has been updated to version ${versionHash}! </h2> <br> ${changelog}`);
-  element.style.top = "20px";
-  element.style.right = "20px";
-  setTimeout(() => {
-    element.remove();
-  }, 3000);
+  notification(`<h2> AutoWASM has been updated to version ${versionHash}! </h2> <br> ${changelog}`);
   localStorage.version = versionHash;
 }
 
@@ -4604,7 +4593,7 @@ function sendMoveDir() {
       }
     return 0 == dx && 0 == dy ? void 0 : _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].fixTo(Math.atan2(dy, dx), 2);
   }();
-  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (wsBridge.updateMoveDir(newMoveDir), (!window.enemyDanger && !instakilling) && (storeEquip(window.tanker ? 15 : (player.y <= 11), true), storeEquip(window.tanker ? 6 : getBiomeHat())), lastMoveDir = newMoveDir);
+  (null == lastMoveDir || null == newMoveDir || Math.abs(newMoveDir - lastMoveDir) > 0.3) && (wsBridge.updateMoveDir(newMoveDir), (!window.enemyDanger && !instakilling) && (storeEquip(11, true), storeEquip(getBiomeHat())), lastMoveDir = newMoveDir);
 }
 
 function sendMapPing() {
@@ -4676,7 +4665,7 @@ function updateStatusDisplay() {
   killCounter.innerText = player.kills;
 
   if (oldKills++ < player.kills) {
-    wsBridge.sendChat(sunShines ? "THE SOLAR FLARE..." : "жди докс крч");
+    wsBridge.sendChat("жди докс крч");
   }
 }
 var iconSprites = {},
@@ -4802,10 +4791,6 @@ let turretReload = 0;
 const othersReloads  = [];
 
 function getBiomeHat() {
-
-  if (window.tanker) 
-    return 6;
-  
   const biomeID = player.y >= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 2 : player.y <= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 1 : 0;
 
   switch (biomeID) {
@@ -5789,8 +5774,6 @@ const modulesQueue = [
     const hitAcc = 21;
     const idleHat = window.enemyDanger ? 6 : getBiomeHat();
     const idleAcc = window.enemyDanger ? (enemyIsSusMf ? (enemyIsSusMf = false, 21) : 18) : 11;
-    const tankerHat = 6;
-    const tankerAcc = 15;
     const weapon = waka || player.weaponIndex;
     const preparingForHit = reloads[weapon] == speeds[weapon];
     
@@ -5800,10 +5783,14 @@ const modulesQueue = [
     if (preparingForHit && (attackState || breaking || bullspam)) {
       storeEquip(hitHat);
       storeEquip(hitAcc, true);
-      reloads[weapon] = 0;
+      
+      setTimeout(() => {
+        storeEquip(idleHat);
+        storeEquip(idleAcc, true);
+      }, _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].serverUpdateRate / 2);
     } else {
-      storeEquip(window.tanker ? tankerHat : idleHat);
-      storeEquip(window.tanker ? tankerAcc : idleAcc, true);
+      storeEquip(idleHat);
+      storeEquip(idleAcc, true);
     }
   }
 ];
