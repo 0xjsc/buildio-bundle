@@ -2240,9 +2240,9 @@ const modulesQueue = [
     wsBridge.sendChat("[*] GhostDrone ends in " + Math.floor((endTimeout - Date.now()) / 1000) + "s");
   }, () => {
     const hitHat = (!breaking && antibull) ? 11 : ((breaking || !touch) ? 40 : ((Date.now() - lastPoison >= poisonCD) ? (lastPoison = Date.now(), 21) : 7));
-    const hitAcc = enemyIsSusMf ? 21 : 18;
+    const hitAcc = 21;
     const idleHat = window.enemyDanger ? 6 : getBiomeHat();
-    const idleAcc = window.enemyDanger ? (enemyIsSusMf ? (enemyIsSusMf = false, 21) : 13) : 11;
+    const idleAcc = window.enemyDanger ? (enemyIsSusMf ? (enemyIsSusMf = false, 21) : 18) : 11;
     const tankerHat = 6;
     const tankerAcc = 15;
     const weapon = waka || player.weaponIndex;
