@@ -5948,8 +5948,8 @@ function render() {
        textManager.update(delta, mainContext, xOffset, yOffset), i = 0; i < players.length; ++i)
     if ((tmpObj = players[i])
       .visible) {
-      //var total = tmpObj.t2 - tmpObj.t1;
-      //var ratio = (now - average - tmpObj.t1) / total;
+      var total = tmpObj.t2 - tmpObj.t1;
+      var ratio = (now - average - tmpObj.t1) / total;
       //tmpObj.dt += delta;
       //var tmpRate = Math.min(1.7, tmpObj.dt / 170);
       //var tmpDiff = tmpObj.x2 - tmpObj.x1;
