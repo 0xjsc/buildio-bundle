@@ -3572,7 +3572,7 @@ function notification(text) {
   document.documentElement.appendChild(notif);
 
   setTimeout(() => {
-    notificationOffset -= 120;
+    notificationOffset -= 90;
     notif.remove();
   }, 2000);
 };
@@ -4793,6 +4793,8 @@ const othersReloads  = [];
 function getBiomeHat() {
   const biomeID = player.y >= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].mapScale - _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 2 : player.y <= _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].snowBiomeTop ? 1 : 0;
 
+  if (window.enemyDanger) return 6;
+
   switch (biomeID) {
     case 0:
       return 12; // forest
@@ -4829,7 +4831,7 @@ function gatherAnimation(sid, didHit, index) {
     wsBridge.updateHittingState(true, players.find(p => p && p?.sid == ownerSid).dir); 
   }
 
-  if (antibull) {
+  if (antibull && Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale) {
     notification("Antibull performed at " + tmpObj.name);
     storeEquip(53);
     antibull = false;
