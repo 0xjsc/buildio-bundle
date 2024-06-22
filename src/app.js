@@ -25,8 +25,8 @@ let notificationOffset = 0;
 function notification(text) {
   const notif = document.createElement("div");
   notif.innerHTML = text;
-  notif.style = "width: 300px; text-align: center; height: 50px; z-index: 9999; background: rgba(0, 0, 0, 0.5); color: white; font-size: 20px; border-bottom: 2px solid green; position: fixed; right: 0px";
-  notif.style.top = (notificationOffset += 70) + "px";
+  notif.style = "width: 300px; text-align: center; height: 50px; z-index: 9999; background: rgba(0, 0, 0, 0.5); color: white; font-size: 20px !important; border-bottom: 4px solid green; position: fixed; right: 100px";
+  notif.style.top = (notificationOffset += 90) + "px";
   document.documentElement.appendChild(notif);
 
   setTimeout(() => {
@@ -1744,7 +1744,7 @@ function preplace(enemy) {
                 let searchFailed = true;
                 for (let currentAngle = angleLookupStart;
                     currentAngle < angleLookupEnd;
-                    currentAngle += Math.abs(angleLookupEnd - angleLookupStart) / 4
+                    currentAngle += Math.abs(angleLookupEnd - angleLookupStart) / 8
                 ) {
                     const actualReach = items.weapons[player.weaponIndex].range + config.playerScale;
                     const objectX = Math.cos(currentAngle) * actualReach + actualX;
