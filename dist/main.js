@@ -5953,8 +5953,8 @@ function render() {
       //tmpObj.dt += delta;
       //var tmpRate = Math.min(1.7, tmpObj.dt / 170);
       //var tmpDiff = tmpObj.x2 - tmpObj.x1;
-      tmpObj.x = tmpObj.x1 * 0.1 + tmpObj.x * 0.9;
-      tmpObj.y = tmpObj.y1 * 0.1 + tmpObj.y * 0.9;
+      tmpObj.x = tmpObj.x2 * 0.1 + (tmpObj.x || 0) * 0.9;
+      tmpObj.y = tmpObj.y2 * 0.1 + (tmpObj.y || 0) * 0.9;
       //tmpDiff = tmpObj.y2 - tmpObj.y1;
       //tmpObj.y = tmpObj.y1 + tmpDiff * tmpRate;
       tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
