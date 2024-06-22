@@ -5277,13 +5277,13 @@ function preplace(enemy) {
                 let searchFailed = true;
                 for (let currentAngle = angleLookupStart;
                     currentAngle < angleLookupEnd;
-                    currentAngle += Math.abs(angleLookupEnd - angleLookupStart) / 8
+                    currentAngle += Math.abs(angleLookupEnd - angleLookupStart) / 12
                 ) {
                     const actualReach = _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[player.weaponIndex].range + _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].playerScale;
                     const objectX = Math.cos(currentAngle) * actualReach + actualX;
                     const objectY = Math.sin(currentAngle) * actualReach + actualY;
                     if (preplacableObjects.find(e => e != gameObject && 
-                        Math.hypot(e.x - gameObject.x, e.y - gameObject.y) < actualReach)) continue;
+                        Math.hypot(e.x - gameObject.x, e.y - gameObject.y) < gameObject.scale)) continue;
                     else {
                         searchFailed = false;
                         break;
