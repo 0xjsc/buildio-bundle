@@ -1755,14 +1755,13 @@ function preplace(enemy) {
                               
 function autoplace(enemy, replace = false) {
   if (instakilling) return;
-  if (breaking) return;
 
   const distance = Math.hypot(enemy?.x2 - player?.x2, enemy?.y2 - player?.y2) || 181;
   const enemyDir = Math.atan2((enemy || window.enemyDanger)?.y - player.y2, (enemy || window.enemyDanger)?.x - player.x2);
   const preplacableObjects = nearestGameObjects.filter(e => Math.hypot(e.x - player.x2, e.y - player.y2) < items.weapons[player.weaponIndex] + config.playerScale);
   placers = [...preplacableObjects, ...freeAngles].map((angle, i, array) => {
     const preplace = i < preplacableObjects.length;
-    place(player.items[((replace || preplace) && Math.abs(angle - getMoveDir()) > Math.PI && Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < items.weapons[player.weaponIndex].range + config.playerScale) ? 2 : 4)], angle);
+    place(player.items[(Math.abs(enemyDir - angle) < Math.PI / 2) ? 2 : (((Math.abs(angle - getMoveDir()) <= Math.PI / 2) && distance < items.weapons[player.weaponIndex].range + config.playerScale) ? 2 : 4)], angle);
     benchmarks.Placers += 3;
     return {
       dir: angle,
