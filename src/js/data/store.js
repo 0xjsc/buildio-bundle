@@ -524,11 +524,11 @@ store.hats = [{
   },
   {
     id: 21,
-    name: 'Corrupt X Wings',
+    name: 'Crypted X Wings',
     price: 20000,
     scale: 178,
     xOff: 26,
-    desc: 'deal damage to players that damage you',
+    desc: 'Doxx people that dare to damage you',
     dmg: 0.25
   }
 ];
