@@ -2380,7 +2380,7 @@ function render() {
       .fillStyle = '#dbc666', renderWaterBodies(xOffset, yOffset, mainContext, config.riverPadding), mainContext.fillStyle = '#91b2db', renderWaterBodies(
         xOffset, yOffset, mainContext, 250 * (waterMult - 1))), mainContext.lineWidth = 4, mainContext.strokeStyle = '#000', mainContext.globalAlpha = 0.06
     , mainContext.beginPath();
-  for (var i = -camX, k = -camY; i < maxScreenWidth || k < maxScreenHeight; i += gridDelta, k += gridDelta) {
+  /*for (var i = -camX, k = -camY; i < maxScreenWidth || k < maxScreenHeight; i += gridDelta, k += gridDelta) {
     if (i > 0) {
       mainContext.moveTo(i, 0);
       mainContext.lineTo(i, maxScreenHeight);
@@ -2390,7 +2390,7 @@ function render() {
       mainContext.lineTo(maxScreenWidth, k);
     }
   }
-  mainContext.stroke();
+  mainContext.stroke();*/
   mainContext.globalAlpha = 1;
   mainContext.strokeStyle = outlineColor;
   renderGameObjects(-1, xOffset, yOffset);
