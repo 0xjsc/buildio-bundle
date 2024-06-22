@@ -5950,7 +5950,7 @@ function render() {
       .visible) {
       var total = tmpObj.t2 - tmpObj.t1;
       var ratio = (now - average - tmpObj.t1) / total;
-      tmpObj.dt += delta;
+      tmpObj.dt = Date.now();
       var tmpRate = Math.min(1.7, tmpObj.dt / 170);
       var tmpDiff = tmpObj.x2 - tmpObj.x1;
       tmpObj.x = tmpObj.x1 + tmpDiff * tmpRate;
@@ -6081,7 +6081,6 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
 
 .actionBarItem, #stoneDisplay, #woodDisplay, #foodDisplay, #leaderboard, .gameButton, #killCounter, .resourceDisplay {
   border-radius: 10px !important;
-  opacity: 80%;
 }
 </style>
 `);
