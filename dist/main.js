@@ -3809,7 +3809,7 @@ var isProd = location.origin.includes("http://")
 var startedConnecting = false;
 
 if (localStorage.version !== versionHash) {
-  notification(`<h2> AutoWASM has been updated to version ${versionHash}! </h2> <br> ${changelog}`);
+  notification(`utoWASM has been updated to version ${versionHash} - ${changelog}`);
   localStorage.version = versionHash;
 }
 
@@ -5787,7 +5787,7 @@ const modulesQueue = [
       setTimeout(() => {
         storeEquip(idleHat);
         storeEquip(idleAcc, true);
-      }, _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].serverUpdateRate / 2);
+      }, 1000 / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].serverUpdateRate / 2);
     } else {
       storeEquip(idleHat);
       storeEquip(idleAcc, true);
