@@ -21,7 +21,21 @@ if (window.turnstile) {
   window.turnstile.remove();
 }
 
-document.querySelector("#gameUI").style.background = "rgba(0, 0, 70, 0.3)";
+let notificationOffset = 0;
+function notification(text) {
+  const notif = document.createElement("div");
+  notif.innerHTML = text;
+  notif.style = "width: 300px; text-align: center; height: 50px; z-index: 9999; background: rgba(0, 0, 0, 0.5); color: white; font-size: 20px; border-bottom: 2px solid green; position: fixed; right: 0px";
+  notif.style.top = (notificationOffset += 70) + "px";
+  document.documentElement.appendChild(notif);
+
+  setTimeout(() => {
+    notificationOffset -= 120;
+    notif.remove();
+  }, 2000);
+};
+
+document.documentElement.style.background = "rgba(0, 0, 70, 0.5)";
 
 let antibull = false;
 const sunShines = true;
@@ -1284,11 +1298,9 @@ function gatherAnimation(sid, didHit, index) {
     wsBridge.updateHittingState(true, players.find(p => p && p?.sid == ownerSid).dir); 
   }
 
-  if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < items.weapons[player.weaponIndex] + config.playerScale && (tmpObj.skinIndex == 11 || tmpObj.tailIndex == 21)) {
-    enemyIsSusMf = true;
-  } else if (antibull && Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < items.weapons[player.weaponIndex] + config.playerScale * 2) {
+  if (antibull) {
+    notification("Antibull performed at " + tmpObj.name);
     storeEquip(53);
-    wsBridge.sendChat("AntiBull test");
     antibull = false;
   }
   
@@ -1858,6 +1870,8 @@ function normalInsta() {
   if (!enemy) return false;
   if (instakilling) return false;
 
+  notification("2v1 Instakilling at " + enemy.name + " and " + enemy1.name);
+
   let angle = Math.atan2(enemy?.y2 - player.y2, enemy?.x2 - player.x2);
   let angle1 = Math.atan2(enemy1?.y2 - player.y2, enemy1?.x2 - player.x2);
 
@@ -1910,6 +1924,8 @@ function reverseInsta() {
   if (reloads[player.weapons[0]] !== speeds[player.weapons[0]] || reloads[player.weapons[1]] !== speeds[player.weapons[1]]) return;
   if (!enemy) return;
   if (instakilling) return;
+
+  notification("Reverse Instakilling at " + enemy.name);
 
   let angle = Math.atan2(enemy.y2 - player.y2, enemy.x2 - player.x2);
   aimOverride = angle;
@@ -2192,6 +2208,7 @@ const modulesQueue = [
       antibull = true;
       storeEquip(11);
       storeEquip(21, true);
+      notification("Detected antibull from " + tt.name);
     } else if (attackState) {
       wsBridge.updateHittingState(true, getAttackDir());
     }
