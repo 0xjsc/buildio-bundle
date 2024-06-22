@@ -5403,7 +5403,7 @@ function normalInsta() {
   if (!enemy) return false;
   if (instakilling) return false;
 
-  notification("2v1 Instakilling at " + enemy.name + " and " + enemy1.name);
+  notification("Instakilling at " + enemy.name + " and " + enemy1.name);
 
   let angle = Math.atan2(enemy?.y2 - player.y2, enemy?.x2 - player.x2);
   let angle1 = Math.atan2(enemy1?.y2 - player.y2, enemy1?.x2 - player.x2);
@@ -5413,11 +5413,10 @@ function normalInsta() {
   instakilling = true;
 
   fixInsta();
-  storeEquip(53);
 
   setTimeout(() => {
     storeEquip(7);
-    storeEquip(4, true);
+    storeEquip(18, true);
     
     wsBridge.updateHoldItem(player.weapons[0], true);
     wsBridge.updateHittingState(true, hit360);
@@ -5429,8 +5428,8 @@ function normalInsta() {
       aimOverride = angle1;
       autoclicker = angle1;
       _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.AIM, angle1);
-      storeEquip(1);
-      storeEquip(15, true);
+      storeEquip(53);
+      storeEquip(21, true);
       wsBridge.updateHoldItem(player.weapons[1], true);
       setTimeout(() => {
         aimOverride = false;
@@ -5655,7 +5654,7 @@ const modulesQueue = [
     nearestGameObjects = gameObjects.filter(object => {
       if (!object?.x) return;
 
-      if (!isOnScreen(object?.x - xOffset, object?.y - yOffset, object.scale)) return;
+      if (!isOnScreen(object?.x - xOffset, object?.y - yOffset, object.scale * 2)) return;
       
       return true;
     });
@@ -5716,7 +5715,10 @@ const modulesQueue = [
     else if (window.keyEvents.KeyV) place(player.items[2], getAttackDir());
     else if (window.keyEvents.KeyF) place(player.items[4], getAttackDir()); 
     else if (window.keyEvents.KeyZ) boostSpike();
-    else if (window.keyEvents.KeyQ) place(player.items[0], getAttackDir());
+    else if (window.keyEvents.KeyQ) {
+      place(player.items[0], getAttackDir());
+      place(player.items[0], getAttackDir())
+    }
     else if (window.keyEvents.KeyH) autoMills();;
 
     if (window.keyEvents.ArrowUp) offsetCamY -= (deltaHold += 3);
@@ -5785,11 +5787,6 @@ const modulesQueue = [
     if (preparingForHit && (attackState || breaking || bullspam)) {
       storeEquip(hitHat);
       storeEquip(hitAcc, true);
-      
-      setTimeout(() => {
-        storeEquip(idleHat);
-        storeEquip(idleAcc, true);
-      }, 1000 / _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].serverUpdateRate / 2);
     } else {
       storeEquip(idleHat);
       storeEquip(idleAcc, true);
@@ -5831,7 +5828,7 @@ function updatePlayers(data) {
     if (tmpObj?.sid == ownerSid) botFunctions(tmpObj);
     
     if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 700 && tmpObj != player) window.enemy = tt = tmpObj;
-    if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 300 && tmpObj != player) window.enemyDanger = tmpObj;
+    if (Math.hypot(tmpObj.x - player.x, tmpObj.y - player.y) < 500 && tmpObj != player) window.enemyDanger = tmpObj;
   }
 
   if (!player?.health) return;
