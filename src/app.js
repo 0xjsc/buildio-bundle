@@ -258,6 +258,7 @@ const blacklist = new Map(Object.entries({
 }));
 
 window.loadedScript = true;
+const isMohMoh = location.href.includes("mohmoh");
 
 var isProd = location.origin.includes("http://")
 var startedConnecting = false;
@@ -281,7 +282,7 @@ async function connectSocketIfReady() {
 
   log("[*] Generating grecaptcha token...");
   
-  const token = await grecaptcha.execute(getToken(), recaptchaOpt);
+  const token = isMohMoh ? "flower" : (await grecaptcha.execute(getToken(), recaptchaOpt));
   log("[*] Generated token " + token);
   const server = await VultrServer();
   const prefix = location.href.includes("moomoo") ? "re:" : "";
