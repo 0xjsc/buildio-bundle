@@ -11,7 +11,7 @@
   "author": "Build.IO team",
   "license": "MIT",
   "dependencies": {
-    "webpack": "^5.92.1",
+    "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4"
   }
 }
