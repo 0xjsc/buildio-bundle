@@ -961,7 +961,7 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
     var t = ev.changedTouches[i];
     t.identifier == controllingTouch.id ? (controllingTouch.currentX = t.pageX, controllingTouch.currentY = t.pageY, sendMoveDir()) : t.identifier == attackingTouch.id && (attackingTouch.currentX = t.pageX, attackingTouch.currentY = t.pageY, attackState = 1);
   }
-}), !1), window.addEventListener('touchstart', UTILS.checkTrusted(function (ev) {
+}), true), window.addEventListener('touchstart', UTILS.checkTrusted(function (ev) {
   if (ev.toElement.id !== "gameCanvas" &&
     ev.toElement.id !== "touch-controls-fullscreen") return;
   if (!inGame)
@@ -971,20 +971,20 @@ window.addEventListener('resize', UTILS.checkTrusted(resize)), resize(), setUsin
     var t = ev.changedTouches[i];
     t.pageX < document.body.scrollWidth / 2 && -1 == controllingTouch.id ? (controllingTouch.id = t.identifier, controllingTouch.startX = controllingTouch.currentX = t.pageX, controllingTouch.startY = controllingTouch.currentY = t.pageY, sendMoveDir()) : t.pageX > document.body.scrollWidth / 2 && -1 == attackingTouch.id && (attackingTouch.id = t.identifier, attackingTouch.startX = attackingTouch.currentX = t.pageX, attackingTouch.startY = attackingTouch.currentY = t.pageY, player.buildIndex < 0 && (attackState = 1, sendAtckState()));
   }
-}), false), window.addEventListener('touchend', UTILS.checkTrusted(touchEnd), !1), window.addEventListener('touchcancel', UTILS.checkTrusted(touchEnd), !1), window.addEventListener('touchleave', UTILS.checkTrusted(touchEnd), !1), document.addEventListener('mousemove', function (e) {
+}), true), window.addEventListener('touchend', UTILS.checkTrusted(touchEnd), !1), window.addEventListener('touchcancel', UTILS.checkTrusted(touchEnd), !1), window.addEventListener('touchleave', UTILS.checkTrusted(touchEnd), !1), document.addEventListener('mousemove', function (e) {
   e.preventDefault(), e.stopPropagation(), setUsingTouch(!1), mouseX = e.clientX, mouseY = e.clientY;
-}, false), document.addEventListener('mousedown', function (e) {
+}, true), document.addEventListener('mousedown', function (e) {
   if (e.toElement.id !== "gameCanvas" &&
     e.toElement.id !== "touch-controls-fullscreen") return;
   aimOverride = false;
   setUsingTouch(!1), 1 != attackState && (attackState = 1, sendAtckState());
   touch = e.button == 0;
   waka = touch ? player.weapons[0] : (10 == player.weapons[1] ? 10 : player.weapons[0]);
-}, false), document.addEventListener('mouseup', function (e) {
+}, true), document.addEventListener('mouseup', function (e) {
   if (e.toElement.id !== "gameCanvas" &&
     e.toElement.id !== "touch-controls-fullscreen") return;
   setUsingTouch(!1), 0 != attackState && (attackState = 0, sendAtckState());
-}, false);
+}, true);
 document.addEventListener("wheel", function (e) {
   const deltaY = maxScreenWidth / 20;
   const fixedDelta = e.deltaY > 0 ? deltaY : -deltaY;
@@ -992,7 +992,7 @@ document.addEventListener("wheel", function (e) {
   maxScreenHeight += fixedDelta;
   
   resize();
-}, false);
+}, true);
   let touch = 0;
 var keys = {},
   moveKeys = {
