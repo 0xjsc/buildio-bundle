@@ -2530,6 +2530,29 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
   border: 0px !important;
 }
 
+#modMenu {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.6);
+  box-shadow: 2px 2px 12px black;
+  height: 290px;
+  width: 300px;
+  top: 300px;
+  left: 0px;
+  z-index: 10;
+  border: 5px solid transparent;
+  border-top: linear-gradient(#b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
+  color: white;
+  transition: all 1s 0s;
+  overflow: auto;
+  scrollbar-width: none;
+  font-family: Arial !important;
+}
+
+#modMenu:hover {
+  transform: scale(1.05);
+  background: rgba(0, 0, 0, 0.8);
+}
+
 #wideAdCard, .adMenuCard, #promoImgHolder, #mapDisplay, #scoreDisplay, #main-menu-left-ad, #bottom-ad {
   display: none !important;
   visibility: hidden !important;
@@ -2540,3 +2563,36 @@ document.querySelector("body").insertAdjacentHTML("beforeend", `
 }
 </style>
 `);
+
+const menu = document.createElement("div");
+document.documentElement.appendChild(menu);
+menu.id = "modMenu";
+
+menu.innerHTML = `
+<h2> <center> AutoWASM Sync </center> </h2> <br>
+
+<input type = "text" placeholder = "Player Username" id = "username_" style = "outline: none; background: rgba(0, 0, 0, 0.5); border: 0; color: white"> <span id = "syncBtn"> Connect </span> <br>
+
+Follow module: <span onclick = "window.follow = !window.follow; this.innerHTML = window.follow ? 'ON' : 'OFF'"> OFF </span> <br>
+Bow spamming module: <span onclick = "window.bowspam = !window.bowspam; this.innerHTML = window.bowspam ? 'ON' : 'OFF'"> OFF </span> <br>
+Ghost anti-instakill drone turret+secondary dodge system module: <span onclick = "window.ghost = !window.ghost; this.innerHTML = window.ghost ? 'ON' : 'OFF'"> OFF </span> <br>
+Boost Insta Optimisations: <span onclick = "window.boostinsta = !window.boostinsta; this.innerHTML = window.boostinsta ? 'ON' : 'OFF'"> OFF </span> <br>
+Tanker mode: <span onclick = "window.tanker = !window.tanker; this.innerHTML = window.tanker ? 'ON' : 'OFF'"> OFF </span> <br> 
+FZ Autoheal: <span onclick = "window.fz = !window.fz; this.innerHTML = window.fz ? 'ON' : 'OFF'"> OFF </span> <br>
+Server tester <br>
+Packet Limit tester: <span onclick = "this.innerHTML == 'Start' ? (window.testPacketLimit = true, this.innerHTML = 'Stop') : (window.testPacketLimit = false, this.innerHTML = 'Start')">Start</span> <br>
+<div align = "right"> @0xffabc </div>
+`;
+
+document.getElementById("syncBtn").onclick = function e() {
+  if (this.innerHTML == "Connect") {
+    wsBridge.send(packets.SEND_CHAT, "!connect " + document.getElementById("username_").value);
+    this.innerHTML = "Disconnect";
+  } else if (this.innerHTML == "Disconnect") {
+    wsBridge.send(packets.SEND_CHAT, "!disconnect");
+    this.innerHTML = "Connect";
+  } else {
+    wsBridge.send(packets.SEND_CHAT, "!connect " + document.getElementById("username_").value);
+    this.innerHTML = "Disconnect";
+  }
+}
