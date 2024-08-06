@@ -5336,8 +5336,8 @@ function autobreak(trap) {
   
   const correctWeapon = player.weapons[1] == 10 ? 10 : player.weapons[0];
   const trapAngle = Math.atan2(
-    trap.y - player.y, 
-    trap.x - player.x
+    trap.y - player.y2, 
+    trap.x - player.x2
   );
 
   breaking = true;
