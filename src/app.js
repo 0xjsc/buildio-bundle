@@ -1640,7 +1640,7 @@ setInterval(() => {
 
   healer = false;
 
-  heal(Math.ceil((100 - player.health) / getOuthealAmount(player.items[0])));
+  heal(Math.ceil((100 - player.health) / getItemOutheal(player.items[0])));
 }, 1);
 
 function updateHealth(sid, value) {
