@@ -273,7 +273,6 @@ function getToken() {
 }
 
 async function connectSocketIfReady() {
-  if (startedConnecting || !grecaptcha?.ready) return;
   startedConnecting = true;
 
   log("[*] Waiting for grecaptcha ready...");
@@ -287,9 +286,6 @@ async function connectSocketIfReady() {
   const server = await VultrServer();
   const prefix = location.href.includes("moomoo") ? "re:" : "";
 
-  log("[*] Grecaptcha resetted");
-  // grecaptcha.reset();
-  
   connectSocket(prefix + token, server);
 }
 
@@ -305,9 +301,6 @@ function connectSocket(token, server = location.host) {
   window.socket = top.socket = io;
   
   io.connect(wsAddress, function (error) {
-    if (location.href.includes("mohmoh"))
-      wsBridge.register();
-    
     wsBridge.pingServer(); (error !== "Invalid Connection" && error) ? disconnect(error) : (loadingText.style.display = 'none', menuCardHolder.style.display = 'block', document.getElementById("enterGame").onclick = UTILS.checkTrusted(function () {
       enterGame();
     }), joinPartyButton.onclick = UTILS.checkTrusted(function () {
