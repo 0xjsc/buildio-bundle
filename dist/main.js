@@ -5160,7 +5160,7 @@ function getItemOutheal(item) {
 };
 
 function heal(healCount) {
-  if (player.health == 100 || !player.alive || player.health <= 0) return;
+  if (player.health == 100 || player.health <= 0) return;
   
   lastHeal = Date.now();
   window.fz && (findPlayerBySID(player.sid).health = 100);
@@ -5180,29 +5180,20 @@ let lastDamage = 0;
 let prevHeal = 0;
 let healTimestamp = Date.now();
 
-function healing(healTimestamp) {
-  const damage = (100 - player.health) || 100;
-  const healingItemSid = player.items[0];
-  const healCount = Math.ceil(damage / getItemOutheal(healingItemSid));
+setInterval(() => {
+  if (!player.heal || Date.now() - healTimestamp < 120 - window.pingTime) return;
 
-  setTimeout(() => {
-    heal(healCount);
-  }, ((Date.now() - prevHeal) < 111) ? 
-             (Date.now() - healTimestamp + 120 - window.pingTime + 
-             (Date.now() - prevHeal)) : 
-             (Date.now() - healTimestamp + 120 - window.pingTime));
+  delete player.heal;
 
-  prevHeal = Date.now();
-}
+  heal(Math.ceil((100 - player.health) / getOuthealAmount(player.items[0])));
+}, 1);
 
 function updateHealth(sid, value) {
   (tmpObj = findPlayerBySID(sid)) && (tmpObj.health = value);
 
-  oldHealth = player.health;
+  player.heal = true;
 
   healTimestamp = Date.now();
-
-  healing(healTimestamp);
 }
 
 function getMoveDir() {
