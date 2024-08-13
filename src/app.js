@@ -289,9 +289,7 @@ async function connectSocketIfReady() {
   connectSocket(prefix + token, server);
 }
 
-window.captchaCallback = connectSocketIfReady;
-window.onload = connectSocketIfReady;
-window.grecaptcha?.ready && connectSocketIfReady();
+connectSocketIfReady();
 
 const wsLogs = [];
 
