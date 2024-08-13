@@ -5323,7 +5323,7 @@ function autobreak(trap) {
   window.trap = trap;
   
   wsBridge.updateHittingState(true, trapAngle);
-  _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.AIM, trapAngle);
+  wsBridge.updateHittingState(false, trapAngle);
 
   const buildDamage = _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[waka].dmg * _config_js__WEBPACK_IMPORTED_MODULE_4__["default"].fetchVariant(player).val * 
         _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"].weapons[waka].sDmg * 3.3 || 1;
