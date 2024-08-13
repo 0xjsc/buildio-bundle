@@ -273,16 +273,13 @@ function getToken() {
 }
 
 async function connectSocketIfReady() {
+  const token = "flower";
   startedConnecting = true;
 
   log("[*] Waiting for grecaptcha ready...");
-
-  await new Promise(grecaptcha.ready);
-
   log("[*] Generating grecaptcha token...");
-  
-  const token = isMohMoh ? "flower" : (await grecaptcha.execute(getToken(), recaptchaOpt));
   log("[*] Generated token " + token);
+  
   const server = await VultrServer();
   const prefix = location.href.includes("moomoo") ? "re:" : "";
 
