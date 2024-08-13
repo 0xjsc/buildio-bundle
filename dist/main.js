@@ -5554,22 +5554,24 @@ function boostInstaOptimisations() {
   const distance = Math.hypot(window.enemy.x - player.x, window.enemy.y - player.y);
   const angle = Math.atan2(window.enemy.y - player.y, window.enemy.x - player.x);
 
-  if (distance > 400 && distance < 450 && keyEvents.ShiftLeft) {
+  if (distance > 370 && distance < 420 && keyEvents.ShiftLeft) {
     place(player.items[4], angle);
     controlFlow = true;
     
     _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.MOVEMENT, angle);
   } else if (keyEvents.ShiftLeft && distance < 240) {
-    _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.MOVEMENT, null);
-    
     reverseInsta();
     controlFlow = false;
-  } else if (keyEvents.ShiftLeft && distance > 450) {
+
+    setTimeout(() => {
+      _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.MOVEMENT, null);
+    }, 222);
+  } else if (keyEvents.ShiftLeft && distance > 420) {
     _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
 
     _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.MOVEMENT, angle);
     storeEquip(40);
-  } else if (keyEvents.ShiftLeft && distance < 400 && !controlFlow) {
+  } else if (keyEvents.ShiftLeft && distance < 370 && !controlFlow) {
     _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.SEND_CHAT, "[*] Calibrating" + (new Array(Math.abs(Math.floor(Math.sin(Date.now()) * 3)))).fill(".").join(""));
 
     _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].send(packets.MOVEMENT, angle - Math.PI);
