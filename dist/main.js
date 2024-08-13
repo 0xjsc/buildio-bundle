@@ -3819,7 +3819,6 @@ function getToken() {
 }
 
 async function connectSocketIfReady() {
-  if (startedConnecting || !grecaptcha?.ready) return;
   startedConnecting = true;
 
   log("[*] Waiting for grecaptcha ready...");
@@ -3833,9 +3832,6 @@ async function connectSocketIfReady() {
   const server = await (0,_vultr_VultrSeeker_js__WEBPACK_IMPORTED_MODULE_15__["default"])();
   const prefix = location.href.includes("moomoo") ? "re:" : "";
 
-  log("[*] Grecaptcha resetted");
-  // grecaptcha.reset();
-  
   connectSocket(prefix + token, server);
 }
 
@@ -3851,9 +3847,6 @@ function connectSocket(token, server = location.host) {
   window.socket = top.socket = _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"];
   
   _libs_io_client_js__WEBPACK_IMPORTED_MODULE_1__["default"].connect(wsAddress, function (error) {
-    if (location.href.includes("mohmoh"))
-      wsBridge.register();
-    
     wsBridge.pingServer(); (error !== "Invalid Connection" && error) ? disconnect(error) : (loadingText.style.display = 'none', menuCardHolder.style.display = 'block', document.getElementById("enterGame").onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
       enterGame();
     }), joinPartyButton.onclick = _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].checkTrusted(function () {
