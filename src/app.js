@@ -1633,11 +1633,12 @@ const safeHealDelay = 120;
 let lastDamage = 0;
 let prevHeal = 0;
 let healTimestamp = Date.now();
+let healer = false;
 
 setInterval(() => {
-  if (!player.heal || Date.now() - healTimestamp < 120 - window.pingTime) return;
+  if (!healer || Date.now() - healTimestamp < 120 - window.pingTime) return;
 
-  delete player.heal;
+  healer = false;
 
   heal(Math.ceil((100 - player.health) / getOuthealAmount(player.items[0])));
 }, 1);
@@ -1645,8 +1646,7 @@ setInterval(() => {
 function updateHealth(sid, value) {
   (tmpObj = findPlayerBySID(sid)) && (tmpObj.health = value);
 
-  player.heal = true;
-
+  healer = true;
   healTimestamp = Date.now();
 }
 
