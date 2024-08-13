@@ -1777,7 +1777,7 @@ function autobreak(trap) {
   window.trap = trap;
   
   wsBridge.updateHittingState(true, trapAngle);
-  io.send(packets.AIM, trapAngle);
+  wsBridge.updateHittingState(false, trapAngle);
 
   const buildDamage = items.weapons[waka].dmg * config.fetchVariant(player).val * 
         items.weapons[waka].sDmg * 3.3 || 1;
