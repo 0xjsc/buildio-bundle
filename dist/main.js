@@ -3522,6 +3522,8 @@ async function vultrSeeker() {
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
 /*!********************!*\
   !*** ./src/app.js ***!
   \********************/
@@ -3948,8 +3950,8 @@ var useNativeResolution, showPing, delta, now, lastSent, attackState, player, pl
   players = [],
   alliances = [],
   gameObjects = [],
-  app_projectiles = [],
-  projectileManager = new _js_data_projectileManager_js__WEBPACK_IMPORTED_MODULE_12__["default"](_js_data_projectile_js__WEBPACK_IMPORTED_MODULE_11__["default"], app_projectiles, players, ais, objectManager, _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"], _config_js__WEBPACK_IMPORTED_MODULE_4__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"]),
+  projectiles = [],
+  projectileManager = new _js_data_projectileManager_js__WEBPACK_IMPORTED_MODULE_12__["default"](_js_data_projectile_js__WEBPACK_IMPORTED_MODULE_11__["default"], projectiles, players, ais, objectManager, _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"], _config_js__WEBPACK_IMPORTED_MODULE_4__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"]),
   aiManager = new _js_data_aiManager_js__WEBPACK_IMPORTED_MODULE_13__["default"](ais, _js_data_ai_js__WEBPACK_IMPORTED_MODULE_14__["default"], players, _js_data_items_js__WEBPACK_IMPORTED_MODULE_6__["default"], null, _config_js__WEBPACK_IMPORTED_MODULE_4__["default"], _libs_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"]),
   waterMult = 1,
   waterPlus = 0,
@@ -4745,8 +4747,8 @@ function renderControl(startX, startY, currentX, currentY) {
 }
 
 function renderProjectiles(layer, xOffset, yOffset) {
-  for (var i = 0; i < app_projectiles.length; ++i)
-    (tmpObj = app_projectiles[i])
+  for (var i = 0; i < projectiles.length; ++i)
+    (tmpObj = projectiles[i])
     .active && tmpObj.layer == layer && (tmpObj.update(delta), tmpObj.active && isOnScreen(tmpObj.x - xOffset, tmpObj.y - yOffset, tmpObj.scale) && (mainContext.save(), mainContext.translate(tmpObj.x - xOffset, tmpObj.y - yOffset), mainContext.rotate(tmpObj.dir), renderProjectile(0, 0, tmpObj, mainContext, 1), mainContext.restore()));
 }
 var projectileSprites = {};
@@ -5057,8 +5059,8 @@ function addProjectile(x, y, dir, range, speed, indx, layer, sid) {
 }
 
 function remProjectile(sid, range) {
-  for (var i = 0; i < app_projectiles.length; ++i)
-    app_projectiles[i].sid == sid && (app_projectiles[i].range = range);
+  for (var i = 0; i < projectiles.length; ++i)
+    projectiles[i].sid == sid && (projectiles[i].range = range);
 }
 
 function animateAI(sid) {
@@ -6123,6 +6125,8 @@ document.getElementById("syncBtn").onclick = function e() {
     this.innerHTML = "Disconnect";
   }
 }
+
+})();
 
 /******/ })()
 ;
